@@ -17,6 +17,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// Stuff specific to the local profile -- specified by
+	// application-local.properties -- such as:
+	// *  using a local in-memory database instead of heroku.
+	//
+	// Can be launched by using your favorite IDE or by adding
+	// `SPRING_PROFILES_ACTIVE=local` before the gradle command:
+	// `SPRING_PROFILES_ACTIVE=local ./gradlew test` for example.
+	runtimeOnly 'com.h2database:h2:1.4.200'
 }
 
 test {
