@@ -76,4 +76,51 @@ public class ArchiveRepositoryTest {
         this.entityManager.remove(lib);
         this.entityManager.flush();
     }
+
+    @Test
+    public void testNameAndStatusQueries() throws Exception {
+        Archive archive;
+        archive = new Archive();
+        field_id.setInt(archive, 100);
+        field_name.set(archive, "Foo");
+        field_status.set(archive, Status.AVAILABLE);
+        this.archiveRepository.save(archive);
+
+        archive = new Archive();
+        field_id.setInt(archive, 102);
+        field_name.set(archive, "Bar");
+        field_status.set(archive, Status.AVAILABLE);
+        this.archiveRepository.save(archive);
+
+        archive = new Archive();
+        field_id.setInt(archive, 103);
+        field_name.set(archive, "Baz");
+        field_status.set(archive, Status.RESERVED);
+        this.archiveRepository.save(archive);
+
+        List<Archive> ret;
+        ret = this.archiveRepository.findByName("Foo");
+        Assertions.assertEquals(1, ret.size());
+        Assertions.assertEquals(100, field_id.getInt(ret.get(0)));
+
+        ret = this.archiveRepository.findByName("Bar");
+        Assertions.assertEquals(1, ret.size());
+        Assertions.assertEquals(102, field_id.getInt(ret.get(0)));
+
+        ret = this.archiveRepository.findByName("Baz");
+        Assertions.assertEquals(1, ret.size());
+        Assertions.assertEquals(103, field_id.getInt(ret.get(0)));
+
+        ret = this.archiveRepository.findByNameContaining("Ba");
+        Assertions.assertEquals(2, ret.size());
+        Assertions.assertEquals(
+                new HashSet<>(Arrays.asList(102 /* Bar */, 103 /* Baz */)),
+                new HashSet<>(Arrays.asList(field_id.getInt(ret.get(0)), field_id.getInt(ret.get(1)))));
+
+        ret = this.archiveRepository.findByStatus(Status.AVAILABLE);
+        Assertions.assertEquals(2, ret.size());
+        Assertions.assertEquals(
+                new HashSet<>(Arrays.asList(100 /* Foo */, 102 /* Bar */)),
+                new HashSet<>(Arrays.asList(field_id.getInt(ret.get(0)), field_id.getInt(ret.get(1)))));
+    }
 }
