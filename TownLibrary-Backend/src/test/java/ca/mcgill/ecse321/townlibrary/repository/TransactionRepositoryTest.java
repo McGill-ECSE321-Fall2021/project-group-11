@@ -23,8 +23,16 @@ public class TransactionRepositoryTest {
     @Autowired
     private TransactionRepository transactionRepository;
 
+    @Autowired
+    private UserRoleRepository userRoleRepository;
+
+    @Autowired
+    private ArchiveRepository archiveRepository;
+
     @AfterEach
     public void cleanupDB() {
+        this.archiveRepository.deleteAll();
+        this.userRoleRepository.deleteAll();
         this.transactionRepository.deleteAll();
     }
 
@@ -37,9 +45,9 @@ public class TransactionRepositoryTest {
         final Event event = new Event();
         final Archive archive = new Archive();
 
-        this.entityManager.persist(user);
+        this.userRoleRepository.save(user);
+        this.archiveRepository.save(archive);
         this.entityManager.persist(event);
-        this.entityManager.persist(archive);
         this.entityManager.flush();
 
         // Test writes
@@ -65,9 +73,7 @@ public class TransactionRepositoryTest {
         this.transactionRepository.delete(ldTransaction);
         Assertions.assertTrue(this.transactionRepository.findById(10).isEmpty());
 
-        this.entityManager.remove(user);
         this.entityManager.remove(event);
-        this.entityManager.remove(archive);
         this.entityManager.flush();
     }
 }
