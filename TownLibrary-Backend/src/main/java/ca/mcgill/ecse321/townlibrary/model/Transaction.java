@@ -21,10 +21,6 @@ public class Transaction {
     @OneToOne
     private Item item;
 
-    public Transaction() {
-        // Must have an empty ctor for database black magic!
-    }
-
     public int getId() {
         return this.id;
     }
