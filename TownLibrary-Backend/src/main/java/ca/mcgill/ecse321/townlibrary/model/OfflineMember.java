@@ -6,6 +6,4 @@ import java.util.*;
 @Entity
 public class OfflineMember extends UserRole {
 
-    @Id
-    private int id;
 }

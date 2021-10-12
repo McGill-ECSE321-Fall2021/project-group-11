@@ -6,9 +6,6 @@ import java.util.*;
 @Entity
 public class HeadLibrarian extends Librarian {
 
-    @Id
-    private int id;
-
     @OneToOne
     private HeadLibrarian headLibrarian;
 }

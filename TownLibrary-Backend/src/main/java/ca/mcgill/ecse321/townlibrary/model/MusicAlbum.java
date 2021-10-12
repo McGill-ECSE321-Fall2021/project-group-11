@@ -6,6 +6,4 @@ import java.util.*;
 @Entity
 public class MusicAlbum extends Item {
 
-    @Id
-    private int id;
 }

@@ -6,9 +6,6 @@ import java.util.*;
 @Entity
 public class OnlineMember extends UserRole {
 
-    @Id
-    private int id;
-
     private String email;
 
     private String username;
