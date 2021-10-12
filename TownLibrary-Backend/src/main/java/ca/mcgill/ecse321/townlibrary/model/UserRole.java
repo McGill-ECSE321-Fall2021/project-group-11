@@ -13,6 +13,10 @@ public abstract class UserRole {
 
     private String address;
 
+    protected UserRole() {
+        // so no one can do anonymous inner class black magic
+    }
+
     @ManyToOne
     private Library library;
 
