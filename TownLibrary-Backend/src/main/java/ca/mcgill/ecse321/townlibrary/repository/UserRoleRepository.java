@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface UserRoleRepository extends CrudRepository<UserRole, Integer> {
 
-    //
+    List<UserRole> findByNameContaining(String name);
 }
