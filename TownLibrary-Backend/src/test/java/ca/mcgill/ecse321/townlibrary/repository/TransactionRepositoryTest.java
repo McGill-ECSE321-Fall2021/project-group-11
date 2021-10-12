@@ -32,8 +32,8 @@ public class TransactionRepositoryTest {
     @AfterEach
     public void cleanupDB() {
         this.archiveRepository.deleteAll();
-        this.userRoleRepository.deleteAll();
         this.transactionRepository.deleteAll();
+        this.userRoleRepository.deleteAll();
     }
 
     @Test
@@ -75,5 +75,52 @@ public class TransactionRepositoryTest {
 
         this.entityManager.remove(event);
         this.entityManager.flush();
+    }
+
+    @Test
+    public void testUserRoleAndEndDateQueries() {
+        final OfflineMember joe = new OfflineMember();
+        joe.setId(150);
+        joe.setName("Joe Schmoe");
+        this.userRoleRepository.save(joe);
+
+        final OfflineMember john = new OfflineMember();
+        john.setId(151);
+        john.setName("John Doe");
+        this.userRoleRepository.save(john);
+
+        Transaction transaction;
+        transaction = new Transaction();
+        transaction.setId(200);
+        transaction.setUserRole(joe);
+        transaction.setEndDate(new Timestamp(10));
+        this.transactionRepository.save(transaction);
+
+        transaction = new Transaction();
+        transaction.setId(201);
+        transaction.setUserRole(joe);
+        transaction.setEndDate(new Timestamp(100));
+        this.transactionRepository.save(transaction);
+
+        transaction = new Transaction();
+        transaction.setId(210);
+        transaction.setUserRole(john);
+        transaction.setEndDate(new Timestamp(50));
+        this.transactionRepository.save(transaction);
+
+        List<Transaction> ret;
+        ret = this.transactionRepository.findByUserRole(joe);
+        Assertions.assertEquals(2, ret.size());
+        Assertions.assertEquals(
+                new HashSet<>(Arrays.asList(200, 201)),
+                new HashSet<>(Arrays.asList(ret.get(0).getId(), ret.get(1).getId())));
+
+        ret = this.transactionRepository.findByUserRole(john);
+        Assertions.assertEquals(1, ret.size());
+        Assertions.assertEquals(210, ret.get(0).getId());
+
+        ret = this.transactionRepository.findByUserRoleAndEndDateAfter(joe, new Timestamp(50));
+        Assertions.assertEquals(1, ret.size());
+        Assertions.assertEquals(201, ret.get(0).getId());
     }
 }
