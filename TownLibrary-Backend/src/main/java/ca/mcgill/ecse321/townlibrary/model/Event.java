@@ -13,21 +13,4 @@ public class Event {
 
     @ManyToOne
     private Library library;
-
-    // Constructor
-
-    public Event(int anId, String aName) {
-        id = anId;
-        name = aName;
-    }
-
-    // Getters
-
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
 }
