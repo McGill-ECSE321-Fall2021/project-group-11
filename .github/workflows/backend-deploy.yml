@@ -22,3 +22,4 @@ jobs:
         heroku_api_key: '6c6171f4-6dd1-49c7-bc0d-d25a94f39eee'
         heroku_app_name: 'townlibrary-backend-321f21-g11'
         heroku_email: 'yuan-po.teng@mail.mcgill.ca'
+        branch: 'main'  # required because I broke the default branch
