@@ -1,18 +1,48 @@
 package ca.mcgill.ecse321.townlibrary.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 public abstract class Item {
-
-    @Id
-    private int id;
-
+	private int id;
     private Status status;
-
     private String name;
+    
+    private Transaction transaction;
+    
+    
+    @Id
+    public int getId() {
+    	return this.id;
+    }
+    
+    public void setId(int value) {
+    	this.id = value;
+    }
 
-    @ManyToOne
-    private Library library;
+    public Status getStatus() {
+    	return this.status;
+    }
+    
+    public void setStatus(Status value) {
+    	this.status = value;
+    }
+    
+    public String getName() {
+    	return this.name;
+    }
+    
+    public void setName(String value) {
+    	this.name = value;
+    }
+
+    
+    @OneToOne
+    public Transaction getTransaction() {
+    	return this.transaction;
+    }
+    
+    public void setTransaction(Transaction transaction) {
+    	this.transaction = transaction;
+    }
 }
