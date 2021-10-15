@@ -2,7 +2,7 @@ package ca.mcgill.ecse321.townlibrary.model;
 
 import javax.persistence.*;
 
-@Entity
+@MappedSuperclass
 public abstract class Item {
 	private int id;
     private Status status;
