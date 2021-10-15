@@ -4,6 +4,5 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-public class MusicAlbum extends Item {
-
+public class MusicAlbum extends Item { 
 }
