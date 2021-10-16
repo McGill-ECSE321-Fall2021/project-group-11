@@ -82,8 +82,8 @@ public class Transaction {
         return "Transaction {id=" + this.id
                 + ", startDate=" + this.startDate
                 + ", endDate=" + this.endDate
-                + ", userRole=" + this.userRole
-                + ", event=" + this.event
-                + ", item=" + this.item + "}";
+                + ", userRole.id=" + (this.userRole == null ? null : this.userRole.getId())
+                + ", event.id=" + (this.event == null ? null : this.event.getId())
+                + ", item.id=" + (this.item == null ? null : this.item.getId()) + "}";
     }
 }
