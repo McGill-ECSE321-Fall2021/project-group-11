@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface LibrarianRepository extends CrudRepository<Librarian, Integer> {
 	
-	Librarian findByUserID(Integer UserId);
+	List<Librarian> findByUserID(Integer UserId);
 	List<Librarian> findByNameContaining(String name);
 }
