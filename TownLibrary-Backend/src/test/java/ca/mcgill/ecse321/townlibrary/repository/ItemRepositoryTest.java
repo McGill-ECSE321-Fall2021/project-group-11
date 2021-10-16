@@ -15,6 +15,8 @@ public class ItemRepositoryTest {
 	
 	@Autowired
 	private ItemRepository itemRepository;
+	@Autowired
+	private TransactionRepository transactionRepository;
 	
 	@AfterEach
 	public void clearDatabase() {
@@ -27,6 +29,7 @@ public class ItemRepositoryTest {
 		String name1 = "Gazette";
 		Status status1 = Status.AVAILABLE;
 		Transaction transaction1 = new Transaction();
+		transactionRepository.save(transaction1);
 		Newspaper gazette = new Newspaper();
 		gazette.setId(id1);
 		gazette.setName(name1);
@@ -38,6 +41,7 @@ public class ItemRepositoryTest {
 		String name2 = "Dune";
 		Status status2 = Status.RESERVED;
 		Transaction transaction2 = new Transaction();
+		transactionRepository.save(transaction2);
 		Book dune = new Book();
 		dune.setId(id2);
 		dune.setName(name2);
@@ -49,6 +53,7 @@ public class ItemRepositoryTest {
 		String name3 = "Flowers for Algernon";
 		Status status3 = Status.RESERVED;
 		Transaction transaction3 = new Transaction();
+		transactionRepository.save(transaction3);
 		Book algernon = new Book();
 		algernon.setId(id3);
 		algernon.setName(name3);
