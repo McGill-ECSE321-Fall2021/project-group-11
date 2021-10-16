@@ -11,7 +11,9 @@ public class Library {
 
     private String address;
 
-    public String getString(){
+    private HeadLibrarian headLibrarian;
+
+    public String getAddress(){
         return this.address;
     }
     
@@ -24,6 +26,12 @@ public class Library {
     }
     public void setId(int id) {
         this.id = id;
+    }
+    public HeadLibrarian getHeadLibrarian(){
+        return this.headLibrarian;
+    }
+    public void setHeadLibrarian(HeadLibrarian hl) {
+        this.headLibrarian = hl;
     }
 }
 

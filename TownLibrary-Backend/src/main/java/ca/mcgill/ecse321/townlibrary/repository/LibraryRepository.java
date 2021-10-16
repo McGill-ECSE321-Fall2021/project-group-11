@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LibraryRepository extends CrudRepository<Library,Integer> {
     
-    List<Library> findByAddress(String address);
-
+    Library findByAddress(String address);
+    Library findByHeadLibrarian(HeadLibrarian librarian);
 }
