@@ -8,9 +8,11 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
+@SpringBootTest
 public class NewspaperBookRepositoryTest {
 	
 	@Autowired
@@ -33,6 +35,7 @@ public class NewspaperBookRepositoryTest {
 		String name = "Globe&Mail";
 		Status status = Status.AVAILABLE;
 		Transaction transaction = new Transaction();
+		transaction.setId(44);
 		transactionRepository.save(transaction);
 		Newspaper newspaper = new Newspaper();
 		newspaper.setId(newsId);
@@ -47,7 +50,7 @@ public class NewspaperBookRepositoryTest {
 		assertEquals(newsId, newspaper.getId());
 		assertEquals(name, newspaper.getName());
 		assertEquals(status, newspaper.getStatus());
-		assertEquals(transaction, newspaper.getTransaction());
+		assertEquals(44, newspaper.getTransaction().getId());
 	}
 	
 	@Test
@@ -56,6 +59,7 @@ public class NewspaperBookRepositoryTest {
 		String name = "Dune";
 		Status status = Status.RESERVED;
 		Transaction transaction = new Transaction();
+		transaction.setId(55);
 		transactionRepository.save(transaction);
 		Book book = new Book();
 		book.setId(bookId);
@@ -70,7 +74,7 @@ public class NewspaperBookRepositoryTest {
 		assertEquals(bookId, book.getId());
 		assertEquals(name, book.getName());
 		assertEquals(status, book.getStatus());
-		assertEquals(transaction, book.getTransaction());
+		assertEquals(55, book.getTransaction().getId());
 	}
 
 }
