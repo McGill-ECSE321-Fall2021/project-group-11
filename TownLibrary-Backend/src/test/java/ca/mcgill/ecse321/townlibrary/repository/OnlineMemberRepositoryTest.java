@@ -33,7 +33,7 @@ public class OnlineMemberRepositoryTest {
 
         this.onlineMemberRepository.save(me);
         
-        final OnlineMember onlineMember = this.onlineMemberRepository.findByUserId(1);
+        final OnlineMember onlineMember = this.onlineMemberRepository.findById(1).get();
         Assertions.assertEquals("A Name", onlineMember.getName());
         Assertions.assertEquals("me@mail.ca", onlineMember.getEmail());
         Assertions.assertEquals("myaccount", onlineMember.getUsername());
@@ -83,7 +83,7 @@ public class OnlineMemberRepositoryTest {
         Assertions.assertEquals(4, result.size());
         OnlineMember individualMember = this.onlineMemberRepository.findByEmail("me@mail.ca");
         Assertions.assertEquals("A Name", individualMember.getName());
-        individualMember = this.onlineMemberRepository.findByUserId(2);
+        individualMember = this.onlineMemberRepository.findById(2).get();
         Assertions.assertEquals("you@mail.ca", individualMember.getEmail());
         
     }
