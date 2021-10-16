@@ -6,7 +6,6 @@ import java.util.*;
 @Entity
 public abstract class UserRole {
 
-    @Id
     private int id;
 
     private String name;
@@ -17,9 +16,9 @@ public abstract class UserRole {
         // so no one can do anonymous inner class black magic
     }
 
-    @ManyToOne
     private Library library;
 
+    @Id
     public int getId() {
         return this.id;
     }
@@ -44,6 +43,7 @@ public abstract class UserRole {
         this.address = address;
     }
 
+    @ManyToOne
     public Library getLibrary() {
         return this.library;
     }
