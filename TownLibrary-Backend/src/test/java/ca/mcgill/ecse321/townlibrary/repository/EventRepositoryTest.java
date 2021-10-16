@@ -17,7 +17,7 @@ import java.util.*;
 public class EventRepositoryTest {
     
     @Autowired
-    private EntityManager entityManager;
+    private LibraryRepository libraryRepository;
 
     @Autowired
     private EventRepository eventRepository;
@@ -25,55 +25,52 @@ public class EventRepositoryTest {
     @AfterEach
     public void cleanupDB() {
         eventRepository.deleteAll();
+        libraryRepository.deleteAll();
     }
 
     @Test
     @Transactional
     public void testPersistEvent() throws Exception {
         final Library lib = new Library();
-        entityManager.persist(lib);
-        entityManager.flush();
-
         final Event event = new Event();
-        event.setId(5);
+        libraryRepository.save(lib);
+
+        event.setId(59);
         event.setName("con");
         event.setLibrary(lib);
         eventRepository.save(event);
 
-        Assertions.assertEquals(5, event.getId());
+        Assertions.assertEquals(59, event.getId());
         Assertions.assertEquals("con", event.getName());
         Assertions.assertEquals(lib, event.getLibrary());
 
         eventRepository.delete(event);
         Assertions.assertTrue(eventRepository.findById(5).isEmpty());
-
-        entityManager.remove(lib);
-        entityManager.flush();
     }
 
     @Test
     public void testNameQueries() throws Exception {
         Event event;
         event = new Event();
-        event.setId(5);
+        event.setId(60);
         event.setName("con");
         eventRepository.save(event);
 
         event = new Event();
-        event.setId(6);
+        event.setId(61);
         event.setName("pon");
         eventRepository.save(event);
 
         event = new Event();
-        event.setId(7);
+        event.setId(62);
         event.setName("cat");
         eventRepository.save(event);
 
         List<Event> l;
         Event e;
 
-        e = eventRepository.findEventById(5);
-        Assertions.assertEquals(5, e.getId());
+        e = eventRepository.findEventById(60);
+        Assertions.assertEquals(60, e.getId());
 
         l = eventRepository.findByNameContaining("con");
         Assertions.assertEquals(1, l.size());
