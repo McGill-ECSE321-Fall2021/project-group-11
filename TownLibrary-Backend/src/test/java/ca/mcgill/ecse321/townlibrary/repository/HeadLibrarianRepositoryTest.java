@@ -42,7 +42,7 @@ public class HeadLibrarianRepositoryTest {
 
 
         hl = null;
-        hl = offlineMemberRepository.findByAddress("4201 Wokege");
+        hl = this.headLibrarianRepository.findByAddress("4201 Wokege");
 
         assertNotNull(hl);
         assertEquals(hlId,hl.getId());
@@ -62,15 +62,14 @@ public class HeadLibrarianRepositoryTest {
         hl.setId(hlId);
         hl.setName("Dees");
         hl.setLibrary(lib);
-        UserRoleRepository.save(hl);
+        this.headLibrarianRepository.save(hl);
 
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
         libId = 2;
         lib.setId(libId);
         lib.setAddress(address);
-        lib.setHeadLibrarian(hl);
-        libraryRepository.save(lib);
+        this.libraryRepository.save(lib);
 
         hl = null;
 

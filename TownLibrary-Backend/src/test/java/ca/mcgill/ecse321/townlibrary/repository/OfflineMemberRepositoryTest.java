@@ -35,7 +35,7 @@ public class OfflineMemberRepositoryTest {
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
         lib.setAddress(address);
-        libraryRepository.save(lib);
+        this.libraryRepository.save(lib);
 
         OfflineMember om = new OfflineMember();
         om.setAddress("845 Jacoma");
@@ -43,7 +43,7 @@ public class OfflineMemberRepositoryTest {
         om.setId(omId);
         om.setLibrary(lib);
         om.setName("Wu");
-        offlineMemberRepository.save(om);
+        this.offlineMemberRepository.save(om);
 
         om = null;
         om = offlineMemberRepository.findByAddress("845 Jacoma");
