@@ -5,7 +5,5 @@ import java.util.*;
 
 @Entity
 public class Librarian extends UserRole {
-
-    @OneToOne
-    private Library library;
+    
 }

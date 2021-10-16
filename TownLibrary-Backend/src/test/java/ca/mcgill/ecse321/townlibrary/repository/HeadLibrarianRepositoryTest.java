@@ -31,23 +31,26 @@ public class HeadLibrarianRepositoryTest {
     @Test
     public void testPersistHeadLibrarian(){
 
-        String address = "845 Rue Sherbrooke";
-        Library lib = new Library();
-        lib.setAddress(address);
-        libraryRepository.save(lib);
+        HeadLibrarian hl = new HeadLibrarian();
+        String homeAddress = "4201 Wokege";
+        hl.setAddress(homeAddress);
+        int hlId = 1;
+        hl.setId(hlId);
+        hl.setName("Dees");
+        hl.setLibrary(lib);
+        this.headLibrarianRepository.save(hl);
 
-        
 
-        om = null;
-        om = offlineMemberRepository.findByAddress("845 Jacoma");
-        om = om.get(0);
-        assertNotNull(om);
-        assertEquals(omId, om.getId());
-        assertEquals("Wu", om.getName());
+        hl = null;
+        hl = offlineMemberRepository.findByAddress("4201 Wokege");
 
-        this.offlineMemberRepository.delete(om);
-        Assertions.assertTrue(this.offlineMemberRepository.
-                                findByAddress("845 Jacoma").isEmpty());
+        assertNotNull(hl);
+        assertEquals(hlId,hl.getId());
+        assertEquals("Dees",hl.getName());
+
+        this.headLibrarianRepository.delete(hl);
+        Assertions.assertTrue(this.headLibrarianRepository.
+                                findByAddress("4201 Wokege").isEmpty());
     }
 
 
@@ -77,6 +80,9 @@ public class HeadLibrarianRepositoryTest {
         assertEquals(hlId, hl.getId());
         assertEquals(hl.getAddress(), lib.getHeadLibrarian().getAddress());
         assertEquals(hl.getName(), lib.getHeadLibrarian().getName());
+
+        this.headLibrarianRepository.delete(hl);
+        Assertions.assertNull(this.headLibrarianRepository.findByLibrary(lib));
     }
     
 }

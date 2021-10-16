@@ -24,12 +24,6 @@ public class Library {
     public void setId(int id) {
         this.id = id;
     }
-    public HeadLibrarian getHeadLibrarian(){
-        return this.headLibrarian;
-    }
-    public void setHeadLibrarian(HeadLibrarian hl) {
-        this.headLibrarian = hl;
-    }
 }
 
 

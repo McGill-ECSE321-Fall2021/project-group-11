@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface LibraryRepository extends CrudRepository<Library,Integer> {
     
     Library findByAddress(String address);
-    Library findByHeadLibrarian(HeadLibrarian librarian);
 }

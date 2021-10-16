@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface HeadLibrarian extends CrudRepository<Archive, Integer> {
 
-    List<HeadLibrarian> findByLibrary(String name);
-    List<HeadLibrarian> findById(int id);
+    HeadLibrarian findByLibrary(Library lib);
 }
