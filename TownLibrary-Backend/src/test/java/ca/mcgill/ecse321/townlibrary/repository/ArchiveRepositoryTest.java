@@ -27,7 +27,7 @@ public class ArchiveRepositoryTest {
     }
 
     @Test
-    public void testPersistArchive() throws Exception {
+    public void testPersistArchive() {
         final Library lib = new Library();
         lib.setId(156);
         this.libraryRepository.save(lib);
@@ -53,7 +53,7 @@ public class ArchiveRepositoryTest {
     }
 
     @Test
-    public void testNameAndStatusQueries() throws Exception {
+    public void testNameAndStatusQueries() {
         Archive archive;
         archive = new Archive();
         archive.setId(100);
