@@ -63,9 +63,9 @@ public class TransactionRepositoryTest {
         Assertions.assertEquals(10, ldTransaction.getId());
         Assertions.assertEquals(start, ldTransaction.getStartDate());
         Assertions.assertEquals(end, ldTransaction.getEndDate());
-        Assertions.assertEquals(user, ldTransaction.getUserRole());
-        Assertions.assertEquals(event, ldTransaction.getEvent());
-        Assertions.assertEquals(archive, ldTransaction.getItem());
+        Assertions.assertEquals(user.getId(), ldTransaction.getUserRole().getId());
+        Assertions.assertEquals(event.getId(), ldTransaction.getEvent().getId());
+        Assertions.assertEquals(archive.getId(), ldTransaction.getItem().getId());
 
         // Test deletes
         this.transactionRepository.delete(ldTransaction);
