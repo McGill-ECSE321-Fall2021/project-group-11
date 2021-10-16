@@ -9,5 +9,12 @@ import java.util.List;
 @Repository
 public interface UserRoleRepository extends CrudRepository<UserRole, Integer> {
 
+    /**
+     * Searches UserRoles by a fragment of their name.
+     *
+     * @param name  The fragment of their name.
+     *
+     * @return      A potentially empty list of UserRoles.
+     */
     List<UserRole> findByNameContaining(String name);
 }

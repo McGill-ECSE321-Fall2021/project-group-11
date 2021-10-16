@@ -10,7 +10,23 @@ import java.sql.Timestamp;
 @Repository
 public interface TransactionRepository extends CrudRepository<Transaction, Integer> {
 
+    /**
+     * Searches all the Transactions associated with the UserRole.
+     *
+     * @param userRole  The UserRole that the tasks are associated with.
+     *
+     * @return          A potentially empty list of Transactions.
+     */
     List<Transaction> findByUserRole(UserRole userRole);
 
-    List<Transaction> findByUserRoleAndEndDateAfter(UserRole userRole, Timestamp Timestamp);
+    /**
+     * Searches all the Transactions associated with the UserRole that have an
+     * EndDate after a certain date and time.
+     *
+     * @param userRole  The UserRole that the tasks are associated with.
+     * @param timestamp The date and time.
+     *
+     * @return          A potentially empty list of Transactions.
+     */
+    List<Transaction> findByUserRoleAndEndDateAfter(UserRole userRole, Timestamp timestamp);
 }
