@@ -17,7 +17,7 @@ public abstract class Item {
     public int getId() {
     	return this.id;
     }
-  
+
     public void setId(int value) {
     	this.id = value;
     }
@@ -55,4 +55,5 @@ public abstract class Item {
     public void setLibrary(Library library) {
     	this.library = library;
     }
+
 }
