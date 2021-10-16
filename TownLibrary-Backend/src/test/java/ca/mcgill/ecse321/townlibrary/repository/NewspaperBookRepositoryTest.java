@@ -17,11 +17,14 @@ public class NewspaperBookRepositoryTest {
 	private NewspaperRepository newspaperRepository;
 	@Autowired
 	private BookRepository bookRepository;
+	@Autowired
+	private TransactionRepository transactionRepository;
 	
 	@AfterEach
 	public void clearDatabase() {
 		newspaperRepository.deleteAll();
 		bookRepository.deleteAll();
+		transactionRepository.deleteAll();
 	}
 	
 	@Test
@@ -30,6 +33,7 @@ public class NewspaperBookRepositoryTest {
 		String name = "Globe&Mail";
 		Status status = Status.AVAILABLE;
 		Transaction transaction = new Transaction();
+		transactionRepository.save(transaction);
 		Newspaper newspaper = new Newspaper();
 		newspaper.setId(newsId);
 		newspaper.setName(name);
@@ -52,6 +56,7 @@ public class NewspaperBookRepositoryTest {
 		String name = "Dune";
 		Status status = Status.RESERVED;
 		Transaction transaction = new Transaction();
+		transactionRepository.save(transaction);
 		Book book = new Book();
 		book.setId(bookId);
 		book.setName(name);
