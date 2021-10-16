@@ -6,7 +6,6 @@ import java.util.*;
 @Entity
 public class Event {
 
-    @Id
     private int id;
 
     private String name;
@@ -15,6 +14,7 @@ public class Event {
 
     private Transaction transaction;
 
+    @Id
     public int getId() {
         return id;
     }
