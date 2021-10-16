@@ -16,57 +16,57 @@ import java.util.*;
 @SpringBootTest
 public class MovieRepositoryTest {
     @Autowired
-    private EntityManager entityManager;
+    private LibraryRepository libraryRepository;
 
     @Autowired
     private MovieRepository movieRepository;
 
     @AfterEach
     public void cleanupDB() {
-        this.movieRepository.deleteAll();
+        movieRepository.deleteAll();
+        libraryRepository.deleteAll();
     }
 
     @Test
     @Transactional
     public void testPersistMovie() throws Exception {
         final Library lib = new Library();
-        entityManager.persist(lib);
-        entityManager.flush();
+        lib.setId(49);
+        libraryRepository.save(lib);
 
         final Movie m1 = new Movie();
-        m1.setId(5);
+        m1.setId(70);
         m1.setName("test");
         m1.setStatus(Status.RESERVED);
+        m1.setLibrary(lib);
         movieRepository.save(m1);
 
-        Assertions.assertEquals(5, m1.getId());
+        Assertions.assertEquals(70, m1.getId());
         Assertions.assertEquals("test", m1.getName());
         Assertions.assertEquals(Status.RESERVED, m1.getStatus());
+        Assertions.assertEquals(lib.getId(), m1.getLibrary().getId());
 
         movieRepository.delete(m1);
-        Assertions.assertTrue(movieRepository.findById(5).isEmpty());
-
-        entityManager.remove(lib);
-        entityManager.flush();
+        Assertions.assertTrue(movieRepository.findById(70).isEmpty());
     }
 
     @Test
     public void testNameAndStatusQueries() throws Exception {
         Movie movie;
         movie = new Movie();
-        movie.setId(5);
+        movie.setId(71);
         movie.setName("t1");
         movie.setStatus(Status.RESERVED);
         movieRepository.save(movie);
 
         movie = new Movie();
-        movie.setId(6);
+        movie.setId(72);
         movie.setName("t2");
         movie.setStatus(Status.AVAILABLE);
         movieRepository.save(movie);
         
         movie = new Movie();
-        movie.setId(7);
+        movie.setId(73);
         movie.setName("f3");
         movie.setStatus(Status.AVAILABLE);
         movieRepository.save(movie);
@@ -74,7 +74,7 @@ public class MovieRepositoryTest {
         List<Movie> l;
         l = movieRepository.findByName("t1");
         Assertions.assertEquals(1, l.size());
-        Assertions.assertEquals(5, l.get(0).getId());
+        Assertions.assertEquals(71, l.get(0).getId());
 
         l = movieRepository.findByNameContaining("t");
         Assertions.assertEquals(2, l.size());

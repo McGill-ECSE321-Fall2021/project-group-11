@@ -27,25 +27,25 @@ public class LibrarianRepositoryTest {
     @Test
     public void testNameQueries() {
         final Librarian jeb = new Librarian();
-        jeb.setId(5);
+        jeb.setId(50);
         jeb.setName("Jeb Deb");
         librarianRepository.save(jeb);
 
         final Librarian jim = new Librarian();
-        jim.setId(6);
+        jim.setId(51);
         jim.setName("Jim Bim");
         librarianRepository.save(jim);
 
         final Librarian kim = new Librarian();
-        kim.setId(7);
+        kim.setId(52);
         kim.setName("Kim Keb");
         librarianRepository.save(kim);
         
         List<Librarian> l;
         Librarian lbr;
 
-        lbr = librarianRepository.findLibrarianById(5);
-        Assertions.assertEquals(5, lbr.getId());
+        lbr = librarianRepository.findLibrarianById(50);
+        Assertions.assertEquals(50, lbr.getId());
 
         l = librarianRepository.findByNameContaining("im");
         Assertions.assertEquals(2, l.size());
