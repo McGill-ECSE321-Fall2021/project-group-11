@@ -23,7 +23,7 @@ public class LibraryRepositoryTest {
 
     @AfterEach
     public void clearDatabase(){
-        libraryRepository.delete();
+        libraryRepository.deleteAll();
     }
 
     @Test

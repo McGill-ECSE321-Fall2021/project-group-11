@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface HeadLibrarianRepository extends CrudRepository<Archive, Integer> {
+public interface HeadLibrarianRepository extends CrudRepository<HeadLibrarian, Integer> {
 
     HeadLibrarian findByLibrary(Library lib);
     HeadLibrarian findByAddress(String address);
