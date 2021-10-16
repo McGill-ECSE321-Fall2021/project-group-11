@@ -13,10 +13,6 @@ public class Transaction {
 
     private UserRole userRole;
 
-    private Event event;
-
-    private Item item;
-
     @Id
     public int getId() {
         return this.id;
@@ -51,39 +47,12 @@ public class Transaction {
         this.userRole = ur;
     }
 
-    @OneToOne
-    public Event getEvent() {
-        return this.event;
-    }
-
-    public void setEvent(Event e) {
-        this.event = e;
-    }
-
-    public boolean hasEvent() {
-        return this.event != null;
-    }
-
-    @OneToOne
-    public Item getItem() {
-        return this.item;
-    }
-
-    public void setItem(Item e) {
-        this.item = e;
-    }
-
-    public boolean hasItem() {
-        return this.item != null;
-    }
-
     @Override
     public String toString() {
         return "Transaction {id=" + this.id
                 + ", startDate=" + this.startDate
                 + ", endDate=" + this.endDate
                 + ", userRole.id=" + (this.userRole == null ? null : this.userRole.getId())
-                + ", event.id=" + (this.event == null ? null : this.event.getId())
-                + ", item.id=" + (this.item == null ? null : this.item.getId()) + "}";
+                + "}";
     }
 }

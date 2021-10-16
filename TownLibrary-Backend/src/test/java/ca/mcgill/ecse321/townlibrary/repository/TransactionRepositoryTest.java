@@ -16,21 +16,13 @@ import java.sql.Timestamp;
 public class TransactionRepositoryTest {
 
     @Autowired
-    private EventRepository eventRepository;
-
-    @Autowired
     private TransactionRepository transactionRepository;
 
     @Autowired
     private UserRoleRepository userRoleRepository;
 
-    @Autowired
-    private ArchiveRepository archiveRepository;
-
     @AfterEach
     public void cleanupDB() {
-        this.archiveRepository.deleteAll();
-        this.eventRepository.deleteAll();
         this.transactionRepository.deleteAll();
         this.userRoleRepository.deleteAll();
     }
@@ -40,12 +32,8 @@ public class TransactionRepositoryTest {
         final Timestamp start = new Timestamp(0);
         final Timestamp end = new Timestamp(10000);
         final OfflineMember user = new OfflineMember();
-        final Event event = new Event();
-        final Archive archive = new Archive();
 
         this.userRoleRepository.save(user);
-        this.archiveRepository.save(archive);
-        this.eventRepository.save(event);
 
         // Test writes
         final Transaction stTransaction = new Transaction();
@@ -53,8 +41,6 @@ public class TransactionRepositoryTest {
         stTransaction.setStartDate(start);
         stTransaction.setEndDate(end);
         stTransaction.setUserRole(user);
-        stTransaction.setEvent(event);
-        stTransaction.setItem(archive);
         this.transactionRepository.save(stTransaction);
 
         // this get must succeed!
@@ -63,8 +49,6 @@ public class TransactionRepositoryTest {
         Assertions.assertEquals(start, ldTransaction.getStartDate());
         Assertions.assertEquals(end, ldTransaction.getEndDate());
         Assertions.assertEquals(user.getId(), ldTransaction.getUserRole().getId());
-        Assertions.assertEquals(event.getId(), ldTransaction.getEvent().getId());
-        Assertions.assertEquals(archive.getId(), ldTransaction.getItem().getId());
 
         // Test deletes
         this.transactionRepository.delete(ldTransaction);
