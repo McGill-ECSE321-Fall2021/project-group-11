@@ -13,4 +13,41 @@ public class Event {
 
     @ManyToOne
     private Library library;
+
+    @OneToOne
+    private Transaction transaction;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
+
 }

@@ -6,4 +6,8 @@ import java.util.*;
 @Entity
 public class Movie extends Item {
 
+    @Override
+    public String toString() {
+        return "Movie {}";
+    }
 }
