@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OfflineMemberRepository extends CrudRepository<Archive, Integer> {
+public interface OfflineMemberRepository extends CrudRepository<OfflineMember, Integer> {
     
     List<OfflineMember> findByAddress(String name);
 }
