@@ -4,19 +4,19 @@ import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class Item {
-	private int id;
+	private Integer id;
     private Status status;
     private String name;
     
     private Transaction transaction;
-    
+   
     
     @Id
     public int getId() {
     	return this.id;
     }
     
-    public void setId(int value) {
+    public void setId(Integer value) {
     	this.id = value;
     }
 
