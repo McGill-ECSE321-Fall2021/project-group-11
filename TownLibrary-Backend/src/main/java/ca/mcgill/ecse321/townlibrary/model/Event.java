@@ -29,6 +29,7 @@ public class Event {
         return library;
     }
 
+
     public Transaction getTransaction() {
         return transaction;
     }
@@ -48,4 +49,5 @@ public class Event {
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
     }
+
 }
