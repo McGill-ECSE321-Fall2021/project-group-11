@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.model.HeadLibrarian;
@@ -24,12 +25,18 @@ public class HeadLibrarianRepositoryTest {
 
     @AfterEach
     public void cleanupDB(){
-        
-        this.headLibrarianRepository.delete();
-        this.libraryRepository.delete();        
+
+        this.headLibrarianRepository.deleteAll();
+        this.libraryRepository.deleteAll();        
     }
     @Test
     public void testPersistHeadLibrarian(){
+        String address = "845 Rue Sherbrooke";
+        Library lib = new Library();
+        int libId = 2;
+        lib.setId(libId);
+        lib.setAddress(address);
+        this.libraryRepository.save(lib);
 
         HeadLibrarian hl = new HeadLibrarian();
         String homeAddress = "4201 Wokege";
@@ -55,6 +62,13 @@ public class HeadLibrarianRepositoryTest {
 
 
     public void testRefLibrary(){
+        String address = "845 Rue Sherbrooke";
+        Library lib = new Library();
+        int libId = 2;
+        lib.setId(libId);
+        lib.setAddress(address);
+        this.libraryRepository.save(lib);
+
         HeadLibrarian hl = new HeadLibrarian();
         String homeAddress = "4201 Wokege";
         hl.setAddress(homeAddress);
@@ -64,21 +78,13 @@ public class HeadLibrarianRepositoryTest {
         hl.setLibrary(lib);
         this.headLibrarianRepository.save(hl);
 
-        String address = "845 Rue Sherbrooke";
-        Library lib = new Library();
-        libId = 2;
-        lib.setId(libId);
-        lib.setAddress(address);
-        this.libraryRepository.save(lib);
-
         hl = null;
 
         hl = this.headLibrarianRepository.findByLibrary(lib);
 
         assertNotNull(hl);
         assertEquals(hlId, hl.getId());
-        assertEquals(hl.getAddress(), lib.getHeadLibrarian().getAddress());
-        assertEquals(hl.getName(), lib.getHeadLibrarian().getName());
+        assertEquals("Wu", hl.getName());
 
         this.headLibrarianRepository.delete(hl);
         Assertions.assertNull(this.headLibrarianRepository.findByLibrary(lib));

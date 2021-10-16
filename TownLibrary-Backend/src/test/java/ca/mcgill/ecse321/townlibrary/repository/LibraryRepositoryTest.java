@@ -23,7 +23,7 @@ public class LibraryRepositoryTest {
 
     @AfterEach
     public void clearDatabase(){
-        libraryRepository.delete();
+        libraryRepository.deleteAll();
     }
 
     @Test
@@ -40,7 +40,7 @@ public class LibraryRepositoryTest {
         Assertions.assertEquals(address, lib.getAddress());
 
         this.libraryRepository.delete(lib);
-        Assertions.assertNull(this.libraryRepository(address));
+        Assertions.assertNull(this.libraryRepository.findByAddress(address));
 
     }
     

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.*;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.LibraryRepository;
@@ -25,8 +26,8 @@ public class OfflineMemberRepositoryTest {
 
     @AfterEach
     public void cleanupDB(){
-        offlineMemberRepository.delete();
-        libraryRepository.delete(); 
+        offlineMemberRepository.deleteAll();
+        libraryRepository.deleteAll(); 
     }
     @Test
     public void testPersistOfflineMember(){
@@ -45,8 +46,7 @@ public class OfflineMemberRepositoryTest {
         this.offlineMemberRepository.save(om);
 
         om = null;
-        om = offlineMemberRepository.findByAddress("845 Jacoma");
-        om = om.get(0);
+        om = offlineMemberRepository.findByAddress("845 Jacoma").get(0);
         assertNotNull(om);
         assertEquals(omId, om.getId());
         assertEquals("Wu", om.getName());
