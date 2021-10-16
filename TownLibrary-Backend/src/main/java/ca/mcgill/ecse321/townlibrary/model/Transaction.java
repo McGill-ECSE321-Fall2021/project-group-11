@@ -6,21 +6,18 @@ import java.sql.Timestamp;
 @Entity
 public class Transaction {
 
-    @Id
     private int id;
 
     private Timestamp startDate;
     private Timestamp endDate;
 
-    @ManyToOne
     private UserRole userRole;
 
-    @OneToOne
     private Event event;
 
-    @OneToOne
     private Item item;
 
+    @Id
     public int getId() {
         return this.id;
     }
@@ -45,6 +42,7 @@ public class Transaction {
         this.endDate = ts;
     }
 
+    @ManyToOne
     public UserRole getUserRole() {
         return this.userRole;
     }
@@ -53,6 +51,7 @@ public class Transaction {
         this.userRole = ur;
     }
 
+    @OneToOne
     public Event getEvent() {
         return this.event;
     }
@@ -65,6 +64,7 @@ public class Transaction {
         return this.event != null;
     }
 
+    @OneToOne
     public Item getItem() {
         return this.item;
     }

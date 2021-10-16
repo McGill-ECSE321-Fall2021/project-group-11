@@ -3,7 +3,7 @@ name: Deploy Project Backend
 on:
   workflow_run:
     workflows: ['Test Project Backend']
-    branches: [main]
+    branches: [feature/project-template]
     types:
       - completed
 
@@ -17,11 +17,8 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
     - uses: actions/checkout@v2
-      with:
-        ref: main
     - uses: akhileshns/heroku-deploy@v3.12.12   # plugin for automated heroku deploy
       with:
         heroku_api_key: '6c6171f4-6dd1-49c7-bc0d-d25a94f39eee'
         heroku_app_name: 'townlibrary-backend-321f21-g11'
         heroku_email: 'yuan-po.teng@mail.mcgill.ca'
-        branch: 'main'  # required because I broke the default branch
