@@ -1,21 +1,13 @@
 package ca.mcgill.ecse321.townlibrary.repository;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
-
-import org.checkerframework.checker.units.qual.A;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-import org.yaml.snakeyaml.emitter.ScalarAnalysis;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
