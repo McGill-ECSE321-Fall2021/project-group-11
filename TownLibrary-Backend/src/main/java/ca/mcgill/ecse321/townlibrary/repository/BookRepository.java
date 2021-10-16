@@ -7,9 +7,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface EventRepository extends CrudRepository<Event, Integer> {
+public interface BookRepository extends CrudRepository<Book, Integer> {
 	
-	Event findEventById(Integer id);
-	Event findByTransaction(Transaction transaction);
-    List<Event> findByNameContaining(String name);
+	Book findBookById(Integer id);
+	List<Book> findByName(String name);
+    List<Book> findByNameContaining(String name);
+    
+    List<Book> findByStatus(Status status);
+
 }

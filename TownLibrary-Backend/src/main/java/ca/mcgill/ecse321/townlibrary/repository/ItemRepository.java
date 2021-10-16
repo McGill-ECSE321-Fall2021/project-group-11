@@ -4,11 +4,10 @@ import ca.mcgill.ecse321.townlibrary.model.*;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface LibrarianRepository extends CrudRepository<Librarian, Integer> {
+public interface ItemRepository extends CrudRepository<Item, Integer> {
 	
-	Librarian findLibrarianById(Integer UserId);
-	List<Librarian> findByNameContaining(String name);
+	Item findItemById(Integer id);
+	Item findItemByTransaction(Transaction transaction);
+	
 }

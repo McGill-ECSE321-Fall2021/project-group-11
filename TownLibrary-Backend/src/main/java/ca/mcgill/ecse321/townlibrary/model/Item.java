@@ -2,17 +2,13 @@ package ca.mcgill.ecse321.townlibrary.model;
 
 import javax.persistence.*;
 
-import ca.mcgill.ecse321.townlibrary.TownLibraryApplication;
-
-import java.util.*;
-
 @Entity
 public abstract class Item {
-
-    private int id;
+	
+	private int id;
     private Status status;
     private String name;
-
+    
     private Transaction transaction;
 
     private Library library;

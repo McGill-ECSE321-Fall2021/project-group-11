@@ -11,10 +11,8 @@ public class Event {
 
     private String name;
 
-    @ManyToOne
     private Library library;
 
-    @OneToOne
     private Transaction transaction;
 
     public int getId() {
@@ -25,11 +23,12 @@ public class Event {
         return name;
     }
 
+    @ManyToOne
     public Library getLibrary() {
         return library;
     }
 
-
+    @OneToOne
     public Transaction getTransaction() {
         return transaction;
     }
