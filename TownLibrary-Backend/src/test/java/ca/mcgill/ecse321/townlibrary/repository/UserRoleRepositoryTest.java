@@ -5,11 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
-import javax.persistence.*;
 import java.util.*;
 
 @SpringBootTest
@@ -25,12 +23,13 @@ public class UserRoleRepositoryTest {
 
     @Test
     public void testNameQueries() {
+        // Setup some dummy users (of various subclasses)
         final OfflineMember joe = new OfflineMember();
         joe.setId(150);
         joe.setName("Joe Schmoe");
         this.userRoleRepository.save(joe);
 
-        final OfflineMember john = new OfflineMember();
+        final Librarian john = new Librarian();
         john.setId(151);
         john.setName("John Doe");
         this.userRoleRepository.save(john);
@@ -40,6 +39,7 @@ public class UserRoleRepositoryTest {
         bob.setName("Bob");
         this.userRoleRepository.save(bob);
 
+        // Query these dummy users
         List<UserRole> ret;
         ret = this.userRoleRepository.findByNameContaining("Bob");
         Assertions.assertEquals(1, ret.size());

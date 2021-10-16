@@ -5,11 +5,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
-import javax.persistence.*;
 import java.util.*;
 import java.sql.Timestamp;
 
@@ -17,36 +15,25 @@ import java.sql.Timestamp;
 public class TransactionRepositoryTest {
 
     @Autowired
-    private EventRepository eventRepository;
-
-    @Autowired
     private TransactionRepository transactionRepository;
 
     @Autowired
     private UserRoleRepository userRoleRepository;
 
-    @Autowired
-    private ArchiveRepository archiveRepository;
-
     @AfterEach
     public void cleanupDB() {
-        this.archiveRepository.deleteAll();
-        this.eventRepository.deleteAll();
         this.transactionRepository.deleteAll();
         this.userRoleRepository.deleteAll();
     }
 
     @Test
     public void testPersistTransaction() {
+        // Setup some fields that will be saved along with our Transaction
         final Timestamp start = new Timestamp(0);
         final Timestamp end = new Timestamp(10000);
         final OfflineMember user = new OfflineMember();
-        final Event event = new Event();
-        final Archive archive = new Archive();
 
         this.userRoleRepository.save(user);
-        this.archiveRepository.save(archive);
-        this.eventRepository.save(event);
 
         // Test writes
         final Transaction stTransaction = new Transaction();
@@ -54,18 +41,14 @@ public class TransactionRepositoryTest {
         stTransaction.setStartDate(start);
         stTransaction.setEndDate(end);
         stTransaction.setUserRole(user);
-        stTransaction.setEvent(event);
-        stTransaction.setItem(archive);
         this.transactionRepository.save(stTransaction);
 
-        // this get must succeed!
+        // must succeed because we just saved a transaction with this id
         final Transaction ldTransaction = this.transactionRepository.findById(10).get();
         Assertions.assertEquals(10, ldTransaction.getId());
         Assertions.assertEquals(start, ldTransaction.getStartDate());
         Assertions.assertEquals(end, ldTransaction.getEndDate());
         Assertions.assertEquals(user.getId(), ldTransaction.getUserRole().getId());
-        Assertions.assertEquals(event.getId(), ldTransaction.getEvent().getId());
-        Assertions.assertEquals(archive.getId(), ldTransaction.getItem().getId());
 
         // Test deletes
         this.transactionRepository.delete(ldTransaction);
@@ -74,6 +57,7 @@ public class TransactionRepositoryTest {
 
     @Test
     public void testUserRoleAndEndDateQueries() {
+        // Setup some dummy users
         final OfflineMember joe = new OfflineMember();
         joe.setId(150);
         joe.setName("Joe Schmoe");
@@ -84,6 +68,7 @@ public class TransactionRepositoryTest {
         john.setName("John Doe");
         this.userRoleRepository.save(john);
 
+        // Setup some dummy transactions (associated to the dummy users)
         Transaction transaction;
         transaction = new Transaction();
         transaction.setId(200);
@@ -103,6 +88,7 @@ public class TransactionRepositoryTest {
         transaction.setEndDate(new Timestamp(50));
         this.transactionRepository.save(transaction);
 
+        // Query those dummy transactions
         List<Transaction> ret;
         ret = this.transactionRepository.findByUserRole(joe);
         Assertions.assertEquals(2, ret.size());
