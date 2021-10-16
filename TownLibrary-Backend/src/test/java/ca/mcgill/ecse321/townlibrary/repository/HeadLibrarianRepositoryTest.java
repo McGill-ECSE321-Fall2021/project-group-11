@@ -18,7 +18,7 @@ import jdk.jfr.Timestamp;
 public class HeadLibrarianRepositoryTest {
 
     @Autowired
-    private LibrarianRepository libraryRepository;
+    private LibraryRepository libraryRepository;
 
     @Autowired
     private HeadLibrarianRepository headLibrarianRepository;
@@ -56,8 +56,8 @@ public class HeadLibrarianRepositoryTest {
         assertEquals("Dees",hl.getName());
 
         this.headLibrarianRepository.delete(hl);
-        Assertions.assertTrue(this.headLibrarianRepository.
-                                findByAddress("4201 Wokege").isEmpty());
+        Assertions.assertNull(this.headLibrarianRepository.
+                                findByAddress("4201 Wokege"));
     }
 
 
