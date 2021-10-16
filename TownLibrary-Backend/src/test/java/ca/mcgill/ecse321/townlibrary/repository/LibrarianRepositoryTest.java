@@ -42,7 +42,7 @@ public class LibrarianRepositoryTest {
         librarianRepository.save(kim);
         
         List<Librarian> l;
-        l = librarianRepository.findByUserID(5);
+        l = librarianRepository.findLibrarianById(5);
         Assertions.assertEquals(5, jeb.getId());
         Assertions.assertEquals(1, l.size());
 
