@@ -29,7 +29,7 @@ public class UserRoleRepositoryTest {
         joe.setName("Joe Schmoe");
         this.userRoleRepository.save(joe);
 
-        final OfflineMember john = new OfflineMember();
+        final Librarian john = new Librarian();
         john.setId(151);
         john.setName("John Doe");
         this.userRoleRepository.save(john);
