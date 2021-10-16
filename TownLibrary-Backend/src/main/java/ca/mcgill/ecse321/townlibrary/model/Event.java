@@ -13,4 +13,28 @@ public class Event {
 
     @ManyToOne
     private Library library;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Library getLibrary() {
+        return library;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLibrary(Library library) {
+        this.library = library;
+    }
 }
