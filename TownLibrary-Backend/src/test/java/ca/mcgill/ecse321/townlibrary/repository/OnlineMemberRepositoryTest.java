@@ -79,8 +79,6 @@ public class OnlineMemberRepositoryTest {
 
         List<OnlineMember> result = this.onlineMemberRepository.findByAddress("111 somewhere");
         Assertions.assertEquals(2, result.size());
-        result = this.onlineMemberRepository.findByUserRole(new OnlineMember());
-        Assertions.assertEquals(4, result.size());
         OnlineMember individualMember = this.onlineMemberRepository.findByEmail("me@mail.ca");
         Assertions.assertEquals("A Name", individualMember.getName());
         individualMember = this.onlineMemberRepository.findById(2).get();

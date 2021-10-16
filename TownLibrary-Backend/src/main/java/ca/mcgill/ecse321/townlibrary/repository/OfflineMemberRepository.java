@@ -7,10 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OnlineMemberRepository extends CrudRepository<OnlineMember, Integer>{
-
-    List<OnlineMember> findByAddress(String address);
-    OnlineMember findByEmail(String email);
-    OnlineMember findByUsername(String username);
+public interface OfflineMemberRepository extends CrudRepository<OfflineMember, Integer> {
     
+    List<OfflineMember> findByAddress(String name);
 }
