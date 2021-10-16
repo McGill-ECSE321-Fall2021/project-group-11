@@ -37,7 +37,6 @@ public class TransactionRepositoryTest {
     }
 
     @Test
-    @Transactional // XXX: same as entity manager
     public void testPersistTransaction() {
         final Timestamp start = new Timestamp(0);
         final Timestamp end = new Timestamp(10000);
