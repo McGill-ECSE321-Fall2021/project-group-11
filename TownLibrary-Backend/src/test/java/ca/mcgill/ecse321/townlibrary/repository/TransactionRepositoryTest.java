@@ -32,7 +32,7 @@ public class TransactionRepositoryTest {
         final Timestamp start = new Timestamp(0);
         final Timestamp end = new Timestamp(10000);
         final OfflineMember user = new OfflineMember();
-
+        user.setId(1000);
         this.userRoleRepository.save(user);
 
         // Test writes
