@@ -30,6 +30,7 @@ public class ItemRepositoryTest {
 		String name1 = "Gazette";
 		Status status1 = Status.AVAILABLE;
 		Transaction transaction1 = new Transaction();
+		transaction1.setId(11);
 		transactionRepository.save(transaction1);
 		Newspaper gazette = new Newspaper();
 		gazette.setId(id1);
@@ -42,6 +43,7 @@ public class ItemRepositoryTest {
 		String name2 = "Dune";
 		Status status2 = Status.RESERVED;
 		Transaction transaction2 = new Transaction();
+		transaction1.setId(22);
 		transactionRepository.save(transaction2);
 		Book dune = new Book();
 		dune.setId(id2);
@@ -54,6 +56,7 @@ public class ItemRepositoryTest {
 		String name3 = "Flowers for Algernon";
 		Status status3 = Status.RESERVED;
 		Transaction transaction3 = new Transaction();
+		transaction1.setId(33);
 		transactionRepository.save(transaction3);
 		Book algernon = new Book();
 		algernon.setId(id3);
@@ -73,7 +76,7 @@ public class ItemRepositoryTest {
 		
 		item = itemRepository.findItemByTransaction(transaction3);
 		assertNotNull(item);
-		assertEquals(transaction3, item.getTransaction());
+		assertEquals(33, item.getTransaction().getId());
 		
 	}
 
