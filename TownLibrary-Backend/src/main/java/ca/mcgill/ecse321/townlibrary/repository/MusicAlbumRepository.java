@@ -12,8 +12,5 @@ public interface MusicAlbumRepository extends CrudRepository<MusicAlbum, Integer
     List<MusicAlbum> findByStatus(Status status);
     List<MusicAlbum> findByName(String name);
     List<MusicAlbum> findByNameContaining(String name);
-
-    // not sure
-    MusicAlbum findById(int Id);
     
 }

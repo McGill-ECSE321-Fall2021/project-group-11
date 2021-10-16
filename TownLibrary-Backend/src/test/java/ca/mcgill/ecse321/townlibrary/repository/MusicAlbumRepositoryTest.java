@@ -29,7 +29,7 @@ public class MusicAlbumRepositoryTest {
 
         this.musicAlbumRepository.save(musicAlbum);
 
-        final MusicAlbum album = this.musicAlbumRepository.findById(1);
+        final MusicAlbum album = this.musicAlbumRepository.findById(1).get();
         Assertions.assertEquals("Donda", album.getName());
         Assertions.assertEquals(Status.AVAILABLE, album.getStatus());
         Assertions.assertEquals(1, album.getId());
@@ -41,26 +41,31 @@ public class MusicAlbumRepositoryTest {
         musicAlbum1.setId(1);
         musicAlbum1.setName("Donda");
         musicAlbum1.setStatus(Status.AVAILABLE);
+        this.musicAlbumRepository.save(musicAlbum1);
 
         MusicAlbum musicAlbum2 = new MusicAlbum();
         musicAlbum2.setId(2);
         musicAlbum2.setName("CLB");
         musicAlbum2.setStatus(Status.CHECKED_OUT);
+        this.musicAlbumRepository.save(musicAlbum2);
 
         MusicAlbum musicAlbum3 = new MusicAlbum();
         musicAlbum3.setId(3);
         musicAlbum3.setName("WLR");
         musicAlbum3.setStatus(Status.RESERVED);
+        this.musicAlbumRepository.save(musicAlbum3);
 
         MusicAlbum musicAlbum4 = new MusicAlbum();
         musicAlbum4.setId(4);
         musicAlbum4.setName("GINGER");
         musicAlbum4.setStatus(Status.AVAILABLE);
+        this.musicAlbumRepository.save(musicAlbum4);
 
         MusicAlbum musicAlbum5 = new MusicAlbum();
-        musicAlbum5.setId(1);
+        musicAlbum5.setId(5);
         musicAlbum5.setName("ASTROWORLD");
         musicAlbum5.setStatus(Status.AVAILABLE);
+        this.musicAlbumRepository.save(musicAlbum5);
 
         List<MusicAlbum> result = this.musicAlbumRepository.findByStatus(Status.AVAILABLE);
         Assertions.assertEquals(3, result.size());

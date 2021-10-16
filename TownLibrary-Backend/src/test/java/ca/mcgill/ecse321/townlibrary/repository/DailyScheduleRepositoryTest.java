@@ -18,9 +18,13 @@ public class DailyScheduleRepositoryTest {
     @Autowired
     private DailyScheduleRepository dailyScheduleRepository;
 
+    @Autowired
+    private LibrarianRepository librarianRepository;
+
     @AfterEach
     public void cleanupDB() {
         this.dailyScheduleRepository.deleteAll();
+        this.librarianRepository.deleteAll();
     }
     
     @Test
@@ -29,6 +33,8 @@ public class DailyScheduleRepositoryTest {
         final Librarian librarian = new Librarian();
         librarian.setId(1);
         librarian.setName("Foo Bar");
+
+        this.librarianRepository.save(librarian);
     
         final DailySchedule mondaySchedule = new DailySchedule();
         final Time startTime = new Time(0);
@@ -47,8 +53,6 @@ public class DailyScheduleRepositoryTest {
         Assertions.assertEquals(startTime, schedule.getStartTime());
         Assertions.assertEquals(endTime, schedule.getEndTime());
         Assertions.assertEquals(DayOfWeek.MONDAY, schedule.getDayOfWeek());
-
-
         
     }
 
@@ -57,6 +61,8 @@ public class DailyScheduleRepositoryTest {
         final Librarian librarian = new Librarian();
         librarian.setId(1);
         librarian.setName("Foo Bar");
+
+        this.librarianRepository.save(librarian);
     
         final DailySchedule mondaySchedule = new DailySchedule();
         final Time startTime1 = new Time(0);
