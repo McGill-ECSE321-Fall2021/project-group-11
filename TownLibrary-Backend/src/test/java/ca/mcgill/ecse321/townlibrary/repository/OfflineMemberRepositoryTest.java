@@ -34,6 +34,8 @@ public class OfflineMemberRepositoryTest {
 
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
+        int libId = 1000;
+        lib.setId(libId);
         lib.setAddress(address);
         this.libraryRepository.save(lib);
 
