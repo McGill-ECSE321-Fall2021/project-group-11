@@ -1,6 +1,9 @@
 package ca.mcgill.ecse321.townlibrary.model;
 
 import javax.persistence.*;
+
+import ca.mcgill.ecse321.townlibrary.TownLibraryApplication;
+
 import java.util.*;
 
 @Entity
