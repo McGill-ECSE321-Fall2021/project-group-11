@@ -2,9 +2,9 @@ name: Test Project Backend
 
 on:
   push:
-    branches: main
+    branches: feature/project-template
   pull_request:
-    branches: main
+    branches: feature/project-template
 
 defaults:
   run:
