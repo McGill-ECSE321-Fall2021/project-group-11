@@ -24,6 +24,7 @@ public class NewspaperBookRepositoryTest {
 	public void clearDatabase() {
 		newspaperRepository.deleteAll();
 		bookRepository.deleteAll();
+		transactionRepository.deleteAll();
 	}
 	
 	@Test

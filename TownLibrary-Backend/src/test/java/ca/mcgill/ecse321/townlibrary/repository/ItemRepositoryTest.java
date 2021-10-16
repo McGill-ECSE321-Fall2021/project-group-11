@@ -21,6 +21,7 @@ public class ItemRepositoryTest {
 	@AfterEach
 	public void clearDatabase() {
 		itemRepository.deleteAll();
+		transactionRepository.deleteAll();
 	}
 	
 	@Test
