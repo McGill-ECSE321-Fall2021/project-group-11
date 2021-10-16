@@ -10,4 +10,5 @@ import java.util.List;
 public interface HeadLibrarian extends CrudRepository<Archive, Integer> {
 
     HeadLibrarian findByLibrary(Library lib);
+    HeadLibrarian findByAddress(String address);
 }
