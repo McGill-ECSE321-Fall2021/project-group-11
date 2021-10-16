@@ -10,4 +10,23 @@ public class Library {
     private int id;
 
     private String address;
+
+    public String getString(){
+        return this.address;
+    }
+    
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
+    public int getId(){
+        return this.id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 }
+
+
+
+
