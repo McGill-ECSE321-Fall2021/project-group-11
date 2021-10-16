@@ -9,7 +9,7 @@ import java.util.List;
 @Repository
 public interface EventRepository extends CrudRepository<Event, Integer> {
 	
-	Event findEventById(Integer id);
-	Event findByTransaction(Transaction transaction);
+	List<Event> findEventById(Integer id);
+	List<Event> findByTransaction(Transaction transaction);
     List<Event> findByName(String name);
 }
