@@ -16,25 +16,6 @@ import java.util.*;
 @SpringBootTest
 public class ArchiveRepositoryTest {
 
-    // XXX: remove this when accessors are implemented for Item class
-    private static java.lang.reflect.Field field_id;
-    private static java.lang.reflect.Field field_status;
-    private static java.lang.reflect.Field field_name;
-    private static java.lang.reflect.Field field_library;
-
-    @BeforeAll
-    public static void temporaryReflectionMagic() throws Exception {
-        field_id = Item.class.getDeclaredField("id");
-        field_status = Item.class.getDeclaredField("status");
-        field_name = Item.class.getDeclaredField("name");
-        field_library = Item.class.getDeclaredField("library");
-
-        field_id.setAccessible(true);
-        field_status.setAccessible(true);
-        field_name.setAccessible(true);
-        field_library.setAccessible(true);
-    }
-
     // XXX: remove this when repos for other classes are created!
     @Autowired
     private EntityManager entityManager;
@@ -56,18 +37,18 @@ public class ArchiveRepositoryTest {
 
         // Test writes
         final Archive stArchive = new Archive();
-        field_id.setInt(stArchive, 10);
-        field_status.set(stArchive, Status.RESERVED);
-        field_name.set(stArchive, "FooBar");
-        field_library.set(stArchive, lib);
+        stArchive.setId(10);
+        stArchive.setStatus(Status.RESERVED);
+        stArchive.setName("FooBar");
+        stArchive.setLibrary(lib);
         this.archiveRepository.save(stArchive);
 
         // this get must succeed!
         final Archive ldArchive = this.archiveRepository.findById(10).get();
-        Assertions.assertEquals(10, field_id.getInt(ldArchive));
-        Assertions.assertEquals(Status.RESERVED, field_status.get(stArchive));
-        Assertions.assertEquals("FooBar", field_name.get(stArchive));
-        Assertions.assertEquals(lib, field_library.get(stArchive));
+        Assertions.assertEquals(10, ldArchive.getId());
+        Assertions.assertEquals(Status.RESERVED, ldArchive.getStatus());
+        Assertions.assertEquals("FooBar", ldArchive.getName());
+        Assertions.assertEquals(lib, ldArchive.getLibrary());
 
         // Test deletes
         this.archiveRepository.delete(ldArchive);
@@ -81,46 +62,46 @@ public class ArchiveRepositoryTest {
     public void testNameAndStatusQueries() throws Exception {
         Archive archive;
         archive = new Archive();
-        field_id.setInt(archive, 100);
-        field_name.set(archive, "Foo");
-        field_status.set(archive, Status.AVAILABLE);
+        archive.setId(100);
+        archive.setName("Foo");
+        archive.setStatus(Status.AVAILABLE);
         this.archiveRepository.save(archive);
 
         archive = new Archive();
-        field_id.setInt(archive, 102);
-        field_name.set(archive, "Bar");
-        field_status.set(archive, Status.AVAILABLE);
+        archive.setId(102);
+        archive.setName("Bar");
+        archive.setStatus(Status.AVAILABLE);
         this.archiveRepository.save(archive);
 
         archive = new Archive();
-        field_id.setInt(archive, 103);
-        field_name.set(archive, "Baz");
-        field_status.set(archive, Status.RESERVED);
+        archive.setId(103);
+        archive.setName("Baz");
+        archive.setStatus(Status.RESERVED);
         this.archiveRepository.save(archive);
 
         List<Archive> ret;
         ret = this.archiveRepository.findByName("Foo");
         Assertions.assertEquals(1, ret.size());
-        Assertions.assertEquals(100, field_id.getInt(ret.get(0)));
+        Assertions.assertEquals(100, ret.get(0).getId());
 
         ret = this.archiveRepository.findByName("Bar");
         Assertions.assertEquals(1, ret.size());
-        Assertions.assertEquals(102, field_id.getInt(ret.get(0)));
+        Assertions.assertEquals(102, ret.get(0).getId());
 
         ret = this.archiveRepository.findByName("Baz");
         Assertions.assertEquals(1, ret.size());
-        Assertions.assertEquals(103, field_id.getInt(ret.get(0)));
+        Assertions.assertEquals(103, ret.get(0).getId());
 
         ret = this.archiveRepository.findByNameContaining("Ba");
         Assertions.assertEquals(2, ret.size());
         Assertions.assertEquals(
                 new HashSet<>(Arrays.asList(102 /* Bar */, 103 /* Baz */)),
-                new HashSet<>(Arrays.asList(field_id.getInt(ret.get(0)), field_id.getInt(ret.get(1)))));
+                new HashSet<>(Arrays.asList(ret.get(0).getId(), ret.get(1).getId())));
 
         ret = this.archiveRepository.findByStatus(Status.AVAILABLE);
         Assertions.assertEquals(2, ret.size());
         Assertions.assertEquals(
                 new HashSet<>(Arrays.asList(100 /* Foo */, 102 /* Bar */)),
-                new HashSet<>(Arrays.asList(field_id.getInt(ret.get(0)), field_id.getInt(ret.get(1)))));
+                new HashSet<>(Arrays.asList(ret.get(0).getId(), ret.get(1).getId())));
     }
 }

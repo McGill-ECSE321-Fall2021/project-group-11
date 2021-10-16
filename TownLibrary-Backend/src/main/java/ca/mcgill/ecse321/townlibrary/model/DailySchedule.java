@@ -6,7 +6,6 @@ import java.sql.Time;
 @Entity
 public class DailySchedule {
 
-    @Id
     private int id;
 
     private DayOfWeek dayOfWeek;
@@ -14,13 +13,12 @@ public class DailySchedule {
     private Time startTime;
 
     private Time endTime;
-
-    @ManyToOne
+  
     private Librarian librarian;
 
-    @ManyToOne
     private Library library;
 
+    @Id
     public int getId() {
         return id;
     }
@@ -32,11 +30,12 @@ public class DailySchedule {
     public Time getEndTime() {
         return endTime;
     }
-    
+    @ManyToOne
     public Librarian getLibrarian() {
         return librarian;
     }
-
+    
+    @ManyToOne
     public Library getLibrary() {
         return library;
     }
