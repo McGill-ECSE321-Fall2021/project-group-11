@@ -32,40 +32,18 @@ public class LibraryRepositoryTest {
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
         lib.setAddress(address);
-        libraryRepository.save(lib);
+        this.libraryRepository.save(lib);
 
         lib = null;
 
         lib = libraryRepository.findByAddress(address);
-        assertNotNull(lib);
-        assertEquals(address, lib.getAddress());
+        Assertions.assertNotNull(lib);
+        Assertions.assertEquals(address, lib.getAddress());
+
+        this.libraryRepository.delete(lib);
+        Assertions.assertNull(this.libraryRepository(address));
+
     }
-    public void testRefLibrary(){
-        HeadLibrarian hl = new HeadLibrarian();
-        String homeAddress = "4201 Wokege";
-        hl.setAddress(homeAddress);
-        hlId = 1;
-        hl.setId(hlId);
-        hl.setName("Dees");
-        hl.setLibrary(lib);
-        UserRoleRepository.save(hl);
-
-        String address = "845 Rue Sherbrooke";
-        Library lib = new Library();
-        libId = 2;
-        lib.setId(libId);
-        lib.setAddress(address);
-        lib.setHeadLibrarian(hl);
-        libraryRepository.save(lib);
-
-        lib = null;
-
-        lib = libraryRepository.findByHeadLibrarian(hl);
-
-        assertNotNull(lib);
-        assertEquals(libId, lib.getId());
-        assertEquals(hl.getAddress(), lib.getHeadLibrarian().getAddress());
-        assertEquals(hl.getName(), lib.getHeadLibrarian().getName());
-    }
+    
 
 }

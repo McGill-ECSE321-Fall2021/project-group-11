@@ -10,9 +10,7 @@ public class Library {
     private int id;
 
     private String address;
-
-    private HeadLibrarian headLibrarian;
-
+    
     public String getAddress(){
         return this.address;
     }
