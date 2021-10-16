@@ -30,6 +30,8 @@ public class LibraryRepositoryTest {
     public void testPersistLibrary(){
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
+        int libId = 100;
+        lib.setId(100);
         lib.setAddress(address);
         this.libraryRepository.save(lib);
 
@@ -40,7 +42,7 @@ public class LibraryRepositoryTest {
         Assertions.assertEquals(address, lib.getAddress());
 
         this.libraryRepository.delete(lib);
-        Assertions.assertNull(this.libraryRepository.findByAddress(address));
+        Assertions.assertNull(this.libraryRepository.findById(libId));
 
     }
     
