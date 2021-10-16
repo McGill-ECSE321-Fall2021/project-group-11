@@ -21,13 +21,12 @@ public class OfflineMemberRepositoryTest {
     private OfflineMemberRepository offlineMemberRepository;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private LibraryRepository libraryRepository;
 
     @AfterEach
     public void cleanupDB(){
-        
-        transactionRepository.delete();
-        offlineMemberRepository.delete();        
+        offlineMemberRepository.delete();
+        libraryRepository.delete(); 
     }
     @Test
     public void testPersistOfflineMember(){

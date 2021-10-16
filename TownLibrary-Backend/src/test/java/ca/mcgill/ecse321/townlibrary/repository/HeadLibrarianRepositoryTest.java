@@ -25,8 +25,8 @@ public class HeadLibrarianRepositoryTest {
     @AfterEach
     public void cleanupDB(){
         
-        transactionRepository.delete();
-        offlineMemberRepository.delete();        
+        this.headLibrarianRepository.delete();
+        this.libraryRepository.delete();        
     }
     @Test
     public void testPersistHeadLibrarian(){
