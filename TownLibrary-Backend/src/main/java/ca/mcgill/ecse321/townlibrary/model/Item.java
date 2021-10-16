@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 public abstract class Item {
 	
-	private Integer id;
+	private int id;
     private Status status;
     private String name;
     
