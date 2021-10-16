@@ -16,9 +16,8 @@ import java.sql.Timestamp;
 @SpringBootTest
 public class TransactionRepositoryTest {
 
-    // XXX: remove this when repos for other classes are created!
     @Autowired
-    private EntityManager entityManager;
+    private EventRepository eventRepository;
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -32,6 +31,7 @@ public class TransactionRepositoryTest {
     @AfterEach
     public void cleanupDB() {
         this.archiveRepository.deleteAll();
+        this.eventRepository.deleteAll();
         this.transactionRepository.deleteAll();
         this.userRoleRepository.deleteAll();
     }
@@ -47,8 +47,7 @@ public class TransactionRepositoryTest {
 
         this.userRoleRepository.save(user);
         this.archiveRepository.save(archive);
-        this.entityManager.persist(event);
-        this.entityManager.flush();
+        this.eventRepository.save(event);
 
         // Test writes
         final Transaction stTransaction = new Transaction();
@@ -72,9 +71,6 @@ public class TransactionRepositoryTest {
         // Test deletes
         this.transactionRepository.delete(ldTransaction);
         Assertions.assertTrue(this.transactionRepository.findById(10).isEmpty());
-
-        this.entityManager.remove(event);
-        this.entityManager.flush();
     }
 
     @Test
