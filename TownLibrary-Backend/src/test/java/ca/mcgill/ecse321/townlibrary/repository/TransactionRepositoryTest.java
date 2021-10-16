@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
-import javax.persistence.*;
 import java.util.*;
 import java.sql.Timestamp;
 
@@ -29,6 +28,7 @@ public class TransactionRepositoryTest {
 
     @Test
     public void testPersistTransaction() {
+        // Setup some fields that will be saved along with our Transaction
         final Timestamp start = new Timestamp(0);
         final Timestamp end = new Timestamp(10000);
         final OfflineMember user = new OfflineMember();
@@ -43,7 +43,7 @@ public class TransactionRepositoryTest {
         stTransaction.setUserRole(user);
         this.transactionRepository.save(stTransaction);
 
-        // this get must succeed!
+        // must succeed because we just saved a transaction with this id
         final Transaction ldTransaction = this.transactionRepository.findById(10).get();
         Assertions.assertEquals(10, ldTransaction.getId());
         Assertions.assertEquals(start, ldTransaction.getStartDate());
@@ -57,6 +57,7 @@ public class TransactionRepositoryTest {
 
     @Test
     public void testUserRoleAndEndDateQueries() {
+        // Setup some dummy users
         final OfflineMember joe = new OfflineMember();
         joe.setId(150);
         joe.setName("Joe Schmoe");
@@ -67,6 +68,7 @@ public class TransactionRepositoryTest {
         john.setName("John Doe");
         this.userRoleRepository.save(john);
 
+        // Setup some dummy transactions (associated to the dummy users)
         Transaction transaction;
         transaction = new Transaction();
         transaction.setId(200);
@@ -86,6 +88,7 @@ public class TransactionRepositoryTest {
         transaction.setEndDate(new Timestamp(50));
         this.transactionRepository.save(transaction);
 
+        // Query those dummy transactions
         List<Transaction> ret;
         ret = this.transactionRepository.findByUserRole(joe);
         Assertions.assertEquals(2, ret.size());
