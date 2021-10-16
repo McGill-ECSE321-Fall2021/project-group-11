@@ -6,7 +6,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
@@ -16,9 +15,8 @@ import java.util.*;
 @SpringBootTest
 public class ArchiveRepositoryTest {
 
-    // XXX: remove this when repos for other classes are created!
     @Autowired
-    private EntityManager entityManager;
+    private LibraryRepository libraryRepository;
 
     @Autowired
     private ArchiveRepository archiveRepository;
@@ -26,14 +24,14 @@ public class ArchiveRepositoryTest {
     @AfterEach
     public void cleanupDB() {
         this.archiveRepository.deleteAll();
+        this.libraryRepository.deleteAll();
     }
 
     @Test
-    @Transactional // XXX: same as entity manager
     public void testPersistArchive() throws Exception {
         final Library lib = new Library();
-        this.entityManager.persist(lib);
-        this.entityManager.flush();
+        lib.setId(156);
+        this.libraryRepository.save(lib);
 
         // Test writes
         final Archive stArchive = new Archive();
@@ -48,14 +46,11 @@ public class ArchiveRepositoryTest {
         Assertions.assertEquals(10, ldArchive.getId());
         Assertions.assertEquals(Status.RESERVED, ldArchive.getStatus());
         Assertions.assertEquals("FooBar", ldArchive.getName());
-        Assertions.assertEquals(lib, ldArchive.getLibrary());
+        Assertions.assertEquals(lib.getId(), ldArchive.getLibrary().getId());
 
         // Test deletes
         this.archiveRepository.delete(ldArchive);
         Assertions.assertTrue(this.archiveRepository.findById(10).isEmpty());
-
-        this.entityManager.remove(lib);
-        this.entityManager.flush();
     }
 
     @Test
