@@ -9,13 +9,8 @@ import java.util.List;
 @Repository
 public interface OnlineMemberRepository extends CrudRepository<OnlineMember, Integer>{
 
-    List<OnlineMember> findByUserRole(UserRole userRole);
     List<OnlineMember> findByAddress(String address);
-   
-    // not sure again :')
     OnlineMember findByEmail(String email);
     OnlineMember findByUsername(String username);
-    OnlineMember findByUserId(int userId);
-
     
 }
