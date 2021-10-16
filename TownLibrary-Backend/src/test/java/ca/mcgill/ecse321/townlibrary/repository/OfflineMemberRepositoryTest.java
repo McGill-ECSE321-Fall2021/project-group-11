@@ -51,6 +51,10 @@ public class OfflineMemberRepositoryTest {
         assertNotNull(om);
         assertEquals(omId, om.getId());
         assertEquals("Wu", om.getName());
+
+        this.offlineMemberRepository.delete(om);
+        Assertions.assertTrue(this.offlineMemberRepository.
+                                findByAddress("845 Jacoma").isEmpty());
     }
     
 }
