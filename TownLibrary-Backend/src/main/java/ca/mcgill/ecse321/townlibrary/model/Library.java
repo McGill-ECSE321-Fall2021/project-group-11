@@ -6,11 +6,10 @@ import java.util.*;
 @Entity
 public class Library {
 
-    @Id
     private int id;
 
     private String address;
-    
+
     public String getAddress(){
         return this.address;
     }
@@ -18,7 +17,7 @@ public class Library {
     public void setAddress(String address) {
         this.address = address;
     }
-    
+    @Id
     public int getId(){
         return this.id;
     }

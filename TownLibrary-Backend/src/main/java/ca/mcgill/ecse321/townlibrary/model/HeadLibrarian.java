@@ -6,7 +6,15 @@ import java.util.*;
 @Entity
 public class HeadLibrarian extends Librarian {
 
-    @OneToOne
     private Library library;
-    
+
+    @OneToOne
+    public Library getLibrary(){
+        return this.library;
+    }
+
+    public void setLibrary(Library lib){
+        this.library = lib;
+    }
+
 }
