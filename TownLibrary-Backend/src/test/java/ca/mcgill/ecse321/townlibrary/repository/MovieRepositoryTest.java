@@ -26,10 +26,12 @@ public class MovieRepositoryTest {
 
     @Test
     public void testPersistMovie() {
+        // Setup library for movie
         final Library lib = new Library();
         lib.setId(49);
         libraryRepository.save(lib);
 
+        // Test writes
         final Movie m1 = new Movie();
         m1.setId(70);
         m1.setName("test");
@@ -37,17 +39,20 @@ public class MovieRepositoryTest {
         m1.setLibrary(lib);
         movieRepository.save(m1);
 
+        // Test if writes were successful
         Assertions.assertEquals(70, m1.getId());
         Assertions.assertEquals("test", m1.getName());
         Assertions.assertEquals(Status.RESERVED, m1.getStatus());
         Assertions.assertEquals(lib.getId(), m1.getLibrary().getId());
 
+        // Test deletes
         movieRepository.delete(m1);
         Assertions.assertTrue(movieRepository.findById(70).isEmpty());
     }
 
     @Test
     public void testNameAndStatusQueries() {
+        // Create movies to test queries
         Movie movie;
         movie = new Movie();
         movie.setId(71);
@@ -67,6 +72,7 @@ public class MovieRepositoryTest {
         movie.setStatus(Status.AVAILABLE);
         movieRepository.save(movie);
 
+        // Test queries
         List<Movie> l;
         l = movieRepository.findByName("t1");
         Assertions.assertEquals(1, l.size());
@@ -74,9 +80,14 @@ public class MovieRepositoryTest {
 
         l = movieRepository.findByNameContaining("t");
         Assertions.assertEquals(2, l.size());
+        Assertions.assertEquals(
+                new HashSet<>(Arrays.asList(71, 72)),
+                new HashSet<>(Arrays.asList(l.get(0).getId(), l.get(1).getId())));
 
         l = movieRepository.findByStatus(Status.AVAILABLE);
         Assertions.assertEquals(2, l.size());
+        Assertions.assertEquals(
+                new HashSet<>(Arrays.asList(72, 73)),
+                new HashSet<>(Arrays.asList(l.get(0).getId(), l.get(1).getId())));
     }
 }
-

@@ -23,6 +23,7 @@ public class LibrarianRepositoryTest {
 
     @Test
     public void testNameQueries() {
+        // Test writes
         final Librarian jeb = new Librarian();
         jeb.setId(50);
         jeb.setName("Jeb Deb");
@@ -41,10 +42,14 @@ public class LibrarianRepositoryTest {
         List<Librarian> l;
         Librarian lbr;
 
+        // Test queries
         lbr = librarianRepository.findLibrarianById(50);
         Assertions.assertEquals(50, lbr.getId());
 
         l = librarianRepository.findByNameContaining("im");
         Assertions.assertEquals(2, l.size());
+        Assertions.assertEquals(
+                new HashSet<>(Arrays.asList(51, 52)),
+                new HashSet<>(Arrays.asList(l.get(0).getId(), l.get(1).getId())));
     }
 }

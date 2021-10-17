@@ -27,27 +27,32 @@ public class EventRepositoryTest {
 
     @Test
     public void testPersistEvent() {
+        // Setup library for event
         final Library lib = new Library();
         lib.setId(592);
         libraryRepository.save(lib);
 
+        // Test writes
         final Event event = new Event();
         event.setId(591);
         event.setName("cons");
         event.setLibrary(lib);
         eventRepository.save(event);
 
+        // Testing if writes were successful
         Assertions.assertEquals(591, event.getId());
         Assertions.assertEquals("cons", event.getName());
         Assertions.assertEquals(lib, event.getLibrary());
         Assertions.assertEquals(lib.getId(), event.getLibrary().getId());
 
+        // Test deletes
         eventRepository.delete(event);
         Assertions.assertTrue(eventRepository.findById(591).isEmpty());
     }
 
     @Test
     public void testNameQueries() {
+        // Create events to test queries
         Event event;
         event = new Event();
         event.setId(60);
@@ -64,15 +69,18 @@ public class EventRepositoryTest {
         event.setName("cat");
         eventRepository.save(event);
 
+        // Test queries
         List<Event> l;
         Event e;
-
+    
         e = eventRepository.findEventById(60);
         Assertions.assertEquals(60, e.getId());
 
-        l = eventRepository.findByNameContaining("con");
-        Assertions.assertEquals(1, l.size());
-        Assertions.assertEquals("con", l.get(0).getName());
+        l = eventRepository.findByNameContaining("on");
+        Assertions.assertEquals(2, l.size());
+        Assertions.assertEquals(
+                new HashSet<>(Arrays.asList(60, 61)),
+                new HashSet<>(Arrays.asList(l.get(0).getId(), l.get(1).getId())));
 
     }
 }
