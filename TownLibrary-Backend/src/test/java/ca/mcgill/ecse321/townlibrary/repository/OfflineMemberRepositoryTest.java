@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
-import ca.mcgill.ecse321.townlibrary.repository.LibraryRepository;
 
 @SpringBootTest
 public class OfflineMemberRepositoryTest {
