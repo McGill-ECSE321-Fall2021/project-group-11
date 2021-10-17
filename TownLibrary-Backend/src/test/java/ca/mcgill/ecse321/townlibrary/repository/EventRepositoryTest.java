@@ -28,20 +28,22 @@ public class EventRepositoryTest {
     @Test
     public void testPersistEvent() {
         final Library lib = new Library();
-        final Event event = new Event();
+        lib.setId(592);
         libraryRepository.save(lib);
 
-        event.setId(59);
-        event.setName("con");
+        final Event event = new Event();
+        event.setId(591);
+        event.setName("cons");
         event.setLibrary(lib);
         eventRepository.save(event);
 
-        Assertions.assertEquals(59, event.getId());
-        Assertions.assertEquals("con", event.getName());
+        Assertions.assertEquals(591, event.getId());
+        Assertions.assertEquals("cons", event.getName());
         Assertions.assertEquals(lib, event.getLibrary());
+        Assertions.assertEquals(lib.getId(), event.getLibrary().getId());
 
         eventRepository.delete(event);
-        Assertions.assertTrue(eventRepository.findById(5).isEmpty());
+        Assertions.assertTrue(eventRepository.findById(591).isEmpty());
     }
 
     @Test
