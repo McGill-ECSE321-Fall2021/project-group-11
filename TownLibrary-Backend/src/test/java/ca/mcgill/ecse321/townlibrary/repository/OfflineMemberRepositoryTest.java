@@ -93,6 +93,7 @@ public class OfflineMemberRepositoryTest {
         om2.setName("Wutang");
         this.offlineMemberRepository.save(om2);
 
+        // Test save + find by address for multiple OfflineMembers
         List<OfflineMember> oms = this.offlineMemberRepository.findByAddress("845 Jacoma");
         assertFalse(oms.isEmpty());
         assertEquals(2, oms.size());
@@ -100,6 +101,21 @@ public class OfflineMemberRepositoryTest {
             new HashSet<>(Arrays.asList(4,5)),
             new HashSet<>(Arrays.asList(oms.get(0).getId(), oms.get(1).getId()))
         );
+
+        oms = null;
+        oms = this.offlineMemberRepository.findByNameContaining("Wu");
+        assertFalse(oms.isEmpty());
+        assertEquals(3, oms.size());
+        assertEquals(
+            new HashSet<>(Arrays.asList(4,5,6)),
+            new HashSet<>(Arrays.asList(oms.get(0).getId(), 
+                            oms.get(1).getId(), oms.get(2).getId()))
+        );
+
+        this.offlineMemberRepository.deleteAll();
+        oms = this.offlineMemberRepository.findByNameContaining("Wu");
+        assertTrue(oms.isEmpty());
+    
     }
     
 }
