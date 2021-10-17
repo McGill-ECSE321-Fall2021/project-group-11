@@ -29,7 +29,7 @@ public class DailyScheduleRepositoryTest {
     }
     
     @Test
-    public void testPersistDailySchedule() throws Exception{
+    public void testPersistDailySchedule(){
         
         // Initialize a librarian
         final Librarian librarian = new Librarian();
@@ -61,7 +61,7 @@ public class DailyScheduleRepositoryTest {
     }
 
     @Test
-    public void testQueryDailySchedule() throws Exception{
+    public void testQueryDailySchedule(){
         // Initialize a librarian
         final Librarian librarian = new Librarian();
         this.librarianRepository.save(librarian);
