@@ -6,6 +6,11 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LibraryRepository extends CrudRepository<Library,Integer> {
-    
+/**
+ * Finds the instance of Library if present
+ * from a given address
+ * @param address The given address
+ * @return instance of Library or optional
+ */
     Library findByAddress(String address);
 }

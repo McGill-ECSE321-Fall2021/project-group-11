@@ -28,13 +28,15 @@ public class HeadLibrarianRepositoryTest {
     }
     @Test
     public void testPersistHeadLibrarian(){
+        // Library Instance
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
         int libId = 2;
         lib.setId(libId);
         lib.setAddress(address);
         this.libraryRepository.save(lib);
-
+        
+        // Create HeadLibrarian instance to test
         HeadLibrarian hl = new HeadLibrarian();
         String homeAddress = "4201 Wokege";
         hl.setAddress(homeAddress);
@@ -44,14 +46,14 @@ public class HeadLibrarianRepositoryTest {
         hl.setLibrary(lib);
         this.headLibrarianRepository.save(hl);
 
-
+        //Test save + find
         hl = null;
         hl = this.headLibrarianRepository.findByAddress("4201 Wokege");
 
         assertNotNull(hl);
         assertEquals(hlId,hl.getId());
         assertEquals("Dees",hl.getName());
-
+        // Test delete
         this.headLibrarianRepository.delete(hl);
         Assertions.assertNull(this.headLibrarianRepository.
                                 findByAddress("4201 Wokege"));
@@ -59,6 +61,8 @@ public class HeadLibrarianRepositoryTest {
 
 
     public void testRefLibrary(){
+
+        // Library instance
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
         int libId = 2;
@@ -66,6 +70,7 @@ public class HeadLibrarianRepositoryTest {
         lib.setAddress(address);
         this.libraryRepository.save(lib);
 
+        // Create HeadLibrarian to test
         HeadLibrarian hl = new HeadLibrarian();
         String homeAddress = "4201 Wokege";
         hl.setAddress(homeAddress);
@@ -75,14 +80,15 @@ public class HeadLibrarianRepositoryTest {
         hl.setLibrary(lib);
         this.headLibrarianRepository.save(hl);
 
+        // Test save + find
         hl = null;
-
         hl = this.headLibrarianRepository.findByLibrary(lib);
 
         assertNotNull(hl);
         assertEquals(hlId, hl.getId());
         assertEquals("Wu", hl.getName());
 
+        // Test delete
         this.headLibrarianRepository.delete(hl);
         Assertions.assertNull(this.headLibrarianRepository.findByLibrary(lib));
     }

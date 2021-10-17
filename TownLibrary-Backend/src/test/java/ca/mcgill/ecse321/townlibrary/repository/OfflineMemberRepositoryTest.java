@@ -27,7 +27,7 @@ public class OfflineMemberRepositoryTest {
     }
     @Test
     public void testPersistOfflineMember(){
-
+        // Create Library Instance
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
         int libId = 1000;
@@ -35,6 +35,7 @@ public class OfflineMemberRepositoryTest {
         lib.setAddress(address);
         this.libraryRepository.save(lib);
 
+        // Create offline member to test
         OfflineMember om = new OfflineMember();
         om.setAddress("845 Jacoma");
         int omId = 2;
@@ -43,12 +44,14 @@ public class OfflineMemberRepositoryTest {
         om.setName("Wu");
         this.offlineMemberRepository.save(om);
 
+        // Test save + read
         om = null;
         om = offlineMemberRepository.findByAddress("845 Jacoma").get(0);
         assertNotNull(om);
         assertEquals(omId, om.getId());
         assertEquals("Wu", om.getName());
 
+        // Test delete
         this.offlineMemberRepository.delete(om);
         Assertions.assertTrue(this.offlineMemberRepository.
                                 findByAddress("845 Jacoma").isEmpty());
