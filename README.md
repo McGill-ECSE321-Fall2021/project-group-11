@@ -13,7 +13,7 @@ Members: James Chau, Paul Teng, Jericho Adalin, Loc Tran, Shu Tian \
 Overview:
 | Names           | Role                    | D1 | D2 | D3 | D4 |
 |-----------------|-------------------------|----|----|----|----|
-| James Chau      | Meeting lead?           |    |    |    |    |
+| James Chau      | Meeting lead?           |19h20    |    |    |    |
 | Paul Teng       | Build system manager?   |    |    |    |    |
 | Jericho Adalin  |                         |    |    |    |    |
 | Loc Tran        |                         |    |    |    |    |
