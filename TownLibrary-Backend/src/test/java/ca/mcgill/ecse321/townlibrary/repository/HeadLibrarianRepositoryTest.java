@@ -6,13 +6,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.*;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.model.HeadLibrarian;
-import ca.mcgill.ecse321.townlibrary.repository.*;
-import jdk.jfr.Timestamp;
 
 @SpringBootTest
 public class HeadLibrarianRepositoryTest {
