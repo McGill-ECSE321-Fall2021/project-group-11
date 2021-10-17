@@ -64,6 +64,7 @@ public class DailyScheduleRepositoryTest {
     public void testQueryDailySchedule(){
         // Initialize a librarian
         final Librarian librarian = new Librarian();
+        librarian.setId(434);
         this.librarianRepository.save(librarian);
 
         // Initialize two schedules
