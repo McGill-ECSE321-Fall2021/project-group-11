@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.townlibrary.model;
 
 import javax.persistence.*;
-import java.util.*;
 
 @Entity
 public abstract class UserRole {
@@ -12,11 +11,11 @@ public abstract class UserRole {
 
     private String address;
 
+    private Library library;
+
     protected UserRole() {
         // so no one can do anonymous inner class black magic
     }
-
-    private Library library;
 
     @Id
     public int getId() {
