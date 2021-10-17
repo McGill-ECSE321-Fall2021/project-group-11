@@ -2,15 +2,12 @@ package ca.mcgill.ecse321.townlibrary.repository;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
-import javax.persistence.*;
 import java.util.*;
 
 @SpringBootTest
@@ -28,8 +25,7 @@ public class MovieRepositoryTest {
     }
 
     @Test
-    @Transactional
-    public void testPersistMovie() throws Exception {
+    public void testPersistMovie() {
         final Library lib = new Library();
         lib.setId(49);
         libraryRepository.save(lib);
@@ -51,7 +47,7 @@ public class MovieRepositoryTest {
     }
 
     @Test
-    public void testNameAndStatusQueries() throws Exception {
+    public void testNameAndStatusQueries() {
         Movie movie;
         movie = new Movie();
         movie.setId(71);
