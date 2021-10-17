@@ -26,6 +26,7 @@ public class ItemRepositoryTest {
 	
 	@Test
 	public void testPersistAndLoadItem() {
+		// setup dummy items
 		Integer id1 = 3301;
 		String name1 = "Gazette";
 		Status status1 = Status.AVAILABLE;
@@ -65,6 +66,7 @@ public class ItemRepositoryTest {
 		algernon.setTransaction(transaction3);
 		itemRepository.save(algernon);
 		
+		// query dummy items
 		Item item;
 		item = itemRepository.findItemById(id1);
 		assertNotNull(item);

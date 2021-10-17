@@ -3,8 +3,6 @@ package ca.mcgill.ecse321.townlibrary.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import java.util.List;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +29,15 @@ public class NewspaperBookRepositoryTest {
 	
 	@Test
 	public void testPersistAndLoadNewspaper() {
-		Integer newsId = 3301;
-		String name = "Globe&Mail";
-		Status status = Status.AVAILABLE;
+		// setup associated transaction object
 		Transaction transaction = new Transaction();
 		transaction.setId(44);
 		transactionRepository.save(transaction);
+		
+		// write Newspaper
+		Integer newsId = 3301;
+		String name = "Globe&Mail";
+		Status status = Status.AVAILABLE;
 		Newspaper newspaper = new Newspaper();
 		newspaper.setId(newsId);
 		newspaper.setName(name);
@@ -45,6 +46,7 @@ public class NewspaperBookRepositoryTest {
 		newspaperRepository.save(newspaper);
 		newspaper = null;
 		
+		// read Newspaper
 		newspaper = newspaperRepository.findNewspaperById(newsId);
 		assertNotNull(newspaper);
 		assertEquals(newsId, newspaper.getId());
@@ -55,12 +57,15 @@ public class NewspaperBookRepositoryTest {
 	
 	@Test
 	public void testPersistAndLoadBook() {
-		Integer bookId = 2501;
-		String name = "Dune";
-		Status status = Status.RESERVED;
+		// setup associated transaction object
 		Transaction transaction = new Transaction();
 		transaction.setId(55);
 		transactionRepository.save(transaction);
+		
+		// write Book
+		Integer bookId = 2501;
+		String name = "Dune";
+		Status status = Status.RESERVED;
 		Book book = new Book();
 		book.setId(bookId);
 		book.setName(name);
@@ -69,6 +74,7 @@ public class NewspaperBookRepositoryTest {
 		bookRepository.save(book);
 		book = null;
 		
+		// read Book
 		book = bookRepository.findBookById(bookId);
 		assertNotNull(book);
 		assertEquals(bookId, book.getId());
