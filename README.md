@@ -11,13 +11,13 @@ Project goal: Produce a well-documented and user-friendly system on time while f
 Group: 11 \
 Members: James Chau, Paul Teng, Jericho Adalin, Loc Tran, Shu Tian \
 Overview:
-| Names           | Role                    | D1 | D2 | D3 | D4 |
+| Names :shipit:  | Role :trollface:        | D1 | D2 | D3 | D4 |
 |-----------------|-------------------------|----|----|----|----|
 | James Chau      | Meeting lead            |17h |    |    |    |    
 | Paul Teng       | Build system manager    |16h |    |    |    |
 | Jericho Adalin  | Facilitator             |14h |    |    |    |    
-| Loc Tran        | Time-keeper             |    |    |    |    |
-| Shu Tian        | Documentation manager   |    |    |    |    |
+| Loc Tran        | Time-keeper             |14h |    |    |    |
+| Shu Tian        | Documentation manager   |15h |    |    |    |
 
 D1-4 Represents individual efforts (in hours) for each deliverable.
 
