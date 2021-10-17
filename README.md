@@ -14,7 +14,7 @@ Overview:
 | Names           | Role                    | D1 | D2 | D3 | D4 |
 |-----------------|-------------------------|----|----|----|----|
 | James Chau      | Meeting lead?           |19h20    |    |    |    |
-| Paul Teng       | Build system manager?   |    |    |    |    |
+| Paul Teng       | Build system manager?   |16h |    |    |    |
 | Jericho Adalin  |                         |    |    |    |    |
 | Loc Tran        |                         |    |    |    |    |
 | Shu Tian        | Documentation manager?  |    |    |    |    |
