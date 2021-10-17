@@ -2,15 +2,12 @@ package ca.mcgill.ecse321.townlibrary.repository;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 
-import javax.persistence.*;
 import java.util.*;
 
 @SpringBootTest
@@ -29,8 +26,7 @@ public class EventRepositoryTest {
     }
 
     @Test
-    @Transactional
-    public void testPersistEvent() throws Exception {
+    public void testPersistEvent() {
         final Library lib = new Library();
         final Event event = new Event();
         libraryRepository.save(lib);
@@ -49,7 +45,7 @@ public class EventRepositoryTest {
     }
 
     @Test
-    public void testNameQueries() throws Exception {
+    public void testNameQueries() {
         Event event;
         event = new Event();
         event.setId(60);
