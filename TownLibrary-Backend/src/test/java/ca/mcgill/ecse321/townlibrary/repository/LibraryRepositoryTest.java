@@ -22,6 +22,7 @@ public class LibraryRepositoryTest {
 
     @Test
     public void testPersistLibrary(){
+        // Create Library instance
         String address = "845 Rue Sherbrooke";
         Library lib = new Library();
         int libId = 100;
@@ -31,10 +32,12 @@ public class LibraryRepositoryTest {
 
         lib = null;
 
+        // Test save + find
         lib = libraryRepository.findByAddress(address);
         Assertions.assertNotNull(lib);
         Assertions.assertEquals(address, lib.getAddress());
 
+        // Test delete
         this.libraryRepository.delete(lib);
         Assertions.assertFalse(this.libraryRepository.findById(libId).isPresent());
 
