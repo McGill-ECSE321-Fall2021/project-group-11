@@ -42,7 +42,7 @@ public class LibraryRepositoryTest {
         Assertions.assertEquals(address, lib.getAddress());
 
         this.libraryRepository.delete(lib);
-        Assertions.assertNull(this.libraryRepository.findById(libId));
+        Assertions.assertFalse(this.libraryRepository.findById(libId).isPresent());
 
     }
     
