@@ -3,6 +3,8 @@ package ca.mcgill.ecse321.townlibrary.repository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import java.util.List;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +55,13 @@ public class NewspaperBookRepositoryTest {
 		assertEquals(name, newspaper.getName());
 		assertEquals(status, newspaper.getStatus());
 		assertEquals(44, newspaper.getTransaction().getId());
+		
+		List<Newspaper> newspaperList = newspaperRepository.findNewspaperByName(name);
+		assertNotNull(newspaperList);
+		assertEquals(newsId, newspaperList.get(0).getId());
+		assertEquals(name, newspaperList.get(0).getName());
+		assertEquals(status, newspaperList.get(0).getStatus());
+		assertEquals(44, newspaperList.get(0).getTransaction().getId());
 	}
 	
 	@Test
@@ -81,6 +90,13 @@ public class NewspaperBookRepositoryTest {
 		assertEquals(name, book.getName());
 		assertEquals(status, book.getStatus());
 		assertEquals(55, book.getTransaction().getId());
+		
+		List<Book> bookList = bookRepository.findByNameContaining("Du");
+		assertNotNull(bookList);
+		assertEquals(bookId, bookList.get(0).getId());
+		assertEquals(name, bookList.get(0).getName());
+		assertEquals(status, bookList.get(0).getStatus());
+		assertEquals(55, bookList.get(0).getTransaction().getId());
 	}
 
 }
