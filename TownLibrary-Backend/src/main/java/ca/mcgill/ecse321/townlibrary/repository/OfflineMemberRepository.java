@@ -16,4 +16,12 @@ public interface OfflineMemberRepository extends CrudRepository<OfflineMember, I
  * @return instances of OfflineMember or optional 
  */
     List<OfflineMember> findByAddress(String name);
+/**
+ * Find all instances of OfflineMember if present
+ * from a given pattern
+ * @param pattern The given pattern
+ * @return instances of OfflineMember whose name match the given pattern
+ * or optional
+ */
+    List<OfflineMember> findByNameContaining(String pattern);
 }
