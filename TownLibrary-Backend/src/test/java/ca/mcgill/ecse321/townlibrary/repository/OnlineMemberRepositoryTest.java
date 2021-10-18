@@ -79,13 +79,34 @@ public class OnlineMemberRepositoryTest {
         this.onlineMemberRepository.save(them);
  
         // Test to see correctness of query results
-        List<OnlineMember> result = this.onlineMemberRepository.findByAddress("111 somewhere");
-        Assertions.assertEquals(2, result.size());
+        List<OnlineMember> persistOnlineMembers = this.onlineMemberRepository.findByAddress("111 somewhere");
+        Assertions.assertEquals(2, persistOnlineMembers.size());
         OnlineMember individualMember = this.onlineMemberRepository.findByEmail("me@mail.ca");
         Assertions.assertEquals("A Name", individualMember.getName());
         individualMember = this.onlineMemberRepository.findById(1).get();
         Assertions.assertEquals("me@mail.ca", individualMember.getEmail());
-        
-        
     }
+
+    @Test
+    public void testDeleteOnlineMember(){
+        // Initialize an online member, write their attributes, and save to database
+        final OnlineMember me = new OnlineMember();
+        me.setName("A Name");
+        me.setEmail("me@mail.ca");
+        me.setUsername("myaccount");
+        me.setId(1);
+        me.setAddress("101 sendhelp avenue");
+        this.onlineMemberRepository.save(me);
+
+        // Test if delete works
+        List<OnlineMember> persistOnlineMembers = this.onlineMemberRepository.findByAddress("101 sendhelp avenue");
+        Assertions.assertEquals(1, persistOnlineMembers.size());
+        
+        // Delete all members and check if repo is empty
+        this.onlineMemberRepository.deleteAll();
+        persistOnlineMembers = this.onlineMemberRepository.findByAddress("101 sendhelp avenue");
+        Assertions.assertEquals(0, persistOnlineMembers.size());
+
+    }
+
 }

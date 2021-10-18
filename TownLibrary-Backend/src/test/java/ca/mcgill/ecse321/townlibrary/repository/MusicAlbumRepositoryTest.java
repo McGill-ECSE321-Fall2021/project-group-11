@@ -50,7 +50,6 @@ public class MusicAlbumRepositoryTest {
 
     @Test
     public void testQueryMusicAlbum(){
-        
         // Initialize multiple albums and save them to database
         MusicAlbum musicAlbum1 = new MusicAlbum();
         musicAlbum1.setId(1);
@@ -71,12 +70,37 @@ public class MusicAlbumRepositoryTest {
         this.musicAlbumRepository.save(musicAlbum3);
 
         // Test to see if the right albums are returned given a query
-        List<MusicAlbum> result = this.musicAlbumRepository.findByStatus(Status.AVAILABLE);
-        Assertions.assertEquals(2, result.size());
-        result = this.musicAlbumRepository.findByName("CLB");
-        Assertions.assertEquals(1, result.size());
-        result = this.musicAlbumRepository.findByNameContaining("L");
-        Assertions.assertEquals(1, result.size());
+        List<MusicAlbum> persistMusicAlbums = this.musicAlbumRepository.findByStatus(Status.AVAILABLE);
+        Assertions.assertEquals(2, persistMusicAlbums.size());
+        persistMusicAlbums = this.musicAlbumRepository.findByName("CLB");
+        Assertions.assertEquals(1, persistMusicAlbums.size());
+        persistMusicAlbums = this.musicAlbumRepository.findByNameContaining("L");
+        Assertions.assertEquals(1, persistMusicAlbums.size());
+    }
+
+    @Test
+    public void testDeleteMusicAlbum(){
+        // Initialize multiple albums and save them to database
+        MusicAlbum musicAlbum1 = new MusicAlbum();
+        musicAlbum1.setId(1);
+        musicAlbum1.setName("Donda");
+        musicAlbum1.setStatus(Status.AVAILABLE);
+        this.musicAlbumRepository.save(musicAlbum1);
+ 
+        MusicAlbum musicAlbum2 = new MusicAlbum();
+        musicAlbum2.setId(2);
+        musicAlbum2.setName("CLB");
+        musicAlbum2.setStatus(Status.AVAILABLE);
+        this.musicAlbumRepository.save(musicAlbum2);
+
+        // Test if delete works
+        List<MusicAlbum> persistMusicAlbums = this.musicAlbumRepository.findByStatus(Status.AVAILABLE);
+        Assertions.assertEquals(2, persistMusicAlbums.size());
+
+        // Delete one music album from two
+        this.musicAlbumRepository.delete(musicAlbum1);
+        persistMusicAlbums = this.musicAlbumRepository.findByStatus(Status.AVAILABLE);
+        Assertions.assertEquals(1, persistMusicAlbums.size());
     }
 
 }

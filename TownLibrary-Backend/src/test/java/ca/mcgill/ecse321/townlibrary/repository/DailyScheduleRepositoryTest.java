@@ -30,7 +30,6 @@ public class DailyScheduleRepositoryTest {
     
     @Test
     public void testPersistDailySchedule(){
-        
         // Initialize a librarian
         final Librarian librarian = new Librarian();
         librarian.setId(150);
@@ -83,14 +82,42 @@ public class DailyScheduleRepositoryTest {
         this.dailyScheduleRepository.save(tuesdaySchedule);
 
         // Test query results by checking if it returns the right amount of schedules
-        List<DailySchedule> result = this.dailyScheduleRepository.findByLibrarian(librarian);
-        Assertions.assertEquals(2, result.size());
-        result = this.dailyScheduleRepository.findByDayOfWeek(DayOfWeek.TUESDAY);
-        Assertions.assertEquals(1, result.size()); 
-        result = this.dailyScheduleRepository.findByDayOfWeek(DayOfWeek.FRIDAY);
-        Assertions.assertEquals(0, result.size());
-        result = (List<DailySchedule>) this.dailyScheduleRepository.findAll();
-        Assertions.assertEquals(2, result.size());
+        List<DailySchedule> persistDailySchedules = this.dailyScheduleRepository.findByLibrarian(librarian);
+        Assertions.assertEquals(2, persistDailySchedules.size());
+        persistDailySchedules = this.dailyScheduleRepository.findByDayOfWeek(DayOfWeek.TUESDAY);
+        Assertions.assertEquals(1, persistDailySchedules.size()); 
+        persistDailySchedules = this.dailyScheduleRepository.findByDayOfWeek(DayOfWeek.FRIDAY);
+        Assertions.assertEquals(0, persistDailySchedules.size());
+        persistDailySchedules = (List<DailySchedule>) this.dailyScheduleRepository.findAll();
+        Assertions.assertEquals(2, persistDailySchedules.size());
        
+    }
+
+    @Test
+    public void testDeleteDailySchedule(){
+        // Initialize two schedules
+        final DailySchedule mondaySchedule = new DailySchedule();
+        final DailySchedule otherMondaySchedule = new DailySchedule();
+ 
+        // Write their attributes and save them on the database
+        mondaySchedule.setDayOfWeek(DayOfWeek.MONDAY);
+        mondaySchedule.setId(25);
+        this.dailyScheduleRepository.save(mondaySchedule);
+ 
+        otherMondaySchedule.setDayOfWeek(DayOfWeek.MONDAY);
+        otherMondaySchedule.setId(26);
+        this.dailyScheduleRepository.save(otherMondaySchedule);
+
+        // Test if delete works
+        List<DailySchedule> persistDailySchedules = this.dailyScheduleRepository.findByDayOfWeek(DayOfWeek.MONDAY);
+        Assertions.assertEquals(2, persistDailySchedules.size());
+        
+        // Delete one schedule out of two
+        this.dailyScheduleRepository.delete(otherMondaySchedule);;
+        persistDailySchedules = this.dailyScheduleRepository.findByDayOfWeek(DayOfWeek.MONDAY);
+        Assertions.assertEquals(1, persistDailySchedules.size());
+
+
+
     }
 }
