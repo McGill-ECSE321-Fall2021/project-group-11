@@ -25,3 +25,5 @@ jobs:
       run: chmod +x gradlew
     - name: Buld with gradle
       run: ./gradlew build
+      env:
+        SPRING_PROFILES_ACTIVE: ci
