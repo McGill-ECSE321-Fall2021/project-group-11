@@ -23,7 +23,7 @@ jobs:
         cache: gradle
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Buld with gradle
+    - name: Build with gradle
       run: ./gradlew build
       env:
         SPRING_PROFILES_ACTIVE: ci
