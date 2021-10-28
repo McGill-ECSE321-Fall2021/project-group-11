@@ -18,6 +18,7 @@ public abstract class UserRole {
     }
 
     @Id
+    @GeneratedValue
     public int getId() {
         return this.id;
     }

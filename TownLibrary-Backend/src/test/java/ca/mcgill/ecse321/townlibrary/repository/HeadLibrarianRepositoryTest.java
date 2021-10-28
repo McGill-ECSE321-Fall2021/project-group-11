@@ -40,11 +40,10 @@ public class HeadLibrarianRepositoryTest {
         HeadLibrarian hl = new HeadLibrarian();
         String homeAddress = "4201 Wokege";
         hl.setAddress(homeAddress);
-        int hlId = 1;
-        hl.setId(hlId);
         hl.setName("Dees");
         hl.setLibrary(lib);
         this.headLibrarianRepository.save(hl);
+        int hlId = hl.getId();
 
         //Test save + find
         hl = null;

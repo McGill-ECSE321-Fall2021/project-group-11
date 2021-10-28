@@ -39,11 +39,10 @@ public class OfflineMemberRepositoryTest {
         // Create offline member to test
         OfflineMember om = new OfflineMember();
         om.setAddress("845 Jacoma");
-        int omId = 2;
-        om.setId(omId);
         om.setLibrary(lib);
         om.setName("Wu");
         this.offlineMemberRepository.save(om);
+        int omId = om.getId();
 
         // Test save + read
         om = null;
@@ -69,36 +68,33 @@ public class OfflineMemberRepositoryTest {
         // Create offline member to test
         OfflineMember om = new OfflineMember();
         om.setAddress("845 Jacoma");
-        int omId = 4;
-        om.setId(omId);
         om.setLibrary(lib);
         om.setName("Wu");
         this.offlineMemberRepository.save(om);
+        int omId = om.getId();
 
         // Create another offline member to test
         OfflineMember om1 = new OfflineMember();
         om1.setAddress("845 Jacoma");
-        int om1Id = 5;
-        om1.setId(om1Id);
         om1.setLibrary(lib);
         om1.setName("Wutang");
         this.offlineMemberRepository.save(om1);
+        int om1Id = om1.getId();
 
         // Create another offline member to test
         OfflineMember om2 = new OfflineMember();
         om2.setAddress("846 Jacoma");
-        int om2Id = 6;
-        om2.setId(om2Id);
         om2.setLibrary(lib);
         om2.setName("Wutang");
         this.offlineMemberRepository.save(om2);
+        int om2Id = om2.getId();
 
         // Test save + find by address for multiple OfflineMembers
         List<OfflineMember> oms = this.offlineMemberRepository.findByAddress("845 Jacoma");
         assertFalse(oms.isEmpty());
         assertEquals(2, oms.size());
         assertEquals(
-            new HashSet<>(Arrays.asList(4,5)),
+            new HashSet<>(Arrays.asList(omId,om1Id)),
             new HashSet<>(Arrays.asList(oms.get(0).getId(), oms.get(1).getId()))
         );
 
@@ -107,7 +103,7 @@ public class OfflineMemberRepositoryTest {
         assertFalse(oms.isEmpty());
         assertEquals(3, oms.size());
         assertEquals(
-            new HashSet<>(Arrays.asList(4,5,6)),
+            new HashSet<>(Arrays.asList(omId,om1Id,om2Id)),
             new HashSet<>(Arrays.asList(oms.get(0).getId(), 
                             oms.get(1).getId(), oms.get(2).getId()))
         );
