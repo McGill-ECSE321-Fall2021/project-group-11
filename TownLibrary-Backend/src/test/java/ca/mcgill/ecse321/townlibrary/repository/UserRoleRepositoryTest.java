@@ -25,17 +25,14 @@ public class UserRoleRepositoryTest {
     public void testNameQueries() {
         // Setup some dummy users (of various subclasses)
         final OfflineMember joe = new OfflineMember();
-        joe.setId(150);
         joe.setName("Joe Schmoe");
         this.userRoleRepository.save(joe);
 
         final Librarian john = new Librarian();
-        john.setId(151);
         john.setName("John Doe");
         this.userRoleRepository.save(john);
 
         final OfflineMember bob = new OfflineMember();
-        bob.setId(152);
         bob.setName("Bob");
         this.userRoleRepository.save(bob);
 
@@ -43,12 +40,12 @@ public class UserRoleRepositoryTest {
         List<UserRole> ret;
         ret = this.userRoleRepository.findByNameContaining("Bob");
         Assertions.assertEquals(1, ret.size());
-        Assertions.assertEquals(152, ret.get(0).getId());
+        Assertions.assertEquals(bob.getId(), ret.get(0).getId());
 
         ret = this.userRoleRepository.findByNameContaining("oe");
         Assertions.assertEquals(2, ret.size());
         Assertions.assertEquals(
-                new HashSet<>(Arrays.asList(150, 151)),
+                new HashSet<>(Arrays.asList(joe.getId(), john.getId())),
                 new HashSet<>(Arrays.asList(ret.get(0).getId(), ret.get(1).getId())));
     }
 }

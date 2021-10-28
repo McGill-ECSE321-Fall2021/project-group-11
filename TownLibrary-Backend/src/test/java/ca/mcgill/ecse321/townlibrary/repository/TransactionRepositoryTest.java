@@ -32,7 +32,6 @@ public class TransactionRepositoryTest {
         final Timestamp start = new Timestamp(0);
         final Timestamp end = new Timestamp(10000);
         final OfflineMember user = new OfflineMember();
-        user.setId(1000);
         this.userRoleRepository.save(user);
 
         // Test writes
@@ -59,12 +58,10 @@ public class TransactionRepositoryTest {
     public void testUserRoleAndEndDateQueries() {
         // Setup some dummy users
         final OfflineMember joe = new OfflineMember();
-        joe.setId(150);
         joe.setName("Joe Schmoe");
         this.userRoleRepository.save(joe);
 
         final OfflineMember john = new OfflineMember();
-        john.setId(151);
         john.setName("John Doe");
         this.userRoleRepository.save(john);
 
