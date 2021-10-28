@@ -41,7 +41,7 @@ jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				minimum = 0.6	// instruction coverage >= 0.6
+				minimum = 0.9	// instruction coverage >= 0.6
 			}
 		}
 	}
