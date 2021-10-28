@@ -2,6 +2,11 @@ plugins {
 	id 'org.springframework.boot' version '2.5.5'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'jacoco'	// for code coverage
+
+	// This allows the task jacocoTestReport to report all coverage ratios
+	// supported by jacoco (it will actually print it out)
+	id 'org.barfuin.gradle.jacocolog' version '2.0.0'
 }
 
 group = 'com.example'
@@ -30,4 +35,14 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+}
+
+jacocoTestCoverageVerification {
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.6	// instruction coverage >= 0.6
+			}
+		}
+	}
 }
