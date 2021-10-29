@@ -52,4 +52,16 @@ public class HeadLibrarianController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping(value={ "/auth/head-librarians/{id}", "/auth/head-librarians/{id}/" })
+    public ResponseEntity<?> authHeadLibrarian(
+            @PathVariable("id") int id,
+            @RequestParam String password) {
+
+        if (!this.headLibrarianService.authenticateHeadLibrarian(id, password))
+            return ResponseEntity.badRequest().body("BAD-ACCESS");
+
+        final HeadLibrarian u = this.headLibrarianService.getHeadLibrarian(id);
+        return ResponseEntity.ok(HeadLibrarianDTO.fromModel(u));
+    }
 }

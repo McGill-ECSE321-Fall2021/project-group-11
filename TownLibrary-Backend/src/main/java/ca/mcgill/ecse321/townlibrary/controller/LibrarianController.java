@@ -55,4 +55,16 @@ public class LibrarianController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping(value={ "/auth/librarians/{id}", "/auth/librarians/{id}/" })
+    public ResponseEntity<?> authLibrarian(
+            @PathVariable("id") int id,
+            @RequestParam String password) {
+
+        if (!this.librarianService.authenticateLibrarian(id, password))
+            return ResponseEntity.badRequest().body("BAD-ACCESS");
+
+        final Librarian u = this.librarianService.getLibrarian(id);
+        return ResponseEntity.ok(LibrarianDTO.fromModel(u));
+    }
 }
