@@ -36,7 +36,9 @@ dependencies {
 }
 
 test {
-	useJUnitPlatform()
+	useJUnitPlatform {
+		excludeTags "integration"
+	}
 	finalizedBy jacocoTestReport	// auto report coverage after
 }
 
@@ -47,5 +49,14 @@ jacocoTestCoverageVerification {
 				minimum = 0.6	// instruction coverage >= 0.6
 			}
 		}
+	}
+}
+
+// Integration test stuff:
+// (based on https://stackoverflow.com/questions/40891867/junit5-tag-specific-gradle-task)
+
+task integrationTest(type: Test) {
+	useJUnitPlatform {
+		includeTags 'integration'
 	}
 }
