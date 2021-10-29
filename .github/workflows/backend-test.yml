@@ -27,10 +27,6 @@ jobs:
       run: ./gradlew build
       env:
         SPRING_PROFILES_ACTIVE: ci
-    - name: Report code coverage
-      run: ./gradlew jacocoTestReport
-      env:
-        SPRING_PROFILES_ACTIVE: ci
     - name: Code coverage check
       run: ./gradlew jacocoTestCoverageVerification
       env:
