@@ -13,6 +13,7 @@ public class OnlineMemberDTOTest {
         u.setId(100);
         u.setName("Joe Schmoe");
         u.setAddress("123 FooBar Street");
+        u.setInTown(true);
         u.setEmail("joe.schmoe@phaser.com");
         u.setUsername("foo_man");
         u.setPassword("Foobar123");
@@ -23,6 +24,7 @@ public class OnlineMemberDTOTest {
         Assertions.assertEquals(u.getId(), dto.id);
         Assertions.assertEquals(u.getName(), dto.name);
         Assertions.assertEquals(u.getAddress(), dto.address);
+        Assertions.assertEquals(u.isInTown(), dto.inTown);
         Assertions.assertEquals(u.getEmail(), dto.email);
         Assertions.assertEquals(u.getUsername(), dto.username);
         Assertions.assertNull(dto.libraryId);
@@ -33,6 +35,7 @@ public class OnlineMemberDTOTest {
         Assertions.assertEquals(u.getId(), dto.id);
         Assertions.assertEquals(u.getName(), dto.name);
         Assertions.assertEquals(u.getAddress(), dto.address);
+        Assertions.assertEquals(u.isInTown(), dto.inTown);
         Assertions.assertEquals(u.getEmail(), dto.email);
         Assertions.assertEquals(u.getUsername(), dto.username);
         Assertions.assertEquals(0, dto.libraryId);

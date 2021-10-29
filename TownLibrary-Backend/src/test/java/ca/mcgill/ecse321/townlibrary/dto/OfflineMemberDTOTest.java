@@ -13,6 +13,7 @@ public class OfflineMemberDTOTest {
         u.setId(100);
         u.setName("Joe Schmoe");
         u.setAddress("123 FooBar Street");
+        u.setInTown(true);
 
         OfflineMemberDTO dto;
 
@@ -20,6 +21,7 @@ public class OfflineMemberDTOTest {
         Assertions.assertEquals(u.getId(), dto.id);
         Assertions.assertEquals(u.getName(), dto.name);
         Assertions.assertEquals(u.getAddress(), dto.address);
+        Assertions.assertEquals(u.isInTown(), dto.inTown);
         Assertions.assertNull(dto.libraryId);
 
         u.setLibrary(new Library());
@@ -28,6 +30,7 @@ public class OfflineMemberDTOTest {
         Assertions.assertEquals(u.getId(), dto.id);
         Assertions.assertEquals(u.getName(), dto.name);
         Assertions.assertEquals(u.getAddress(), dto.address);
+        Assertions.assertEquals(u.isInTown(), dto.inTown);
         Assertions.assertEquals(0, dto.libraryId);
     }
 }
