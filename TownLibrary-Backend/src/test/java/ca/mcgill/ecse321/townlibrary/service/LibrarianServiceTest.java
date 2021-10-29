@@ -119,4 +119,22 @@ public class LibrarianServiceTest {
         u = this.librarianService.getLibrarian(4);
         Assertions.assertNull(u);
     }
+
+    @Test
+    public void testAuthenticateLibrarian() {
+        // Artificially create a situation where only id 0 is bound to a
+        // librarian with password abc123.
+        final Librarian dummy = new Librarian();
+        dummy.setPassword("abc123");
+        lenient().when(this.mockLibrarianRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(dummy));
+
+        Assertions.assertTrue(this.librarianService.authenticateLibrarian(0, "abc123"));
+
+        // incorrect password
+        Assertions.assertFalse(this.librarianService.authenticateLibrarian(0, "abc1234"));
+
+        // invalid id
+        Assertions.assertFalse(this.librarianService.authenticateLibrarian(1, "abc123"));
+    }
 }
