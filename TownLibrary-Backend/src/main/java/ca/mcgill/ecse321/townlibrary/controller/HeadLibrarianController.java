@@ -10,34 +10,31 @@ import ca.mcgill.ecse321.townlibrary.service.*;
 
 @CrossOrigin(origins="*")
 @RestController
-public class OnlineMemberController {
+public class HeadLibrarianController {
 
     @Autowired
     private LibraryService libraryService;
 
     @Autowired
-    private OnlineMemberService onlineMemberService;
+    private HeadLibrarianService headLibrarianService;
 
     // TODO: Use DTO's... please...
 
-    @GetMapping(value={ "/online-members", "/online-members/" })
-    public ResponseEntity<?> getAllOnlineMembers() {
-        final List<OnlineMember> us = this.onlineMemberService.getAllOnlineMembers();
+    @GetMapping(value={ "/head-librarians", "/head-librarians/" })
+    public ResponseEntity<?> getAllHeadLibrarians() {
+        final List<HeadLibrarian> us = this.headLibrarianService.getAllHeadLibrarians();
         return ResponseEntity.ok().body(us);
     }
 
-    @PostMapping(value={ "/online-members/{username}", "/online-members/{username}/" })
-    public ResponseEntity<?> createOnlineMember(
-            @PathVariable("username") String username,
-            @RequestParam String password,
-            @RequestParam String email,
-            @RequestParam String name,
+    @PostMapping(value={ "/head-librarians/{name}", "/head-librarians/{name}/" })
+    public ResponseEntity<?> createHeadLibrarian(
+            @PathVariable("name") String name,
             @RequestParam String address,
             @RequestParam int library) {
 
         try {
             final Library lib = this.libraryService.getLibrary(library);
-            final OnlineMember u = this.onlineMemberService.createOnlineMember(lib, name, address, email, username, password);
+            final HeadLibrarian u = this.headLibrarianService.createHeadLibrarian(lib, name, address);
             return ResponseEntity.ok().body(u);
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

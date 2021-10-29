@@ -49,6 +49,17 @@ public class LibraryService {
     }
 
     /**
+     * Retrieves a library by it's id
+     *
+     * @param id    The id
+     *
+     * @return      The library or null if no such id exists
+     */
+    public Library getLibrary(int id) {
+        return this.libraryRepository.findById(id).orElse(null);
+    }
+
+    /**
      * Retrieves all the libraries registered under this system.
      *
      * @return all the libraries

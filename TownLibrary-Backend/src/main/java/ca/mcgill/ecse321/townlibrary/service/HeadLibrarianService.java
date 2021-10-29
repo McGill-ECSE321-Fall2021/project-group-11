@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
+import java.util.*;
+
 @Service
 public class HeadLibrarianService {
 
@@ -57,8 +59,17 @@ public class HeadLibrarianService {
 
         // update the head librarian in the library-side as well
         lib.setHeadLibrarian(u);
+        lib.setAddress(null);
         this.libraryRepository.save(lib);
 
         return u;
+    }
+
+    @Transactional
+    public List<HeadLibrarian> getAllHeadLibrarians() {
+        final ArrayList<HeadLibrarian> list = new ArrayList<>();
+        for (final HeadLibrarian u : this.headLibrarianRepository.findAll())
+            list.add(u);
+        return list;
     }
 }
