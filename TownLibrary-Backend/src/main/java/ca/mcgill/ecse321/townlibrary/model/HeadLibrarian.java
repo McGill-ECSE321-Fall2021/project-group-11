@@ -5,15 +5,4 @@ import javax.persistence.*;
 @Entity
 public class HeadLibrarian extends Librarian {
 
-    private Library library;
-
-    @OneToOne
-    public Library getLibrary(){
-        return this.library;
-    }
-
-    public void setLibrary(Library lib){
-        this.library = lib;
-    }
-
 }
