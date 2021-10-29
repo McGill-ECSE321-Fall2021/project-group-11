@@ -177,4 +177,20 @@ public class OnlineMemberServiceTest {
         u = this.onlineMemberService.getOnlineMember(4);
         Assertions.assertNull(u);
     }
+
+    @Test
+    public void testGetOnlineMemberByUsername() {
+        // Artificially create a situation where only FooMan321 is bound to a
+        // online member.
+        lenient().when(this.mockOnlineMemberRepository.findByUsername("FooMan321"))
+                .thenAnswer(invocation -> new OnlineMember());
+
+        OnlineMember u;
+
+        u = this.onlineMemberService.getOnlineMemberByUsername("FooMan321");
+        Assertions.assertEquals(0, u.getId());
+
+        u = this.onlineMemberService.getOnlineMemberByUsername("FooMan123");
+        Assertions.assertNull(u);
+    }
 }

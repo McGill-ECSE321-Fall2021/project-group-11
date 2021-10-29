@@ -92,6 +92,18 @@ public class OnlineMemberService {
     }
 
     /**
+     * Retrieves a online member by its username.
+     *
+     * @param username  The username
+     *
+     * @return          The online member or null if no such id exists
+     */
+    @Transactional
+    public OnlineMember getOnlineMemberByUsername(String username) {
+        return this.onlineMemberRepository.findByUsername(username);
+    }
+
+    /**
      * Retrieves all the online members registered under this system.
      *
      * @return all the online members
