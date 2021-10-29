@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 public class LibraryServiceTest {
 
     @Mock
-    private LibraryRepository mockHeadLibraryRepository;
+    private LibraryRepository mockLibraryRepository;
 
     @InjectMocks
     private LibraryService libraryService;
@@ -32,7 +32,7 @@ public class LibraryServiceTest {
     public void testCreateLibraryDuplicate() {
         // Artificially create a situation where every possible library id is
         // taken (which is probably impossible, but for the sake of testing)
-        lenient().when(this.mockHeadLibraryRepository.existsById(anyInt()))
+        lenient().when(this.mockLibraryRepository.existsById(anyInt()))
                 .thenAnswer(invocation -> true);
 
         try {
@@ -62,7 +62,7 @@ public class LibraryServiceTest {
 
         // Artificially create a situation where every possible library id is
         // taken (which is probably impossible, but for the sake of testing)
-        lenient().when(this.mockHeadLibraryRepository.existsById(anyInt()))
+        lenient().when(this.mockLibraryRepository.existsById(anyInt()))
                 .thenAnswer(invocation -> true);
 
         try {
@@ -88,7 +88,7 @@ public class LibraryServiceTest {
     public void testGetLibrary() {
         // Artificially create a situation where only id 0 is bound to a
         // library.
-        lenient().when(this.mockHeadLibraryRepository.findById(0))
+        lenient().when(this.mockLibraryRepository.findById(0))
                 .thenAnswer(invocation -> Optional.of(new Library()));
 
         Library lib;
