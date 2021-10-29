@@ -18,6 +18,9 @@ public class OnlineMemberController {
     private LibraryService libraryService;
 
     @Autowired
+    private LibrarianService librarianService;
+
+    @Autowired
     private OnlineMemberService onlineMemberService;
 
     @GetMapping(value={ "/online-members", "/online-members/" })
@@ -50,6 +53,24 @@ public class OnlineMemberController {
             final Library lib = this.libraryService.getLibrary(library);
             final OnlineMember u = this.onlineMemberService.createOnlineMember(lib, name, address, email, username, password);
             return ResponseEntity.ok().body(OnlineMemberDTO.fromModel(u));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
+    @PatchMapping(value={ "/online-members/{id}/in-town", "/online-members/{id}/in-town/" })
+    public ResponseEntity<?> setOnlineMemberInTownStatus(
+            @PathVariable("id") int id,
+            @RequestParam boolean value,
+            @RequestParam int initiator) {
+
+        try {
+            final Librarian librarian = this.librarianService.getLibrarian(initiator);
+            if (librarian == null)
+                return ResponseEntity.badRequest().body("BAD-ACCESS");
+
+            final OnlineMember u = this.onlineMemberService.setOnlineMemberInTownStatus(id, value);
+            return ResponseEntity.ok(OnlineMemberDTO.fromModel(u));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }

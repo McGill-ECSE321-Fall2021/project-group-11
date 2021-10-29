@@ -9,6 +9,7 @@ public final class OfflineMemberDTO {
 
     public String name;
     public String address;
+    public boolean inTown;
 
     public Integer libraryId;
 
@@ -17,6 +18,7 @@ public final class OfflineMemberDTO {
         dto.id = u.getId();
         dto.name = u.getName();
         dto.address = u.getAddress();
+        dto.inTown = u.isInTown();
         dto.libraryId = Optional.ofNullable(u.getLibrary())
                 .map(x -> x.getId())
                 .orElse(null);

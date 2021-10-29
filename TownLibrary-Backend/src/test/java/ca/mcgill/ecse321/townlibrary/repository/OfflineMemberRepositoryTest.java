@@ -39,6 +39,7 @@ public class OfflineMemberRepositoryTest {
         // Create offline member to test
         OfflineMember om = new OfflineMember();
         om.setAddress("845 Jacoma");
+        om.setInTown(true);
         om.setLibrary(lib);
         om.setName("Wu");
         this.offlineMemberRepository.save(om);
@@ -50,6 +51,7 @@ public class OfflineMemberRepositoryTest {
         assertNotNull(om);
         assertEquals(omId, om.getId());
         assertEquals("Wu", om.getName());
+        assertTrue(om.isInTown());
 
         // Test delete
         this.offlineMemberRepository.delete(om);

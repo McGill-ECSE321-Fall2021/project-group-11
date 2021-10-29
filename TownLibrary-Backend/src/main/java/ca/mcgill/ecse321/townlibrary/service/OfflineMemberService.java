@@ -55,6 +55,25 @@ public class OfflineMemberService {
     }
 
     /**
+     * Sets the in town field of a offline member
+     *
+     * @param id    The id
+     * @param flag  The new field value
+     *
+     * @return      The offline member after patching
+     */
+    @Transactional
+    public OfflineMember setOfflineMemberInTownStatus(int id, boolean flag) {
+        final OfflineMember u = this.offlineMemberRepository.findById(id).orElse(null);
+        if (u == null)
+            throw new IllegalArgumentException("NOT-FOUND-OFFLINE-MEMBER");
+
+        u.setInTown(flag);
+        this.offlineMemberRepository.save(u);
+        return u;
+    }
+
+    /**
      * Retrieves a offline member by its id.
      *
      * @param id    The id

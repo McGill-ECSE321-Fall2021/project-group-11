@@ -9,6 +9,7 @@ public final class OnlineMemberDTO {
 
     public String name;
     public String address;
+    public boolean inTown;
 
     public String email;
     public String username;
@@ -21,6 +22,7 @@ public final class OnlineMemberDTO {
         dto.id = u.getId();
         dto.name = u.getName();
         dto.address = u.getAddress();
+        dto.inTown = u.isInTown();
         dto.email = u.getEmail();
         dto.username = u.getUsername();
         dto.libraryId = Optional.ofNullable(u.getLibrary())

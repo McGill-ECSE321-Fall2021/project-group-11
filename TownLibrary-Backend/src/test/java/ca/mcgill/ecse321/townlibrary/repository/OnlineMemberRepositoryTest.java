@@ -40,6 +40,7 @@ public class OnlineMemberRepositoryTest {
         me.setEmail("me@mail.ca");
         me.setUsername("myaccount");
         me.setAddress("101 sendhelp avenue");
+        me.setInTown(true);
         me.setLibrary(library);
         this.onlineMemberRepository.save(me);
         
@@ -50,6 +51,7 @@ public class OnlineMemberRepositoryTest {
         Assertions.assertEquals("myaccount", onlineMember.getUsername());
         Assertions.assertEquals(me.getId(), onlineMember.getId());
         Assertions.assertEquals("101 sendhelp avenue", onlineMember.getAddress());
+        Assertions.assertTrue(onlineMember.isInTown());
         Assertions.assertEquals(library.getId(), onlineMember.getLibrary().getId());
     }
 

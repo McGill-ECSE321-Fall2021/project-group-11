@@ -11,6 +11,8 @@ public class OnlineMember extends UserRole {
 
     private String password;
 
+    private boolean inTown;
+
     public String getEmail() {
         return email;
     }
@@ -35,4 +37,11 @@ public class OnlineMember extends UserRole {
         this.password = password;
     }
     
+    public boolean isInTown() {
+        return this.inTown;
+    }
+
+    public void setInTown(boolean flag) {
+        this.inTown = flag;
+    }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -85,6 +86,27 @@ public class OfflineMemberServiceTest {
         Assertions.assertEquals(lib.getId(), offlineMember.getLibrary().getId());
         Assertions.assertEquals(name, offlineMember.getName());
         Assertions.assertEquals(address, offlineMember.getAddress());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans={ true, false })
+    public void testSetOfflineMemberInTownStatus(boolean flag) {
+        // Artificially create a situation where only id 0 is bound to a
+        // offline member.
+        lenient().when(this.mockOfflineMemberRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(new OfflineMember()));
+
+        OfflineMember u;
+
+        u = this.offlineMemberService.setOfflineMemberInTownStatus(0, flag);
+        Assertions.assertEquals(flag, u.isInTown());
+
+        try {
+            u = this.offlineMemberService.setOfflineMemberInTownStatus(1, flag);
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("NOT-FOUND-OFFLINE-MEMBER", ex.getMessage());
+        }
     }
 
     @Test

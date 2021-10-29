@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Spy;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
@@ -160,6 +161,27 @@ public class OnlineMemberServiceTest {
         Assertions.assertEquals(email, onlineMember.getEmail());
         Assertions.assertEquals(username, onlineMember.getUsername());
         Assertions.assertEquals(password, onlineMember.getPassword());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans={ true, false })
+    public void testSetOnlineMemberInTownStatus(boolean flag) {
+        // Artificially create a situation where only id 0 is bound to a
+        // online member.
+        lenient().when(this.mockOnlineMemberRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(new OnlineMember()));
+
+        OnlineMember u;
+
+        u = this.onlineMemberService.setOnlineMemberInTownStatus(0, flag);
+        Assertions.assertEquals(flag, u.isInTown());
+
+        try {
+            u = this.onlineMemberService.setOnlineMemberInTownStatus(1, flag);
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("NOT-FOUND-ONLINE-MEMBER", ex.getMessage());
+        }
     }
 
     @Test
