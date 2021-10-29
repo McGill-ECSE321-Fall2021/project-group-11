@@ -36,4 +36,8 @@ public class Library {
     public void setHeadLibrarian(HeadLibrarian headLibrarian) {
         this.headLibrarian = headLibrarian;
     }
+
+    public boolean hasHeadLibrarian() {
+        return this.headLibrarian != null;
+    }
 }

@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
+import java.util.*;
+
 @Service
 public class LibrarianService {
 
@@ -50,5 +52,32 @@ public class LibrarianService {
         u.setLibrary(lib);
         this.librarianRepository.save(u);
         return u;
+    }
+
+    /**
+     * Retrieves a librarian by its id.
+     *
+     * Note that this method may also query a head librarian.
+     *
+     * @param id    The id
+     *
+     * @return      The librarian or null if no such id exists
+     */
+    @Transactional
+    public Librarian getLibrarian(int id) {
+        return this.librarianRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * Retrieves all the librarians registered under this system.
+     *
+     * @return all the librarians
+     */
+    @Transactional
+    public List<Librarian> getAllLibrarians() {
+        final ArrayList<Librarian> list = new ArrayList<>();
+        for (final Librarian u : this.librarianRepository.findAll())
+            list.add(u);
+        return list;
     }
 }

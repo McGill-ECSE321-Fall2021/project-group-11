@@ -11,13 +11,22 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
-import ca.mcgill.ecse321.townlibrary.repository.HeadLibrarianRepository;
+import ca.mcgill.ecse321.townlibrary.repository.*;
+
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class HeadLibrarianServiceTest {
 
     @Mock
     private HeadLibrarianRepository mockHeadLibrarianRepository;
+
+    @Mock
+    private LibraryRepository mockLibraryRepository;
 
     @InjectMocks
     private HeadLibrarianService headLibrarianService;
@@ -29,6 +38,21 @@ public class HeadLibrarianServiceTest {
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("NULL-LIBRARY", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testCreateHeadLibrarianDupHeadLibrarian() {
+        try {
+            // Artificially create a setting where the library already has a
+            // head librarian assigned to it.
+            final Library lib = new Library();
+            lib.setHeadLibrarian(new HeadLibrarian());
+
+            this.headLibrarianService.createHeadLibrarian(lib, "A", "B");
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("DUP-HEAD-LIBRARIAN", ex.getMessage());
         }
     }
 
@@ -79,5 +103,21 @@ public class HeadLibrarianServiceTest {
         Assertions.assertEquals(lib.getId(), librarian.getLibrary().getId());
         Assertions.assertEquals(name, librarian.getName());
         Assertions.assertEquals(address, librarian.getAddress());
+    }
+
+    @Test
+    public void testGetHeadLibrarian() {
+        // Artificially create a situation where only id 0 is bound to a
+        // head librarian.
+        lenient().when(this.mockHeadLibrarianRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(new HeadLibrarian()));
+
+        HeadLibrarian u;
+
+        u = this.headLibrarianService.getHeadLibrarian(0);
+        Assertions.assertEquals(0, u.getId());
+
+        u = this.headLibrarianService.getHeadLibrarian(4);
+        Assertions.assertNull(u);
     }
 }

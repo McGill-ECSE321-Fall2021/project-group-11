@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
+import java.util.*;
+
 @Service
 public class OnlineMemberService {
 
@@ -74,5 +76,30 @@ public class OnlineMemberService {
         u.setPassword(password);
         this.onlineMemberRepository.save(u);
         return u;
+    }
+
+    /**
+     * Retrieves a online member by its id.
+     *
+     * @param id    The id
+     *
+     * @return      The online member or null if no such id exists
+     */
+    @Transactional
+    public OnlineMember getOnlineMember(int id) {
+        return this.onlineMemberRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * Retrieves all the online members registered under this system.
+     *
+     * @return all the online members
+     */
+    @Transactional
+    public List<OnlineMember> getAllOnlineMembers() {
+        final ArrayList<OnlineMember> list = new ArrayList<>();
+        for (final OnlineMember u : this.onlineMemberRepository.findAll())
+            list.add(u);
+        return list;
     }
 }

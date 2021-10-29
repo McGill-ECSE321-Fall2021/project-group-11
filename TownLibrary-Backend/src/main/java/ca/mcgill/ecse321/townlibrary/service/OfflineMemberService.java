@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
+import java.util.*;
+
 @Service
 public class OfflineMemberService {
 
@@ -50,5 +52,30 @@ public class OfflineMemberService {
         u.setLibrary(lib);
         this.offlineMemberRepository.save(u);
         return u;
+    }
+
+    /**
+     * Retrieves a offline member by its id.
+     *
+     * @param id    The id
+     *
+     * @return      The offline member or null if no such id exists
+     */
+    @Transactional
+    public OfflineMember getOfflineMember(int id) {
+        return this.offlineMemberRepository.findById(id).orElse(null);
+    }
+
+    /**
+     * Retrieves all the offline members registered under this system.
+     *
+     * @return all the offline members
+     */
+    @Transactional
+    public List<OfflineMember> getAllOfflineMembers() {
+        final ArrayList<OfflineMember> list = new ArrayList<>();
+        for (final OfflineMember u : this.offlineMemberRepository.findAll())
+            list.add(u);
+        return list;
     }
 }
