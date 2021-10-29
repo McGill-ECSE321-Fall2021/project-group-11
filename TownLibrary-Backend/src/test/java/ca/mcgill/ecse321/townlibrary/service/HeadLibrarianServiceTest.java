@@ -11,13 +11,16 @@ import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import ca.mcgill.ecse321.townlibrary.model.*;
-import ca.mcgill.ecse321.townlibrary.repository.HeadLibrarianRepository;
+import ca.mcgill.ecse321.townlibrary.repository.*;
 
 @ExtendWith(MockitoExtension.class)
 public class HeadLibrarianServiceTest {
 
     @Mock
     private HeadLibrarianRepository mockHeadLibrarianRepository;
+
+    @Mock
+    private LibraryRepository mockLibraryRepository;
 
     @InjectMocks
     private HeadLibrarianService headLibrarianService;
@@ -29,6 +32,21 @@ public class HeadLibrarianServiceTest {
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("NULL-LIBRARY", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testCreateHeadLibrarianDupHeadLibrarian() {
+        try {
+            // Artificially create a setting where the library already has a
+            // head librarian assigned to it.
+            final Library lib = new Library();
+            lib.setHeadLibrarian(new HeadLibrarian());
+
+            this.headLibrarianService.createHeadLibrarian(lib, "A", "B");
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("DUP-HEAD-LIBRARIAN", ex.getMessage());
         }
     }
 

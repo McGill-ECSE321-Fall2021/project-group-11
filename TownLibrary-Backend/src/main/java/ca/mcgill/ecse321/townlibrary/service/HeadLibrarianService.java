@@ -13,6 +13,9 @@ public class HeadLibrarianService {
     @Autowired
     private HeadLibrarianRepository headLibrarianRepository;
 
+    @Autowired
+    private LibraryRepository libraryRepository;
+
     /**
      * Creates a head librarian
      *
@@ -29,6 +32,8 @@ public class HeadLibrarianService {
         final StringBuilder errmsg = new StringBuilder();
         if (lib == null)
             errmsg.append("NULL-LIBRARY,");
+        if (lib != null && lib.hasHeadLibrarian())
+            errmsg.append("DUP-HEAD-LIBRARIAN,");
         if (name != null)
             name = name.trim();
         if (name == null || name.isEmpty())
@@ -37,8 +42,6 @@ public class HeadLibrarianService {
             address = address.trim();
         if (address == null || address.isEmpty())
             errmsg.append("EMPTY-ADDRESS,");
-
-        // XXX: Uniqueness of such librarian?
 
         if (errmsg.length() != 0) {
             // Delete the trailing ","
@@ -51,6 +54,11 @@ public class HeadLibrarianService {
         u.setAddress(address);
         u.setLibrary(lib);
         this.headLibrarianRepository.save(u);
+
+        // update the head librarian in the library-side as well
+        lib.setHeadLibrarian(u);
+        this.libraryRepository.save(lib);
+
         return u;
     }
 }
