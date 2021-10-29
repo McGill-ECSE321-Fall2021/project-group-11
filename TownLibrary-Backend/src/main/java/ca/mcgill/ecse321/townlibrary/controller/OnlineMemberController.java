@@ -54,4 +54,18 @@ public class OnlineMemberController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping(value={ "/auth/online-members/{username}", "/auth/online-members/{username}/"})
+    public ResponseEntity<?> authOnlineMember(
+            @PathVariable("username") String username,
+            @RequestParam String password) {
+
+        final OnlineMember u = this.onlineMemberService.getOnlineMemberByUsername(username);
+        if (u != null && u.getPassword().equals(password))
+            return ResponseEntity.ok(OnlineMemberDTO.fromModel(u));
+
+        // Working under the assumption that no-user-exists and
+        // incorrect-password should both report incorrect-credential or sth.
+        return ResponseEntity.badRequest().body("BAD-AUTH-ONLINE-MEMBER");
+    }
 }

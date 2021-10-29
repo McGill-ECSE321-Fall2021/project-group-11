@@ -9,6 +9,7 @@ public final class HeadLibrarianDTO {
 
     public String name;
     public String address;
+    // password intentionally omitted
 
     public Integer libraryId;
 

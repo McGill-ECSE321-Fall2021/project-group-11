@@ -26,6 +26,7 @@ public class LibrarianRepositoryTest {
         // Test writes
         final Librarian jeb = new Librarian();
         jeb.setName("Jeb Deb");
+        jeb.setPassword("jeb123");
         librarianRepository.save(jeb);
 
         final Librarian jim = new Librarian();
@@ -42,6 +43,7 @@ public class LibrarianRepositoryTest {
         // Test queries
         lbr = librarianRepository.findLibrarianById(jeb.getId());
         Assertions.assertEquals(jeb.getId(), lbr.getId());
+        Assertions.assertEquals(jeb.getPassword(), lbr.getPassword());
 
         l = librarianRepository.findByNameContaining("im");
         Assertions.assertEquals(2, l.size());

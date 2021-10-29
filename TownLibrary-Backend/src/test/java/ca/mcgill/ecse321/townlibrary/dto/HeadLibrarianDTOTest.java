@@ -13,6 +13,7 @@ public class HeadLibrarianDTOTest {
         u.setId(100);
         u.setName("Joe Schmoe");
         u.setAddress("123 FooBar Street");
+        u.setPassword("Foobar123");
 
         HeadLibrarianDTO dto;
 

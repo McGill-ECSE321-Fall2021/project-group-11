@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.EmptySource;
+import org.mockito.Spy;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,13 +29,16 @@ public class HeadLibrarianServiceTest {
     @Mock
     private LibraryRepository mockLibraryRepository;
 
+    @Spy
+    private PasswordValidator passwordValidator;
+
     @InjectMocks
     private HeadLibrarianService headLibrarianService;
 
     @Test
     public void testCreateHeadLibrarianNullLib() {
         try {
-            this.headLibrarianService.createHeadLibrarian(null, "A", "B");
+            this.headLibrarianService.createHeadLibrarian(null, "A", "B", "foo1245");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("NULL-LIBRARY", ex.getMessage());
@@ -49,7 +53,7 @@ public class HeadLibrarianServiceTest {
             final Library lib = new Library();
             lib.setHeadLibrarian(new HeadLibrarian());
 
-            this.headLibrarianService.createHeadLibrarian(lib, "A", "B");
+            this.headLibrarianService.createHeadLibrarian(lib, "A", "B", "foo1245");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("DUP-HEAD-LIBRARIAN", ex.getMessage());
@@ -61,7 +65,7 @@ public class HeadLibrarianServiceTest {
     @EmptySource
     public void testCreateHeadLibrarianEmptyName(String name) {
         try {
-            this.headLibrarianService.createHeadLibrarian(new Library(), name, "B");
+            this.headLibrarianService.createHeadLibrarian(new Library(), name, "B", "foo1245");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-NAME", ex.getMessage());
@@ -73,10 +77,21 @@ public class HeadLibrarianServiceTest {
     @EmptySource
     public void testCreateHeadLibrarianEmptyAddress(String address) {
         try {
-            this.headLibrarianService.createHeadLibrarian(new Library(), "A", address);
+            this.headLibrarianService.createHeadLibrarian(new Library(), "A", address, "foo1245");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-ADDRESS", ex.getMessage());
+        }
+    }
+
+    @ParameterizedTest
+    @NullSource
+    public void testCreateHeadLibrarianEmptyPassword(String password) {
+        try {
+            this.headLibrarianService.createHeadLibrarian(new Library(), "A", "B", password);
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("EMPTY-PASSWORD", ex.getMessage());
         }
     }
 
@@ -86,7 +101,7 @@ public class HeadLibrarianServiceTest {
         // get all the causes.
 
         try {
-            this.headLibrarianService.createHeadLibrarian(new Library(), null, null);
+            this.headLibrarianService.createHeadLibrarian(new Library(), null, null, "foo1245");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-NAME,EMPTY-ADDRESS", ex.getMessage());
@@ -98,11 +113,13 @@ public class HeadLibrarianServiceTest {
         final Library lib = new Library();
         final String name = "Joe Schmoe";
         final String address = "333 Rue University";
+        final String password = "foo1245";
 
-        final HeadLibrarian librarian = this.headLibrarianService.createHeadLibrarian(lib, name, address);
+        final HeadLibrarian librarian = this.headLibrarianService.createHeadLibrarian(lib, name, address, password);
         Assertions.assertEquals(lib.getId(), librarian.getLibrary().getId());
         Assertions.assertEquals(name, librarian.getName());
         Assertions.assertEquals(address, librarian.getAddress());
+        Assertions.assertEquals(password, librarian.getPassword());
     }
 
     @Test

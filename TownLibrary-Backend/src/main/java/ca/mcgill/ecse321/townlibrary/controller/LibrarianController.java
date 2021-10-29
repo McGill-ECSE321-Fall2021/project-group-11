@@ -43,15 +43,30 @@ public class LibrarianController {
     @PostMapping(value={ "/librarians/{name}", "/librarians/{name}/" })
     public ResponseEntity<?> createLibrarian(
             @PathVariable("name") String name,
+            @RequestParam String password,
             @RequestParam String address,
             @RequestParam int library) {
 
         try {
             final Library lib = this.libraryService.getLibrary(library);
-            final Librarian u = this.librarianService.createLibrarian(lib, name, address);
+            final Librarian u = this.librarianService.createLibrarian(lib, name, address, password);
             return ResponseEntity.ok().body(LibrarianDTO.fromModel(u));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @PostMapping(value={ "/auth/librarians/{id}", "/auth/librarians/{id}/" })
+    public ResponseEntity<?> authLibrarian(
+            @PathVariable("id") int id,
+            @RequestParam String password) {
+
+        final Librarian u = this.librarianService.getLibrarian(id);
+        if (u != null && u.getPassword().equals(password))
+            return ResponseEntity.ok(LibrarianDTO.fromModel(u));
+
+        // Working under the assumption that no-user-exists and
+        // incorrect-password should both report incorrect-credential or sth.
+        return ResponseEntity.badRequest().body("BAD-AUTH-LIBRARIAN");
     }
 }

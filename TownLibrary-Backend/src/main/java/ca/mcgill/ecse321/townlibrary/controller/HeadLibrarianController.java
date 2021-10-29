@@ -40,15 +40,30 @@ public class HeadLibrarianController {
     @PostMapping(value={ "/head-librarians/{name}", "/head-librarians/{name}/" })
     public ResponseEntity<?> createHeadLibrarian(
             @PathVariable("name") String name,
+            @RequestParam String password,
             @RequestParam String address,
             @RequestParam int library) {
 
         try {
             final Library lib = this.libraryService.getLibrary(library);
-            final HeadLibrarian u = this.headLibrarianService.createHeadLibrarian(lib, name, address);
+            final HeadLibrarian u = this.headLibrarianService.createHeadLibrarian(lib, name, address, password);
             return ResponseEntity.ok().body(HeadLibrarianDTO.fromModel(u));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @PostMapping(value={ "/auth/head-librarians/{id}", "/auth/head-librarians/{id}/" })
+    public ResponseEntity<?> authHeadLibrarian(
+            @PathVariable("id") int id,
+            @RequestParam String password) {
+
+        final HeadLibrarian u = this.headLibrarianService.getHeadLibrarian(id);
+        if (u != null && u.getPassword().equals(password))
+            return ResponseEntity.ok(HeadLibrarianDTO.fromModel(u));
+
+        // Working under the assumption that no-user-exists and
+        // incorrect-password should both report incorrect-credential or sth.
+        return ResponseEntity.badRequest().body("BAD-AUTH-HEAD-LIBRARIAN");
     }
 }

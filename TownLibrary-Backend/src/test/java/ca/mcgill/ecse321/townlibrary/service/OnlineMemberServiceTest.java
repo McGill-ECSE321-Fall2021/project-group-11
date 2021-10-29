@@ -80,6 +80,20 @@ public class OnlineMemberServiceTest {
         }
     }
 
+    @Test
+    public void testCreateOnlineMemberEmailTaken() {
+        // Artificially create a situation where foo@bar.com is already taken.
+        final String email = "foo@bar.com";
+        lenient().when(this.mockOnlineMemberRepository.findByEmail(email))
+                .thenAnswer(invocation -> new OnlineMember());
+        try {
+            this.onlineMemberService.createOnlineMember(new Library(), "A", "b", email, "foobar", "aaabbb");
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("DUP-EMAIL", ex.getMessage());
+        }
+    }
+
     @ParameterizedTest
     @NullSource
     @EmptySource
@@ -89,6 +103,20 @@ public class OnlineMemberServiceTest {
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-USERNAME", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testCreateOnlineMemberUsernameTaken() {
+        // Artificially create a situation where FooMan123 is already taken.
+        final String username = "FooMan123";
+        lenient().when(this.mockOnlineMemberRepository.findByUsername(username))
+                .thenAnswer(invocation -> new OnlineMember());
+        try {
+            this.onlineMemberService.createOnlineMember(new Library(), "A", "b", "a.b@ab.com", username, "aaabbb");
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("DUP-USERNAME", ex.getMessage());
         }
     }
 
@@ -147,6 +175,22 @@ public class OnlineMemberServiceTest {
         Assertions.assertEquals(0, u.getId());
 
         u = this.onlineMemberService.getOnlineMember(4);
+        Assertions.assertNull(u);
+    }
+
+    @Test
+    public void testGetOnlineMemberByUsername() {
+        // Artificially create a situation where only FooMan321 is bound to a
+        // online member.
+        lenient().when(this.mockOnlineMemberRepository.findByUsername("FooMan321"))
+                .thenAnswer(invocation -> new OnlineMember());
+
+        OnlineMember u;
+
+        u = this.onlineMemberService.getOnlineMemberByUsername("FooMan321");
+        Assertions.assertEquals(0, u.getId());
+
+        u = this.onlineMemberService.getOnlineMemberByUsername("FooMan123");
         Assertions.assertNull(u);
     }
 }
