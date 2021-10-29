@@ -59,7 +59,6 @@ public class HeadLibrarianService {
 
         // update the head librarian in the library-side as well
         lib.setHeadLibrarian(u);
-        lib.setAddress(null);
         this.libraryRepository.save(lib);
 
         return u;
