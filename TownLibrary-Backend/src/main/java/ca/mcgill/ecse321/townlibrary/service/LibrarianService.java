@@ -76,6 +76,24 @@ public class LibrarianService {
     }
 
     /**
+     * Authenticates a librarian by its id and password.
+     *
+     * Note that this method may also be used to on a head librarian.
+     *
+     * @param id        The id
+     * @param password  The password
+     *
+     * @return          true if credentials are correct, false otherwise
+     */
+    @Transactional
+    public boolean authenticateLibrarian(int id, String password) {
+        return this.librarianRepository.findById(id)
+                .map(Librarian::getPassword)
+                .map(p -> p.equals(password))
+                .orElse(false);
+    }
+
+    /**
      * Retrieves all the librarians registered under this system.
      *
      * @return all the librarians

@@ -61,12 +61,10 @@ public class LibrarianController {
             @PathVariable("id") int id,
             @RequestParam String password) {
 
-        final Librarian u = this.librarianService.getLibrarian(id);
-        if (u != null && u.getPassword().equals(password))
-            return ResponseEntity.ok(LibrarianDTO.fromModel(u));
+        if (!this.librarianService.authenticateLibrarian(id, password))
+            return ResponseEntity.badRequest().body("BAD-ACCESS");
 
-        // Working under the assumption that no-user-exists and
-        // incorrect-password should both report incorrect-credential or sth.
-        return ResponseEntity.badRequest().body("BAD-AUTH-LIBRARIAN");
+        final Librarian u = this.librarianService.getLibrarian(id);
+        return ResponseEntity.ok(LibrarianDTO.fromModel(u));
     }
 }

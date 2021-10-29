@@ -44,11 +44,11 @@ public class OfflineMemberController {
     public ResponseEntity<?> setOfflineMemberInTownStatus(
             @PathVariable("id") int id,
             @RequestParam boolean value,
-            @RequestParam int initiator) {
+            @RequestParam int initId,
+            @RequestParam String initPass) {
 
         try {
-            final Librarian librarian = this.librarianService.getLibrarian(initiator);
-            if (librarian == null)
+            if (!this.librarianService.authenticateLibrarian(initId, initPass))
                 return ResponseEntity.badRequest().body("BAD-ACCESS");
 
             final OfflineMember u = this.offlineMemberService.setOfflineMemberInTownStatus(id, value);
@@ -63,11 +63,11 @@ public class OfflineMemberController {
             @PathVariable("name") String name,
             @RequestParam String address,
             @RequestParam int library,
-            @RequestParam int initiator) {
+            @RequestParam int initId,
+            @RequestParam String initPass) {
 
         try {
-            final Librarian librarian = this.librarianService.getLibrarian(initiator);
-            if (librarian == null)
+            if (!this.librarianService.authenticateLibrarian(initId, initPass))
                 return ResponseEntity.badRequest().body("BAD-ACCESS");
 
             final Library lib = this.libraryService.getLibrary(library);

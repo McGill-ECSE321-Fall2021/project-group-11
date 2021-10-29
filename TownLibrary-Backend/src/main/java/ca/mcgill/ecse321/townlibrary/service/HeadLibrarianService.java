@@ -84,6 +84,22 @@ public class HeadLibrarianService {
     }
 
     /**
+     * Authenticates a head librarian by its id and password.
+     *
+     * @param id        The id
+     * @param password  The password
+     *
+     * @return          true if credentials are correct, false otherwise
+     */
+    @Transactional
+    public boolean authenticateHeadLibrarian(int id, final String password) {
+        return this.headLibrarianRepository.findById(id)
+                .map(Librarian::getPassword)
+                .map(p -> p.equals(password))
+                .orElse(false);
+    }
+
+    /**
      * Retrieves all the head librarians registered under this system.
      *
      * @return all the head librarians

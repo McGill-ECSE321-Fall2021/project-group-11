@@ -62,11 +62,11 @@ public class OnlineMemberController {
     public ResponseEntity<?> setOnlineMemberInTownStatus(
             @PathVariable("id") int id,
             @RequestParam boolean value,
-            @RequestParam int initiator) {
+            @RequestParam int initId,
+            @RequestParam String initPass) {
 
         try {
-            final Librarian librarian = this.librarianService.getLibrarian(initiator);
-            if (librarian == null)
+            if (!this.librarianService.authenticateLibrarian(initId, initPass))
                 return ResponseEntity.badRequest().body("BAD-ACCESS");
 
             final OnlineMember u = this.onlineMemberService.setOnlineMemberInTownStatus(id, value);
