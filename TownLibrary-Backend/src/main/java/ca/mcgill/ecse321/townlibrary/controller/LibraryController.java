@@ -26,6 +26,15 @@ public class LibraryController {
         return ResponseEntity.ok(libs);
     }
 
+    @GetMapping(value={ "/libraries/{id}", "/libraries/{id}/" })
+    public ResponseEntity<?> getLibraryById(
+            @PathVariable("id") int id) {
+        final Library lib = this.libraryService.getLibrary(id);
+        if (lib == null)
+            return ResponseEntity.badRequest().body("NOT-FOUND-LIBRARY");
+        return ResponseEntity.ok(LibraryDTO.fromModel(lib));
+    }
+
     @PostMapping(value={ "/libraries/{id}", "/libraries/{id}/" })
     public ResponseEntity<?> createLibrary(
             @PathVariable("id") int id,
