@@ -54,11 +54,12 @@ public class OnlineMemberService {
             username = username.trim();
         if (username == null || username.isEmpty())
             errmsg.append("EMPTY-USERNAME,");
+        else if (this.onlineMemberRepository.findByUsername(username) != null)
+            errmsg.append("DUP-USERNAME,");
 
-        // XXX: Uniqueness of username?
-        // XXX: Uniqueness of email?
-
-        this.emailValidator.validateEmailCriteria(email, msg -> errmsg.append(msg).append(','));
+        if (this.emailValidator.validateEmailCriteria(email, msg -> errmsg.append(msg).append(',')))
+            if (this.onlineMemberRepository.findByEmail(email) != null)
+                errmsg.append("DUP-EMAIL,");
         this.passwordValidator.validatePasswordCriteria(password, msg -> errmsg.append(msg).append(','));
 
         if (errmsg.length() != 0) {

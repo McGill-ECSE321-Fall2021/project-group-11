@@ -80,6 +80,20 @@ public class OnlineMemberServiceTest {
         }
     }
 
+    @Test
+    public void testCreateOnlineMemberEmailTaken() {
+        // Artificially create a situation where foo@bar.com is already taken.
+        final String email = "foo@bar.com";
+        lenient().when(this.mockOnlineMemberRepository.findByEmail(email))
+                .thenAnswer(invocation -> new OnlineMember());
+        try {
+            this.onlineMemberService.createOnlineMember(new Library(), "A", "b", email, "foobar", "aaabbb");
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("DUP-EMAIL", ex.getMessage());
+        }
+    }
+
     @ParameterizedTest
     @NullSource
     @EmptySource
@@ -89,6 +103,20 @@ public class OnlineMemberServiceTest {
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-USERNAME", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void testCreateOnlineMemberUsernameTaken() {
+        // Artificially create a situation where FooMan123 is already taken.
+        final String username = "FooMan123";
+        lenient().when(this.mockOnlineMemberRepository.findByUsername(username))
+                .thenAnswer(invocation -> new OnlineMember());
+        try {
+            this.onlineMemberService.createOnlineMember(new Library(), "A", "b", "a.b@ab.com", username, "aaabbb");
+            Assertions.fail(); // should have thrown
+        } catch (IllegalArgumentException ex) {
+            Assertions.assertEquals("DUP-USERNAME", ex.getMessage());
         }
     }
 
