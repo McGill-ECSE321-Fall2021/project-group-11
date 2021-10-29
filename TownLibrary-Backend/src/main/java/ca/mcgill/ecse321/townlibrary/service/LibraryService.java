@@ -55,6 +55,7 @@ public class LibraryService {
      *
      * @return      The library or null if no such id exists
      */
+    @Transactional
     public Library getLibrary(int id) {
         return this.libraryRepository.findById(id).orElse(null);
     }
