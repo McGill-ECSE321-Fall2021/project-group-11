@@ -40,12 +40,13 @@ public class HeadLibrarianController {
     @PostMapping(value={ "/head-librarians/{name}", "/head-librarians/{name}/" })
     public ResponseEntity<?> createHeadLibrarian(
             @PathVariable("name") String name,
+            @RequestParam String password,
             @RequestParam String address,
             @RequestParam int library) {
 
         try {
             final Library lib = this.libraryService.getLibrary(library);
-            final HeadLibrarian u = this.headLibrarianService.createHeadLibrarian(lib, name, address);
+            final HeadLibrarian u = this.headLibrarianService.createHeadLibrarian(lib, name, address, password);
             return ResponseEntity.ok().body(HeadLibrarianDTO.fromModel(u));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

@@ -43,12 +43,13 @@ public class LibrarianController {
     @PostMapping(value={ "/librarians/{name}", "/librarians/{name}/" })
     public ResponseEntity<?> createLibrarian(
             @PathVariable("name") String name,
+            @RequestParam String password,
             @RequestParam String address,
             @RequestParam int library) {
 
         try {
             final Library lib = this.libraryService.getLibrary(library);
-            final Librarian u = this.librarianService.createLibrarian(lib, name, address);
+            final Librarian u = this.librarianService.createLibrarian(lib, name, address, password);
             return ResponseEntity.ok().body(LibrarianDTO.fromModel(u));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

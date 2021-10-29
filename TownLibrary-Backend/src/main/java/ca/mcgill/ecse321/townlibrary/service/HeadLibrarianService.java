@@ -18,19 +18,23 @@ public class HeadLibrarianService {
     @Autowired
     private LibraryRepository libraryRepository;
 
+    @Autowired
+    private PasswordValidator passwordValidator;
+
     /**
      * Creates a head librarian
      *
      * @param lib       The library (non-null)
      * @param name      The head librarian's name (non-empty)
      * @param address   The head librarian's address (non-empty)
+     * @param password  The member's password (see {@link PasswordValidator#validatePasswordCriteria(String)})
      *
      * @return          The head librarian instance
      *
      * @throws IllegalArgumentException problems with the arguments (comma separated)
      */
     @Transactional
-    public HeadLibrarian createHeadLibrarian(Library lib, String name, String address) {
+    public HeadLibrarian createHeadLibrarian(Library lib, String name, String address, String password) {
         final StringBuilder errmsg = new StringBuilder();
         if (lib == null)
             errmsg.append("NULL-LIBRARY,");
@@ -45,6 +49,8 @@ public class HeadLibrarianService {
         if (address == null || address.isEmpty())
             errmsg.append("EMPTY-ADDRESS,");
 
+        this.passwordValidator.validatePasswordCriteria(password, msg -> errmsg.append(msg).append(','));
+
         if (errmsg.length() != 0) {
             // Delete the trailing ","
             errmsg.deleteCharAt(errmsg.length() - 1);
@@ -54,6 +60,7 @@ public class HeadLibrarianService {
         final HeadLibrarian u = new HeadLibrarian();
         u.setName(name);
         u.setAddress(address);
+        u.setPassword(password);
         u.setLibrary(lib);
         this.headLibrarianRepository.save(u);
 
