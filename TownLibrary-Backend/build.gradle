@@ -21,7 +21,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.mockito:mockito-core:2.+'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter-params' // for parameterized tests
 
 	// Stuff specific to the local profile -- specified by
 	// application-local.properties -- such as:
