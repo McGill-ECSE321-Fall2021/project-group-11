@@ -80,6 +80,25 @@ public class OnlineMemberService {
     }
 
     /**
+     * Sets the in town field of a online member
+     *
+     * @param id    The id
+     * @param flag  The new field value
+     *
+     * @return      The online member after patching
+     */
+    @Transactional
+    public OnlineMember setOnlineMemberInTownStatus(int id, boolean flag) {
+        final OnlineMember u = this.onlineMemberRepository.findById(id).orElse(null);
+        if (u == null)
+            throw new IllegalArgumentException("NOT-FOUND-ONLINE-MEMBER");
+
+        u.setInTown(flag);
+        this.onlineMemberRepository.save(u);
+        return u;
+    }
+
+    /**
      * Retrieves a online member by its id.
      *
      * @param id    The id

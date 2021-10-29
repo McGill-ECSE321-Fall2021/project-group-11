@@ -40,6 +40,24 @@ public class OfflineMemberController {
         return ResponseEntity.ok(OfflineMemberDTO.fromModel(u));
     }
 
+    @PatchMapping(value={ "/offline-members/{id}/in-town", "/offline-members/{id}/in-town/" })
+    public ResponseEntity<?> setOfflineMemberInTownStatus(
+            @PathVariable("id") int id,
+            @RequestParam boolean value,
+            @RequestParam int initiator) {
+
+        try {
+            final Librarian librarian = this.librarianService.getLibrarian(initiator);
+            if (librarian == null)
+                return ResponseEntity.badRequest().body("BAD-ACCESS");
+
+            final OfflineMember u = this.offlineMemberService.setOfflineMemberInTownStatus(id, value);
+            return ResponseEntity.ok(OfflineMemberDTO.fromModel(u));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+
     @PostMapping(value={ "/offline-members/{name}", "/offline-members/{name}/" })
     public ResponseEntity<?> createOfflineMember(
             @PathVariable("name") String name,
