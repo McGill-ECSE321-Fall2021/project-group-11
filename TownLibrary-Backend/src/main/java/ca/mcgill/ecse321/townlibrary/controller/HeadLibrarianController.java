@@ -52,4 +52,18 @@ public class HeadLibrarianController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
     }
+
+    @PostMapping(value={ "/auth/head-librarians/{id}", "/auth/head-librarians/{id}/" })
+    public ResponseEntity<?> authHeadLibrarian(
+            @PathVariable("id") int id,
+            @RequestParam String password) {
+
+        final HeadLibrarian u = this.headLibrarianService.getHeadLibrarian(id);
+        if (u != null && u.getPassword().equals(password))
+            return ResponseEntity.ok(HeadLibrarianDTO.fromModel(u));
+
+        // Working under the assumption that no-user-exists and
+        // incorrect-password should both report incorrect-credential or sth.
+        return ResponseEntity.badRequest().body("BAD-AUTH-HEAD-LIBRARIAN");
+    }
 }
