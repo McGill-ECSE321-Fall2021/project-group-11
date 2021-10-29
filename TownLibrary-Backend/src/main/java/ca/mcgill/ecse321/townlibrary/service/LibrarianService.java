@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
+import java.util.*;
+
 @Service
 public class LibrarianService {
 
@@ -50,5 +52,13 @@ public class LibrarianService {
         u.setLibrary(lib);
         this.librarianRepository.save(u);
         return u;
+    }
+
+    @Transactional
+    public List<Librarian> getAllLibrarians() {
+        final ArrayList<Librarian> list = new ArrayList<>();
+        for (final Librarian u : this.librarianRepository.findAll())
+            list.add(u);
+        return list;
     }
 }

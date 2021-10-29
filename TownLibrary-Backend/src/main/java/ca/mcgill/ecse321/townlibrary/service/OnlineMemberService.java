@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
+import java.util.*;
+
 @Service
 public class OnlineMemberService {
 
@@ -74,5 +76,13 @@ public class OnlineMemberService {
         u.setPassword(password);
         this.onlineMemberRepository.save(u);
         return u;
+    }
+
+    @Transactional
+    public List<OnlineMember> getAllOnlineMembers() {
+        final ArrayList<OnlineMember> list = new ArrayList<>();
+        for (final OnlineMember u : this.onlineMemberRepository.findAll())
+            list.add(u);
+        return list;
     }
 }
