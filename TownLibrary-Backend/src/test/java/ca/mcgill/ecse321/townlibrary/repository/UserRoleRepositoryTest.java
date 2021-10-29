@@ -26,14 +26,17 @@ public class UserRoleRepositoryTest {
         // Setup some dummy users (of various subclasses)
         final OfflineMember joe = new OfflineMember();
         joe.setName("Joe Schmoe");
+        joe.setInTown(true);
         this.userRoleRepository.save(joe);
 
         final Librarian john = new Librarian();
         john.setName("John Doe");
+        john.setInTown(true);
         this.userRoleRepository.save(john);
 
         final OfflineMember bob = new OfflineMember();
         bob.setName("Bob");
+        bob.setInTown(false); // maybe he likes the out-of-town experience!
         this.userRoleRepository.save(bob);
 
         // Query these dummy users
@@ -41,6 +44,12 @@ public class UserRoleRepositoryTest {
         ret = this.userRoleRepository.findByNameContaining("Bob");
         Assertions.assertEquals(1, ret.size());
         Assertions.assertEquals(bob.getId(), ret.get(0).getId());
+        Assertions.assertFalse(bob.isInTown());
+
+        ret = this.userRoleRepository.findByNameContaining("Joe");
+        Assertions.assertEquals(1, ret.size());
+        Assertions.assertEquals(joe.getId(), ret.get(0).getId());
+        Assertions.assertTrue(joe.isInTown());
 
         ret = this.userRoleRepository.findByNameContaining("oe");
         Assertions.assertEquals(2, ret.size());

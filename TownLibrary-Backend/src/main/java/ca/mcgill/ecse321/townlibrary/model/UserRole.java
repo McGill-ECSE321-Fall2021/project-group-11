@@ -10,6 +10,7 @@ public abstract class UserRole {
     private String name;
 
     private String address;
+    private boolean inTown;
 
     private Library library;
 
@@ -41,6 +42,14 @@ public abstract class UserRole {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public boolean isInTown() {
+        return this.inTown;
+    }
+
+    public void setInTown(boolean inTown) {
+        this.inTown = inTown;
     }
 
     @ManyToOne
