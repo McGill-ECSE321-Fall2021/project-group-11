@@ -23,3 +23,4 @@ D1-4 Represents individual efforts (in hours) for each deliverable.
 
 ## Reports
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2021/project-group-11/wiki/Deliverable-1)
+[Deliverable 2](https://github.com/McGill-ECSE321-Fall2021/project-group-11/wiki/Deliverable-2)
