@@ -58,7 +58,7 @@ public class OnlineMemberController {
         }
     }
 
-    @PatchMapping(value={ "/online-members/{id}/in-town", "/online-members/{id}/in-town/" })
+    @PutMapping(value={ "/online-members/{id}/in-town", "/online-members/{id}/in-town/" })
     public ResponseEntity<?> setOnlineMemberInTownStatus(
             @PathVariable("id") int id,
             @RequestParam boolean value,

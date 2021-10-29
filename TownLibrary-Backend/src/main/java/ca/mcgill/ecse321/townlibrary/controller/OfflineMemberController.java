@@ -40,7 +40,7 @@ public class OfflineMemberController {
         return ResponseEntity.ok(OfflineMemberDTO.fromModel(u));
     }
 
-    @PatchMapping(value={ "/offline-members/{id}/in-town", "/offline-members/{id}/in-town/" })
+    @PutMapping(value={ "/offline-members/{id}/in-town", "/offline-members/{id}/in-town/" })
     public ResponseEntity<?> setOfflineMemberInTownStatus(
             @PathVariable("id") int id,
             @RequestParam boolean value,
