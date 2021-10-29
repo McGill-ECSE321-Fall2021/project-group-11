@@ -54,6 +54,18 @@ public class OfflineMemberService {
         return u;
     }
 
+    /**
+     * Retrieves a offline member by its id.
+     *
+     * @param id    The id
+     *
+     * @return      The offline member or null if no such id exists
+     */
+    @Transactional
+    public OfflineMember getOfflineMember(int id) {
+        return this.offlineMemberRepository.findById(id).orElse(null);
+    }
+
     @Transactional
     public List<OfflineMember> getAllOfflineMembers() {
         final ArrayList<OfflineMember> list = new ArrayList<>();

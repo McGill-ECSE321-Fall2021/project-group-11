@@ -64,6 +64,18 @@ public class HeadLibrarianService {
         return u;
     }
 
+    /**
+     * Retrieves a head librarian by its id.
+     *
+     * @param id    The id
+     *
+     * @return      The head librarian or null if no such id exists
+     */
+    @Transactional
+    public HeadLibrarian getHeadLibrarian(int id) {
+        return this.headLibrarianRepository.findById(id).orElse(null);
+    }
+
     @Transactional
     public List<HeadLibrarian> getAllHeadLibrarians() {
         final ArrayList<HeadLibrarian> list = new ArrayList<>();

@@ -78,6 +78,18 @@ public class OnlineMemberService {
         return u;
     }
 
+    /**
+     * Retrieves a online member by its id.
+     *
+     * @param id    The id
+     *
+     * @return      The online member or null if no such id exists
+     */
+    @Transactional
+    public OnlineMember getOnlineMember(int id) {
+        return this.onlineMemberRepository.findById(id).orElse(null);
+    }
+
     @Transactional
     public List<OnlineMember> getAllOnlineMembers() {
         final ArrayList<OnlineMember> list = new ArrayList<>();

@@ -29,6 +29,14 @@ public class LibrarianController {
         return ResponseEntity.ok().body(us);
     }
 
+    @GetMapping(value={ "/librarians/{id}", "/librarians/{id}/" })
+    public ResponseEntity<?> getLibrarian(@PathVariable("id") int id)  {
+        final Librarian u = this.librarianService.getLibrarian(id);
+        if (u == null)
+            return ResponseEntity.badRequest().body("NOT-FOUND-LIBRARIAN");
+        return ResponseEntity.ok(LibrarianDTO.fromModel(u));
+    }
+
     // XXX: Which one between
     // *  /librarians/{name}?library={id}
     // *  /libraries/{id}/librarians/{name}

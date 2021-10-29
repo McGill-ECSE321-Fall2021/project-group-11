@@ -13,6 +13,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.OfflineMemberRepository;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 public class OfflineMemberServiceTest {
 
@@ -20,12 +26,12 @@ public class OfflineMemberServiceTest {
     private OfflineMemberRepository mockOfflineMemberRepository;
 
     @InjectMocks
-    private OfflineMemberService OfflineMemberService;
+    private OfflineMemberService offlineMemberService;
 
     @Test
     public void testCreateOfflineMemberNullLib() {
         try {
-            this.OfflineMemberService.createOfflineMember(null, "A", "B");
+            this.offlineMemberService.createOfflineMember(null, "A", "B");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("NULL-LIBRARY", ex.getMessage());
@@ -37,7 +43,7 @@ public class OfflineMemberServiceTest {
     @EmptySource
     public void testCreateOfflineMemberEmptyName(String name) {
         try {
-            this.OfflineMemberService.createOfflineMember(new Library(), name, "B");
+            this.offlineMemberService.createOfflineMember(new Library(), name, "B");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-NAME", ex.getMessage());
@@ -49,7 +55,7 @@ public class OfflineMemberServiceTest {
     @EmptySource
     public void testCreateOfflineMemberEmptyAddress(String address) {
         try {
-            this.OfflineMemberService.createOfflineMember(new Library(), "A", address);
+            this.offlineMemberService.createOfflineMember(new Library(), "A", address);
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-ADDRESS", ex.getMessage());
@@ -62,7 +68,7 @@ public class OfflineMemberServiceTest {
         // get all the causes.
 
         try {
-            this.OfflineMemberService.createOfflineMember(new Library(), null, null);
+            this.offlineMemberService.createOfflineMember(new Library(), null, null);
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-NAME,EMPTY-ADDRESS", ex.getMessage());
@@ -75,9 +81,25 @@ public class OfflineMemberServiceTest {
         final String name = "Joe Schmoe";
         final String address = "333 Rue University";
 
-        final OfflineMember OfflineMember = this.OfflineMemberService.createOfflineMember(lib, name, address);
-        Assertions.assertEquals(lib.getId(), OfflineMember.getLibrary().getId());
-        Assertions.assertEquals(name, OfflineMember.getName());
-        Assertions.assertEquals(address, OfflineMember.getAddress());
+        final OfflineMember offlineMember = this.offlineMemberService.createOfflineMember(lib, name, address);
+        Assertions.assertEquals(lib.getId(), offlineMember.getLibrary().getId());
+        Assertions.assertEquals(name, offlineMember.getName());
+        Assertions.assertEquals(address, offlineMember.getAddress());
+    }
+
+    @Test
+    public void testGetOfflineMember() {
+        // Artificially create a situation where only id 0 is bound to a
+        // offline member.
+        lenient().when(this.mockOfflineMemberRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(new OfflineMember()));
+
+        OfflineMember u;
+
+        u = this.offlineMemberService.getOfflineMember(0);
+        Assertions.assertEquals(0, u.getId());
+
+        u = this.offlineMemberService.getOfflineMember(4);
+        Assertions.assertNull(u);
     }
 }

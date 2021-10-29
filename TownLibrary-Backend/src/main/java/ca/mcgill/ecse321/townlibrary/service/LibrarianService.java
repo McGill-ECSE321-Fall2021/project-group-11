@@ -55,13 +55,13 @@ public class LibrarianService {
     }
 
     /**
-     * Retrieves a librarian by it's id.
+     * Retrieves a librarian by its id.
      *
      * Note that this method may also query a head librarian.
      *
      * @param id    The id
      *
-     * @return      The librarian or nul if no such id exists
+     * @return      The librarian or null if no such id exists
      */
     @Transactional
     public Librarian getLibrarian(int id) {

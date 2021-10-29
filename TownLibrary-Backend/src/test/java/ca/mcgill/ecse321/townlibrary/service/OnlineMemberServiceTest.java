@@ -14,6 +14,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.OnlineMemberRepository;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 public class OnlineMemberServiceTest {
 
@@ -27,12 +33,12 @@ public class OnlineMemberServiceTest {
     private PasswordValidator passwordValidator;
 
     @InjectMocks
-    private OnlineMemberService OnlineMemberService;
+    private OnlineMemberService onlineMemberService;
 
     @Test
     public void testCreateOnlineMemberNullLib() {
         try {
-            this.OnlineMemberService.createOnlineMember(null, "A", "B", "a.b@ab.com", "aaabbb", "aaabbb");
+            this.onlineMemberService.createOnlineMember(null, "A", "B", "a.b@ab.com", "aaabbb", "aaabbb");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("NULL-LIBRARY", ex.getMessage());
@@ -44,7 +50,7 @@ public class OnlineMemberServiceTest {
     @EmptySource
     public void testCreateOnlineMemberEmptyName(String name) {
         try {
-            this.OnlineMemberService.createOnlineMember(new Library(), name, "B", "a.b@ab.com", "aaabbb", "aaabbb");
+            this.onlineMemberService.createOnlineMember(new Library(), name, "B", "a.b@ab.com", "aaabbb", "aaabbb");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-NAME", ex.getMessage());
@@ -56,7 +62,7 @@ public class OnlineMemberServiceTest {
     @EmptySource
     public void testCreateOnlineMemberEmptyAddress(String address) {
         try {
-            this.OnlineMemberService.createOnlineMember(new Library(), "A", address, "a.b@ab.com", "aaabbb", "aaabbb");
+            this.onlineMemberService.createOnlineMember(new Library(), "A", address, "a.b@ab.com", "aaabbb", "aaabbb");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-ADDRESS", ex.getMessage());
@@ -67,7 +73,7 @@ public class OnlineMemberServiceTest {
     @NullSource
     public void testCreateOnlineMemberEmptyEmail(String email) {
         try {
-            this.OnlineMemberService.createOnlineMember(new Library(), "A", "b", email, "foobar", "aaabbb");
+            this.onlineMemberService.createOnlineMember(new Library(), "A", "b", email, "foobar", "aaabbb");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-EMAIL", ex.getMessage());
@@ -79,7 +85,7 @@ public class OnlineMemberServiceTest {
     @EmptySource
     public void testCreateOnlineMemberEmptyUsername(String username) {
         try {
-            this.OnlineMemberService.createOnlineMember(new Library(), "A", "b", "a.b@ab.com", username, "aaabbb");
+            this.onlineMemberService.createOnlineMember(new Library(), "A", "b", "a.b@ab.com", username, "aaabbb");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-USERNAME", ex.getMessage());
@@ -90,7 +96,7 @@ public class OnlineMemberServiceTest {
     @NullSource
     public void testCreateOnlineMemberEmptyPassword(String password) {
         try {
-            this.OnlineMemberService.createOnlineMember(new Library(), "A", "b", "a.b@ab.com", "foobar", password);
+            this.onlineMemberService.createOnlineMember(new Library(), "A", "b", "a.b@ab.com", "foobar", password);
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-PASSWORD", ex.getMessage());
@@ -103,7 +109,7 @@ public class OnlineMemberServiceTest {
         // get all the causes.
 
         try {
-            this.OnlineMemberService.createOnlineMember(new Library(), null, null, "a.b@ab.com", "aaabbb", "aaabbb");
+            this.onlineMemberService.createOnlineMember(new Library(), null, null, "a.b@ab.com", "aaabbb", "aaabbb");
             Assertions.fail(); // should have thrown
         } catch (IllegalArgumentException ex) {
             Assertions.assertEquals("EMPTY-NAME,EMPTY-ADDRESS", ex.getMessage());
@@ -119,12 +125,28 @@ public class OnlineMemberServiceTest {
         final String username = "aaabbbb";
         final String password = "aaabbb";
 
-        final OnlineMember OnlineMember = this.OnlineMemberService.createOnlineMember(lib, name, address, email, username, password);
-        Assertions.assertEquals(lib.getId(), OnlineMember.getLibrary().getId());
-        Assertions.assertEquals(name, OnlineMember.getName());
-        Assertions.assertEquals(address, OnlineMember.getAddress());
-        Assertions.assertEquals(email, OnlineMember.getEmail());
-        Assertions.assertEquals(username, OnlineMember.getUsername());
-        Assertions.assertEquals(password, OnlineMember.getPassword());
+        final OnlineMember onlineMember = this.onlineMemberService.createOnlineMember(lib, name, address, email, username, password);
+        Assertions.assertEquals(lib.getId(), onlineMember.getLibrary().getId());
+        Assertions.assertEquals(name, onlineMember.getName());
+        Assertions.assertEquals(address, onlineMember.getAddress());
+        Assertions.assertEquals(email, onlineMember.getEmail());
+        Assertions.assertEquals(username, onlineMember.getUsername());
+        Assertions.assertEquals(password, onlineMember.getPassword());
+    }
+
+    @Test
+    public void testGetOnlineMember() {
+        // Artificially create a situation where only id 0 is bound to a
+        // online member.
+        lenient().when(this.mockOnlineMemberRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(new OnlineMember()));
+
+        OnlineMember u;
+
+        u = this.onlineMemberService.getOnlineMember(0);
+        Assertions.assertEquals(0, u.getId());
+
+        u = this.onlineMemberService.getOnlineMember(4);
+        Assertions.assertNull(u);
     }
 }

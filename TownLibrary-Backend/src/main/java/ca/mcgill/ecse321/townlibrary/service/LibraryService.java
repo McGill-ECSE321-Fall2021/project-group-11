@@ -49,7 +49,7 @@ public class LibraryService {
     }
 
     /**
-     * Retrieves a library by it's id
+     * Retrieves a library by its id
      *
      * @param id    The id
      *

@@ -90,7 +90,7 @@ public class LibrarianServiceTest {
     @Test
     public void testGetLibrarian() {
         // Artificially create a situation where only id 0 is bound to a
-        // library.
+        // librarian.
         lenient().when(this.mockLibrarianRepository.findById(0))
                 .thenAnswer(invocation -> Optional.of(new Librarian()));
 

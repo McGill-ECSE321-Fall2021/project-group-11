@@ -21,15 +21,23 @@ public class OfflineMemberController {
     private LibrarianService librarianService;
 
     @Autowired
-    private OfflineMemberService OfflineMemberService;
+    private OfflineMemberService offlineMemberService;
 
     @GetMapping(value={ "/offline-members", "/offline-members/" })
     public ResponseEntity<?> getAllOfflineMembers() {
-        final List<OfflineMemberDTO> us = this.OfflineMemberService.getAllOfflineMembers()
+        final List<OfflineMemberDTO> us = this.offlineMemberService.getAllOfflineMembers()
                 .stream()
                 .map(OfflineMemberDTO::fromModel)
                 .collect(Collectors.toList());
         return ResponseEntity.ok().body(us);
+    }
+
+    @GetMapping(value={ "/offline-members/{id}", "/offline-members/{id}/" })
+    public ResponseEntity<?> getOfflineMember(@PathVariable("id") int id)  {
+        final OfflineMember u = this.offlineMemberService.getOfflineMember(id);
+        if (u == null)
+            return ResponseEntity.badRequest().body("NOT-FOUND-OFFLINE-MEMBER");
+        return ResponseEntity.ok(OfflineMemberDTO.fromModel(u));
     }
 
     @PostMapping(value={ "/offline-members/{name}", "/offline-members/{name}/" })
@@ -45,7 +53,7 @@ public class OfflineMemberController {
                 return ResponseEntity.badRequest().body("BAD-ACCESS");
 
             final Library lib = this.libraryService.getLibrary(library);
-            final OfflineMember u = this.OfflineMemberService.createOfflineMember(lib, name, address);
+            final OfflineMember u = this.offlineMemberService.createOfflineMember(lib, name, address);
             return ResponseEntity.ok().body(OfflineMemberDTO.fromModel(u));
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

@@ -29,6 +29,14 @@ public class HeadLibrarianController {
         return ResponseEntity.ok().body(us);
     }
 
+    @GetMapping(value={ "/head-librarians/{id}", "/head-librarians/{id}/" })
+    public ResponseEntity<?> getHeadLibrarian(@PathVariable("id") int id)  {
+        final HeadLibrarian u = this.headLibrarianService.getHeadLibrarian(id);
+        if (u == null)
+            return ResponseEntity.badRequest().body("NOT-FOUND-HEAD-LIBRARIAN");
+        return ResponseEntity.ok(HeadLibrarianDTO.fromModel(u));
+    }
+
     @PostMapping(value={ "/head-librarians/{name}", "/head-librarians/{name}/" })
     public ResponseEntity<?> createHeadLibrarian(
             @PathVariable("name") String name,

@@ -29,6 +29,14 @@ public class OnlineMemberController {
         return ResponseEntity.ok().body(us);
     }
 
+    @GetMapping(value={ "/online-members/{id}", "/online-members/{id}/" })
+    public ResponseEntity<?> getOnlineMember(@PathVariable("id") int id)  {
+        final OnlineMember u = this.onlineMemberService.getOnlineMember(id);
+        if (u == null)
+            return ResponseEntity.badRequest().body("NOT-FOUND-ONLINE-MEMBER");
+        return ResponseEntity.ok(OnlineMemberDTO.fromModel(u));
+    }
+
     @PostMapping(value={ "/online-members/{username}", "/online-members/{username}/" })
     public ResponseEntity<?> createOnlineMember(
             @PathVariable("username") String username,
