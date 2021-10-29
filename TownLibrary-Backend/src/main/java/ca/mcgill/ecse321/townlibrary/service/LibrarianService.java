@@ -54,6 +54,20 @@ public class LibrarianService {
         return u;
     }
 
+    /**
+     * Retrieves a librarian by it's id.
+     *
+     * Note that this method may also query a head librarian.
+     *
+     * @param id    The id
+     *
+     * @return      The librarian or nul if no such id exists
+     */
+    @Transactional
+    public Librarian getLibrarian(int id) {
+        return this.librarianRepository.findById(id).orElse(null);
+    }
+
     @Transactional
     public List<Librarian> getAllLibrarians() {
         final ArrayList<Librarian> list = new ArrayList<>();

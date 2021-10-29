@@ -13,6 +13,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.LibrarianRepository;
 
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 public class LibrarianServiceTest {
 
@@ -79,5 +85,21 @@ public class LibrarianServiceTest {
         Assertions.assertEquals(lib.getId(), librarian.getLibrary().getId());
         Assertions.assertEquals(name, librarian.getName());
         Assertions.assertEquals(address, librarian.getAddress());
+    }
+
+    @Test
+    public void testGetLibrarian() {
+        // Artificially create a situation where only id 0 is bound to a
+        // library.
+        lenient().when(this.mockLibrarianRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(new Librarian()));
+
+        Librarian u;
+
+        u = this.librarianService.getLibrarian(0);
+        Assertions.assertEquals(0, u.getId());
+
+        u = this.librarianService.getLibrarian(4);
+        Assertions.assertNull(u);
     }
 }

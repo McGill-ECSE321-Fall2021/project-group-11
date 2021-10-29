@@ -18,6 +18,9 @@ public class OfflineMemberController {
     private LibraryService libraryService;
 
     @Autowired
+    private LibrarianService librarianService;
+
+    @Autowired
     private OfflineMemberService OfflineMemberService;
 
     @GetMapping(value={ "/offline-members", "/offline-members/" })
@@ -33,9 +36,14 @@ public class OfflineMemberController {
     public ResponseEntity<?> createOfflineMember(
             @PathVariable("name") String name,
             @RequestParam String address,
-            @RequestParam int library) {
+            @RequestParam int library,
+            @RequestParam int initiatorId) {
 
         try {
+            final Librarian initiator = this.librarianService.getLibrarian(initiatorId);
+            if (initiator == null)
+                return ResponseEntity.badRequest().body("BAD-ACCESS");
+
             final Library lib = this.libraryService.getLibrary(library);
             final OfflineMember u = this.OfflineMemberService.createOfflineMember(lib, name, address);
             return ResponseEntity.ok().body(OfflineMemberDTO.fromModel(u));
