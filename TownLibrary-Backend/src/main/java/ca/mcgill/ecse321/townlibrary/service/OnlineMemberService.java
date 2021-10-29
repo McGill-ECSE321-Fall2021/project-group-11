@@ -27,9 +27,9 @@ public class OnlineMemberService {
      * @param lib       The library (non-null)
      * @param name      The member's name (non-empty)
      * @param address   The member's address (non-empty)
-     * @param email     The member's email (non-empty, unique)
+     * @param email     The member's email (unique, see {@see EmailValidator})
      * @param username  The member's username (non-empty, unique)
-     * @param password  The member's password (see {@link this#validatePasswordCriteria(String)})
+     * @param password  The member's password (see {@see PasswordValidator})
      *
      * @return          The member instance
      *
