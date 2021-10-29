@@ -27,7 +27,7 @@ public class HeadLibrarianService {
      * @param lib       The library (non-null)
      * @param name      The head librarian's name (non-empty)
      * @param address   The head librarian's address (non-empty)
-     * @param password  The member's password (see {@link PasswordValidator#validatePasswordCriteria(String)})
+     * @param password  The member's password (see {@see PasswordValidator})
      *
      * @return          The head librarian instance
      *

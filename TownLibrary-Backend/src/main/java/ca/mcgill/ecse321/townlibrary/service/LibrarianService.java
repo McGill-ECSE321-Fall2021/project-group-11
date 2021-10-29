@@ -24,7 +24,7 @@ public class LibrarianService {
      * @param lib       The library (non-null)
      * @param name      The librarian's name (non-empty)
      * @param address   The librarian's address (non-empty)
-     * @param password  The member's password (see {@link PasswordValidator#validatePasswordCriteria(String)})
+     * @param password  The member's password (see {@see PasswordValidator})
      *
      * @return          The librarian instance
      *
