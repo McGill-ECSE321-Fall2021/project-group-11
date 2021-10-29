@@ -45,11 +45,11 @@ public class OfflineMemberController {
             @PathVariable("name") String name,
             @RequestParam String address,
             @RequestParam int library,
-            @RequestParam int initiatorId) {
+            @RequestParam int initiator) {
 
         try {
-            final Librarian initiator = this.librarianService.getLibrarian(initiatorId);
-            if (initiator == null)
+            final Librarian librarian = this.librarianService.getLibrarian(initiator);
+            if (librarian == null)
                 return ResponseEntity.badRequest().body("BAD-ACCESS");
 
             final Library lib = this.libraryService.getLibrary(library);
