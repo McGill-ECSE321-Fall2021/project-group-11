@@ -66,6 +66,11 @@ public class OfflineMemberService {
         return this.offlineMemberRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Retrieves all the offline members registered under this system.
+     *
+     * @return all the offline members
+     */
     @Transactional
     public List<OfflineMember> getAllOfflineMembers() {
         final ArrayList<OfflineMember> list = new ArrayList<>();

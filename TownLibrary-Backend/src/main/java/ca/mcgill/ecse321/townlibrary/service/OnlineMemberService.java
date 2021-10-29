@@ -90,6 +90,11 @@ public class OnlineMemberService {
         return this.onlineMemberRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Retrieves all the online members registered under this system.
+     *
+     * @return all the online members
+     */
     @Transactional
     public List<OnlineMember> getAllOnlineMembers() {
         final ArrayList<OnlineMember> list = new ArrayList<>();

@@ -76,6 +76,11 @@ public class HeadLibrarianService {
         return this.headLibrarianRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Retrieves all the head librarians registered under this system.
+     *
+     * @return all the head librarians
+     */
     @Transactional
     public List<HeadLibrarian> getAllHeadLibrarians() {
         final ArrayList<HeadLibrarian> list = new ArrayList<>();

@@ -68,6 +68,11 @@ public class LibrarianService {
         return this.librarianRepository.findById(id).orElse(null);
     }
 
+    /**
+     * Retrieves all the librarians registered under this system.
+     *
+     * @return all the librarians
+     */
     @Transactional
     public List<Librarian> getAllLibrarians() {
         final ArrayList<Librarian> list = new ArrayList<>();
