@@ -41,6 +41,7 @@ public class HeadLibrarianRepositoryTest {
         String homeAddress = "4201 Wokege";
         hl.setAddress(homeAddress);
         hl.setName("Dees");
+        hl.setPassword("Dees123");
         hl.setLibrary(lib);
         this.headLibrarianRepository.save(hl);
         int hlId = hl.getId();
@@ -52,6 +53,7 @@ public class HeadLibrarianRepositoryTest {
         assertNotNull(hl);
         assertEquals(hlId,hl.getId());
         assertEquals("Dees",hl.getName());
+        assertEquals("Dees123",hl.getPassword());
         // Test delete
         this.headLibrarianRepository.delete(hl);
         Assertions.assertNull(this.headLibrarianRepository.
