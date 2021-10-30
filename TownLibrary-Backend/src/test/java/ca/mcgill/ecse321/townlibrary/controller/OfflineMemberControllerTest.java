@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
+import java.util.HashSet;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -85,7 +87,7 @@ public class OfflineMemberControllerTest {
         final int id = given()
             .param("address", "415 Garlic Street")
             .param("library", "0")
-            .param("initId", idLibrarian)
+            .param("initId", this.idLibrarian)
             .param("initPass", "jojo123")
             .when().post("/offline-members/Foo Man")
             .then()
@@ -115,6 +117,38 @@ public class OfflineMemberControllerTest {
             .body("[0].address", equalTo("415 Garlic Street"))
             .body("[0].inTown", equalTo(false))
             .body("[0].libraryId", equalTo(0));
+    }
+
+    @Test
+    public void testCreateSeveralOfflineMembers() {
+        final int[] members = new int[5];
+        for (int i = 0; i < members.length; ++i)
+            members[i] = given()
+                .param("address", "387 Fairfield Boulevard")
+                .param("library", 0)
+                .param("initId", this.idLibrarian)
+                .param("initPass", "jojo123")
+                .when().post("/offline-members/Person" + i)
+                .then()
+                .statusCode(200)
+                .extract()
+                .response().body().path("id");
+
+        // id's must be unique
+        final HashSet<Integer> set = new HashSet<>();
+        for (final int id : members)
+            Assertions.assertTrue(set.add(id));
+
+        for (final int id : members)
+            when().get("/offline-members/" + id)
+                .then()
+                .statusCode(200)
+                .body("id", equalTo(id));
+
+        when().get("/offline-members")
+            .then()
+            .statusCode(200)
+            .body("size()", equalTo(members.length));
     }
 
     @Test
