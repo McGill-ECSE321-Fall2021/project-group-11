@@ -22,6 +22,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.mockito:mockito-core:2.+'
+	testImplementation 'io.rest-assured:spring-mock-mvc:4.4.0' // for integration tests in junit
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.junit.jupiter:junit-jupiter-params' // for parameterized tests
 
@@ -35,11 +36,46 @@ dependencies {
 	runtimeOnly 'com.h2database:h2:1.4.200'
 }
 
-test {
-	useJUnitPlatform()
-	finalizedBy jacocoTestReport	// auto report coverage after
+// Note that integration tests must be tagged "integration"
+// (based on https://stackoverflow.com/questions/40891867/junit5-tag-specific-gradle-task)
+
+task jacocoUnitTestReport(type: JacocoReport) {
+	reports { html.required = true }
+	afterEvaluate {
+		executionData(file("$buildDir/jacoco/unitTest.exec"))
+		classDirectories.setFrom(files("$buildDir/classes/java/main"))
+		sourceDirectories.setFrom(project.sourceSets.main.java.srcDirs)
+	}
 }
 
+// Runs all tests not-tagged "integration"
+task unitTest(type: Test) {
+	useJUnitPlatform { excludeTags "integration" }
+	finalizedBy jacocoUnitTestReport
+}
+
+task jacocoIntegrationTestReport(type: JacocoReport) {
+	reports { html.required = true }
+	afterEvaluate {
+		executionData(file("$buildDir/jacoco/integrationTest.exec"))
+		classDirectories.setFrom(files("$buildDir/classes/java/main"))
+		sourceDirectories.setFrom(project.sourceSets.main.java.srcDirs)
+	}
+}
+
+// Runs only the tests tagged "integration"
+task integrationTest(type: Test) {
+	useJUnitPlatform { includeTags "integration" }
+	finalizedBy jacocoIntegrationTestReport
+}
+
+// Runs all the tests regardless of tag
+test {
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+// and test coverage verification is based on the result of test
 jacocoTestCoverageVerification {
 	violationRules {
 		rule {
