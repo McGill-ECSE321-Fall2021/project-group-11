@@ -99,19 +99,34 @@ public class IntegrationTest {
         Assertions.assertEquals("410 Chili Street", dto.address);
         Assertions.assertEquals(0, dto.libraryId);
 
-        r = this.mvc.perform(get("/head-librarians/" + dto.id))
+        this.mvc.perform(get("/head-librarians/" + dto.id))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andReturn();
-
-        dto = this.mapper.readValue(r.getResponse().getContentAsString(), HeadLibrarianDTO.class);
-        Assertions.assertEquals("Joe Schmoe", dto.name);
-        Assertions.assertEquals("410 Chili Street", dto.address);
-        Assertions.assertEquals(0, dto.libraryId);
+                .andExpect(jsonPath("$.id").value(dto.id));
 
         this.mvc.perform(get("/libraries/0"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.headLibrarianId").value(dto.id));
+
+        this.mvc.perform(get("/head-librarians"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].id").value(dto.id));
+
+        this.mvc.perform(post("/auth/head-librarians/" + dto.id)
+                        .param("password", "123"))
+                .andDo(print())
+                .andExpect(status().isBadRequest());
+
+        this.mvc.perform(post("/auth/head-librarians/" + dto.id)
+                        .param("password", "jojo123"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(dto.id));
     }
+
+//     @Test
+//     @Order(3)
+//     public void 
 }
