@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.townlibrary.controller;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -31,6 +32,11 @@ public class HeadLibrarianControllerTest {
     @BeforeEach
     public void setup() {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+    }
+
+    @AfterEach
+    public void cleanup() {
+        RestAssuredMockMvc.reset();
     }
 
     @Test
