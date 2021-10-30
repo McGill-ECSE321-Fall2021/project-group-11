@@ -36,21 +36,57 @@ dependencies {
 	runtimeOnly 'com.h2database:h2:1.4.200'
 }
 
-// Note that integration tests must be tagged "integration"
-// (based on https://stackoverflow.com/questions/40891867/junit5-tag-specific-gradle-task)
+// Runs all tests
+test {
+	useJUnitPlatform()
+}
+
+task jacocoPersistenceTestReport(type: JacocoReport) {
+	reports { html.required = true }
+	afterEvaluate {
+		executionData(file("$buildDir/jacoco/persistenceTest.exec"))
+		sourceDirectories.setFrom(project.sourceSets.main.java.srcDirs)
+		classDirectories.setFrom(files(
+			"$buildDir/classes/java/main/ca/mcgill/ecse321/townlibrary/model/",
+			"$buildDir/classes/java/main/ca/mcgill/ecse321/townlibrary/repository/"))
+	}
+}
+
+// Runs all tests tagged persistence
+task persistenceTest(type: Test) {
+	useJUnitPlatform()
+
+	filter {
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.TownLibraryApplicationTests"
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.model.*"
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.repository.*"
+	}
+
+	finalizedBy jacocoPersistenceTestReport
+}
 
 task jacocoUnitTestReport(type: JacocoReport) {
 	reports { html.required = true }
 	afterEvaluate {
 		executionData(file("$buildDir/jacoco/unitTest.exec"))
-		classDirectories.setFrom(files("$buildDir/classes/java/main"))
 		sourceDirectories.setFrom(project.sourceSets.main.java.srcDirs)
+		classDirectories.setFrom(files(
+			"$buildDir/classes/java/main/ca/mcgill/ecse321/townlibrary/dto/",
+			"$buildDir/classes/java/main/ca/mcgill/ecse321/townlibrary/model/",
+			"$buildDir/classes/java/main/ca/mcgill/ecse321/townlibrary/service/"))
 	}
 }
 
-// Runs all tests not-tagged "integration"
+// Runs all tests tagged unit
 task unitTest(type: Test) {
-	useJUnitPlatform { excludeTags "integration" }
+	useJUnitPlatform()
+
+	filter {
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.TownLibraryApplicationTests"
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.dto.*"
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.service.*"
+	}
+
 	finalizedBy jacocoUnitTestReport
 }
 
@@ -58,30 +94,19 @@ task jacocoIntegrationTestReport(type: JacocoReport) {
 	reports { html.required = true }
 	afterEvaluate {
 		executionData(file("$buildDir/jacoco/integrationTest.exec"))
-		classDirectories.setFrom(files("$buildDir/classes/java/main"))
 		sourceDirectories.setFrom(project.sourceSets.main.java.srcDirs)
+		classDirectories.setFrom(files("$buildDir/classes/java/main/"))
 	}
 }
 
-// Runs only the tests tagged "integration"
+// Runs all tests tagged integration
 task integrationTest(type: Test) {
-	useJUnitPlatform { includeTags "integration" }
-	finalizedBy jacocoIntegrationTestReport
-}
-
-// Runs all the tests regardless of tag
-test {
 	useJUnitPlatform()
-	finalizedBy jacocoTestReport
-}
 
-// and test coverage verification is based on the result of test
-jacocoTestCoverageVerification {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.6	// instruction coverage >= 0.6
-			}
-		}
+	filter {
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.TownLibraryApplicationTests"
+		includeTestsMatching "ca.mcgill.ecse321.townlibrary.controller.*"
 	}
+
+	finalizedBy jacocoIntegrationTestReport
 }
