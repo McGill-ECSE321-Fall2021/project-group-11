@@ -10,8 +10,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.townlibrary.dto.*;
-
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
