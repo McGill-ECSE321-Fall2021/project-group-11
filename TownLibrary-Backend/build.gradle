@@ -36,13 +36,44 @@ dependencies {
 	runtimeOnly 'com.h2database:h2:1.4.200'
 }
 
-test {
-	useJUnitPlatform {
-		excludeTags "integration"
+// Note that integration tests must be tagged "integration"
+// (based on https://stackoverflow.com/questions/40891867/junit5-tag-specific-gradle-task)
+
+task jacocoUnitTestReport(type: JacocoReport) {
+	reports { html.required = true }
+	afterEvaluate {
+		executionData(file("$buildDir/jacoco/unitTest.exec"))
+		classDirectories.setFrom(files("$buildDir/classes/java/main"))
 	}
-	finalizedBy jacocoTestReport	// auto report coverage after
 }
 
+// Runs all tests not-tagged "integration"
+task unitTest(type: Test) {
+	useJUnitPlatform { excludeTags "integration" }
+	finalizedBy jacocoUnitTestReport
+}
+
+task jacocoIntegrationTestReport(type: JacocoReport) {
+	reports { html.required = true }
+	afterEvaluate {
+		executionData(file("$buildDir/jacoco/integrationTest.exec"))
+		classDirectories.setFrom(files("$buildDir/classes/java/main"))
+	}
+}
+
+// Runs only the tests tagged "integration"
+task integrationTest(type: Test) {
+	useJUnitPlatform { includeTags "integration" }
+	finalizedBy jacocoIntegrationTestReport
+}
+
+// Runs all the tests regardless of tag
+test {
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+// and test coverage verification is based on the result of test
 jacocoTestCoverageVerification {
 	violationRules {
 		rule {
@@ -50,14 +81,5 @@ jacocoTestCoverageVerification {
 				minimum = 0.6	// instruction coverage >= 0.6
 			}
 		}
-	}
-}
-
-// Integration test stuff:
-// (based on https://stackoverflow.com/questions/40891867/junit5-tag-specific-gradle-task)
-
-task integrationTest(type: Test) {
-	useJUnitPlatform {
-		includeTags 'integration'
 	}
 }
