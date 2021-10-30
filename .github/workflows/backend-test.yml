@@ -13,6 +13,8 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: ci
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 16
@@ -24,10 +26,12 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with gradle
-      run: ./gradlew build
-      env:
-        SPRING_PROFILES_ACTIVE: ci
+      run: ./gradlew build -x test
+    - name: Run persistence tests
+      run: ./gradlew persistenceTest
+    - name: Run unit tests
+      run: ./gradlew unitTest
+    - name: Run integration tests
+      run: ./gradlew integrationTest
     - name: Code coverage check
-      run: ./gradlew jacocoTestCoverageVerification
-      env:
-        SPRING_PROFILES_ACTIVE: ci
+      run: ./gradlew jacocoLogUnitTestCoverage | awk '/Instruction Coverage:/ { exit(substr($4, 0, length($4) - 1) >= 90.0) }'
