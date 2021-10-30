@@ -32,6 +32,9 @@ public class HeadLibrarianControllerTest {
     @BeforeEach
     public void setup() {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
+
+        // Also each test assumes there is a proper library.
+        post("/libraries/0?address=300 Pepper Street");
     }
 
     @AfterEach
@@ -40,102 +43,115 @@ public class HeadLibrarianControllerTest {
     }
 
     @Test
-    public void testNoLibrariesToBeginWith() {
-        when().get("/libraries")
+    public void testNoHeadLibrariansToBeginWith()  {
+        when().get("/head-librarians")
             .then()
             .statusCode(200)
             .body("$", empty());
 
-        when().get("/libraries/0")
+        // it's empty, so any id we feed should error
+        when().get("/head-librarians/0")
             .then()
             .statusCode(400)
-            .body(equalTo("NOT-FOUND-LIBRARY"));
+            .body(equalTo("NOT-FOUND-HEAD-LIBRARIAN"));
     }
 
     @Test
-    public void testCreateLibraryThenQueryIt() {
-        when().post("/libraries/0?address=300 Pepper Street")
+    public void testCreateHeadLibrarianThenQueryIt() {
+        final int id = given()
+            .param("password", "jojo123")
+            .param("address", "410 Chili Street")
+            .param("library", "0")
+            .when().post("/head-librarians/Joe Schmoe")
             .then()
             .statusCode(200)
-            .body("id", equalTo(0))
-            .body("address", equalTo("300 Pepper Street"))
-            .body("headLibrarianId", is(nullValue()));
+            .body("name", equalTo("Joe Schmoe"))
+            .body("address", equalTo("410 Chili Street"))
+            .body("libraryId", equalTo(0))
+            .extract()
+            .response().body().path("id");
 
-        when().get("/libraries/0")
+        when().get("/head-librarians/" + id)
             .then()
             .statusCode(200)
-            .body("id", equalTo(0))
-            .body("address", equalTo("300 Pepper Street"))
-            .body("headLibrarianId", is(nullValue()));
+            .body("id", equalTo(id))
+            .body("name", equalTo("Joe Schmoe"))
+            .body("address", equalTo("410 Chili Street"))
+            .body("libraryId", equalTo(0));
 
-        when().get("/libraries")
+        when().get("/head-librarians/")
             .then()
             .statusCode(200)
             .body("size()", equalTo(1))
-            .body("[0].id", equalTo(0))
-            .body("[0].address", equalTo("300 Pepper Street"))
-            .body("[0].headLibrarianId", is(nullValue()));
+            .body("[0].id", equalTo(id))
+            .body("[0].name", equalTo("Joe Schmoe"))
+            .body("[0].address", equalTo("410 Chili Street"))
+            .body("[0].libraryId", equalTo(0));
     }
 
     @Test
-    public void testRecreateLibrarySameIdAgain() {
-        when().post("/libraries/0?address=300 Pepper Street")
+    public void testRecreateHeadLibrarianOnSameLibraryAgain() {
+        final int id = given()
+            .param("password", "jojo123")
+            .param("address", "410 Chili Street")
+            .param("library", "0")
+            .when().post("/head-librarians/Joe Schmoe")
             .then()
-            .statusCode(200);
+            .statusCode(200)
+            .extract()
+            .response().body().path("id");
 
-        when().post("/libraries/0?address=300 Pepper Street")
+        when().get("/libraries/0")
+            .then()
+            .statusCode(200)
+            .body("headLibrarianId", equalTo(id));
+
+        given()
+            .param("password", "jojo123")
+            .param("address", "410 Chili Street")
+            .param("library", "0")
+            .when().post("/head-librarians/Joe Schmoe")
             .then()
             .statusCode(400)
-            .body(equalTo("DUP-LIBRARY"));
+            .body(equalTo("DUP-HEAD-LIBRARIAN"));
+
+        given()
+            .param("password", "bob123")
+            .param("address", "412 Chili Street")
+            .param("library", "0")
+            .when().post("/head-librarians/Bob")
+            .then()
+            .statusCode(400)
+            .body(equalTo("DUP-HEAD-LIBRARIAN"));
     }
 
-    // @Test
-    // @Order(2)
-    // public void testHeadLibrarianController() throws Exception {
-    //     this.mvc.perform(get("/head-librarians"))
-    //             .andDo(print())
-    //             .andExpect(status().isOk())
-    //             .andExpect(content().string("[]"));
+    @Test
+    public void testAuthHeadLibrarian() {
+        final int id = given()
+            .param("password", "jojo123")
+            .param("address", "410 Chili Street")
+            .param("library", "0")
+            .when().post("/head-librarians/Joe Schmoe")
+            .then()
+            .statusCode(200)
+            .extract()
+            .response().body().path("id");
 
-    //     MvcResult r;
-    //     HeadLibrarianDTO dto;
-    //     r = this.mvc.perform(post("/head-librarians/Joe Schmoe")
-    //                     .param("password", "jojo123")
-    //                     .param("address", "410 Chili Street")
-    //                     .param("library", "0"))
-    //             .andDo(print())
-    //             .andExpect(status().isOk())
-    //             .andReturn();
+        given()
+            .param("password", "jojo123")
+            .when().post("/auth/head-librarians/" + id)
+            .then()
+            .statusCode(200)
+            .body("id", equalTo(id))
+            .body("name", equalTo("Joe Schmoe"))
+            .body("address", equalTo("410 Chili Street"))
+            .body("libraryId", equalTo(0));
 
-    //     dto = this.mapper.readValue(r.getResponse().getContentAsString(), HeadLibrarianDTO.class);
-    //     Assertions.assertEquals("Joe Schmoe", dto.name);
-    //     Assertions.assertEquals("410 Chili Street", dto.address);
-    //     Assertions.assertEquals(0, dto.libraryId);
-
-    //     this.mvc.perform(get("/head-librarians/" + dto.id))
-    //             .andDo(print())
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.id").value(dto.id));
-
-    //     this.mvc.perform(get("/libraries/0"))
-    //             .andDo(print())
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.headLibrarianId").value(dto.id));
-
-    //     this.mvc.perform(get("/head-librarians"))
-    //             .andDo(print())
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$[0].id").value(dto.id));
-
-    //     this.mvc.perform(post("/auth/head-librarians/" + dto.id)
-    //                     .param("password", "123"))
-    //             .andDo(print())
-    //             .andExpect(status().isBadRequest());
-
-    //     this.mvc.perform(post("/auth/head-librarians/" + dto.id)
-    //                     .param("password", "jojo123"))
-    //             .andDo(print())
-    //             .andExpect(status().isOk())
-    //             .andExpect(jsonPath("$.id").value(dto.id));
-    // }
+        given()
+            .param("password", "bob123")
+            .when().post("/auth/head-librarians/" + id)
+            .then()
+            .statusCode(400)
+            .body(equalTo("BAD-ACCESS"));
+    }
 }
