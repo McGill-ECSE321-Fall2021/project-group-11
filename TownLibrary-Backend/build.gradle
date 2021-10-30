@@ -39,6 +39,7 @@ dependencies {
 // Runs all tests
 test {
 	useJUnitPlatform()
+	finalizedBy jacocoTestReport
 }
 
 task jacocoPersistenceTestReport(type: JacocoReport) {
