@@ -44,6 +44,7 @@ task jacocoUnitTestReport(type: JacocoReport) {
 	afterEvaluate {
 		executionData(file("$buildDir/jacoco/unitTest.exec"))
 		classDirectories.setFrom(files("$buildDir/classes/java/main"))
+		sourceDirectories.setFrom(project.sourceSets.main.java.srcDirs)
 	}
 }
 
@@ -58,6 +59,7 @@ task jacocoIntegrationTestReport(type: JacocoReport) {
 	afterEvaluate {
 		executionData(file("$buildDir/jacoco/integrationTest.exec"))
 		classDirectories.setFrom(files("$buildDir/classes/java/main"))
+		sourceDirectories.setFrom(project.sourceSets.main.java.srcDirs)
 	}
 }
 
