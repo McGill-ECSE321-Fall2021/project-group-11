@@ -235,4 +235,27 @@ public class OnlineMemberControllerTest {
             .statusCode(400)
             .body(equalTo("BAD-ACCESS"));
     }
+
+    @Test
+    public void testLibrarianValidatingAddressOnInexistentUser() {
+        // we also need a librarian (let's create a head librarian) for this.
+        final int idLibrarian = given()
+            .param("password", "jojo123")
+            .param("address", "410 Chili Street")
+            .param("library", "0")
+            .when().post("/head-librarians/Joe Schmoe")
+            .then()
+            .statusCode(200)
+            .extract()
+            .response().body().path("id");
+
+        given()
+            .param("value", true)
+            .param("initId", idLibrarian)
+            .param("initPass", "jojo123")
+            .when().put("/online-members/0/in-town")
+            .then()
+            .statusCode(400)
+            .body(equalTo("NOT-FOUND-ONLINE-MEMBER"));
+    }
 }
