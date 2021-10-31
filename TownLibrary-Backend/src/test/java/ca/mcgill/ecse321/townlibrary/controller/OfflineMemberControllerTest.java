@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
 import java.util.HashSet;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
@@ -17,7 +16,6 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-@Tag("integration")
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
