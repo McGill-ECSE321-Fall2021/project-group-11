@@ -36,7 +36,6 @@ dependencies {
 	runtimeOnly 'com.h2database:h2:1.4.200'
 }
 
-// Runs all tests
 test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
@@ -53,7 +52,6 @@ task jacocoPersistenceTestReport(type: JacocoReport) {
 	}
 }
 
-// Runs all tests tagged persistence
 task persistenceTest(type: Test) {
 	useJUnitPlatform()
 
@@ -78,7 +76,6 @@ task jacocoUnitTestReport(type: JacocoReport) {
 	}
 }
 
-// Runs all tests tagged unit
 task unitTest(type: Test) {
 	useJUnitPlatform()
 
@@ -100,7 +97,6 @@ task jacocoIntegrationTestReport(type: JacocoReport) {
 	}
 }
 
-// Runs all tests tagged integration
 task integrationTest(type: Test) {
 	useJUnitPlatform()
 
