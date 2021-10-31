@@ -34,4 +34,4 @@ jobs:
     - name: Run integration tests
       run: ./gradlew integrationTest
     - name: Code coverage check
-      run: ./gradlew jacocoLogUnitTestCoverage | awk '/Instruction Coverage:/ { exit(!(substr($4, 0, length($4) - 1) >= 60.0)) }'
+      run: ./gradlew jacocoLogUnitTestCoverage | awk '/Instruction Coverage:/ { exit !($4 >= 60.0) }'
