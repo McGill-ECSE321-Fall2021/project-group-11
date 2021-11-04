@@ -83,14 +83,3 @@ test {
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
 }
-
-// and test coverage verification is based on the result of test
-jacocoTestCoverageVerification {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.6	// instruction coverage >= 0.6
-			}
-		}
-	}
-}
