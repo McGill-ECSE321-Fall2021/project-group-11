@@ -65,12 +65,18 @@ task jacocoIntegrationTestReport(type: JacocoReport) {
 
 // Runs only the tests tagged "integration"
 task integrationTest(type: Test) {
+	// defaults to testing with ci profile
+	systemProperty "spring.profiles.active", (System.getenv("SPRING_PROFILES_ACTIVE") ?: "ci")
+
 	useJUnitPlatform { includeTags "integration" }
 	finalizedBy jacocoIntegrationTestReport
 }
 
 // Runs all the tests regardless of tag
 test {
+	// defaults to testing with ci profile
+	systemProperty "spring.profiles.active", (System.getenv("SPRING_PROFILES_ACTIVE") ?: "ci")
+
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
 }
