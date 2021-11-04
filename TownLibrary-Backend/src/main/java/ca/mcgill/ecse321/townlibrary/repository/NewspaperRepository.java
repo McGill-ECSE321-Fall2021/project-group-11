@@ -35,6 +35,6 @@ public interface NewspaperRepository extends CrudRepository<Newspaper, Integer> 
      * @param status	The status of a newspaper.
      * @return			A list of newspapers matching the searched status.
      */
-    List<Book> findNewspaperByStatus(Status status);
+    List<Newspaper> findNewspaperByStatus(Status status);
 
 }
