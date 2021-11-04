@@ -50,6 +50,9 @@ task jacocoUnitTestReport(type: JacocoReport) {
 
 // Runs all tests not-tagged "integration"
 task unitTest(type: Test) {
+	// defaults to testing with ci profile
+	systemProperty "spring.profiles.active", (System.getenv("SPRING_PROFILES_ACTIVE") ?: "ci")
+
 	useJUnitPlatform { excludeTags "integration" }
 	finalizedBy jacocoUnitTestReport
 }
@@ -79,15 +82,4 @@ test {
 
 	useJUnitPlatform()
 	finalizedBy jacocoTestReport
-}
-
-// and test coverage verification is based on the result of test
-jacocoTestCoverageVerification {
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.6	// instruction coverage >= 0.6
-			}
-		}
-	}
 }
