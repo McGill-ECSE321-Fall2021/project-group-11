@@ -118,14 +118,14 @@ public class ItemService {
      * @param name    The item's status
      * @return        All items with the specified status or null if no such item exists
      */
-	@Transactional
-	public List<Archive> getArchiveByStatus(Status status) {
-		return archiveRepository.findByStatus(status);
-	}
-	@Transactional
-	public List<Newspaper> getNewspaperByStatus(Status status) {
-		return newspaperRepository.findNewspaperByStatus(status);
-	}
+//	@Transactional
+//	public List<Archive> getArchiveByStatus(Status status) {
+//		return archiveRepository.findByStatus(status);
+//	}
+//	@Transactional
+//	public List<Newspaper> getNewspaperByStatus(Status status) {
+//		return newspaperRepository.findNewspaperByStatus(status);
+//	}
 	@Transactional
 	public List<Book> getBookByStatus(Status status) {
 		return bookRepository.findByStatus(status);
