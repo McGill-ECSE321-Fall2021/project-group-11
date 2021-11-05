@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import ca.mcgill.ecse321.townlibrary.model.Event;
 import ca.mcgill.ecse321.townlibrary.model.Library;
+import ca.mcgill.ecse321.townlibrary.model.Transaction;
 
 
 public class EventDTOTest {
@@ -18,7 +19,9 @@ public class EventDTOTest {
         dto = EventDTO.fromModel(e);
         Assertions.assertEquals(e.getId(), dto.getEventID());
         Assertions.assertEquals(e.getName(), dto.getEventName());
+        Assertions.assertEquals(e.getTransaction(), dto.getTransaction());
         Assertions.assertNull(e.getLibrary());
+        Assertions.assertNull(e.getTransaction());
 
         Library l = new Library();
         e.setLibrary(l);
@@ -27,5 +30,15 @@ public class EventDTOTest {
         Assertions.assertEquals(e.getId(), dto.getEventID());
         Assertions.assertEquals(e.getName(), dto.getEventName());
         Assertions.assertEquals(l, dto.getLibrary());
+        Assertions.assertNull(e.getTransaction());
+
+        Transaction t = new Transaction();
+        e.setTransaction(t);
+
+        dto = EventDTO.fromModel(e);
+        Assertions.assertEquals(e.getId(), dto.getEventID());
+        Assertions.assertEquals(e.getName(), dto.getEventName());
+        Assertions.assertEquals(l, dto.getLibrary());
+        Assertions.assertEquals(t, dto.getTransaction());
     }
 }
