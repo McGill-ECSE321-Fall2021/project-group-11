@@ -14,7 +14,7 @@ Overview:
 | Names :shipit:  | Role :trollface:        | D1 | D2 | D3 | D4 |
 |-----------------|-------------------------|----|----|----|----|
 | James Chau      | Meeting lead            |17h |    |    |    |    
-| Paul Teng       | Build system manager    |16h |    |    |    |
+| Paul Teng       | Build system manager    |16h |18h |    |    |
 | Jericho Adalin  | Facilitator             |14h |    |    |    |    
 | Loc Tran        | Time-keeper             |14h |    |    |    |
 | Shu Tian        | Documentation manager   |15h |    |    |    |
