@@ -23,14 +23,15 @@ public class EventController {
             .collect(Collectors.toList());
     }
     
-    @PostMapping(value = { "/events/{id}", "/persons/{name}/"})
+    @PostMapping(value = { "/events/{id}", "/events/{name}/"})
     public EventDTO createEvent(
         @PathVariable("name") String name,
         @RequestParam int id,
-        @RequestParam Library lib)
+        @RequestParam Library lib,
+        @RequestParam Transaction transaction)
         throws IllegalArgumentException {
-            Event e = eventService.createEvent(lib, id, name);
-            EventDTO eDTO = new EventDTO(e.getLibrary(), e.getId(), e.getName());
+            Event e = eventService.createEvent(lib, id, name, transaction);
+            EventDTO eDTO = new EventDTO(e.getLibrary(), e.getId(), e.getName(), e.getTransaction());
             return eDTO;
         }
 

@@ -177,4 +177,45 @@ public class ItemService {
 		}
 	}
 
+	/**
+	 * Returns an appropriate item
+	 * 
+	 * @param id	The item's id
+	 * 
+	 * @return		The returned item
+	 * 
+	 * @throws IllegalArgumentException if the item is not already checked out
+	 */
+	public Item returnItem(int id) {
+		Item item = itemRepository.findItemById(id);
+		if (item.getStatus() != Status.CHECKED_OUT) {
+			throw new IllegalArgumentException("You may only return checked out items.");
+		}
+		else {
+			item.setStatus(Status.AVAILABLE);
+			return item;
+		}
+	}
+
+	/**
+	 * Renews an appropriate item
+	 * 
+	 * @param id	The item's id
+	 * 
+	 * @return		The renewed item
+	 * 
+	 * @throws IllegalArgumentException if the item is not already checked out
+	 */
+
+	public Item renewItem(int id) {
+		Item item = itemRepository.findItemById(id);
+		if (item.getStatus() != Status.CHECKED_OUT) {
+			throw new IllegalArgumentException("You may only renew an item that is already checked out.");
+		}
+		else {
+			item.setStatus(Status.CHECKED_OUT);
+			return item;
+		}
+	}
+
 }
