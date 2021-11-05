@@ -21,7 +21,7 @@ public interface DailyScheduleRepository extends CrudRepository<DailySchedule, I
      * @param library   -   System's library
      * @return              Daily schedule of library 
      */
-    DailySchedule findByLibrary(Library library);
+    List<DailySchedule> findByLibrary(Library library);
 
     /** List the schedules of a specific librarian
      * 

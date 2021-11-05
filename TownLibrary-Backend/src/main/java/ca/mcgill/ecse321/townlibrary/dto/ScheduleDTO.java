@@ -54,6 +54,20 @@ public class ScheduleDTO {
         return library;
     }
     
+    public static ScheduleDTO convertScheduleDTO(DailySchedule dailySchedule){
+        DayOfWeek dayOfWeek = dailySchedule.getDayOfWeek();
+        Time startTime = dailySchedule.getStartTime();
+        Time endTime = dailySchedule.getEndTime();
+        if (dailySchedule.getLibrary() != null){
+            Library library = dailySchedule.getLibrary();
+            return new ScheduleDTO(dayOfWeek, startTime, endTime, library);
+        }
+        else if (dailySchedule.getLibrarian() != null){
+            Librarian librarian = dailySchedule.getLibrarian();
+            return new ScheduleDTO(dayOfWeek, startTime, endTime, librarian);
+        }
+        else return new ScheduleDTO(dayOfWeek, startTime, endTime);
+    }
 
 
 }
