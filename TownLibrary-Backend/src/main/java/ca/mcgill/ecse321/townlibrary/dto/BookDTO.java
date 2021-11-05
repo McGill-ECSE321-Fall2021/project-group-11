@@ -1,11 +1,11 @@
 package ca.mcgill.ecse321.townlibrary.dto;
 
-import ca.mcgill.ecse321.townlibrary.model.Archive;
+import ca.mcgill.ecse321.townlibrary.model.Book;
 import ca.mcgill.ecse321.townlibrary.model.Library;
 import ca.mcgill.ecse321.townlibrary.model.Transaction;
 import ca.mcgill.ecse321.townlibrary.model.Status;
 
-public class ArchiveDTO {
+public class BookDTO {
 	
 	private int id;
 	private String name;
@@ -14,25 +14,24 @@ public class ArchiveDTO {
 	private Library library;
 	private Transaction transaction;
 	
-	public ArchiveDTO() {
+	public BookDTO() {
 	}
 	
-	public ArchiveDTO(int id, String name, Library lib, Transaction trans) {
+	public BookDTO(int id, String name, Status status, Library lib, Transaction trans) {
 		this.id = id;
 		this.name = name;
-		// Archives cannot be reserved or checked out
-		this.status = Status.AVAILABLE;	
+		this.status = status;
 		this.library = lib;
 		this.transaction = trans;
 	}
 	
-	public static ArchiveDTO fromModel(Archive a) {
-		final ArchiveDTO dto = new ArchiveDTO();
-		dto.id = a.getId();
-		dto.name = a.getName();
-		dto.status = a.getStatus();
-		dto.library = a.getLibrary();
-		dto.transaction = a.getTransaction();
+	public static BookDTO fromModel(Book b) {
+		final BookDTO dto = new BookDTO();
+		dto.id = b.getId();
+		dto.name = b.getName();
+		dto.status = b.getStatus();
+		dto.library = b.getLibrary();
+		dto.transaction = b.getTransaction();
 		return dto;
 	}
 	
