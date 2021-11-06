@@ -49,7 +49,7 @@ public class ArchiveRepositoryTest {
 
         // Test deletes
         this.archiveRepository.delete(ldArchive);
-        Assertions.assertTrue(this.archiveRepository.findById(10).isEmpty());
+        Assertions.assertFalse(this.archiveRepository.findById(10).isPresent());
     }
 
     @Test

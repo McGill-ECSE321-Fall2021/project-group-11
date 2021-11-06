@@ -47,7 +47,7 @@ public class MovieRepositoryTest {
 
         // Test deletes
         movieRepository.delete(m1);
-        Assertions.assertTrue(movieRepository.findById(70).isEmpty());
+        Assertions.assertFalse(movieRepository.findById(70).isPresent());
     }
 
     @Test

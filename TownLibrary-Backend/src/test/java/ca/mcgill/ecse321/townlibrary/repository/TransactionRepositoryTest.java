@@ -51,7 +51,7 @@ public class TransactionRepositoryTest {
 
         // Test deletes
         this.transactionRepository.delete(ldTransaction);
-        Assertions.assertTrue(this.transactionRepository.findById(10).isEmpty());
+        Assertions.assertFalse(this.transactionRepository.findById(10).isPresent());
     }
 
     @Test

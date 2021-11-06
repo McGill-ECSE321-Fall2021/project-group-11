@@ -47,7 +47,7 @@ public class EventRepositoryTest {
 
         // Test deletes
         eventRepository.delete(event);
-        Assertions.assertTrue(eventRepository.findById(591).isEmpty());
+        Assertions.assertFalse(eventRepository.findById(591).isPresent());
     }
 
     @Test
