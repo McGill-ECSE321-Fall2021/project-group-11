@@ -33,7 +33,7 @@ public class TransactionControllerTest {
     public void setup() {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
-        post("/libraries/10005?address=sad street 2")
+        post("/libraries/10005?address=sad street 2");
     }
 
     @AfterEach
