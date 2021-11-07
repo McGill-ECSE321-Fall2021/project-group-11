@@ -2,6 +2,9 @@ package ca.mcgill.ecse321.townlibrary.controller;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,9 @@ public class LibrarianController {
 
     @Autowired
     private LibrarianService librarianService;
+
+    @Autowired
+    private HeadLibrarianService headLibrarianService;
 
     @GetMapping(value={ "/librarians", "/librarians/" })
     public ResponseEntity<?> getAllLibrarians() {
@@ -45,9 +51,15 @@ public class LibrarianController {
             @PathVariable("name") String name,
             @RequestParam String password,
             @RequestParam String address,
-            @RequestParam int library) {
+            @RequestParam int library,
+            @RequestParam int initId,
+            @RequestParam String initPass) {
 
         try {
+            if (!this.headLibrarianService.authenticateHeadLibrarian(initId, initPass))
+            {
+                return ResponseEntity.badRequest().body("BAD-ACCESS");
+            }
             final Library lib = this.libraryService.getLibrary(library);
             final Librarian u = this.librarianService.createLibrarian(lib, name, address, password);
             return ResponseEntity.ok().body(LibrarianDTO.fromModel(u));
@@ -67,4 +79,23 @@ public class LibrarianController {
         final Librarian u = this.librarianService.getLibrarian(id);
         return ResponseEntity.ok(LibrarianDTO.fromModel(u));
     }
+    
+    @DeleteMapping(value={ "/librarians/{id}", "/librarians/{id}/"})
+    public ResponseEntity<?> deleteLibrarian(
+        @PathVariable int id,
+        @RequestParam int initId,
+        @RequestParam String initPass) {
+        try{
+            if (!this.headLibrarianService.authenticateHeadLibrarian(initId, initPass))
+            {
+                return ResponseEntity.badRequest().body("BAD-ACCESS");
+            }
+            final boolean b = this.librarianService.deleteLibrarian(id);
+            return ResponseEntity.ok(b);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        
+    } 
+     
 }

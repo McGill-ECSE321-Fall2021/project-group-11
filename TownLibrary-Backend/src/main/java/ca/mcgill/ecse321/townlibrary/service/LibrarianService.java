@@ -105,4 +105,15 @@ public class LibrarianService {
             list.add(u);
         return list;
     }
+    /**
+     * Deletes a librarian by their Id
+     * @param id The librarian's id
+     * @return true if the librarian was succesfully deleted, false otherwise
+     */
+    @Transactional
+    public boolean deleteLibrarian(int id){
+
+        this.librarianRepository.delete(this.librarianRepository.findById(id).orElse(null));
+        return this.librarianRepository.findById(id).isEmpty() ;
+    }
 }
