@@ -32,7 +32,7 @@ public class EventControllerTest {
         public void setup() {
             RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
-            post("/libraries/10001?address=sad street")
+            post("/libraries/10001?address=sad street");
         }
 
         @AfterEach
