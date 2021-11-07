@@ -17,6 +17,9 @@ public class TransactionController {
         @Autowired
         private TransactionService transactionService;
 
+        @Autowired
+        private OnlineMemberService onlineMemberService;
+
         @GetMapping(value = { "/transactions", "/transactions/"})
         public List<TransactionDTO> getAllTransaction() {
             return transactionService.getAllTransactions()
@@ -29,9 +32,10 @@ public class TransactionController {
             @PathVariable("id") int id,
             @RequestParam Timestamp startDate,
             @RequestParam Timestamp endDate,
-            @RequestParam UserRole userRole) 
+            @RequestParam int userId) 
 
             throws IllegalArgumentException {
+                final UserRole userRole = onlineMemberService.getOnlineMember(id)
                 Transaction t = transactionService.createTransaction(id, startDate, endDate, userRole);
                 TransactionDTO tDTO = new TransactionDTO(t.getId(), t.getStartDate(), t.getEndDate(), t.getUserRole());
                 return tDTO;
