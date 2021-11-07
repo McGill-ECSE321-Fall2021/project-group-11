@@ -15,7 +15,6 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-import org.h2.server.web.WebApp;
 
 // Heavily inspired by Paul's integration testing files
 
