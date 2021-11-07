@@ -297,4 +297,30 @@ public class LibrarianControllerTest {
             .statusCode(200)
             .body("size()", equalTo(1));
     }
+
+    @Test
+    public void testDeleteLibrarianNonExistent(){
+        // HeadLibrarian to create/delete librarian
+        this.headLibrarian = given()
+                .param("password", "johncena5")
+                .param("address", "700 Emma road")
+                .param("library", "0")
+                .post("/head-librarians/John Johnson")
+                .then()
+                .extract()
+                .response().body().path("id");
+
+        // Dummy id
+        int idLibrarian = 1;
+
+        given()
+            .param("initId", this.headLibrarian)
+            .param("initPass", "johncena5")
+            .when().delete("/librarians/" + idLibrarian)
+            .then()
+            .statusCode(400)
+            .body(equalTo("LIBRARIAN-NOT-FOUND"));
+    }
+       
+            
 }

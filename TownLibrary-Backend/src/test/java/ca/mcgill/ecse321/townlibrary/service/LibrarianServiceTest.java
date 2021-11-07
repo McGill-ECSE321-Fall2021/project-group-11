@@ -168,7 +168,7 @@ public class LibrarianServiceTest {
         try {
             final boolean deleted = this.librarianService.deleteLibrarian(0);   
         } catch (Exception e) {
-            assertEquals("No value present", e.getMessage());
+            assertEquals("LIBRARIAN-NOT-FOUND", e.getMessage());
         }
     }
 
