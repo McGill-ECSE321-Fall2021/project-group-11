@@ -70,7 +70,7 @@ public class TransactionControllerTest {
                 .body("id", equalTo(id))
                 .body("startDate", equalTo("2021-11-07"))
                 .body("endDate", equalTo("2021-11-09"))
-                .body("libraryId", equalTo(10005))
+                .body("libraryId", equalTo(10005));
 
             when().get("/events/")
                 .then().statusCode(202)
