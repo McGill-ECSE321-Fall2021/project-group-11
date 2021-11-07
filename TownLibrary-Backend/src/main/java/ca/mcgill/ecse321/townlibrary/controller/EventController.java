@@ -23,7 +23,7 @@ public class EventController {
             .collect(Collectors.toList());
     }
     
-    @PostMapping(value = { "/events/{id}", "/events/{name}/"})
+    @PostMapping(value = { "/events/{name}", "/events/{name}/"})
     public EventDTO createEvent(
         @PathVariable("name") String name,
         @RequestParam int id,
