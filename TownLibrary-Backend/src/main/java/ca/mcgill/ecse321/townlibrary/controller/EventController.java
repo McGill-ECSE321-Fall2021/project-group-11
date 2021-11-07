@@ -16,6 +16,12 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @Autowired 
+    private LibraryService libraryService;
+
+    @Autowired 
+    private TransactionService transactionService;
+
     @GetMapping(value = { "/events", "/events/"})
     public List<EventDTO> getAllEvents() {
         return eventService.getAllEvents()
@@ -27,10 +33,12 @@ public class EventController {
     public EventDTO createEvent(
         @PathVariable("name") String name,
         @RequestParam int id,
-        @RequestParam Library lib,
-        @RequestParam Transaction transaction)
+        @RequestParam int lib,
+        @RequestParam int tr)
         throws IllegalArgumentException {
-            Event e = eventService.createEvent(lib, id, name, transaction);
+            final Library library = libraryService.getLibrary(lib);
+            final Transaction transaction = transactionService.getTransaction(tr);
+            Event e = eventService.createEvent(library, id, name, transaction);
             EventDTO eDTO = new EventDTO(e.getLibrary(), e.getId(), e.getName(), e.getTransaction());
             return eDTO;
         }
