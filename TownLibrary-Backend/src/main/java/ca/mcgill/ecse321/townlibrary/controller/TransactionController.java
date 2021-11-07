@@ -35,7 +35,7 @@ public class TransactionController {
             @RequestParam int userId) 
 
             throws IllegalArgumentException {
-                final UserRole userRole = onlineMemberService.getOnlineMember(id)
+                final UserRole userRole = onlineMemberService.getOnlineMember(id);
                 Transaction t = transactionService.createTransaction(id, startDate, endDate, userRole);
                 TransactionDTO tDTO = new TransactionDTO(t.getId(), t.getStartDate(), t.getEndDate(), t.getUserRole());
                 return tDTO;
