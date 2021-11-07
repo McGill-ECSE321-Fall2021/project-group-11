@@ -112,8 +112,7 @@ public class LibrarianService {
      */
     @Transactional
     public boolean deleteLibrarian(int id){
-
-        this.librarianRepository.delete(this.librarianRepository.findById(id).orElse(null));
-        return this.librarianRepository.findById(id).isEmpty() ;
+        this.librarianRepository.delete(this.librarianRepository.findById(id).orElseThrow());
+        return this.librarianRepository.findById(id).isEmpty();
     }
 }
