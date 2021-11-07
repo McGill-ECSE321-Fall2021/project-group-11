@@ -62,7 +62,7 @@ public class EventControllerTest {
                 .body("id", equalTo(10000))
                 .body("libraryId", equalTo(10001))
                 .body("transactionId", equalTo(10002))
-                .extract.response().body.path("name");
+                .extract().response().body().path("name");
 
                 when().get("/events/" + name)
                     .then()
@@ -76,7 +76,7 @@ public class EventControllerTest {
                     .then()
                     .statusCode(201)
                     .body("size()", equalTo(1))
-                    .body("[0].name").equalTo(name)
+                    .body("[0].name", equalTo(name))
                     .body("[0].id", equalTo(10000))
                     .body("[0].libraryId", equalTo(10001))
                     .body("[0].transactionId", equalTo(10002));

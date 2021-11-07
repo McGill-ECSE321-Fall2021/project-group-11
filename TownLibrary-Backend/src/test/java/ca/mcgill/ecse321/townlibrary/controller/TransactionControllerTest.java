@@ -63,7 +63,7 @@ public class TransactionControllerTest {
             .body("startDate", equalTo("2021-11-07"))
             .body("endDate", equalTo("2021-11-09"))
             .body("libraryId", equalTo(10005))
-            .extract.response().body.path("id");
+            .extract().response().body().path("id");
 
             when().get("/events/" + id)
                 .then().statusCode(202)
