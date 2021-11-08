@@ -28,6 +28,15 @@ public class TransactionController {
                 .collect(Collectors.toList());
         }
 
+        @GetMapping(value = {"/transactions/{id}", "/transactions/{id}"})
+        public ResponseEntity<?> getTransaction(@PathVariable("id") int id) {
+            final Transaction t = transactionService.getTransaction(id);
+            if (t == null) {
+                return ResponseEntity.badRequest().body("NOT-FOUND-TRANSACTION");
+            }
+            return ResponseEntity.ok(TransactionDTO.fromModel(t));
+        }
+
         @PostMapping(value = { "/transactions/{id}", "/transactions/{id}"})
         public ResponseEntity<?> createTransaction(
             @PathVariable("id") int id,

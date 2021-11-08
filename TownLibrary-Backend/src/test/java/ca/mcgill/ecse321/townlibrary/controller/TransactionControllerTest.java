@@ -46,7 +46,8 @@ public class TransactionControllerTest {
 
         // Since empty, any transaction search should return error
         when().get("/transactions/1")
-            .then().statusCode(400);
+            .then().statusCode(400)
+            .body(equalTo("NOT-FOUND-TRANSACTION"));
     }
 
     @Test
