@@ -369,4 +369,60 @@ public class ItemServiceTest {
 		}
 	}
 
+	@Test
+	public void testReturnNonExistentItem() {
+		try {
+			// no one is using id of 999999
+			itemService.returnItem(999999);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Item does not exist.", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testReturnNonCheckedOutItem() {
+		try {
+			itemService.returnItem(BOOK_ID);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("You may only return checked out items.", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testReturnItem() {
+		final Item item = itemService.returnItem(MOVIE_ID);
+		assertEquals(item.getId(), MOVIE_ID);
+		assertEquals(item.getStatus(), Status.AVAILABLE);
+	}
+
+	@Test
+	public void testRenewNonExistentItem() {
+		try {
+			// no one is using id of 999999
+			itemService.renewItem(999999);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("Item does not exist.", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testRenewNonCheckedOutItem() {
+		try {
+			itemService.renewItem(BOOK_ID);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("You may only renew an item that is already checked out.", e.getMessage());
+		}
+	}
+
+	@Test
+	public void testRenewItem() {
+		final Item item = itemService.renewItem(MOVIE_ID);
+		assertEquals(item.getId(), MOVIE_ID);
+		assertEquals(item.getStatus(), Status.CHECKED_OUT);
+	}
+
 }
