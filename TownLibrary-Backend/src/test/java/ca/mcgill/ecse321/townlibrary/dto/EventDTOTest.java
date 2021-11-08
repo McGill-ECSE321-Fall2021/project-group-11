@@ -17,8 +17,8 @@ public class EventDTOTest {
 
         EventDTO dto;
         dto = EventDTO.fromModel(e);
-        Assertions.assertEquals(e.getId(), dto.getEventID());
-        Assertions.assertEquals(e.getName(), dto.getEventName());
+        Assertions.assertEquals(e.getId(), dto.id);
+        Assertions.assertEquals(e.getName(), dto.name);
         Assertions.assertNull(e.getLibrary());
         Assertions.assertNull(e.getTransaction());
 
@@ -26,9 +26,9 @@ public class EventDTOTest {
         e.setLibrary(l);
 
         dto = EventDTO.fromModel(e);
-        Assertions.assertEquals(e.getId(), dto.getEventID());
-        Assertions.assertEquals(e.getName(), dto.getEventName());
-        Assertions.assertEquals(l.getId(), dto.getLibraryId());
+        Assertions.assertEquals(e.getId(), dto.id);
+        Assertions.assertEquals(e.getName(), dto.name);
+        Assertions.assertEquals(l.getId(), dto.libId);
         Assertions.assertNull(e.getTransaction());
 
         Transaction t = new Transaction();
@@ -36,10 +36,10 @@ public class EventDTOTest {
         e.setTransaction(t);
 
         dto = EventDTO.fromModel(e);
-        Assertions.assertEquals(e.getId(), dto.getEventID());
-        Assertions.assertEquals(e.getName(), dto.getEventName());
-        Assertions.assertEquals(l.getId(), dto.getLibraryId());
-        Assertions.assertEquals(t.getId(), dto.getTransactionId());
+        Assertions.assertEquals(e.getId(), dto.id);
+        Assertions.assertEquals(e.getName(), dto.name);
+        Assertions.assertEquals(l.getId(), dto.libId);
+        Assertions.assertEquals(t.getId(), dto.trId);
     }
 
     @Test
@@ -55,22 +55,9 @@ public class EventDTOTest {
         e.setTransaction(t);
         EventDTO dto;
         dto = EventDTO.fromModel(e);
-        Assertions.assertEquals(e.getId(), dto.getEventID());
-        Assertions.assertEquals(e.getName(), dto.getEventName());
-        Assertions.assertEquals(e.getLibrary().getId(), dto.getLibraryId());
-        Assertions.assertEquals(e.getTransaction().getId(), dto.getTransactionId());
-    }
-
-    @Test
-    public void testConstructor() {
-        Library l = new Library();
-        l.setId(1001);
-        Transaction t = new Transaction();
-        t.setId(1002);
-        final EventDTO dto = new EventDTO(1004, "bday2", l.getId(), t.getId());
-        Assertions.assertEquals(1004, dto.getEventID());
-        Assertions.assertEquals("bday2", dto.getEventName());
-        Assertions.assertEquals(l.getId(), dto.getLibraryId());
-        Assertions.assertEquals(t.getId(), dto.getTransactionId());
+        Assertions.assertEquals(e.getId(), dto.id);
+        Assertions.assertEquals(e.getName(), dto.name);
+        Assertions.assertEquals(e.getLibrary().getId(), dto.libId);
+        Assertions.assertEquals(e.getTransaction().getId(), dto.trId);
     }
 }

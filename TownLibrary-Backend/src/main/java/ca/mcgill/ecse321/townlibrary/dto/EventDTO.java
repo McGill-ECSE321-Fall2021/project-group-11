@@ -11,16 +11,6 @@ public final class EventDTO {
     public Integer libId;
     public Integer trId;
 
-    public EventDTO() {
-    }
-
-    public EventDTO(int id, String name, int libId, int trId) {
-        this.id = id;
-        this.name = name;
-        this.libId = libId;
-        this.trId = trId;
-    }
-
     public static EventDTO fromModel(Event e) {
         final EventDTO dto = new EventDTO();
         dto.id = e.getId();
@@ -30,21 +20,5 @@ public final class EventDTO {
         dto.trId = Optional.ofNullable(e.getTransaction())
                         .map(x -> x.getId()).orElse(null);
         return dto;
-    }
-
-    public int getEventID() {
-        return this.id;
-    }
-
-    public String getEventName() {
-        return this.name;
-    }
-
-    public int getLibraryId() {
-        return this.libId;
-    }
-
-    public int getTransactionId() {
-        return this.trId;
     }
 }
