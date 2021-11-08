@@ -27,11 +27,23 @@ public class TransactionControllerTest {
     @Autowired
         private WebApplicationContext webApplicationContext;
 
+    private int idLibrarian;
+
     @BeforeEach
     public void setup() {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
         post("/libraries/10005?address=sad street 2");
+
+        // Probably safe to assume we also need an user
+        this.idLibrarian = given()
+            .param("password", "jojo123")
+            .param("address", "410 Chili Street")
+            .param("library", "10005")
+            .post("/head-librarians/Joe Schmoe")
+            .then()
+            .extract()
+            .response().body().path("id");
     }
 
     @AfterEach
@@ -54,29 +66,30 @@ public class TransactionControllerTest {
     @Test
     public void testCreateTransactionAndQuery() {
         final int id = given()
-            .param("startDate", "2021-11-07")
-            .param("endDate", "2021-11-09")
-            .param("userId", "10005")
+            .param("startDate", "2021-11-07T00:00:00")
+            .param("endDate", "2021-11-09T00:00:00")
+            .param("userId", this.idLibrarian)
             .when().post("/transactions/0")
-            .then().statusCode(200)
-            .body("startDate", equalTo("2021-11-07"))
-            .body("endDate", equalTo("2021-11-09"))
-            .body("userId", equalTo("10005"))
+            .then()
+            .statusCode(200)
+            .body("startDate", equalTo("2021-11-07T04:00:00.000+00:00"))
+            .body("endDate", equalTo("2021-11-09T04:00:00.000+00:00"))
+            .body("userId", equalTo(this.idLibrarian))
             .extract().response().body().path("id");
 
             when().get("/transactions/" + id)
                 .then().statusCode(200)
                 .body("id", equalTo(id))
-                .body("startDate", equalTo("2021-11-07"))
-                .body("endDate", equalTo("2021-11-09"))
-                .body("userId", equalTo("10005"));
+                .body("startDate", equalTo("2021-11-07T04:00:00.000+00:00"))
+                .body("endDate", equalTo("2021-11-09T04:00:00.000+00:00"))
+                .body("userId", equalTo(this.idLibrarian));
 
             when().get("/transactions/")
                 .then().statusCode(200)
                 .body("size()", equalTo(1))
                 .body("[0].id", equalTo(id))
-                .body("[0].startDate", equalTo("2021-11-07"))
-                .body("[0].endDate", equalTo("2021-11-09"))
-                .body("[0].userId", equalTo("10005"));    
+                .body("[0].startDate", equalTo("2021-11-07T04:00:00.000+00:00"))
+                .body("[0].endDate", equalTo("2021-11-09T04:00:00.000+00:00"))
+                .body("[0].userId", equalTo(this.idLibrarian));
     }
 }

@@ -1,11 +1,13 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import ca.mcgill.ecse321.townlibrary.dto.*;
 import ca.mcgill.ecse321.townlibrary.model.*;
@@ -40,13 +42,13 @@ public class TransactionController {
         @PostMapping(value = { "/transactions/{id}", "/transactions/{id}/"})
         public ResponseEntity<?> createTransaction(
             @PathVariable("id") int id,
-            @RequestParam Timestamp startDate,
-            @RequestParam Timestamp endDate,
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date startDate,
+            @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date endDate,
             @RequestParam int userId) {
 
             try {
-                final UserRole ur = onlineMemberService.getOnlineMember(id); 
-                final Transaction t = transactionService.createTransaction(id, startDate, endDate, ur);
+                final UserRole ur = onlineMemberService.getOnlineMember(id);
+                final Transaction t = transactionService.createTransaction(id, new Timestamp(startDate.getTime()), new Timestamp(endDate.getTime()), ur);
                 return ResponseEntity.ok().body(TransactionDTO.fromModel(t));
             }
             catch (IllegalArgumentException ex) {
