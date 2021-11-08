@@ -38,7 +38,7 @@ public class LibrarianControllerTest {
         // Also each test assumes there is a proper library.
         post("/libraries/0?address=300 Pepper Street");
 
-        // Online member to test restricted access        
+        // Online member to test restricted access
         this.testOnlineMember = given()
                 .param("password", "tripled3")
                 .param("email", "finger.lickin@good.com")
@@ -164,7 +164,7 @@ public class LibrarianControllerTest {
             .then()
             .statusCode(400)
             .body(equalTo("BAD-ACCESS"));
-            
+
     }
 
     @Test
@@ -201,10 +201,21 @@ public class LibrarianControllerTest {
 
     @Test
     public void testAuthOrdinaryLibrarian() {
+        this.headLibrarian = given()
+                .param("password", "johncena5")
+                .param("address", "700 Emma road")
+                .param("library", "0")
+                .post("/head-librarians/John Johnson")
+                .then()
+                .extract()
+                .response().body().path("id");
+
         final int id = given()
             .param("password", "jojo123")
             .param("address", "410 Chili Street")
             .param("library", "0")
+            .param("initId", this.headLibrarian)
+            .param("initPass", "johncena5")
             .when().post("/librarians/Joe Schmoe")
             .then()
             .statusCode(200)
@@ -267,11 +278,11 @@ public class LibrarianControllerTest {
             .statusCode(400)
             .body(equalTo("BAD-ACCESS"));
 
-        when().get("/librarians/" + idLibrarian)
+        when().get("/librarians/")
             .then()
             .statusCode(200)
             .body("size()", equalTo(2));
-        
+
     }
 
     @Test
@@ -297,7 +308,7 @@ public class LibrarianControllerTest {
                 .statusCode(200)
                 .extract()
                 .response().body().path("id");
-        
+
         // Proper delete
         given()
             .param("initId", this.headLibrarian)
@@ -305,7 +316,7 @@ public class LibrarianControllerTest {
             .when().delete("/librarians/" + idLibrarian)
             .then()
             .statusCode(200)
-            .body("id", equalTo(idLibrarian));
+            .body(equalTo("true"));
 
         // Only HeadLibrarian should be left
         when().get("/librarians")
@@ -337,6 +348,6 @@ public class LibrarianControllerTest {
             .statusCode(400)
             .body(equalTo("LIBRARIAN-NOT-FOUND"));
     }
-       
-            
+
+
 }
