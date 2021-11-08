@@ -34,7 +34,6 @@ public class EventServiceTest {
         e.setTransaction(transaction);
         Assertions.assertEquals(lib.getId(), e.getLibrary().getId());
         Assertions.assertEquals(name, e.getName());
-        Assertions.assertEquals(id, e.getId());
         Assertions.assertEquals(transaction, e.getTransaction());
     }
 
