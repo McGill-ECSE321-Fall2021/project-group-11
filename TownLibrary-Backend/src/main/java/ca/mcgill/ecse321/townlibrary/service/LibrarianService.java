@@ -119,6 +119,6 @@ public class LibrarianService {
         } catch (Exception e) {
             throw new IllegalArgumentException("LIBRARIAN-NOT-FOUND");
         }
-        return this.librarianRepository.findById(id).isEmpty();
+        return !this.librarianRepository.findById(id).isPresent();
     }
 }
