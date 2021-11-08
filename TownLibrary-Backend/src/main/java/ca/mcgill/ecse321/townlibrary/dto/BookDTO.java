@@ -1,8 +1,10 @@
 package ca.mcgill.ecse321.townlibrary.dto;
 
+import java.util.Optional;
+
 import ca.mcgill.ecse321.townlibrary.model.Book;
-import ca.mcgill.ecse321.townlibrary.model.Library;
-import ca.mcgill.ecse321.townlibrary.model.Transaction;
+//import ca.mcgill.ecse321.townlibrary.model.Library;
+//import ca.mcgill.ecse321.townlibrary.model.Transaction;
 import ca.mcgill.ecse321.townlibrary.model.Status;
 
 public class BookDTO {
@@ -11,18 +13,18 @@ public class BookDTO {
 	private String name;
 	private Status status;
 	
-	private Library library;
-	private Transaction transaction;
+	private Integer libraryId;
+	//private Transaction transaction;
 	
 	public BookDTO() {
 	}
 	
-	public BookDTO(int id, String name, Status status, Library lib, Transaction trans) {
+	public BookDTO(int id, String name, Status status, Integer libId) {
 		this.id = id;
 		this.name = name;
 		this.status = status;
-		this.library = lib;
-		this.transaction = trans;
+		this.libraryId = libId;
+		//this.transaction = trans;
 	}
 	
 	public static BookDTO fromModel(Book b) {
@@ -30,8 +32,10 @@ public class BookDTO {
 		dto.id = b.getId();
 		dto.name = b.getName();
 		dto.status = b.getStatus();
-		dto.library = b.getLibrary();
-		dto.transaction = b.getTransaction();
+		dto.libraryId = Optional.ofNullable(b.getLibrary())
+				.map(x -> x.getId())
+                .orElse(null);
+		//dto.transaction = b.getTransaction();
 		return dto;
 	}
 	
@@ -47,12 +51,12 @@ public class BookDTO {
 		return status;
 	}
 	
-	public Library getLibrary() {
-        return library;
+	public Integer getLibraryId() {
+        return libraryId;
     }
 	
-	public Transaction getTransaction() {
-        return transaction;
-    }
+//	public Transaction getTransaction() {
+//        return transaction;
+//    }
 
 }

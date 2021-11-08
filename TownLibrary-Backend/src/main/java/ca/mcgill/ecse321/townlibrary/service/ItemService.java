@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.townlibrary.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class ItemService {
 	MovieRepository movieRepository;
 	@Autowired
 	MusicAlbumRepository musicAlbumRepository;
+	
 	
 	/**
      * Retrieves an item by its id.
@@ -174,6 +176,7 @@ public class ItemService {
 	 * @param id	The item's id
 	 * @return		The reserved item
 	 */
+	@Transactional
 	public Item reserveItem(int id) {
 		String error = "";
 		Item item = itemRepository.findItemById(id);
@@ -206,7 +209,8 @@ public class ItemService {
 	 * @param id	The item's id
 	 * @return		The checked out item
 	 */
-	public Item checkoutItem(int id) {
+	@Transactional
+	public Item checkoutItem(int id, UserRole user) {
 		String error = "";
 		Item item = itemRepository.findItemById(id);
 		
@@ -227,8 +231,20 @@ public class ItemService {
 	    if (error.length() > 0) {
 	        throw new IllegalArgumentException(error);
 	    }
-	
+	    
+	    // Create a transaction associated with checked out item
+		Transaction transaction = new Transaction();
+		Timestamp startTime = new Timestamp(System.currentTimeMillis());
+		// Checked out for 2 weeks at a time by default
+		Timestamp endTime = new Timestamp(startTime.getTime() + 1000 * 86400 * 14);
+		transaction.setStartDate(startTime);
+		transaction.setEndDate(endTime);
+		transaction.setId(id);
+		transaction.setUserRole(user);
+		
+		item.setTransaction(transaction);
 		item.setStatus(Status.CHECKED_OUT);
+		
 		return item;
 		
 	}
@@ -242,12 +258,14 @@ public class ItemService {
 	 * 
 	 * @throws IllegalArgumentException if the item is not already checked out
 	 */
+	@Transactional
 	public Item returnItem(int id) {
 		Item item = itemRepository.findItemById(id);
 		if (item.getStatus() != Status.CHECKED_OUT) {
 			throw new IllegalArgumentException("You may only return checked out items.");
 		}
 		else {
+			item.setTransaction(null);	// remove associated transaction
 			item.setStatus(Status.AVAILABLE);
 			return item;
 		}
@@ -262,13 +280,18 @@ public class ItemService {
 	 * 
 	 * @throws IllegalArgumentException if the item is not already checked out
 	 */
-
+	@Transactional
 	public Item renewItem(int id) {
 		Item item = itemRepository.findItemById(id);
 		if (item.getStatus() != Status.CHECKED_OUT) {
 			throw new IllegalArgumentException("You may only renew an item that is already checked out.");
 		}
 		else {
+			// extend transaction end date
+			long newEndTime = item.getTransaction().getEndDate().getTime() + 1000 * 86400 * 14;
+			Timestamp newEndDate = new Timestamp(newEndTime);
+			item.getTransaction().setEndDate(newEndDate);
+			
 			item.setStatus(Status.CHECKED_OUT);
 			return item;
 		}
