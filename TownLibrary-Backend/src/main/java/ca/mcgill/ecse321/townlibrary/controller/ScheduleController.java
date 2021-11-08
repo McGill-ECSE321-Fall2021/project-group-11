@@ -122,9 +122,9 @@ public class ScheduleController {
     }
 
     @PutMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
-    public ResponseEntity<?> assignSchedule(@RequestParam DailySchedule dailySchedule, @PathVariable("id") int librarianId){
+    public ResponseEntity<?> assignSchedule(@RequestParam int dailyScheduleId, @PathVariable("id") int librarianId){
         try {
-            service.assignSchedule(dailySchedule, librarianId);
+            service.assignSchedule(dailyScheduleId, librarianId);
             return ResponseEntity.ok().body("");
         } catch (Exception exception){
             return ResponseEntity.badRequest().body(exception.getMessage());
@@ -132,13 +132,13 @@ public class ScheduleController {
     }
 
     @PutMapping(value={"/schedules/library/{id}", "/schedules/library/{id}/"})
-    public void setLibrarySchedule(@RequestParam List<DailySchedule> dailySchedules, @PathVariable("id") int libraryId){
-        service.setLibrarySchedule(dailySchedules, libraryId);
+    public void setLibrarySchedule(@RequestParam List<Integer> dailyScheduleIds, @PathVariable("id") int libraryId){
+        service.setLibrarySchedule(dailyScheduleIds, libraryId);
     }
 
     @PutMapping(value={"/schedules/{id}", "/schedules/{id}/"})
-    public void updateSchedule(@PathVariable("id") DailySchedule dailySchedule, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
-        service.updateSchedule(dailySchedule, newStartTime, newEndTime);
+    public void updateSchedule(@PathVariable("id") int dailyScheduleId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
+        service.updateSchedule(dailyScheduleId, newStartTime, newEndTime);
     }
 
 

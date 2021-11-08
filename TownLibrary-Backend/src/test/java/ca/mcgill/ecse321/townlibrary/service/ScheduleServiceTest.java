@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.townlibrary.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
 
 import java.sql.Time;
@@ -50,6 +51,18 @@ public class ScheduleServiceTest {
     // Setup for each test
     @BeforeEach
     public void setMockOutput(){
+        // handles DailyScheduleRepository.findById calls
+        lenient().when(mockDailyScheduleRepository.findById(anyInt())).thenAnswer((InvocationOnMock invocation)-> {
+            if (Integer.valueOf(invocation.getArgument(0).toString()) < 20){ // arbitrary number of schedules
+                DailySchedule dailySchedule = new DailySchedule();
+                dailySchedule.setId(Integer.valueOf(invocation.getArgument(0).toString()));
+                // even id will represent wednesdays
+                if (dailySchedule.getId() % 2 == 0) dailySchedule.setDayOfWeek(DayOfWeek.WEDNESDAY);
+                // odd id will represent mondays for testing purposes
+                else dailySchedule.setDayOfWeek(DayOfWeek.MONDAY);
+                return Optional.of(dailySchedule);
+            }else return Optional.empty();
+        });
         // handles DailyScheduleRepository.findByLibrary calls
         lenient().when(mockDailyScheduleRepository.findByLibrary(any(Library.class))).thenAnswer((InvocationOnMock invocation)->{
             if (invocation.getArgument(0).equals(LIBRARY)){
@@ -278,20 +291,21 @@ public class ScheduleServiceTest {
         nonConflictingDailySchedule.setDayOfWeek(DayOfWeek.WEDNESDAY);
         nonConflictingDailySchedule.setStartTime(START_TIME); // 8am
         nonConflictingDailySchedule.setEndTime(END_TIME);   // 12pm 
-
         
         try {
-            scheduleService.assignSchedule(nonConflictingDailySchedule, LIBRARIAN.getId());
+            assertEquals(0, nonConflictingDailySchedule.getId());
+            scheduleService.assignSchedule(nonConflictingDailySchedule.getId(), LIBRARIAN.getId());
         } catch (IllegalArgumentException exception) {
             fail();
         }
         try {
-            scheduleService.assignSchedule(null, LIBRARIAN.getId());
+            scheduleService.assignSchedule(3242, LIBRARIAN.getId());
+            fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NO-SCHEDULE", exception.getMessage());
         }
         try {
-            scheduleService.assignSchedule(nonConflictingDailySchedule, 2);
+            scheduleService.assignSchedule(nonConflictingDailySchedule.getId(), 2);
             fail();
         } catch (Exception exception) {
             assertEquals(NoSuchElementException.class, exception.getClass());
@@ -304,8 +318,9 @@ public class ScheduleServiceTest {
         conflictingSchedule.setDayOfWeek(DayOfWeek.MONDAY);
         conflictingSchedule.setStartTime(START_TIME); //8am
         conflictingSchedule.setEndTime(END_TIME);   //12pm
+        conflictingSchedule.setId(1);
         try {
-            scheduleService.assignSchedule(conflictingSchedule, LIBRARIAN.getId());
+            scheduleService.assignSchedule(conflictingSchedule.getId(), LIBRARIAN.getId());
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("OVERLAP-SCHEDULE-ASSIGNMENT", exception.getMessage());
@@ -314,21 +329,25 @@ public class ScheduleServiceTest {
 
     @Test
     public void testSetLibrarySchedule(){
-        ArrayList<DailySchedule> newSchedule = createWeekSchedule();
+        ArrayList<DailySchedule> newSchedules = createWeekSchedule();
+        ArrayList<Integer> newScheduleIds = new ArrayList<Integer>();
+        for (DailySchedule schedule: newSchedules){
+            newScheduleIds.add(schedule.getId());
+        }
         try{
-            scheduleService.setLibrarySchedule(newSchedule, LIBRARY.getId());
+            scheduleService.setLibrarySchedule(newScheduleIds, LIBRARY.getId());
         }catch(IllegalArgumentException exception){
             fail("Not set properly");
         }
         try{
-            scheduleService.setLibrarySchedule(newSchedule, 2);
+            scheduleService.setLibrarySchedule(newScheduleIds, 2);
             fail();
         }catch(IllegalArgumentException exception){
             assertEquals("NO-LIBRARY", exception.getMessage());
         }
         try {
-            newSchedule.remove(6);
-            scheduleService.setLibrarySchedule(newSchedule, LIBRARY.getId());
+            newScheduleIds.remove(6);
+            scheduleService.setLibrarySchedule(newScheduleIds, LIBRARY.getId());
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NOT-WEEK-LIBRARY-SCHEDULE", exception.getMessage());
@@ -339,25 +358,27 @@ public class ScheduleServiceTest {
 
     @Test
     public void testUpdateSchedule(){
+        int existingScheduleId = 0;
+        int notExistingScheduleId = 500;
         try {
-            scheduleService.updateSchedule(new DailySchedule(), START_TIME, END_TIME);
+            scheduleService.updateSchedule(existingScheduleId, START_TIME, END_TIME);
         }catch (Exception exception){
             fail();
         }
         try {
-            scheduleService.updateSchedule(null, START_TIME, END_TIME);
+            scheduleService.updateSchedule(notExistingScheduleId, START_TIME, END_TIME);
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NO-SCHEDULE", exception.getMessage());
         }
         try {
-            scheduleService.updateSchedule(new DailySchedule(), null, END_TIME);
+            scheduleService.updateSchedule(existingScheduleId, null, END_TIME);
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NULL-TIME", exception.getMessage());
         }
         try {
-            scheduleService.updateSchedule(new DailySchedule(), END_TIME, START_TIME);
+            scheduleService.updateSchedule(existingScheduleId, END_TIME, START_TIME);
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("START-TIME-AFTER-END-TIME", exception.getMessage());
@@ -369,6 +390,7 @@ public class ScheduleServiceTest {
         ArrayList<DailySchedule> librarySchedule = new ArrayList<DailySchedule>();
         DailySchedule schedule = new DailySchedule();
         for (int i = 0; i<7; i++){
+            schedule.setId(i);
             switch(i){
                 case 0:
                     schedule.setDayOfWeek(DayOfWeek.MONDAY);

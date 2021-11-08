@@ -153,8 +153,9 @@ public class ScheduleService {
      * @param librarianId
      */
     @Transactional
-    public void assignSchedule(DailySchedule dailySchedule, int librarianId){
-        if (dailySchedule == null) throw new IllegalArgumentException("NO-SCHEDULE");
+    public void assignSchedule(int dailyScheduleId, int librarianId){
+        if (!dailyScheduleRepository.findById(dailyScheduleId).isPresent()) throw new IllegalArgumentException("NO-SCHEDULE");
+        DailySchedule dailySchedule = dailyScheduleRepository.findById(dailyScheduleId).get();
         for (DailySchedule schedule:dailyScheduleRepository.findByLibrarian(librarianRepository.findById(librarianId).get())){
             // checks whether the time block (start time to end time) interfers with any of the librarian's existing time blocks
             // i.e. no overlap with currently assigned schedules (not same day or within time block)
@@ -177,19 +178,21 @@ public class ScheduleService {
 
     /** Set opening/closing hours for a library (weekly schedule)
      * 
-     * @param dailySchedules
+     * @param dailySchedulesIds
      * @param libraryId
      */
     @Transactional
-    public void setLibrarySchedule(List<DailySchedule> dailySchedules, int libraryId){
+    public void setLibrarySchedule(List<Integer> dailyScheduleIds, int libraryId){
         if (!libraryRepository.findById(libraryId).isPresent()) throw new IllegalArgumentException("NO-LIBRARY");
-        if (dailySchedules.size() != 7) throw new IllegalArgumentException("NOT-WEEK-LIBRARY-SCHEDULE");
+        if (dailyScheduleIds.size() != 7) throw new IllegalArgumentException("NOT-WEEK-LIBRARY-SCHEDULE");
         // changing library schedule means removing all previous daily schedules (week schedule from mon-sun)
         for(DailySchedule oldSchedule:dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).get())){
             if (oldSchedule != null) dailyScheduleRepository.delete(oldSchedule);
         }
         // and saving a new set of daily schedules to replace them
-        for (DailySchedule newSchedule:dailySchedules){
+        for (int newScheduleId:dailyScheduleIds){
+            // not sure how this is going to play out
+            DailySchedule newSchedule = dailyScheduleRepository.findById(newScheduleId).get();
             if (newSchedule != null) {
                 newSchedule.setLibrary(libraryRepository.findById(libraryId).get());
                 dailyScheduleRepository.save(newSchedule);
@@ -199,18 +202,17 @@ public class ScheduleService {
 
     /** Update an existing schedule with different values
      * 
-     * @param dailySchedule
+     * @param dailyScheduleId
      * @param newDayOfWeek
      * @param newStartTime
      * @param newEndTime
      */
     @Transactional
-    public void updateSchedule(DailySchedule dailySchedule, Time newStartTime, Time newEndTime){
-        if (dailySchedule == null) throw new IllegalArgumentException("NO-SCHEDULE");
-        // if (newDayOfWeek == null) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
+    public void updateSchedule(int dailyScheduleId, Time newStartTime, Time newEndTime){
+        if (!dailyScheduleRepository.findById(dailyScheduleId).isPresent()) throw new IllegalArgumentException("NO-SCHEDULE");
         if (newStartTime == null || newEndTime == null) throw new IllegalArgumentException("NULL-TIME");
         if (newStartTime.after(newEndTime)) throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
-        // dailyScheduleRepository.delete(dailySchedule);
+        DailySchedule dailySchedule = dailyScheduleRepository.findById(dailyScheduleId).get();
         dailySchedule.setStartTime(newStartTime);
         dailySchedule.setEndTime(newEndTime);
         dailyScheduleRepository.save(dailySchedule);
