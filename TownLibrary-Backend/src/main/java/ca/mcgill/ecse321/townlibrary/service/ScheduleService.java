@@ -35,7 +35,7 @@ public class ScheduleService {
      */
     @Transactional
     public DailySchedule createLibrarySchedule(int libraryId, DayOfWeek dayOfWeek, Time startTime, Time endTime){
-        if (libraryRepository.findById(libraryId).isEmpty()) throw new IllegalArgumentException("NO-LIBRARY");
+        if (!libraryRepository.findById(libraryId).isPresent()) throw new IllegalArgumentException("NO-LIBRARY");
         if (dayOfWeek == (null)) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
         if (startTime == (null) || endTime == (null)) throw new IllegalArgumentException("NULL-TIME");
         if (startTime.after(endTime)) throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
@@ -63,7 +63,7 @@ public class ScheduleService {
      */
     @Transactional
     public DailySchedule createLibrarianSchedule(int librarianId, DayOfWeek dayOfWeek, Time startTime, Time endTime){
-        if (librarianRepository.findById(librarianId).isEmpty()){
+        if (!librarianRepository.findById(librarianId).isPresent()){
             throw new IllegalArgumentException("NO-LIBRARIAN");
         }
         if (dayOfWeek == (null)){
@@ -96,7 +96,7 @@ public class ScheduleService {
      */
     @Transactional
     public List<DailySchedule> getLibrarySchedules(int libraryId){
-        List<DailySchedule> schedules = dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).orElseThrow());
+        List<DailySchedule> schedules = dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).get());
         return schedules;
     }
 
@@ -108,7 +108,7 @@ public class ScheduleService {
      */
     @Transactional
     public DailySchedule getLibraryScheduleByDay(int libraryId, DayOfWeek dayOfWeek){
-        if (libraryRepository.findById(libraryId).isEmpty()) throw new IllegalArgumentException("NO-LIBRARY");
+        if (!libraryRepository.findById(libraryId).isPresent()) throw new IllegalArgumentException("NO-LIBRARY");
         if (dayOfWeek == null) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
         List<DailySchedule> schedule = dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).get());
         for (DailySchedule dailySchedule : schedule){
@@ -139,7 +139,7 @@ public class ScheduleService {
      */
     @Transactional
     public DailySchedule getLibrarianScheduleByDay(int librarianId, DayOfWeek dayOfWeek){
-        if (librarianRepository.findById(librarianId).isEmpty()) throw new IllegalArgumentException("NO-LIBRARIAN");
+        if (!librarianRepository.findById(librarianId).isPresent()) throw new IllegalArgumentException("NO-LIBRARIAN");
         if (dayOfWeek == null) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
         List<DailySchedule> schedule = dailyScheduleRepository.findByLibrarian(librarianRepository.findLibrarianById(librarianId));
         for (DailySchedule dailySchedule : schedule){
@@ -158,7 +158,7 @@ public class ScheduleService {
     @Transactional
     public void assignSchedule(DailySchedule dailySchedule, int librarianId){
         if (dailySchedule == null) throw new IllegalArgumentException("NO-SCHEDULE");
-        for (DailySchedule schedule:dailyScheduleRepository.findByLibrarian(librarianRepository.findById(librarianId).orElseThrow())){
+        for (DailySchedule schedule:dailyScheduleRepository.findByLibrarian(librarianRepository.findById(librarianId).get())){
             // checks whether the time block (start time to end time) interfers with any of the librarian's existing time blocks
             // i.e. no overlap with currently assigned schedules (not same day or within time block)
             if (
@@ -182,7 +182,7 @@ public class ScheduleService {
      */
     @Transactional
     public void setLibrarySchedule(List<DailySchedule> dailySchedules, int libraryId){
-        if (libraryRepository.findById(libraryId).isEmpty()) throw new IllegalArgumentException("NO-LIBRARY");
+        if (!libraryRepository.findById(libraryId).isPresent()) throw new IllegalArgumentException("NO-LIBRARY");
         if (dailySchedules.size() != 7) throw new IllegalArgumentException("NOT-WEEK-LIBRARY-SCHEDULE");
         // changing library schedule means removing all previous daily schedules (week schedule from mon-sun)
         for(DailySchedule oldSchedule:dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).get())){
