@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
+import java.sql.Timestamp;
+import ca.mcgill.ecse321.townlibrary.dto.TransactionDTO;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.inOrder;
 
@@ -65,31 +68,42 @@ public class TransactionControllerTest {
 
     @Test
     public void testCreateTransactionAndQuery() {
-        final int id = given()
+        final Timestamp expectedStartDate = Timestamp.valueOf("2021-11-07 00:00:00");
+        final Timestamp expectedEndDate = Timestamp.valueOf("2021-11-09 00:00:00");
+
+        // the dto conversion is needed because timestamps strings are awkward
+        TransactionDTO dto = given()
             .param("startDate", "2021-11-07T00:00:00")
             .param("endDate", "2021-11-09T00:00:00")
             .param("userId", this.idLibrarian)
             .when().post("/transactions/0")
             .then()
             .statusCode(200)
-            .body("startDate", equalTo("2021-11-07T04:00:00.000+00:00"))
-            .body("endDate", equalTo("2021-11-09T04:00:00.000+00:00"))
-            .body("userId", equalTo(this.idLibrarian))
-            .extract().response().body().path("id");
+            .extract().response().as(TransactionDTO.class);
 
-            when().get("/transactions/" + id)
+        assertThat(dto.startDate, equalTo(expectedStartDate));
+        assertThat(dto.endDate, equalTo(expectedEndDate));
+        assertThat(dto.userId, equalTo(this.idLibrarian));
+
+        final int id = dto.id;
+
+            dto = when().get("/transactions/" + id)
                 .then().statusCode(200)
                 .body("id", equalTo(id))
-                .body("startDate", equalTo("2021-11-07T04:00:00.000+00:00"))
-                .body("endDate", equalTo("2021-11-09T04:00:00.000+00:00"))
-                .body("userId", equalTo(this.idLibrarian));
+                .extract().response().as(TransactionDTO.class);
 
-            when().get("/transactions/")
+        assertThat(dto.startDate, equalTo(expectedStartDate));
+        assertThat(dto.endDate, equalTo(expectedEndDate));
+        assertThat(dto.userId, equalTo(this.idLibrarian));
+
+            dto = when().get("/transactions/")
                 .then().statusCode(200)
                 .body("size()", equalTo(1))
-                .body("[0].id", equalTo(id))
-                .body("[0].startDate", equalTo("2021-11-07T04:00:00.000+00:00"))
-                .body("[0].endDate", equalTo("2021-11-09T04:00:00.000+00:00"))
-                .body("[0].userId", equalTo(this.idLibrarian));
+                .extract().response().as(TransactionDTO[].class)[0];
+
+        assertThat(dto.startDate, equalTo(expectedStartDate));
+        assertThat(dto.startDate, equalTo(expectedStartDate));
+        assertThat(dto.endDate, equalTo(expectedEndDate));
+        assertThat(dto.userId, equalTo(this.idLibrarian));
     }
 }
