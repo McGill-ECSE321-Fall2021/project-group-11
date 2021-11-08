@@ -32,6 +32,9 @@ public class ItemService {
      */
 	@Transactional
 	public Item getItem(int id) {
+		if (id < 0) {
+	        throw new IllegalArgumentException("Unsupported Id.");
+	    }
 		return itemRepository.findItemById(id);
 	}
 	
@@ -42,6 +45,9 @@ public class ItemService {
      */
 	@Transactional
 	public Item getItemByTransaction(Transaction transaction) {
+		if (transaction == null) {
+	        throw new IllegalArgumentException("Transaction cannot be null!");
+	    }
 		return itemRepository.findItemByTransaction(transaction);
 	}
 	
@@ -94,22 +100,37 @@ public class ItemService {
      */
 	@Transactional
 	public List<Archive> getArchiveByName(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Item name cannot be empty!");
+		}
 		return archiveRepository.findByNameContaining(name);
 	}
 	@Transactional
 	public List<Newspaper> getNewspaperByName(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Item name cannot be empty!");
+		}
 		return newspaperRepository.findNewspaperByNameContaining(name);
 	}
 	@Transactional
 	public List<Book> getBookByName(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Item name cannot be empty!");
+		}
 		return bookRepository.findByNameContaining(name);
 	}
 	@Transactional
 	public List<Movie> getMovieByName(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Item name cannot be empty!");
+		}
 		return movieRepository.findByNameContaining(name);
 	}
 	@Transactional
 	public List<MusicAlbum> getMusicAlbumByName(String name) {
+		if (name == null || name.trim().length() == 0) {
+			throw new IllegalArgumentException("Item name cannot be empty!");
+		}
 		return musicAlbumRepository.findByNameContaining(name);
 	}
 	
@@ -128,14 +149,23 @@ public class ItemService {
 //	}
 	@Transactional
 	public List<Book> getBookByStatus(Status status) {
+		if (status == null) {
+			throw new IllegalArgumentException("Status cannot be null.");
+		}
 		return bookRepository.findByStatus(status);
 	}
 	@Transactional
 	public List<Movie> getMovieByStatus(Status status) {
+		if (status == null) {
+			throw new IllegalArgumentException("Status cannot be null.");
+		}
 		return movieRepository.findByStatus(status);
 	}
 	@Transactional
 	public List<MusicAlbum> getMusicAlbumByStatus(Status status) {
+		if (status == null) {
+			throw new IllegalArgumentException("Status cannot be null.");
+		}
 		return musicAlbumRepository.findByStatus(status);
 	}
 	
@@ -145,17 +175,30 @@ public class ItemService {
 	 * @return		The reserved item
 	 */
 	public Item reserveItem(int id) {
+		String error = "";
 		Item item = itemRepository.findItemById(id);
-		if (item instanceof Archive || item instanceof Newspaper) {
-			throw new IllegalArgumentException("Cannot reserve archives or newspapers.");
+		
+		if (id < 0) {
+	        error = error + "Unsupported Id.";
+	    }
+		else if (!itemRepository.existsById(id)) {
+			error = error + "Item does not exist.";
+		}
+		else if (item instanceof Archive || item instanceof Newspaper) {
+			error = error + "Cannot reserve archives or newspapers.";
 		} 
 		else if (item.getStatus() != Status.AVAILABLE){
-			throw new IllegalArgumentException("This item is unavailable.");
-		} 
-		else {
-			item.setStatus(Status.RESERVED);
-			return item;
+			error = error + "This item is unavailable.";
 		}
+		
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+	    
+		item.setStatus(Status.RESERVED);
+		return item;
+		
 	}
 	
 	/**
@@ -164,17 +207,30 @@ public class ItemService {
 	 * @return		The checked out item
 	 */
 	public Item checkoutItem(int id) {
+		String error = "";
 		Item item = itemRepository.findItemById(id);
-		if (item instanceof Archive || item instanceof Newspaper) {
-			throw new IllegalArgumentException("Cannot checkout archives or newspapers.");
+		
+		if (id < 0) {
+	        error = error + "Unsupported Id.";
+	    }
+		else if (!itemRepository.existsById(id)) {
+			error = error + "Item does not exist.";
+		}
+		else if (item instanceof Archive || item instanceof Newspaper) {
+			error = error + "Cannot checkout archives or newspapers.";
 		} 
 		else if (item.getStatus() != Status.AVAILABLE){
-			throw new IllegalArgumentException("This item is unavailable.");
-		} 
-		else {
-			item.setStatus(Status.CHECKED_OUT);
-			return item;
+			error = error + "This item is unavailable.";
 		}
+		
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+	
+		item.setStatus(Status.CHECKED_OUT);
+		return item;
+		
 	}
 
 }
