@@ -220,6 +220,16 @@ public class ScheduleServiceTest {
     }
 
     @Test
+    public void testAssignNullSchedule(){
+        try {
+            scheduleService.assignSchedule(null, LIBRARIAN);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("NULL-SCHEDULE", e.getMessage());
+        }
+    }
+
+    @Test
     public void testAssignSchedule(){
         DailySchedule nonConflictingDailySchedule = new DailySchedule();
         DailySchedule conflictDailySchedule = new DailySchedule();
@@ -317,10 +327,17 @@ public class ScheduleServiceTest {
             assertEquals("NULL-TIME", e.getMessage());
         }
         try {
+            scheduleService.updateSchedule(new DailySchedule(), DayOfWeek.MONDAY, START_TIME, null);
+        } catch (IllegalArgumentException e) {
+            assertEquals("NULL-TIME", e.getMessage());
+        }
+        try {
             scheduleService.updateSchedule(new DailySchedule(), DayOfWeek.MONDAY, END_TIME, START_TIME);
         } catch (IllegalArgumentException e) {
             assertEquals("START-TIME-AFTER-END-TIME", e.getMessage());
         }
+        
+        scheduleService.updateSchedule(new DailySchedule(), DayOfWeek.MONDAY, START_TIME, END_TIME);
     }
 
     
