@@ -2,14 +2,11 @@ package ca.mcgill.ecse321.townlibrary.service;
 
 import java.sql.Time;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ca.mcgill.ecse321.townlibrary.dto.ScheduleDTO;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
@@ -208,13 +205,12 @@ public class ScheduleService {
      * @param newEndTime
      */
     @Transactional
-    public void updateSchedule(DailySchedule dailySchedule, DayOfWeek newDayOfWeek, Time newStartTime, Time newEndTime){
+    public void updateSchedule(DailySchedule dailySchedule, Time newStartTime, Time newEndTime){
         if (dailySchedule == null) throw new IllegalArgumentException("NO-SCHEDULE");
-        if (newDayOfWeek == null) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
+        // if (newDayOfWeek == null) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
         if (newStartTime == null || newEndTime == null) throw new IllegalArgumentException("NULL-TIME");
         if (newStartTime.after(newEndTime)) throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
-        dailyScheduleRepository.delete(dailySchedule);
-        dailySchedule.setDayOfWeek(newDayOfWeek);
+        // dailyScheduleRepository.delete(dailySchedule);
         dailySchedule.setStartTime(newStartTime);
         dailySchedule.setEndTime(newEndTime);
         dailyScheduleRepository.save(dailySchedule);

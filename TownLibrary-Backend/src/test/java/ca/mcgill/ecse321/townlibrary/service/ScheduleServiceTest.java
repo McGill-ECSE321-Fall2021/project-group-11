@@ -340,30 +340,24 @@ public class ScheduleServiceTest {
     @Test
     public void testUpdateSchedule(){
         try {
-            scheduleService.updateSchedule(new DailySchedule(), DayOfWeek.MONDAY, START_TIME, END_TIME);
+            scheduleService.updateSchedule(new DailySchedule(), START_TIME, END_TIME);
         }catch (Exception exception){
             fail();
         }
         try {
-            scheduleService.updateSchedule(null, DayOfWeek.MONDAY, START_TIME, END_TIME);
+            scheduleService.updateSchedule(null, START_TIME, END_TIME);
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NO-SCHEDULE", exception.getMessage());
         }
         try {
-            scheduleService.updateSchedule(new DailySchedule(), null, START_TIME, END_TIME);
-            fail();
-        } catch (IllegalArgumentException exception) {
-            assertEquals("NULL-DAY-OF-WEEK", exception.getMessage());
-        }
-        try {
-            scheduleService.updateSchedule(new DailySchedule(), DayOfWeek.MONDAY, null, END_TIME);
+            scheduleService.updateSchedule(new DailySchedule(), null, END_TIME);
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NULL-TIME", exception.getMessage());
         }
         try {
-            scheduleService.updateSchedule(new DailySchedule(), DayOfWeek.MONDAY, END_TIME, START_TIME);
+            scheduleService.updateSchedule(new DailySchedule(), END_TIME, START_TIME);
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("START-TIME-AFTER-END-TIME", exception.getMessage());

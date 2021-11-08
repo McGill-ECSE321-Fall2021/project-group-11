@@ -136,9 +136,9 @@ public class ScheduleController {
         service.setLibrarySchedule(dailySchedules, libraryId);
     }
 
-    @PutMapping(value={"/schedules/{id}/{dayOfWeek}", "/schedules/{id}/{dayOfWeek}/"})
-    public void updateSchedule(@PathVariable("id") DailySchedule dailySchedule, @PathVariable("dayOfWeek") DayOfWeek newDayOfWeek, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
-        service.updateSchedule(dailySchedule, newDayOfWeek, newStartTime, newEndTime);
+    @PutMapping(value={"/schedules/{id}", "/schedules/{id}/"})
+    public void updateSchedule(@PathVariable("id") DailySchedule dailySchedule, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
+        service.updateSchedule(dailySchedule, newStartTime, newEndTime);
     }
 
 
