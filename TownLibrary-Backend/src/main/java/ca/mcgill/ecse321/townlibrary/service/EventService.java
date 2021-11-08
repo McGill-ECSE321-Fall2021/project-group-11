@@ -30,7 +30,7 @@ public class EventService {
     @Transactional
     public Event createEvent(Library lib, String name) {
         final StringBuilder err = new StringBuilder();
-        if (lib == null || name == null) {
+        if (lib == null) {
             err.append("Invalid inputs");
         }
         final Event e = new Event();
