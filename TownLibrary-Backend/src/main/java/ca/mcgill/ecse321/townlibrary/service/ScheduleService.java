@@ -191,7 +191,6 @@ public class ScheduleService {
         }
         // and saving a new set of daily schedules to replace them
         for (int newScheduleId:dailyScheduleIds){
-            // not sure how this is going to play out
             DailySchedule newSchedule = dailyScheduleRepository.findById(newScheduleId).get();
             if (newSchedule != null) {
                 newSchedule.setLibrary(libraryRepository.findById(libraryId).get());
