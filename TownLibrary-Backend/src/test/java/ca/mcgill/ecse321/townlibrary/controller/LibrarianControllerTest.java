@@ -152,6 +152,22 @@ public class LibrarianControllerTest {
     }
 
     @Test
+    public void testCreateHeadLibrarianIllegalAccess(){
+
+        given()
+            .param("password", "jojo123")
+            .param("address", "410 Chili Street")
+            .param("library", "0")
+            .param("initId", this.testOnlineMember)
+            .param("initPass", "tripled3")
+            .when().post("/librarians/Joe Schmoe")
+            .then()
+            .statusCode(400)
+            .body(equalTo("BAD-ACCESS"));
+            
+    }
+
+    @Test
     public void testAuthHeadLibrarian() {
         // Unlike the one in HeadLibrarianControllerTest, here we authenticate
         // a head librarian through the librarian path mapping.
