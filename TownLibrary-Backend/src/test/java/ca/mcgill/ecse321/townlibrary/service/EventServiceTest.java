@@ -52,7 +52,7 @@ public class EventServiceTest {
     }
 
     @Test 
-    public void testEventSetTransaction() {
+    public void testEventSetNullTransaction() {
         /*lenient().when(this.mockEventRepository.findById(0))
                 .thenAnswer(invocation -> Optional.of(new Event()));
 
@@ -62,11 +62,30 @@ public class EventServiceTest {
         
         try {
             eventService.setEventTransaction(e, transaction);
+            Assertions.fail();
         }   catch (IllegalArgumentException er) {
             Assertions.assertEquals(er.getMessage(), "Invalid transaction");
         }
+    }
 
-        Assertions.assertEquals(e.getTransaction(), transaction);
+    @Test
+    public void testTransactionSetNullEvent() {
+        final Transaction t = new Transaction();
+        try {
+            eventService.setEventTransaction(null, t);
+            Assertions.fail();
+        } catch (IllegalArgumentException er) {
+            Assertions.assertEquals(er.getMessage(), "Invalid event");
+        }
+    }
+
+    @Test
+    public void testSetEventTransaction() {
+        final Event e = new Event();
+        final Transaction t = new Transaction();
+        eventService.setEventTransaction(e, t);
+
+        Assertions.assertEquals(t.getId(), e.getTransaction().getId());
     }
 
     @Test
