@@ -161,14 +161,17 @@ public class ScheduleService {
         for (DailySchedule schedule:dailyScheduleRepository.findByLibrarian(librarianRepository.findById(librarianId).get())){
             // checks whether the time block (start time to end time) interfers with any of the librarian's existing time blocks
             // i.e. no overlap with currently assigned schedules (not same day or within time block)
+            // NOTE: written above is what it originally was (hence commented out guard below)
+            // changed to check if the days or the same (assuming librarian can only have 1 schedule per day)
             if (
-                schedule.getDayOfWeek().equals(dailySchedule.getDayOfWeek()) ||
-                (schedule.getStartTime().getTime() < dailySchedule.getEndTime().getTime() &&
-                 schedule.getStartTime().getTime() > dailySchedule.getStartTime().getTime()) ||
-                (dailySchedule.getStartTime().getTime() > schedule.getStartTime().getTime() &&
-                 dailySchedule.getEndTime().getTime() < schedule.getEndTime().getTime()) ||
-                (schedule.getEndTime().getTime() > dailySchedule.getStartTime().getTime() &&
-                 schedule.getEndTime().getTime() < dailySchedule.getEndTime().getTime())
+                schedule.getDayOfWeek().equals(dailySchedule.getDayOfWeek()) 
+                // ||
+                // (schedule.getStartTime().getTime() < dailySchedule.getEndTime().getTime() &&
+                //  schedule.getStartTime().getTime() > dailySchedule.getStartTime().getTime()) ||
+                // (dailySchedule.getStartTime().getTime() > schedule.getStartTime().getTime() &&
+                //  dailySchedule.getEndTime().getTime() < schedule.getEndTime().getTime()) ||
+                // (schedule.getEndTime().getTime() > dailySchedule.getStartTime().getTime() &&
+                //  schedule.getEndTime().getTime() < dailySchedule.getEndTime().getTime())
             ) throw new IllegalArgumentException("OVERLAP-SCHEDULE-ASSIGNMENT");
         }
         dailySchedule.setLibrarian(librarianRepository.findLibrarianById(librarianId));

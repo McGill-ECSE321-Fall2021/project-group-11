@@ -231,16 +231,19 @@ public class ScheduleServiceTest {
         assertEquals(DayOfWeek.TUESDAY, scheduleService.getLibrarianScheduleByDay(LIBRARIAN.getId(), DayOfWeek.TUESDAY).getDayOfWeek());
         try {
             scheduleService.getLibrarianScheduleByDay(LIBRARIAN.getId(), DayOfWeek.FRIDAY);
+            fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NO-SCHEDULE", exception.getMessage());
         }
         try {
             scheduleService.getLibrarianScheduleByDay(2, DayOfWeek.FRIDAY);
+            fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NO-LIBRARIAN", exception.getMessage());
         }
         try {
             scheduleService.getLibrarianScheduleByDay(LIBRARIAN.getId(), null);
+            fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("NULL-DAY-OF-WEEK", exception.getMessage());
         } 
@@ -271,15 +274,11 @@ public class ScheduleServiceTest {
     @Test
     public void testAssignSchedule(){
         DailySchedule nonConflictingDailySchedule = new DailySchedule();
-        DailySchedule conflictDailySchedule = new DailySchedule();
-        
+
         nonConflictingDailySchedule.setDayOfWeek(DayOfWeek.WEDNESDAY);
-        nonConflictingDailySchedule.setStartTime(START_TIME);
-        nonConflictingDailySchedule.setEndTime(END_TIME);
-        
-        conflictDailySchedule.setDayOfWeek(DayOfWeek.MONDAY);
-        conflictDailySchedule.setStartTime(START_TIME);
-        conflictDailySchedule.setEndTime(END_TIME);
+        nonConflictingDailySchedule.setStartTime(START_TIME); // 8am
+        nonConflictingDailySchedule.setEndTime(END_TIME);   // 12pm 
+
         
         try {
             scheduleService.assignSchedule(nonConflictingDailySchedule, LIBRARIAN.getId());
@@ -297,8 +296,16 @@ public class ScheduleServiceTest {
         } catch (Exception exception) {
             assertEquals(NoSuchElementException.class, exception.getClass());
         }
+    }
+
+    @Test
+    public void testConflictingAssignSchedule(){
+        DailySchedule conflictingSchedule = new DailySchedule();          
+        conflictingSchedule.setDayOfWeek(DayOfWeek.MONDAY);
+        conflictingSchedule.setStartTime(START_TIME); //8am
+        conflictingSchedule.setEndTime(END_TIME);   //12pm
         try {
-            scheduleService.assignSchedule(conflictDailySchedule, LIBRARIAN.getId());
+            scheduleService.assignSchedule(conflictingSchedule, LIBRARIAN.getId());
             fail();
         } catch (IllegalArgumentException exception) {
             assertEquals("OVERLAP-SCHEDULE-ASSIGNMENT", exception.getMessage());
