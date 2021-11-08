@@ -6,34 +6,55 @@ import ca.mcgill.ecse321.townlibrary.model.*;
 
 public class ScheduleDTO {
     
+    // change this later
+    // use dto or id
     private DayOfWeek dayOfWeek;
     private Time startTime;
     private Time endTime;
-    private Librarian librarian;
-    private Library library;
+    private int librarianId;
+    private int libraryId;
 
-    public ScheduleDTO(){}
-
+    /** DTO constructor for schedule without library/librarian assigned
+     * 
+     * @param dayOfWeek
+     * @param startTime
+     * @param endTime
+     */
     public ScheduleDTO(DayOfWeek dayOfWeek, Time startTime, Time endTime){
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime; 
     }
 
-    public ScheduleDTO(DayOfWeek dayOfWeek, Time startTime, Time endTime, Librarian librarian){
+    /** DTO constructor for librarian schedule
+     * 
+     * @param dayOfWeek
+     * @param startTime
+     * @param endTime
+     * @param librarianId
+     */
+    public ScheduleDTO(DayOfWeek dayOfWeek, Time startTime, Time endTime, int librarianId){
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime; 
-        this.librarian = librarian;
+        this.librarianId = librarianId;
     }
 
-    public ScheduleDTO(DayOfWeek dayOfWeek, Time startTime, Time endTime, Library library){
+    /** DTO constructor for library schedule
+     * 
+     * @param libraryId
+     * @param dayOfWeek
+     * @param startTime
+     * @param endTime
+     */
+    public ScheduleDTO(int libraryId, DayOfWeek dayOfWeek, Time startTime, Time endTime){
         this.dayOfWeek = dayOfWeek;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.library = library; 
+        this.libraryId = libraryId; 
     }
 
+    // getters and setters
     public DayOfWeek getDayOfWeek(){
         return dayOfWeek;
     }
@@ -46,25 +67,30 @@ public class ScheduleDTO {
         return endTime;
     }
 
-    public Librarian getLibrarian() {
-        return librarian;
+    public int getLibrarianId() {
+        return librarianId;
     }
 
-    public Library getLibrary() {
-        return library;
+    public int getLibraryId() {
+        return libraryId;
     }
     
+    /** Converts DailySchedule to ScheduleDTO
+     * 
+     * @param dailySchedule
+     * @return ScheduleDTO
+     */
     public static ScheduleDTO convertScheduleDTO(DailySchedule dailySchedule){
         DayOfWeek dayOfWeek = dailySchedule.getDayOfWeek();
         Time startTime = dailySchedule.getStartTime();
         Time endTime = dailySchedule.getEndTime();
         if (dailySchedule.getLibrary() != null){
-            Library library = dailySchedule.getLibrary();
-            return new ScheduleDTO(dayOfWeek, startTime, endTime, library);
+            int libraryId = dailySchedule.getLibrary().getId();
+            return new ScheduleDTO(libraryId, dayOfWeek, startTime, endTime);
         }
         else if (dailySchedule.getLibrarian() != null){
-            Librarian librarian = dailySchedule.getLibrarian();
-            return new ScheduleDTO(dayOfWeek, startTime, endTime, librarian);
+            int librarianId = dailySchedule.getLibrarian().getId();
+            return new ScheduleDTO(dayOfWeek, startTime, endTime, librarianId);
         }
         else return new ScheduleDTO(dayOfWeek, startTime, endTime);
     }
