@@ -11,23 +11,18 @@ import org.mockito.Spy;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
-import org.mockito.invocation.InvocationOnMock;
+
 
 
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.LibrarianRepository;
 
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.any;
+
 
 @ExtendWith(MockitoExtension.class)
 public class LibrarianServiceTest {
@@ -150,22 +145,32 @@ public class LibrarianServiceTest {
 
     @Test
     public void testDeleteExistingLibrarian(){
-        
         final Librarian librarian = new Librarian();
+
+        // Return behavior for findById
         lenient().when(this.mockLibrarianRepository.findById(0)).
                 thenReturn(Optional.of(librarian)).thenReturn(Optional.empty());
 
-        final boolean deleted = this.librarianService.deleteLibrarian(0);
-        assertTrue(deleted);
+        // Proper Delete
+        try {
+            final boolean deleted = this.librarianService.deleteLibrarian(0);
+            assertTrue(deleted);
+        } catch (Exception e) {
+            // No exception should be thrown
+            Assertions.fail();
+        }
     }
 
     @Test
     public void testDeleteNonExistingLibrarian(){
-
+        
+        // Return behavior for findById
         lenient().when(this.mockLibrarianRepository.findById(0)).
-                thenReturn(Optional.empty());
+            thenReturn(Optional.empty());
+        
+        // Delete Not existing
         try {
-            final boolean deleted = this.librarianService.deleteLibrarian(0);   
+            this.librarianService.deleteLibrarian(0);   
         } catch (Exception e) {
             assertEquals("LIBRARIAN-NOT-FOUND", e.getMessage());
         }
