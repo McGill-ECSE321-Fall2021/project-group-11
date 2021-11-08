@@ -42,11 +42,11 @@ public class TransactionControllerTest {
     public void testStartTransactions() {
         // Make sure its empty
         when().get("/transactions")
-            .then().statusCode(202);
+            .then().statusCode(200);
 
         // Since empty, any transaction search should return error
         when().get("/transactions/1")
-            .then().statusCode(402);
+            .then().statusCode(400);
     }
 
     @Test
@@ -54,20 +54,20 @@ public class TransactionControllerTest {
         final int id = given()
             .param("startDate", "2021-11-07")
             .param("endDate", "2021-11-09")
-            .param("library", "10005")
+            .param("userId", "10005")
             .when().post("/transactions/1")
-            .then().statusCode(202)
+            .then().statusCode(200)
             .body("startDate", equalTo("2021-11-07"))
             .body("endDate", equalTo("2021-11-09"))
-            .body("libraryId", equalTo(10005))
+            .body("userId", equalTo(10005))
             .extract().response().body().path("id");
 
             when().get("/events/" + id)
-                .then().statusCode(202)
+                .then().statusCode(200)
                 .body("id", equalTo(id))
                 .body("startDate", equalTo("2021-11-07"))
                 .body("endDate", equalTo("2021-11-09"))
-                .body("libraryId", equalTo(10005));
+                .body("userId", equalTo(10005));
 
             when().get("/events/")
                 .then().statusCode(202)
@@ -75,6 +75,6 @@ public class TransactionControllerTest {
                 .body("[0].id", equalTo(id))
                 .body("[0].startDate", equalTo("2021-11-07"))
                 .body("[0].endDate", equalTo("2021-11-09"))
-                .body("[0].libraryId", equalTo(10005));    
+                .body("[0].userId", equalTo(10005));    
     }
 }

@@ -38,8 +38,9 @@ public class EventController {
         throws IllegalArgumentException {
             final Library library = libraryService.getLibrary(lib);
             final Transaction transaction = transactionService.getTransaction(tr);
-            Event e = eventService.createEvent(library, id, name, transaction);
-            EventDTO eDTO = new EventDTO(e.getLibrary(), e.getId(), e.getName(), e.getTransaction());
+            Event e = eventService.createEvent(library, id, name);
+            eventService.setEventTransaction(e, transaction);
+            EventDTO eDTO = EventDTO.fromModel(e);
             return eDTO;
         }
 

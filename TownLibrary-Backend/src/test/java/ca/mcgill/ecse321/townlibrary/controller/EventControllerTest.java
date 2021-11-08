@@ -43,42 +43,41 @@ public class EventControllerTest {
         public void testStartEvents() {
             // Make sure its empty
             when().get("/events")
-                .then().statusCode(201);
+                .then().statusCode(200);
 
             // Since empty, any event search should return error
             when().get("/events/event1")
-                .then().statusCode(401);
+                .then().statusCode(400);
         }
 
         @Test
         public void testCreateEventAndQuery() {
             final String name = given()
                 .param("id", "10000")
-                .param("library", "10001")
-                .param("transaction", "10002")
+                .param("lib", "10001")
+                .param("tr", "10002")
                 .when().post("/events/event1")
-                .then().statusCode(201)
+                .then().statusCode(200)
                 .body("id", equalTo(10000))
-                .body("libraryId", equalTo(10001))
-                .body("transactionId", equalTo(10002))
+                .body("libId", equalTo(10001))
+                .body("trId", equalTo(10002))
                 .extract().response().body().path("name");
 
                 when().get("/events/" + name)
                     .then()
-                    .statusCode(201)
+                    .statusCode(200)
                     .body("name", equalTo(name))
                     .body("id", equalTo(10000))
-                    .body("libraryId", equalTo(10001))
-                    .body("transactionId", equalTo(10002));
+                    .body("lib", equalTo(10001))
+                    .body("trId", equalTo(10002));
 
                 when().get("/events")
                     .then()
-                    .statusCode(201)
+                    .statusCode(200)
                     .body("size()", equalTo(1))
                     .body("[0].name", equalTo(name))
                     .body("[0].id", equalTo(10000))
-                    .body("[0].libraryId", equalTo(10001))
-                    .body("[0].transactionId", equalTo(10002));
-
+                    .body("[0].libId", equalTo(10001))
+                    .body("[0].trId", equalTo(10002));
         }       
 }
