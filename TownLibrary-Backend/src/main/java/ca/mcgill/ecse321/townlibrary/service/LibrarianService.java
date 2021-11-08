@@ -115,7 +115,7 @@ public class LibrarianService {
     @Transactional
     public boolean deleteLibrarian(int id){
         try {
-            this.librarianRepository.delete(this.librarianRepository.findById(id).orElseThrow());
+            this.librarianRepository.delete(this.librarianRepository.findById(id).get());
         } catch (Exception e) {
             throw new IllegalArgumentException("LIBRARIAN-NOT-FOUND");
         }
