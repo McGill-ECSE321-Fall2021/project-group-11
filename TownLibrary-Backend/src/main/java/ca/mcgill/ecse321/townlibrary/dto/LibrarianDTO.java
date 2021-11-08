@@ -21,7 +21,6 @@ public final class LibrarianDTO {
         dto.libraryId = Optional.ofNullable(u.getLibrary())
                 .map(x -> x.getId())
                 .orElse(null);
-
         return dto;
     }
 }
