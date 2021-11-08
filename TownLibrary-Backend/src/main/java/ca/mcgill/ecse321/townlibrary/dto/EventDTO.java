@@ -8,8 +8,8 @@ public final class EventDTO {
 
     public int id;
     public String name;
-    public int libId;
-    public int trId;
+    public Integer libId;
+    public Integer trId;
 
     public EventDTO() {
     }
