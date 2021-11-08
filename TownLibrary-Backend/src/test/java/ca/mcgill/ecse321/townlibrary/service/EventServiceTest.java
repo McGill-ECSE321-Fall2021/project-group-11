@@ -30,7 +30,7 @@ public class EventServiceTest {
         final int id = 10001;
         final Transaction transaction = new Transaction();
 
-        final Event e = eventService.createEvent(lib, id, name);
+        final Event e = eventService.createEvent(lib, name);
         e.setTransaction(transaction);
         Assertions.assertEquals(lib.getId(), e.getLibrary().getId());
         Assertions.assertEquals(name, e.getName());
@@ -46,7 +46,7 @@ public class EventServiceTest {
         
 
         try {
-            eventService.createEvent(lib, id, name);
+            eventService.createEvent(lib, name);
         }   catch (IllegalArgumentException e) {
             Assertions.assertEquals(e.getMessage(), "Invalid inputs");
         }
