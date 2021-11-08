@@ -19,6 +19,7 @@ public class DailySchedule {
     private Library library;
 
     @Id
+    @GeneratedValue
     public int getId() {
         return id;
     }
