@@ -71,24 +71,24 @@ public class EventControllerTest {
 
         @Test
         public void testCreateEventAndQuery() {
-            final String id = given()
+            final int id = given()
                 .param("lib", "10001")
                 .post("/events/event1")
                 .then().statusCode(200)
-                .body("lib", equalTo("10001"))
+                .body("libId", equalTo(10001))
                 .extract().response().body().path("id");
 
                 when().get("/events/" + id)
                     .then()
                     .statusCode(200)
                     .body("id", equalTo(id))
-                    .body("lib", equalTo("10001"));
+                    .body("libId", equalTo(10001));
 
                 when().get("/events")
                     .then()
                     .statusCode(200)
                     .body("size()", equalTo(1))
-                    .body("[0].id", equalTo("id"))
-                    .body("[0].lib", equalTo("10001"));
+                    .body("[0].id", equalTo(id))
+                    .body("[0].libId", equalTo(10001));
         }       
 }

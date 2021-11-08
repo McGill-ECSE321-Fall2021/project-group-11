@@ -14,6 +14,7 @@ public class Event {
     private Transaction transaction;
 
     @Id
+    @GeneratedValue
     public int getId() {
         return id;
     }
