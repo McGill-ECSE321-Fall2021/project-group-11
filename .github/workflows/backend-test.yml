@@ -32,5 +32,5 @@ jobs:
       run: ./gradlew integrationTest
     - name: Check code coverage
       run: |
-        ./gradlew jacocoLogUnitTestCoverage | awk '/Complexity Coverage:/ { exit !($4 >= 65.0) }'
+        ./gradlew jacocoLogUnitTestCoverage | awk '/Complexity Coverage:/ { exit !($4 >= 60.0) }'
         ./gradlew jacocoLogIntegrationTestCoverage | awk '/Instruction Coverage:/ { exit !($4 >= 65.0) }'
