@@ -42,7 +42,7 @@ public class EventServiceTest {
         final Library lib = null;
         final String name = null;
         final int id = 10002;
-        
+
 
         try {
             eventService.createEvent(lib, name);
@@ -51,7 +51,7 @@ public class EventServiceTest {
         }
     }
 
-    @Test 
+    @Test
     public void testEventSetNullTransaction() {
         /*lenient().when(this.mockEventRepository.findById(0))
                 .thenAnswer(invocation -> Optional.of(new Event()));
@@ -59,7 +59,7 @@ public class EventServiceTest {
         Event e;*/
         final Event e = new Event();
         final Transaction transaction = null;
-        
+
         try {
             eventService.setEventTransaction(e, transaction);
             Assertions.fail();
@@ -100,6 +100,24 @@ public class EventServiceTest {
         Assertions.assertEquals(0, e.getId());
 
         e = this.eventService.getEventById(1030);
+        Assertions.assertNull(e);
+    }
+
+    @Test
+    public void testGetEventByTransaction() {
+        final Transaction KEY = new Transaction();
+        KEY.setId(1); // say
+        final Event VALUE = new Event();
+        VALUE.setTransaction(KEY);
+        lenient().when(this.mockEventRepository.findByTransaction(KEY))
+                .thenAnswer(invocation -> VALUE);
+
+        Event e;
+
+        e = this.eventService.getEventByTransaction(KEY);
+        Assertions.assertEquals(KEY.getId(), e.getTransaction().getId());
+
+        e = this.eventService.getEventByTransaction(new Transaction());
         Assertions.assertNull(e);
     }
 }
