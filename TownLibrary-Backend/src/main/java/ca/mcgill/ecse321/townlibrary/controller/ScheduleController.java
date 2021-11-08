@@ -1,4 +1,4 @@
-/*package ca.mcgill.ecse321.townlibrary.controller;
+package ca.mcgill.ecse321.townlibrary.controller;
 
 import java.sql.Time;
 import java.util.*;
@@ -136,12 +136,11 @@ public class ScheduleController {
         service.setLibrarySchedule(dailySchedules, libraryId);
     }
 
-    @PutMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
-    public void updateSchedule(@RequestParam DailySchedule dailySchedule, @RequestParam DayOfWeek newDayOfWeek, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
+    @PutMapping(value={"/schedules/{id}/{dayOfWeek}", "/schedules/{id}/{dayOfWeek}/"})
+    public void updateSchedule(@PathVariable("id") DailySchedule dailySchedule, @PathVariable("dayOfWeek") DayOfWeek newDayOfWeek, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
         service.updateSchedule(dailySchedule, newDayOfWeek, newStartTime, newEndTime);
     }
 
 
 
 }
-*/
