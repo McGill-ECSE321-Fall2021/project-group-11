@@ -107,6 +107,32 @@ public class LibrarianControllerTest {
     }
 
     @Test
+    public void testCreateOrdinaryLibrarianWithBadInfo() {
+        // just to show that the error message does get sent over as the
+        // response body:
+
+        this.headLibrarian = given()
+            .param("password", "johncena5")
+            .param("address", "700 Emma road")
+            .param("library", "0")
+            .post("/head-librarians/John Johnson")
+            .then()
+            .extract()
+            .response().body().path("id");
+
+        given()
+            .param("password", "jojo123")
+            .param("address", "")
+            .param("library", "0")
+            .param("initId", this.headLibrarian)
+            .param("initPass", "johncena5")
+            .when().post("/librarians/Joe Schmoe")
+            .then()
+            .statusCode(400)
+            .body(equalTo("EMPTY-ADDRESS"));
+    }
+
+    @Test
     public void testCreateOrdinaryLibrarianThenQueryIt() {
         // HeadLibrarian to create/delete librarian
         this.headLibrarian = given()

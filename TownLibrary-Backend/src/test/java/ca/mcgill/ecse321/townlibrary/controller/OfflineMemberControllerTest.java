@@ -83,6 +83,22 @@ public class OfflineMemberControllerTest {
     }
 
     @Test
+    public void testCreateOfflineMemberWithBadInfo() {
+        // just to show that the error message does get sent over as the
+        // response body:
+
+        given()
+            .param("address", "")
+            .param("library", "0")
+            .param("initId", this.idLibrarian)
+            .param("initPass", "jojo123")
+            .when().post("/offline-members/Foo Man")
+            .then()
+            .statusCode(400)
+            .body(equalTo("EMPTY-ADDRESS"));
+    }
+
+    @Test
     public void testCreateOfflineMemberThenQueryIt() {
         final int id = given()
             .param("address", "415 Garlic Street")
