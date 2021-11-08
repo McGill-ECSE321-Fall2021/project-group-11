@@ -21,7 +21,7 @@ public class TransactionController {
         private TransactionService transactionService;
 
         @Autowired
-        private OnlineMemberService onlineMemberService;
+        private UserRoleService userRoleService;
 
         @GetMapping(value = { "/transactions", "/transactions/"})
         public List<TransactionDTO> getAllTransaction() {
@@ -47,7 +47,7 @@ public class TransactionController {
             @RequestParam int userId) {
 
             try {
-                final UserRole ur = onlineMemberService.getOnlineMember(id);
+                final UserRole ur = userRoleService.getUserRole(userId);
                 final Transaction t = transactionService.createTransaction(id, new Timestamp(startDate.getTime()), new Timestamp(endDate.getTime()), ur);
                 return ResponseEntity.ok().body(TransactionDTO.fromModel(t));
             }
