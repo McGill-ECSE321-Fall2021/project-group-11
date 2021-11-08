@@ -28,14 +28,13 @@ public class EventService {
      * @throws IllegalArgumentException invalid inputs
      */
     @Transactional
-    public Event createEvent(Library lib, int id, String name) {
+    public Event createEvent(Library lib, String name) {
         final StringBuilder err = new StringBuilder();
-        if (lib == null || name == null) {
+        if (lib == null) {
             err.append("Invalid inputs");
         }
         final Event e = new Event();
         e.setLibrary(lib);
-        e.setId(id);
         e.setName(name);
         eventRepository.save(e);
 
