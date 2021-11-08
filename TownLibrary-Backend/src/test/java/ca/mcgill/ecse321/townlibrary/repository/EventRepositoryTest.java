@@ -55,31 +55,31 @@ public class EventRepositoryTest {
         // Create events to test queries
         Event event;
         event = new Event();
-        event.setId(60);
         event.setName("con");
         eventRepository.save(event);
+        final int evt1 = event.getId();
 
         event = new Event();
-        event.setId(61);
         event.setName("pon");
         eventRepository.save(event);
+        final int evt2 = event.getId();
 
         event = new Event();
-        event.setId(62);
         event.setName("cat");
         eventRepository.save(event);
+        final int evt3 = event.getId();
 
         // Test queries
         List<Event> l;
         Event e;
     
-        e = eventRepository.findEventById(60);
-        Assertions.assertEquals(60, e.getId());
+        e = eventRepository.findEventById(evt1);
+        Assertions.assertEquals(evt1, e.getId());
 
         l = eventRepository.findByNameContaining("on");
         Assertions.assertEquals(2, l.size());
         Assertions.assertEquals(
-                new HashSet<>(Arrays.asList(60, 61)),
+                new HashSet<>(Arrays.asList(evt1, evt2)),
                 new HashSet<>(Arrays.asList(l.get(0).getId(), l.get(1).getId())));
 
     }
