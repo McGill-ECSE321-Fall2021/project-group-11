@@ -19,7 +19,6 @@ public class EventDTOTest {
         dto = EventDTO.fromModel(e);
         Assertions.assertEquals(e.getId(), dto.getEventID());
         Assertions.assertEquals(e.getName(), dto.getEventName());
-        Assertions.assertEquals(e.getTransaction(), dto.getTransaction());
         Assertions.assertNull(e.getLibrary());
         Assertions.assertNull(e.getTransaction());
 
@@ -29,16 +28,49 @@ public class EventDTOTest {
         dto = EventDTO.fromModel(e);
         Assertions.assertEquals(e.getId(), dto.getEventID());
         Assertions.assertEquals(e.getName(), dto.getEventName());
-        Assertions.assertEquals(l, dto.getLibrary());
+        Assertions.assertEquals(l.getId(), dto.getLibraryId());
         Assertions.assertNull(e.getTransaction());
 
         Transaction t = new Transaction();
+        t.setId(1002);
         e.setTransaction(t);
 
         dto = EventDTO.fromModel(e);
         Assertions.assertEquals(e.getId(), dto.getEventID());
         Assertions.assertEquals(e.getName(), dto.getEventName());
-        Assertions.assertEquals(l, dto.getLibrary());
-        Assertions.assertEquals(t, dto.getTransaction());
+        Assertions.assertEquals(l.getId(), dto.getLibraryId());
+        Assertions.assertEquals(t.getId(), dto.getTransactionId());
+    }
+
+    @Test
+    public void testGetters() {
+        final Event e = new Event();
+        e.setId(1001);
+        e.setName("bday");
+        Library l = new Library();
+        l.setId(1001);
+        e.setLibrary(l);
+        Transaction t = new Transaction();
+        t.setId(1002);
+        e.setTransaction(t);
+        EventDTO dto;
+        dto = EventDTO.fromModel(e);
+        Assertions.assertEquals(e.getId(), dto.getEventID());
+        Assertions.assertEquals(e.getName(), dto.getEventName());
+        Assertions.assertEquals(e.getLibrary().getId(), dto.getLibraryId());
+        Assertions.assertEquals(e.getTransaction().getId(), dto.getTransactionId());
+    }
+
+    @Test
+    public void testConstructor() {
+        Library l = new Library();
+        l.setId(1001);
+        Transaction t = new Transaction();
+        t.setId(1002);
+        final EventDTO dto = new EventDTO(1004, "bday2", l.getId(), t.getId());
+        Assertions.assertEquals(1004, dto.getEventID());
+        Assertions.assertEquals("bday2", dto.getEventName());
+        Assertions.assertEquals(l.getId(), dto.getLibraryId());
+        Assertions.assertEquals(t.getId(), dto.getTransactionId());
     }
 }

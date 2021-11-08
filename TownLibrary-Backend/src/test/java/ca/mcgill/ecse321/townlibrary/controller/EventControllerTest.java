@@ -15,6 +15,8 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 
 // Heavily inspired by Paul's integration testing files
 
@@ -43,42 +45,50 @@ public class EventControllerTest {
         public void testStartEvents() {
             // Make sure its empty
             when().get("/events")
-                .then().statusCode(201);
+                .then().statusCode(200);
 
             // Since empty, any event search should return error
-            when().get("/events/event1")
-                .then().statusCode(401);
+            when().get("/events/0")
+                .then().statusCode(400)
+                .body(equalTo("NOT-FOUND-EVENT"));
         }
+
+        /*@Test
+        public void testGetEvent() {
+            final int id = given()
+            .param("lib", "10001")
+            .post("/events/event1")
+            .then().statusCode(200)
+            .body("lib", equalTo("10001"))
+            .extract().response().body().path("id");
+
+            when().get("/events/" + id)
+                .then().statusCode(200)
+                .body("id", equalTo(id))
+                .body("name", equalTo("event1"))
+                .body("lib", equalTo("10001"));
+        }*/
 
         @Test
         public void testCreateEventAndQuery() {
-            final String name = given()
-                .param("id", "10000")
-                .param("library", "10001")
-                .param("transaction", "10002")
-                .when().post("/events/event1")
-                .then().statusCode(201)
-                .body("id", equalTo(10000))
-                .body("libraryId", equalTo(10001))
-                .body("transactionId", equalTo(10002))
-                .extract().response().body().path("name");
+            final String id = given()
+                .param("lib", "10001")
+                .post("/events/event1")
+                .then().statusCode(200)
+                .body("lib", equalTo("10001"))
+                .extract().response().body().path("id");
 
-                when().get("/events/" + name)
+                when().get("/events/" + id)
                     .then()
-                    .statusCode(201)
-                    .body("name", equalTo(name))
-                    .body("id", equalTo(10000))
-                    .body("libraryId", equalTo(10001))
-                    .body("transactionId", equalTo(10002));
+                    .statusCode(200)
+                    .body("id", equalTo(id))
+                    .body("lib", equalTo("10001"));
 
                 when().get("/events")
                     .then()
-                    .statusCode(201)
+                    .statusCode(200)
                     .body("size()", equalTo(1))
-                    .body("[0].name", equalTo(name))
-                    .body("[0].id", equalTo(10000))
-                    .body("[0].libraryId", equalTo(10001))
-                    .body("[0].transactionId", equalTo(10002));
-
+                    .body("[0].id", equalTo("id"))
+                    .body("[0].lib", equalTo("10001"));
         }       
 }

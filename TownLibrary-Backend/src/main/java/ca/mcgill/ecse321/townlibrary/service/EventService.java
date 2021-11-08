@@ -28,22 +28,43 @@ public class EventService {
      * @throws IllegalArgumentException invalid inputs
      */
     @Transactional
-    public Event createEvent(Library lib, int id, String name, Transaction transaction) {
+    public Event createEvent(Library lib, String name) {
         final StringBuilder err = new StringBuilder();
-        if (lib == null || name == null || transaction == null) {
+        if (lib == null) {
             err.append("Invalid inputs");
         }
         final Event e = new Event();
         e.setLibrary(lib);
-        e.setId(id);
         e.setName(name);
-        e.setTransaction(transaction);
         eventRepository.save(e);
 
         if (err.length() != 0) {
             throw new IllegalArgumentException(err.toString());
         }
         return e;
+    }
+
+    /**
+     * Sets a transaction for an event
+     * 
+     * @param e             The event
+     * @param transaction   The transaction
+     * 
+     * @throws IllegalArgumentException if transaction is null
+     */
+
+    @Transactional
+    public void setEventTransaction(Event e, Transaction transaction) {
+        final StringBuilder err = new StringBuilder();
+        if (transaction == null) {
+            err.append("Invalid transaction");
+        }
+        e.setTransaction(transaction);
+        eventRepository.save(e);
+        
+        if (err.length() != 0) {
+            throw new IllegalArgumentException(err.toString());
+        }
     }
 
     /**
