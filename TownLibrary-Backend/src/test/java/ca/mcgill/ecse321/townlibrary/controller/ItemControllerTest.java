@@ -108,195 +108,176 @@ public class ItemControllerTest {
 			.body("size()", equalTo(1))
 			.body("[0].id", equalTo(0));
     }
+//    
+//    @Test
+//    public void testQueryNewspaper() {
+//    	when().post("/newspapers/11")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(11));
+//    		
+//    	when().get("/newspapers/11")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(11));
+//    	
+//    	when().get("/newspapers")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].id", equalTo(11));
+//    }
+//    
+//    @Test
+//    public void testQueryBook() {
+//    	when().post("/books/22")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(22));
+//    		
+//    	when().get("/books/0")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(22));
+//    	
+//    	when().get("/books")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].id", equalTo(22));
+//    }
+//    
+//    @Test
+//    public void testQueryMovie() {
+//    	when().post("/movies/33")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(33));
+//    		
+//    	when().get("/movies/33")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(33));
+//    	
+//    	when().get("/movies")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].id", equalTo(33));
+//    }
+//    
+//    @Test
+//    public void testQueryMusicAlbum() {
+//    	when().post("/musicalbums/44")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(44));
+//    		
+//    	when().get("/musicalbums/44")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("id", equalTo(44));
+//    	
+//    	when().get("/musicalbums")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].id", equalTo(44));
+//    }
     
-    @Test
-    public void testQueryNewspaper() {
-    	when().post("/newspapers/11")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(11));
-    		
-    	when().get("/newspapers/11")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(11));
-    	
-    	when().get("/newspapers")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].id", equalTo(11));
-    }
-    
-    @Test
-    public void testQueryBook() {
-    	when().post("/books/22")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(22));
-    		
-    	when().get("/books/0")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(22));
-    	
-    	when().get("/books")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].id", equalTo(22));
-    }
-    
-    @Test
-    public void testQueryMovie() {
-    	when().post("/movies/33")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(33));
-    		
-    	when().get("/movies/33")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(33));
-    	
-    	when().get("/movies")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].id", equalTo(33));
-    }
-    
-    @Test
-    public void testQueryMusicAlbum() {
-    	when().post("/musicalbums/44")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(44));
-    		
-    	when().get("/musicalbums/44")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(44));
-    	
-    	when().get("/musicalbums")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].id", equalTo(44));
-    }
-    
-    @Test
-    public void testQueryArchiveByName() {
-    	when().post("/archives/byName/Records2021")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Records2021"));
-    		
-    	when().get("/archives/byName/Records2021")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Records2021"));
-    	
-    	when().get("/archives/byName")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].name", equalTo("Records2021"));
-    }
-    
-    @Test
-    public void testQueryNewspaperByName() {
-    	when().post("/newspapers/byName/Gazette")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Gazette"));
-    		
-    	when().get("/newspapers/byName/Gazette")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Gazette"));
-    	
-    	when().get("/newspapers/byName")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].name", equalTo("Gazette"));
-    }
-    
-    @Test
-    public void testQueryNewspaperByName() {
-    	when().post("/newspapers/byName/Gazette")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Gazette"));
-    		
-    	when().get("/newspapers/byName/Gazette")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Gazette"));
-    	
-    	when().get("/newspapers/byName")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].name", equalTo("Gazette"));
-    }
-    
-    @Test
-    public void testQueryBookByName() {
-    	when().post("/books/byName/Dune")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Dune"));
-    		
-    	when().get("/books/byName/Dune")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Dune"));
-    	
-    	when().get("/books/byName")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].name", equalTo("Dune"));
-    }
-    
-    @Test
-    public void testQueryMovieByName() {
-    	when().post("/movies/byName/Interstellar")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Interstellar"));
-    		
-    	when().get("/movies/byName/Interstellar")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Interstellar"));
-    	
-    	when().get("/movies/byName")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].name", equalTo("Interstellar"));
-    }
-    
-    @Test
-    public void testQueryMusicAlbumByName() {
-    	when().post("/musicalbums/byName/Evolve")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Evolve"));
-    		
-    	when().get("/musicalbums/byName/Evolve")
-    		.then()
-    		.statusCode(200)
-    		.body("name", equalTo("Evolve"));
-    	
-    	when().get("/musicalbums/byName")
-			.then()
-			.statusCode(200)
-			.body("size()", equalTo(1))
-			.body("[0].name", equalTo("Evolve"));
-    }
+//    @Test
+//    public void testQueryArchiveByName() {
+//    	when().post("/archives/byName/Records2021")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Records2021"));
+//    		
+//    	when().get("/archives/byName/Records2021")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Records2021"));
+//    	
+//    	when().get("/archives/byName")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].name", equalTo("Records2021"));
+//    }
+//    
+//    @Test
+//    public void testQueryNewspaperByName() {
+//    	when().post("/newspapers/byName/Gazette")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Gazette"));
+//    		
+//    	when().get("/newspapers/byName/Gazette")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Gazette"));
+//    	
+//    	when().get("/newspapers/byName")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].name", equalTo("Gazette"));
+//    }
+//    
+//    @Test
+//    public void testQueryBookByName() {
+//    	when().post("/books/byName/Dune")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Dune"));
+//    		
+//    	when().get("/books/byName/Dune")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Dune"));
+//    	
+//    	when().get("/books/byName")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].name", equalTo("Dune"));
+//    }
+//    
+//    @Test
+//    public void testQueryMovieByName() {
+//    	when().post("/movies/byName/Interstellar")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Interstellar"));
+//    		
+//    	when().get("/movies/byName/Interstellar")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Interstellar"));
+//    	
+//    	when().get("/movies/byName")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].name", equalTo("Interstellar"));
+//    }
+//    
+//    @Test
+//    public void testQueryMusicAlbumByName() {
+//    	when().post("/musicalbums/byName/Evolve")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Evolve"));
+//    		
+//    	when().get("/musicalbums/byName/Evolve")
+//    		.then()
+//    		.statusCode(200)
+//    		.body("name", equalTo("Evolve"));
+//    	
+//    	when().get("/musicalbums/byName")
+//			.then()
+//			.statusCode(200)
+//			.body("size()", equalTo(1))
+//			.body("[0].name", equalTo("Evolve"));
+//    }
 
 }
