@@ -13,12 +13,13 @@ import ca.mcgill.ecse321.townlibrary.model.*;
 
 @Service
 public class TransactionService {
-	
+
 	@Autowired
 	TransactionRepository transactionRepository;
-	
+
 	@Transactional
 	public Transaction createTransaction(int id, Timestamp start, Timestamp end, UserRole user) {
+
 		String error = "";
 		if (id < 0) {
 			error = error + "Unsupported Id.";
@@ -39,7 +40,7 @@ public class TransactionService {
 	    if (error.length() > 0) {
 	        throw new IllegalArgumentException(error);
 	    }
-	    
+
 		Transaction transaction = new Transaction();
 		transaction.setId(id);
 		transaction.setStartDate(start);
@@ -48,14 +49,15 @@ public class TransactionService {
 		transactionRepository.save(transaction);
 		return transaction;
 	}
+
 	
 	@Transactional
-    public Transaction getTransaction(int id) {
+   public Transaction getTransaction(int id) {
 		if (id < 0) {
 	        throw new IllegalArgumentException("Unsupported Id.");
 	    }
-        return this.transactionRepository.findById(id).orElse(null);
-    }
+       return this.transactionRepository.findById(id).orElse(null);
+   }
 	
 	@Transactional
 	public List<Transaction> getTransactionsByUser(UserRole user) {
@@ -64,7 +66,7 @@ public class TransactionService {
 	    }
 		return transactionRepository.findByUserRole(user);
 	}
-	
+
 	@Transactional
     public List<Transaction> getAllTransactions() {
         final List<Transaction> transactions = new ArrayList<Transaction>();
@@ -73,7 +75,7 @@ public class TransactionService {
         }
         return transactions;
     }
-	
-	
+
+
 
 }

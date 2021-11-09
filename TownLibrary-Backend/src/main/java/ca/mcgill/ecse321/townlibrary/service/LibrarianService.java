@@ -105,4 +105,17 @@ public class LibrarianService {
             list.add(u);
         return list;
     }
+    /**
+     * Deletes a librarian by their Id
+     * @param id The librarian's id
+     * @return true if the librarian was succesfully deleted, false otherwise
+     * 
+     * @throws IllegalArgumentException if no such librarian with the given id exists
+     */
+    @Transactional
+    public boolean deleteLibrarian(int id){
+        this.librarianRepository.delete(this.librarianRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("LIBRARIAN-NOT-FOUND")));
+        return !this.librarianRepository.findById(id).isPresent();
+    }
 }

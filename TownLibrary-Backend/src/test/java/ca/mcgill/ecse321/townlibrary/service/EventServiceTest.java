@@ -30,10 +30,10 @@ public class EventServiceTest {
         final int id = 10001;
         final Transaction transaction = new Transaction();
 
-        final Event e = eventService.createEvent(lib, id, name, transaction);
+        final Event e = eventService.createEvent(lib, name);
+        e.setTransaction(transaction);
         Assertions.assertEquals(lib.getId(), e.getLibrary().getId());
         Assertions.assertEquals(name, e.getName());
-        Assertions.assertEquals(id, e.getId());
         Assertions.assertEquals(transaction, e.getTransaction());
     }
 
@@ -42,13 +42,50 @@ public class EventServiceTest {
         final Library lib = null;
         final String name = null;
         final int id = 10002;
-        final Transaction transaction = null;
+
 
         try {
-            eventService.createEvent(lib, id, name, transaction);
+            eventService.createEvent(lib, name);
         }   catch (IllegalArgumentException e) {
             Assertions.assertEquals(e.getMessage(), "Invalid inputs");
         }
+    }
+
+    @Test
+    public void testEventSetNullTransaction() {
+        /*lenient().when(this.mockEventRepository.findById(0))
+                .thenAnswer(invocation -> Optional.of(new Event()));
+
+        Event e;*/
+        final Event e = new Event();
+        final Transaction transaction = null;
+
+        try {
+            eventService.setEventTransaction(e, transaction);
+            Assertions.fail();
+        }   catch (IllegalArgumentException er) {
+            Assertions.assertEquals(er.getMessage(), "Invalid transaction");
+        }
+    }
+
+    @Test
+    public void testTransactionSetNullEvent() {
+        final Transaction t = new Transaction();
+        try {
+            eventService.setEventTransaction(null, t);
+            Assertions.fail();
+        } catch (IllegalArgumentException er) {
+            Assertions.assertEquals(er.getMessage(), "Invalid event");
+        }
+    }
+
+    @Test
+    public void testSetEventTransaction() {
+        final Event e = new Event();
+        final Transaction t = new Transaction();
+        eventService.setEventTransaction(e, t);
+
+        Assertions.assertEquals(t.getId(), e.getTransaction().getId());
     }
 
     @Test
@@ -63,6 +100,24 @@ public class EventServiceTest {
         Assertions.assertEquals(0, e.getId());
 
         e = this.eventService.getEventById(1030);
+        Assertions.assertNull(e);
+    }
+
+    @Test
+    public void testGetEventByTransaction() {
+        final Transaction KEY = new Transaction();
+        KEY.setId(1); // say
+        final Event VALUE = new Event();
+        VALUE.setTransaction(KEY);
+        lenient().when(this.mockEventRepository.findByTransaction(KEY))
+                .thenAnswer(invocation -> VALUE);
+
+        Event e;
+
+        e = this.eventService.getEventByTransaction(KEY);
+        Assertions.assertEquals(KEY.getId(), e.getTransaction().getId());
+
+        e = this.eventService.getEventByTransaction(new Transaction());
         Assertions.assertNull(e);
     }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse321.townlibrary.dto.*;
 import ca.mcgill.ecse321.townlibrary.model.*;
@@ -19,28 +20,33 @@ public class EventController {
     @Autowired 
     private LibraryService libraryService;
 
-    @Autowired 
-    private TransactionService transactionService;
-
     @GetMapping(value = { "/events", "/events/"})
     public List<EventDTO> getAllEvents() {
         return eventService.getAllEvents()
             .stream().map(EventDTO::fromModel)
             .collect(Collectors.toList());
     }
+
+    @GetMapping(value = {"/events/{id}", "/events/{id}/"})
+    public ResponseEntity<?> getEvent(@PathVariable("id") int id) {
+        final Event e = eventService.getEventById(id);
+        if (e == null) {
+            return ResponseEntity.badRequest().body("NOT-FOUND-EVENT");
+        }
+        return ResponseEntity.ok(EventDTO.fromModel(e));
+    }
     
     @PostMapping(value = { "/events/{name}", "/events/{name}/"})
-    public EventDTO createEvent(
+    public ResponseEntity<?> createEvent(
         @PathVariable("name") String name,
-        @RequestParam int id,
-        @RequestParam int lib,
-        @RequestParam int tr)
-        throws IllegalArgumentException {
+        @RequestParam int lib) {
+        try {
             final Library library = libraryService.getLibrary(lib);
-            final Transaction transaction = transactionService.getTransaction(tr);
-            Event e = eventService.createEvent(library, id, name, transaction);
-            EventDTO eDTO = new EventDTO(e.getLibrary(), e.getId(), e.getName(), e.getTransaction());
-            return eDTO;
+            final Event e = eventService.createEvent(library, name);
+            return ResponseEntity.ok().body(EventDTO.fromModel(e));
         }
-
+        catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
 }

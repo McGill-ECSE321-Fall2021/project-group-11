@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.townlibrary.controller;
 
 import java.sql.Time;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpClientErrorException.BadRequest;
 
 import ca.mcgill.ecse321.townlibrary.service.ScheduleService;
 import ca.mcgill.ecse321.townlibrary.dto.*;
@@ -22,82 +20,125 @@ import ca.mcgill.ecse321.townlibrary.model.*;
 
 @CrossOrigin(origins = "*")
 @RestController
+
+/**
+ *  FOR DOCUMENTATION, LOOK AT WIKI!
+ */
+
 public class ScheduleController {
+
     @Autowired
     private ScheduleService service;
 
-    @PostMapping(value={"/schedules", "/schedules/"})
-    public ScheduleDTO createSchedule(@RequestParam DayOfWeek dayOfWeek, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time startTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time endTime){
-        return ScheduleDTO.convertScheduleDTO(service.createDailySchedule(dayOfWeek, startTime, endTime));
+    @PostMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
+    public ResponseEntity<?> createLibrarianSchedule(
+        @PathVariable("id") int librarianId,
+        @PathVariable("dayOfWeek") DayOfWeek dayOfWeek,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time startTime,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time endTime){
+        try{
+            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createLibrarianSchedule(librarianId, dayOfWeek, startTime, endTime));
+            return ResponseEntity.ok().body(dto);
+        }catch(Exception exception){
+            return ResponseEntity.badRequest().body("SCHEDULE-NOT-ABLE-CREATE");
+        }
+
     }
 
-    // prob not needed
-    @GetMapping(value={"/schedules", "/schedules/"})
-    public ResponseEntity<?> getAllDailySchedules(){
-        List<ScheduleDTO> dto = new ArrayList<ScheduleDTO>();
-        for (DailySchedule dailySchedule:service.getAllDailySchedules()){
-            dto.add(ScheduleDTO.convertScheduleDTO(dailySchedule));
+    @PostMapping(value={"/schedules/library/{id}/{dayOfWeek}", "/schedules/library/{id}/{dayOfWeek}/"})
+    public ResponseEntity<?> createLibrarySchedule(
+        @PathVariable("id") int libraryId,
+        @PathVariable("dayOfWeek") DayOfWeek dayOfWeek,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time startTime,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time endTime){
+        try{
+            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createLibrarySchedule(libraryId, dayOfWeek, startTime, endTime));
+            return ResponseEntity.ok().body(dto);
+        }catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
-        return ResponseEntity.ok().body(dto);
+
     }
 
-    @GetMapping(value={"/schedules/{librarian}", "/schedules/{librarian}/"})
-    public ResponseEntity<?> getLibrarianSchedules(@PathVariable("librarian") Librarian librarian){
+    // prob not needed, uncomment if needed
+    // also add {"/schedules", "/schedules/"} mapping values
+    // @GetMapping(value={"/schedules", "/schedules/"})
+    // public ResponseEntity<?> getAllDailySchedules(){
+    //     List<ScheduleDTO> dto = new ArrayList<ScheduleDTO>();
+    //     for (DailySchedule dailySchedule:service.getAllDailySchedules()){
+    //         dto.add(ScheduleDTO.convertScheduleDTO(dailySchedule));
+    //     }
+    //     return ResponseEntity.ok().body(dto);
+    // }
+
+    @GetMapping(value={"/schedules/librarian/{id}", "/schedules/librarian/{id}/"})
+    public ResponseEntity<?> getLibrarianSchedules(@PathVariable("id") int librarianId){
         List<ScheduleDTO> dto = new ArrayList<ScheduleDTO>();
-        for (DailySchedule dailySchedule:service.getLibrarianDailySchedules(librarian)){
-            dto.add(ScheduleDTO.convertScheduleDTO(dailySchedule));
+        try{
+            for (DailySchedule dailySchedule:service.getLibrarianSchedules(librarianId)){
+                dto.add(ScheduleDTO.convertScheduleDTO(dailySchedule));
+            }
+            return ResponseEntity.ok().body(dto);
+        }catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
-        return ResponseEntity.ok().body(dto);
+        
     }
     
-    @GetMapping(value={"/schedules/{librarian}", "/schedules/{librarian}/"})
-    public ResponseEntity<?> getLibrarianSchedulePerDayOfWeek(@PathVariable("librarian") Librarian librarian, DayOfWeek dayOfWeek){
+    @GetMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
+    public ResponseEntity<?> getLibrarianSchedulePerDay(@PathVariable("id") int librarianId, @PathVariable("dayOfWeek") DayOfWeek dayOfWeek){
         try{
-            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.getLibrarianDailyScheduleByDayOfWeek(librarian, dayOfWeek));
+            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.getLibrarianScheduleByDay(librarianId, dayOfWeek));
             return ResponseEntity.ok().body(dto);
         }
-        catch(IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+        catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }
 
-    @GetMapping(value={"/schedules/{library}", "/schedules/{library}/"})
-    public List<ScheduleDTO> getLibraryDailySchedule(@PathVariable Library library){
+    @GetMapping(value={"/schedules/library/{id}", "/schedules/library/{id}/"})
+    public ResponseEntity<?> getLibrarySchedules(@PathVariable("id") int libraryId){
         List<ScheduleDTO> dto = new ArrayList<ScheduleDTO>();
-        for (DailySchedule dailySchedule:service.getLibraryDailySchedule(library)){
-            dto.add(ScheduleDTO.convertScheduleDTO(dailySchedule));
+        try{
+            for (DailySchedule dailySchedule:service.getLibrarySchedules(libraryId)){
+                dto.add(ScheduleDTO.convertScheduleDTO(dailySchedule));
+            }
+            return ResponseEntity.ok().body(dto);
+        }catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
-        return dto;
+       
     }
 
-    @GetMapping(value={"/schedules", "/schedules/"})
-    public ResponseEntity<?> getDayOfWeekSchedule(@RequestParam DayOfWeek dayOfWeek){
-        List<ScheduleDTO> dto = new ArrayList<ScheduleDTO>();
-        for (DailySchedule dailySchedule:service.getDayOfWeekDailySchedules(dayOfWeek)){
-            dto.add(ScheduleDTO.convertScheduleDTO(dailySchedule));
+    @GetMapping(value={"/schedules/library/{id}/{dayOfWeek}", "/schedules/library/{id}/{dayOfWeek}/"})
+    public ResponseEntity<?> getLibrarySchedulePerDay(@PathVariable("id") int libraryId, @PathVariable("dayOfWeek") DayOfWeek dayOfWeek){
+        try{
+            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.getLibraryScheduleByDay(libraryId, dayOfWeek));
+            return ResponseEntity.ok().body(dto);
         }
-        return ResponseEntity.ok().body(dto);
+        catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
-    // not sure
-    @PutMapping(value={"/schedules/{librarian}", "/schedules/{librarian}/"})
-    public ResponseEntity<?> assignSchedule(@RequestParam DailySchedule dailySchedule, @PathVariable Librarian librarian){
+    @PutMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
+    public ResponseEntity<?> assignSchedule(@RequestParam int dailyScheduleId, @PathVariable("id") int librarianId){
         try {
-            service.assignSchedule(dailySchedule, librarian);
+            service.assignSchedule(dailyScheduleId, librarianId);
             return ResponseEntity.ok().body("");
-        } catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
     }
 
-    @PutMapping(value={"/schedules/{library}", "/schedules/{library}/"})
-    public void setLibrarySchedule(@RequestParam List<DailySchedule> dailySchedules, @PathVariable Library library){
-        service.setLibrarySchedule(dailySchedules, library);
+    @PutMapping(value={"/schedules/library/{id}", "/schedules/library/{id}/"})
+    public void setLibrarySchedule(@RequestParam List<Integer> dailyScheduleIds, @PathVariable("id") int libraryId){
+        service.setLibrarySchedule(dailyScheduleIds, libraryId);
     }
 
-    @PutMapping(value={"/schedules", "/schedules/"})
-    public void updateSchedule(@RequestParam DailySchedule dailySchedule, @RequestParam DayOfWeek newDayOfWeek, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
-        service.updateSchedule(dailySchedule, newDayOfWeek, newStartTime, newEndTime);
+    @PutMapping(value={"/schedules/{id}", "/schedules/{id}/"})
+    public void updateSchedule(@PathVariable("id") int dailyScheduleId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
+        service.updateSchedule(dailyScheduleId, newStartTime, newEndTime);
     }
 
 
