@@ -390,11 +390,13 @@ public class ScheduleServiceTest {
         }
         try {
             scheduleService.updateSchedule(existingScheduleId, START_TIME, null);
+            fail();
         } catch (IllegalArgumentException e) {
             assertEquals("NULL-TIME", e.getMessage());
         }
         try {
             scheduleService.updateSchedule(existingScheduleId, END_TIME, START_TIME);
+            fail();
         } catch (IllegalArgumentException e) {
             assertEquals("START-TIME-AFTER-END-TIME", e.getMessage());
         }

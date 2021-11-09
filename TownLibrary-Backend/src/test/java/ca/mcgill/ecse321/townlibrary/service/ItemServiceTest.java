@@ -251,6 +251,14 @@ public class ItemServiceTest {
 		assertEquals(1, itemService.getMovieByName("stellar").size());
 		assertEquals("Interstellar", itemService.getMovieByName("stellar").get(0).getName());
 
+		// MusicAlbum
+		assertEquals(1, itemService.getMusicAlbumByName("Chopin").size());
+		assertEquals("Chopin Nocturnes", itemService.getMusicAlbumByName("Chopin").get(0).getName());
+		
+		// Newspaper
+		assertEquals(1, itemService.getNewspaperByName("Gaz").size());
+		assertEquals("Gazette", itemService.getNewspaperByName("Gaz").get(0).getName());
+
 		lenient().when(newspaperDao.findNewspaperByNameContaining("Gazette")).thenAnswer(invocation -> {
 			Newspaper news = new Newspaper();
 			news.setName("Gazette");
