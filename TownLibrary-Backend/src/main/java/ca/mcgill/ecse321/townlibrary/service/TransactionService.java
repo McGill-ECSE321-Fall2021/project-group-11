@@ -49,13 +49,13 @@ public class TransactionService {
 		return transaction;
 	}
 	
-//	@Transactional
-//    public Transaction getTransaction(int id) {
-//		if (id < 0) {
-//	        throw new IllegalArgumentException("Unsupported Id.");
-//	    }
-//        return this.transactionRepository.findById(id).orElse(null);
-//    }
+	@Transactional
+    public Transaction getTransaction(int id) {
+		if (id < 0) {
+	        throw new IllegalArgumentException("Unsupported Id.");
+	    }
+        return this.transactionRepository.findById(id).orElse(null);
+    }
 	
 	@Transactional
 	public List<Transaction> getTransactionsByUser(UserRole user) {

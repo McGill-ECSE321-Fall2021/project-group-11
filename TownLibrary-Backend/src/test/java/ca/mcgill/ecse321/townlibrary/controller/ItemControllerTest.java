@@ -13,6 +13,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
+import static org.hamcrest.Matchers.*;
+
 @Tag("integration")
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,49 +48,55 @@ public class ItemControllerTest {
     		.body("$", empty());
     	
     	when().get("/archives/0")
-        .then()
-        .statusCode(400)
-        .body(equalTo("ARCHIVE-NOT-FOUND"));
+	        .then()
+	        .statusCode(400)
+	        .body(equalTo("ARCHIVE-NOT-FOUND"));
     	
     	when().get("/newspapers")
-		.then()
-		.statusCode(200)
-		.body("$", empty());
+			.then()
+			.statusCode(200)
+			.body("$", empty());
 	
 		when().get("/newspapers/0")
-	    .then()
-	    .statusCode(400)
-	    .body(equalTo("NEWSPAPER-NOT-FOUND"));
+		    .then()
+		    .statusCode(400)
+		    .body(equalTo("NEWSPAPER-NOT-FOUND"));
 		
 		when().get("/books")
-		.then()
-		.statusCode(200)
-		.body("$", empty());
+			.then()
+			.statusCode(200)
+			.body("$", empty());
 	
 		when().get("/books/0")
-		.then()
-		.statusCode(400)
-		.body(equalTo("BOOK-NOT-FOUND"));
+			.then()
+			.statusCode(400)
+			.body(equalTo("BOOK-NOT-FOUND"));
 		
 		when().get("/movies")
-		.then()
-		.statusCode(200)
-		.body("$", empty());
+			.then()
+			.statusCode(200)
+			.body("$", empty());
 		
 		when().get("/movies/0")
-		.then()
-		.statusCode(400)
-		.body(equalTo("MOVIE-NOT-FOUND"));
+			.then()
+			.statusCode(400)
+			.body(equalTo("MOVIE-NOT-FOUND"));
 		
 		when().get("/musicalbums")
-		.then()
-		.statusCode(200)
-		.body("$", empty());
+			.then()
+			.statusCode(200)
+			.body("$", empty());
 		
 		when().get("/musicalbums/0")
-		.then()
-		.statusCode(400)
-		.body(equalTo("MUSIC-ALBUM-NOT-FOUND"));
+			.then()
+			.statusCode(400)
+			.body(equalTo("MUSIC-ALBUM-NOT-FOUND"));
+    }
+    
+    @Test
+    public void testQueryItem() {
+    	final int id = given()
+    			.param("")
     }
 
 }
