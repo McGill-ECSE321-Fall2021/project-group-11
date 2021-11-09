@@ -1,8 +1,10 @@
 package ca.mcgill.ecse321.townlibrary.dto;
 
+import java.util.Optional;
+
 import ca.mcgill.ecse321.townlibrary.model.Archive;
-import ca.mcgill.ecse321.townlibrary.model.Library;
-import ca.mcgill.ecse321.townlibrary.model.Transaction;
+//import ca.mcgill.ecse321.townlibrary.model.Library;
+//import ca.mcgill.ecse321.townlibrary.model.Transaction;
 import ca.mcgill.ecse321.townlibrary.model.Status;
 
 public class ArchiveDTO {
@@ -11,19 +13,19 @@ public class ArchiveDTO {
 	private String name;
 	private Status status;
 	
-	private Library library;
-	private Transaction transaction;
+	private Integer libraryId;
+	//private Transaction transaction;
 	
 	public ArchiveDTO() {
 	}
 	
-	public ArchiveDTO(int id, String name, Library lib, Transaction trans) {
+	public ArchiveDTO(int id, String name, Integer libId) {
 		this.id = id;
 		this.name = name;
 		// Archives cannot be reserved or checked out
 		this.status = Status.AVAILABLE;	
-		this.library = lib;
-		this.transaction = trans;
+		this.libraryId = libId;
+		//this.transaction = trans;
 	}
 	
 	public static ArchiveDTO fromModel(Archive a) {
@@ -31,8 +33,10 @@ public class ArchiveDTO {
 		dto.id = a.getId();
 		dto.name = a.getName();
 		dto.status = a.getStatus();
-		dto.library = a.getLibrary();
-		dto.transaction = a.getTransaction();
+		dto.libraryId = Optional.ofNullable(a.getLibrary())
+				.map(x -> x.getId())
+                .orElse(null);
+		//dto.transaction = a.getTransaction();
 		return dto;
 	}
 	
@@ -48,12 +52,12 @@ public class ArchiveDTO {
 		return status;
 	}
 	
-	public Library getLibrary() {
-        return library;
+	public Integer getLibraryId() {
+        return libraryId;
     }
-	
-	public Transaction getTransaction() {
-        return transaction;
-    }
+
+//	public Transaction getTransaction() {
+//        return transaction;
+//    }
 
 }

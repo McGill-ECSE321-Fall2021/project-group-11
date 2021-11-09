@@ -100,35 +100,35 @@ public class ItemController {
 	 * @param 	The item name
 	 * @return 	Item of a specific type
 	 */
-	@GetMapping(value = { "/archives/{name}", "/archives/{name}/"})
+	@GetMapping(value = { "/archives/byName/{name}", "/archives/byName/{name}/"})
 	public ResponseEntity<?> getArchiveByName(@PathVariable("name") String name) {
 		Archive i = (Archive) service.getArchiveByName(name);
 		if (i == null) {
 			return ResponseEntity.badRequest().body("ARCHIVE-NOT-FOUND");
 		} return ResponseEntity.ok(ArchiveDTO.fromModel(i));
 	}
-	@GetMapping(value = { "/newspapers/{name}", "/newspapers/{name}/"})
+	@GetMapping(value = { "/newspapers/byName/{name}", "/newspapers/byName/{name}/"})
 	public ResponseEntity<?> getNewspaperByName(@PathVariable("name") String name) {
 		Newspaper i = (Newspaper) service.getNewspaperByName(name);
 		if (i == null) {
 			return ResponseEntity.badRequest().body("NEWSPAPER-NOT-FOUND");
 		} return ResponseEntity.ok(NewspaperDTO.fromModel(i));
 	}
-	@GetMapping(value = { "/books/{name}", "/books/{name}/"})
+	@GetMapping(value = { "/books/byName/{name}", "/books/byName/{name}/"})
 	public ResponseEntity<?> getBookByName(@PathVariable("name") String name) {
 		Book i = (Book) service.getBookByName(name);
 		if (i == null) {
 			return ResponseEntity.badRequest().body("BOOK-NOT-FOUND");
 		} return ResponseEntity.ok(BookDTO.fromModel(i));
 	}
-	@GetMapping(value = { "/movies/{name}", "/movies/{name}/"})
+	@GetMapping(value = { "/movies/byName/{name}", "/movies/byName/{name}/"})
 	public ResponseEntity<?> getMovieByName(@PathVariable("name") String name) {
 		Movie i = (Movie) service.getMovieByName(name);
 		if (i == null) {
 			return ResponseEntity.badRequest().body("MOVIE-NOT-FOUND");
 		} return ResponseEntity.ok(MovieDTO.fromModel(i));
 	}
-	@GetMapping(value = { "/musicalbums/{name}", "/musicalbums/{name}/"})
+	@GetMapping(value = { "/musicalbums/byName/{name}", "/musicalbums/byName/{name}/"})
 	public ResponseEntity<?> getMusicAlbumByName(@PathVariable("name") String name) {
 		MusicAlbum i = (MusicAlbum) service.getMusicAlbumByName(name);
 		if (i == null) {
@@ -142,21 +142,21 @@ public class ItemController {
 	 * @param 	The item status
 	 * @return 	Item of a specific type
 	 */
-	@GetMapping(value = { "/books/{status}", "/books/{status}/"})
+	@GetMapping(value = { "/books/byStatus/{status}", "/books/byStatus/{status}/"})
 	public ResponseEntity<?> getBookByStatus(@PathVariable("status") Status status) {
 		Book i = (Book) service.getBookByStatus(status);
 		if (i == null) {
 			return ResponseEntity.badRequest().body("BOOK-NOT-FOUND");
 		} return ResponseEntity.ok(BookDTO.fromModel(i));
 	}
-	@GetMapping(value = { "/movies/{status}", "/movies/{status}/"})
+	@GetMapping(value = { "/movies/byStatus/{status}", "/movies/byStatus/{status}/"})
 	public ResponseEntity<?> getMovieByStatus(@PathVariable("status") Status status) {
 		Movie i = (Movie) service.getMovieByStatus(status);
 		if (i == null) {
 			return ResponseEntity.badRequest().body("MOVIE-NOT-FOUND");
 		} return ResponseEntity.ok(MovieDTO.fromModel(i));
 	}
-	@GetMapping(value = { "/musicalbums/{status}", "/musicalbums/{status}/"})
+	@GetMapping(value = { "/musicalbums/byStatus/{status}", "/musicalbums/byStatus/{status}/"})
 	public ResponseEntity<?> getMusicAlbumByStatus(@PathVariable("status") Status status) {
 		MusicAlbum i = (MusicAlbum) service.getMusicAlbumByStatus(status);
 		if (i == null) {
@@ -203,27 +203,27 @@ public class ItemController {
 	 * @return	Checked out item
 	 */
 	@PutMapping(value = { "/books/{id}/checkout", "/books/{id}/checkout/"})
-	public ResponseEntity<?> setBookCheckedout(@PathVariable("id") int id) {
+	public ResponseEntity<?> setBookCheckedout(@PathVariable("id") int id, @PathVariable("user") UserRole user) {
 		try {
-			Book i = (Book) service.checkoutItem(id);
+			Book i = (Book) service.checkoutItem(id, user);
 			return ResponseEntity.ok(BookDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	@PutMapping(value = { "/movies/{id}/checkout", "/movies/{id}/checkout/"})
-	public ResponseEntity<?> setMovieCheckedout(@PathVariable("id") int id) {
+	public ResponseEntity<?> setMovieCheckedout(@PathVariable("id") int id, @PathVariable("user") UserRole user) {
 		try {
-			Movie i = (Movie) service.checkoutItem(id);
+			Movie i = (Movie) service.checkoutItem(id, user);
 			return ResponseEntity.ok(MovieDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
 	@PutMapping(value = { "/musicalbums/{id}/checkout", "/musicalbums/{id}/checkout/"})
-	public ResponseEntity<?> setMusicAlbumCheckedout(@PathVariable("id") int id) {
+	public ResponseEntity<?> setMusicAlbumCheckedout(@PathVariable("id") int id, @PathVariable("user") UserRole user) {
 		try {
-			MusicAlbum i = (MusicAlbum) service.checkoutItem(id);
+			MusicAlbum i = (MusicAlbum) service.checkoutItem(id, user);
 			return ResponseEntity.ok(MusicAlbumDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
