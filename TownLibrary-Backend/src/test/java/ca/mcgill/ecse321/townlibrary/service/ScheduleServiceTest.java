@@ -108,6 +108,7 @@ public class ScheduleServiceTest {
     }
     
     // Tests for each service below
+    @Test
     public void testCreateSchedule(){
         Time startTime = START_TIME;
         Time endTime = END_TIME;
@@ -121,6 +122,36 @@ public class ScheduleServiceTest {
         assertEquals(DayOfWeek.MONDAY, dailySchedule.getDayOfWeek());
         assertEquals(startTime, dailySchedule.getStartTime());
         assertEquals(endTime, dailySchedule.getEndTime());
+    }
+
+    @Test
+    public void testNullInputCreateSchedule(){
+        Time startTime = START_TIME;
+        Time endTime = END_TIME;
+        try {
+            scheduleService.createSchedule(null, startTime, endTime);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("NULL-DAY-OF-WEEK", exception.getMessage());
+        }
+        try {
+            scheduleService.createSchedule(DayOfWeek.MONDAY, null, endTime);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("NULL-TIME", exception.getMessage());
+        }
+        try {
+            scheduleService.createSchedule(DayOfWeek.MONDAY, startTime, null);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("NULL-TIME", exception.getMessage());
+        }
+        try {
+            scheduleService.createSchedule(DayOfWeek.MONDAY, endTime, startTime);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("START-TIME-AFTER-END-TIME", exception.getMessage());
+        }
     }
 
     @Test

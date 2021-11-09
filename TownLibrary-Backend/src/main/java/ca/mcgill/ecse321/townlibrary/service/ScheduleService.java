@@ -22,7 +22,13 @@ public class ScheduleService {
     @Autowired
     LibrarianRepository librarianRepository;
 
-
+    /** Creates a schedule without librarian/library
+     * 
+     * @param dayOfWeek
+     * @param startTime
+     * @param endTime
+     * @return dailySchedule
+     */
     @Transactional
     public DailySchedule createSchedule(DayOfWeek dayOfWeek, Time startTime, Time endTime){
         if (dayOfWeek == (null)) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
