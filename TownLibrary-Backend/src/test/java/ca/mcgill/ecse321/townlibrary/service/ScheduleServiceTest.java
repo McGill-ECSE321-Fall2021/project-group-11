@@ -108,6 +108,7 @@ public class ScheduleServiceTest {
     }
     
     // Tests for each service below
+    @Test
     public void testCreateSchedule(){
         Time startTime = START_TIME;
         Time endTime = END_TIME;
