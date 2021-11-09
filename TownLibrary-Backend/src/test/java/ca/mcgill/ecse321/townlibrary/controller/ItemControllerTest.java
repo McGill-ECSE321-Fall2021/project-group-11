@@ -9,6 +9,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,8 +29,7 @@ public class ItemControllerTest {
     public void setup() {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
-        // Also each test assumes there is a proper library.
-        post("/libraries/0?address=300 Pepper Street");
+        post("/libraries/100?address=99 boulevard of broken dreams");
     }
 
     @AfterEach
@@ -92,21 +92,17 @@ public class ItemControllerTest {
     
     @Test
     public void testQueryArchive() {
-    	when().post("/archives/0")
+	
+    	when().get("/archives/5")
     		.then()
     		.statusCode(200)
-    		.body("id", equalTo(0));
-    		
-    	when().get("/archives/0")
-    		.then()
-    		.statusCode(200)
-    		.body("id", equalTo(0));
+    		.body("id", equalTo(5));
     	
     	when().get("/archives")
 			.then()
 			.statusCode(200)
 			.body("size()", equalTo(1))
-			.body("[0].id", equalTo(0));
+			.body("[0].id", equalTo(5));
     }
 //    
 //    @Test
