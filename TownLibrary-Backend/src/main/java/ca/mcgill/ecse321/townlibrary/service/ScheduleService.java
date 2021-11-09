@@ -22,6 +22,29 @@ public class ScheduleService {
     @Autowired
     LibrarianRepository librarianRepository;
 
+    /** Creates a schedule without librarian/library
+     * 
+     * @param dayOfWeek
+     * @param startTime
+     * @param endTime
+     * @return dailySchedule
+     */
+    @Transactional
+    public DailySchedule createSchedule(DayOfWeek dayOfWeek, Time startTime, Time endTime){
+        if (dayOfWeek == (null)) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
+        if (startTime == (null) || endTime == (null)) throw new IllegalArgumentException("NULL-TIME");
+        if (startTime.after(endTime)) throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
+        
+        DailySchedule dailySchedule = new DailySchedule();
+        dailySchedule.setDayOfWeek(dayOfWeek);
+        dailySchedule.setStartTime(startTime);
+        dailySchedule.setEndTime(endTime);
+
+        dailyScheduleRepository.save(dailySchedule);
+
+        return dailySchedule;
+    }
+
     /** Creates an instance of DailySchedule for a library
      * 
      * @param libraryId
@@ -94,7 +117,8 @@ public class ScheduleService {
     @Transactional
     public List<DailySchedule> getLibrarySchedules(int libraryId){
         List<DailySchedule> schedules = dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).get());
-        return schedules;
+        if (schedules.size() == 0) throw new IllegalArgumentException("NO-SCHEDULE");
+        else return schedules;
     }
 
     /** Gets library schedule on a given day
@@ -217,5 +241,16 @@ public class ScheduleService {
         dailyScheduleRepository.save(dailySchedule);
     }
 
+    /** Delete schedule given id and day of week
+     * 
+     * @param scheduleId
+     * @param dayOfWeek
+     */
+    @Transactional
+    public void deleteSchedule(int scheduleId){
+        if (dailyScheduleRepository.findById(scheduleId).isPresent()){
+            dailyScheduleRepository.delete(dailyScheduleRepository.findById(scheduleId).get());
+        }else throw new IllegalArgumentException("NO-SCHEDULE");
+    }
 
 }   

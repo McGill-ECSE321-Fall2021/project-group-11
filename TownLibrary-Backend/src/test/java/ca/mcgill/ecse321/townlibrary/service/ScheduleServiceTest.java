@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.townlibrary.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 
 import java.sql.Time;
@@ -66,7 +67,7 @@ public class ScheduleServiceTest {
         // handles DailyScheduleRepository.findByLibrary calls
         lenient().when(mockDailyScheduleRepository.findByLibrary(any(Library.class))).thenAnswer((InvocationOnMock invocation)->{
             if (invocation.getArgument(0).equals(LIBRARY)){
-                 return createWeekSchedule();
+                return createWeekSchedule();
             }else return new ArrayList<DailySchedule>(); 
         });
         // handles DailyScheduleRepository.findByLibrarian calls
@@ -107,6 +108,52 @@ public class ScheduleServiceTest {
     }
     
     // Tests for each service below
+    @Test
+    public void testCreateSchedule(){
+        Time startTime = START_TIME;
+        Time endTime = END_TIME;
+        DailySchedule dailySchedule = null;
+        try {
+            dailySchedule = scheduleService.createSchedule(DayOfWeek.MONDAY, startTime, endTime);
+        } catch (IllegalArgumentException exception) {
+            fail();
+        }
+        assertNotNull(dailySchedule);
+        assertEquals(DayOfWeek.MONDAY, dailySchedule.getDayOfWeek());
+        assertEquals(startTime, dailySchedule.getStartTime());
+        assertEquals(endTime, dailySchedule.getEndTime());
+    }
+
+    @Test
+    public void testNullInputCreateSchedule(){
+        Time startTime = START_TIME;
+        Time endTime = END_TIME;
+        try {
+            scheduleService.createSchedule(null, startTime, endTime);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("NULL-DAY-OF-WEEK", exception.getMessage());
+        }
+        try {
+            scheduleService.createSchedule(DayOfWeek.MONDAY, null, endTime);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("NULL-TIME", exception.getMessage());
+        }
+        try {
+            scheduleService.createSchedule(DayOfWeek.MONDAY, startTime, null);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("NULL-TIME", exception.getMessage());
+        }
+        try {
+            scheduleService.createSchedule(DayOfWeek.MONDAY, endTime, startTime);
+            fail();
+        } catch (IllegalArgumentException exception) {
+            assertEquals("START-TIME-AFTER-END-TIME", exception.getMessage());
+        }
+    }
+
     @Test
     public void testCreateLibrarianSchedule(){
         Time startTime = START_TIME;
@@ -363,8 +410,6 @@ public class ScheduleServiceTest {
         } catch (IllegalArgumentException exception) {
             assertEquals("NOT-WEEK-LIBRARY-SCHEDULE", exception.getMessage());
         }
-
-
     }
 
     @Test

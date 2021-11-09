@@ -1,12 +1,14 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
 import java.sql.Time;
+// import java.sql.Time;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,17 +32,31 @@ public class ScheduleController {
     @Autowired
     private ScheduleService service;
 
+    @PostMapping(value={"/schedules/other/{dayOfWeek}/", "/schedules/other/{dayOfWeek}"})
+    public ResponseEntity<?> createSchedule(
+        @PathVariable("dayOfWeek") DayOfWeek dayOfWeek,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date startTime,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date endTime){
+        
+        try{
+            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createSchedule(dayOfWeek, new Time(startTime.getTime()), new Time(endTime.getTime())));
+            return ResponseEntity.ok().body(dto);
+        }catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
+    }
+
     @PostMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
     public ResponseEntity<?> createLibrarianSchedule(
         @PathVariable("id") int librarianId,
         @PathVariable("dayOfWeek") DayOfWeek dayOfWeek,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time startTime,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time endTime){
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date startTime,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date endTime){
         try{
-            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createLibrarianSchedule(librarianId, dayOfWeek, startTime, endTime));
+            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createLibrarianSchedule(librarianId, dayOfWeek, new Time(startTime.getTime()), new Time(endTime.getTime())));
             return ResponseEntity.ok().body(dto);
         }catch(Exception exception){
-            return ResponseEntity.badRequest().body("SCHEDULE-NOT-ABLE-CREATE");
+            return ResponseEntity.badRequest().body(exception.getMessage());//"SCHEDULE-NOT-ABLE-CREATE");
         }
 
     }
@@ -49,10 +65,10 @@ public class ScheduleController {
     public ResponseEntity<?> createLibrarySchedule(
         @PathVariable("id") int libraryId,
         @PathVariable("dayOfWeek") DayOfWeek dayOfWeek,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time startTime,
-        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time endTime){
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date startTime,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date endTime){
         try{
-            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createLibrarySchedule(libraryId, dayOfWeek, startTime, endTime));
+            ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createLibrarySchedule(libraryId, dayOfWeek, new Time(startTime.getTime()), new Time(endTime.getTime())));
             return ResponseEntity.ok().body(dto);
         }catch(Exception exception){
             return ResponseEntity.badRequest().body(exception.getMessage());
@@ -70,6 +86,7 @@ public class ScheduleController {
     //     }
     //     return ResponseEntity.ok().body(dto);
     // }
+  
 
     @GetMapping(value={"/schedules/librarian/{id}", "/schedules/librarian/{id}/"})
     public ResponseEntity<?> getLibrarianSchedules(@PathVariable("id") int librarianId){
@@ -82,7 +99,6 @@ public class ScheduleController {
         }catch(Exception exception){
             return ResponseEntity.badRequest().body(exception.getMessage());
         }
-        
     }
     
     @GetMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
@@ -121,7 +137,7 @@ public class ScheduleController {
         }
     }
 
-    @PutMapping(value={"/schedules/librarian/{id}/{dayOfWeek}", "/schedules/librarian/{id}/{dayOfWeek}/"})
+    @PutMapping(value={"/schedules/librarian/{id}", "/schedules/librarian/{id}/"})
     public ResponseEntity<?> assignSchedule(@RequestParam int dailyScheduleId, @PathVariable("id") int librarianId){
         try {
             service.assignSchedule(dailyScheduleId, librarianId);
@@ -132,13 +148,37 @@ public class ScheduleController {
     }
 
     @PutMapping(value={"/schedules/library/{id}", "/schedules/library/{id}/"})
-    public void setLibrarySchedule(@RequestParam List<Integer> dailyScheduleIds, @PathVariable("id") int libraryId){
-        service.setLibrarySchedule(dailyScheduleIds, libraryId);
+    public ResponseEntity<?> setLibrarySchedule(@RequestParam List<Integer> dailyScheduleIds, @PathVariable("id") int libraryId){
+        try{
+            service.setLibrarySchedule(dailyScheduleIds, libraryId);
+            return ResponseEntity.ok().body("");
+        }catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
     }
 
     @PutMapping(value={"/schedules/{id}", "/schedules/{id}/"})
-    public void updateSchedule(@PathVariable("id") int dailyScheduleId, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Time newStartTime, @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm")Time newEndTime){
-        service.updateSchedule(dailyScheduleId, newStartTime, newEndTime);
+    public ResponseEntity<?> updateSchedule(
+        @PathVariable("id") int dailyScheduleId,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date newStartTime,
+        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.TIME, pattern="HH:mm") Date newEndTime){
+        try{
+            service.updateSchedule(dailyScheduleId, new Time(newStartTime.getTime()), new Time(newEndTime.getTime()));
+            return ResponseEntity.ok().body("");
+        }catch(Exception exception){
+            return ResponseEntity.badRequest().body(exception.getMessage());
+        }
+    }
+
+    @DeleteMapping(value={"/schedules/{id}", "/schedules/{id}/"})
+    public ResponseEntity<?> deleteSchedule(
+        @PathVariable("id") int dailyScheduleId){
+            try{
+                service.deleteSchedule(dailyScheduleId);
+                return ResponseEntity.ok().body("");
+            }catch(Exception exception){
+                return ResponseEntity.badRequest().body(exception.getMessage());
+            }
     }
 
 
