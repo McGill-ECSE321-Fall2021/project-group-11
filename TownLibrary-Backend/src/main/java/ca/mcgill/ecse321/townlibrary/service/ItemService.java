@@ -256,11 +256,14 @@ public class ItemService {
 	 * 
 	 * @return		The returned item
 	 * 
-	 * @throws IllegalArgumentException if the item is not already checked out
+	 * @throws IllegalArgumentException if the item does not exist or is not already checked out
 	 */
 	@Transactional
 	public Item returnItem(int id) {
 		Item item = itemRepository.findItemById(id);
+		if (item == null) {
+			throw new IllegalArgumentException("Item does not exist.");
+		}
 		if (item.getStatus() != Status.CHECKED_OUT) {
 			throw new IllegalArgumentException("You may only return checked out items.");
 		}
@@ -278,11 +281,14 @@ public class ItemService {
 	 * 
 	 * @return		The renewed item
 	 * 
-	 * @throws IllegalArgumentException if the item is not already checked out
+	 * @throws IllegalArgumentException if the item does not exist or is not already checked out
 	 */
 	@Transactional
 	public Item renewItem(int id) {
 		Item item = itemRepository.findItemById(id);
+		if (item == null) {
+			throw new IllegalArgumentException("Item does not exist.");
+		}
 		if (item.getStatus() != Status.CHECKED_OUT) {
 			throw new IllegalArgumentException("You may only renew an item that is already checked out.");
 		}

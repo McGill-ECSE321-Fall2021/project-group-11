@@ -285,6 +285,17 @@ public class ScheduleServiceTest {
     }
 
     @Test
+    public void testAssignInexistentSchedule(){
+        try {
+            // note that id of 10000 does not exist
+            scheduleService.assignSchedule(10000, LIBRARIAN.getId());
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("NO-SCHEDULE", e.getMessage());
+        }
+    }
+
+    @Test
     public void testAssignSchedule(){
         DailySchedule nonConflictingDailySchedule = new DailySchedule();
 
@@ -378,11 +389,19 @@ public class ScheduleServiceTest {
             assertEquals("NULL-TIME", exception.getMessage());
         }
         try {
+            scheduleService.updateSchedule(existingScheduleId, START_TIME, null);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("NULL-TIME", e.getMessage());
+        }
+        try {
             scheduleService.updateSchedule(existingScheduleId, END_TIME, START_TIME);
             fail();
-        } catch (IllegalArgumentException exception) {
-            assertEquals("START-TIME-AFTER-END-TIME", exception.getMessage());
+        } catch (IllegalArgumentException e) {
+            assertEquals("START-TIME-AFTER-END-TIME", e.getMessage());
         }
+        
+        scheduleService.updateSchedule(existingScheduleId, START_TIME, END_TIME);
     }
 
     // helper method to create a week worth of schedules
