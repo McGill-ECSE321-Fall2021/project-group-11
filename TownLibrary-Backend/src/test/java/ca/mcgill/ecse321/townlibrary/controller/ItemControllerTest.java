@@ -1,7 +1,9 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.equalTo;
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
+import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
+import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
+import static org.hamcrest.Matchers.*;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
