@@ -1,78 +1,117 @@
 package ca.mcgill.ecse321.townlibrary.service;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import ca.mcgill.ecse321.townlibrary.model.*;
-import ca.mcgill.ecse321.townlibrary.repository.TransactionRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.lenient;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.mockito.Mockito.lenient;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import ca.mcgill.ecse321.townlibrary.repository.*;
+import ca.mcgill.ecse321.townlibrary.model.*;
 
 @ExtendWith(MockitoExtension.class)
 public class TransactionServiceTest {
+	
+	@Mock
+	TransactionRepository transactionDao;
+	
+	@InjectMocks
+	private TransactionService service;
+	
+	private static final int BAD_ID = -1;
+	//private static final int NONEXISTING_ID = 0;
+	private static final int TRANSACTION_ID = 99;
+	private static final UserRole USER = new OfflineMember();
+	
+	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis());
+	private static final Timestamp END_TIME = new Timestamp(START_TIME.getTime() + 1000 * 86400 * 14);
+	
+	@BeforeEach
+	public void setMockOutput() {
+		lenient().when(transactionDao.findByUserRole(any(UserRole.class))).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(USER)) {
+				Transaction transaction = new Transaction();
+				transaction.setId(TRANSACTION_ID);
+				transaction.setUserRole(USER);
+				
+				List<Transaction> tList = new ArrayList<Transaction>();
+				tList.add(transaction);
+				return tList;
+			}
+			else {
+				return new ArrayList<Transaction>();
+			}
+		});
+	}
+	
+	@Test
+	public void testCreateTransaction() {
+		
+		assertEquals(TRANSACTION_ID, service.createTransaction(TRANSACTION_ID, START_TIME, END_TIME, USER).getId());
+		
+		try {
+			service.createTransaction(BAD_ID, START_TIME, END_TIME, USER);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Unsupported Id.", e.getMessage());
+		}
+		
+		try {
+			service.createTransaction(TRANSACTION_ID, null, END_TIME, USER);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Transaction start time cannot be empty.", e.getMessage());
+		}
+		
+		try {
+			service.createTransaction(TRANSACTION_ID, START_TIME, null, USER);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Transaction end time cannot be empty.", e.getMessage());
+		}
+		
+		try {
+			service.createTransaction(TRANSACTION_ID, START_TIME, START_TIME, USER);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Transaction end time cannot be before start time.", e.getMessage());
+		}
+		
+		try {
+			service.createTransaction(TRANSACTION_ID, END_TIME, START_TIME, USER);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Transaction end time cannot be before start time.", e.getMessage());
+		}
+		
+		try {
+			service.createTransaction(TRANSACTION_ID, START_TIME, END_TIME, null);
+		} catch (IllegalArgumentException e) {
+			assertEquals("User cannot be empty.", e.getMessage());
+		}
+		
+	}
+	
+	@Test
+	public void testGetTransactionByUser() {
+		assertEquals(1, service.getTransactionsByUser(USER).size());
+		assertEquals(TRANSACTION_ID, service.getTransactionsByUser(USER).get(0).getId());
+		
+		try {
+			service.getTransactionsByUser(null);
+			fail();
+		} catch (IllegalArgumentException e) {
+			assertEquals("User cannot be empty.", e.getMessage());
+		}
+	}
 
-    @Mock
-    private TransactionRepository mockTransactionRepository;
-
-    @InjectMocks
-    private TransactionService transactionService;
-
-    @Test
-    public void testCreateTransactionNullUser() {
-        try {
-            this.transactionService.createTransaction(0, new Timestamp(0), new Timestamp(2000), null);
-            Assertions.fail();
-        } catch (IllegalArgumentException ex) {
-            Assertions.assertEquals("EMPTY-USER", ex.getMessage());
-        }
-    }
-
-    @Test
-    public void testCreateTransaction() {
-        final OfflineMember u = new OfflineMember();
-        final Transaction t = this.transactionService.createTransaction(10, new Timestamp(0), new Timestamp(2000), u);
-        Assertions.assertEquals(10, t.getId());
-        Assertions.assertEquals(new Timestamp(0), t.getStartDate());
-        Assertions.assertEquals(new Timestamp(2000), t.getEndDate());
-        Assertions.assertEquals(0, t.getUserRole().getId());
-    }
-
-    @Test
-    public void testGetTransaction() {
-        // Artificially create a situation where only id 0 is bound to a
-        // transaction.
-        lenient().when(this.mockTransactionRepository.findById(0))
-                .thenAnswer(invocation -> Optional.of(new Transaction()));
-
-        Transaction t;
-
-        t = this.transactionService.getTransaction(0);
-        Assertions.assertEquals(0, t.getId());
-
-        t = this.transactionService.getTransaction(4);
-        Assertions.assertNull(t);
-    }
-
-    @Test
-    public void testGetTransactionByUser() {
-        final OfflineMember KEY = new OfflineMember();
-        KEY.setId(1); // say
-        final Transaction VALUE = new Transaction();
-        VALUE.setUserRole(KEY);
-        lenient().when(this.mockTransactionRepository.findByUserRole(KEY))
-                .thenAnswer(invocation -> Collections.singletonList(VALUE));
-
-        List<Transaction> ts;
-
-        ts = this.transactionService.getTransactionsByUser(KEY);
-        Assertions.assertEquals(1, ts.size());
-        Assertions.assertEquals(KEY.getId(), ts.get(0).getUserRole().getId());
-    }
 }

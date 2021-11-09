@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.townlibrary.dto;
 
 import ca.mcgill.ecse321.townlibrary.model.Newspaper;
-import ca.mcgill.ecse321.townlibrary.model.Library;
+
+import java.util.Optional;
+
 import ca.mcgill.ecse321.townlibrary.model.Status;
-import ca.mcgill.ecse321.townlibrary.model.Transaction;
+//import ca.mcgill.ecse321.townlibrary.model.Transaction;
 
 public class NewspaperDTO {
 	
@@ -11,19 +13,19 @@ public class NewspaperDTO {
 	private String name;
 	private Status status;
 	
-	private Library library;
-	private Transaction transaction;
+	private Integer libraryId;
+	//private Transaction transaction;
 	
 	public NewspaperDTO() {
 	}
 	
-	public NewspaperDTO(int id, String name, Library lib, Transaction trans) {
+	public NewspaperDTO(int id, String name, Integer libId) {
 		this.id = id;
 		this.name = name;
 		// Newspapers cannot be reserved or checked out
 		this.status = Status.AVAILABLE;	
-		this.library = lib;
-		this.transaction = trans;
+		this.libraryId = libId;
+		//this.transaction = trans;
 	}
 	
 	public static NewspaperDTO fromModel(Newspaper n) {
@@ -31,8 +33,10 @@ public class NewspaperDTO {
 		dto.id = n.getId();
 		dto.name = n.getName();
 		dto.status = n.getStatus();
-		dto.library = n.getLibrary();
-		dto.transaction = n.getTransaction();
+		dto.libraryId = Optional.ofNullable(n.getLibrary())
+				.map(x -> x.getId())
+                .orElse(null);
+		//dto.transaction = n.getTransaction();
 		return dto;
 	}
 	
@@ -48,12 +52,12 @@ public class NewspaperDTO {
 		return status;
 	}
 	
-	public Library getLibrary() {
-        return library;
+	public Integer getLibraryId() {
+        return libraryId;
     }
 	
-	public Transaction getTransaction() {
-        return transaction;
-    }
+//	public Transaction getTransaction() {
+//        return transaction;
+//    }
 
 }

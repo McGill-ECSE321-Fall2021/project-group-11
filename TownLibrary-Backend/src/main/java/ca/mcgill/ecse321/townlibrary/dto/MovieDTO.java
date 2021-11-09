@@ -1,9 +1,11 @@
 package ca.mcgill.ecse321.townlibrary.dto;
 
-import ca.mcgill.ecse321.townlibrary.model.Library;
+import java.util.Optional;
+
+//import ca.mcgill.ecse321.townlibrary.model.Library;
 import ca.mcgill.ecse321.townlibrary.model.Movie;
 import ca.mcgill.ecse321.townlibrary.model.Status;
-import ca.mcgill.ecse321.townlibrary.model.Transaction;
+//import ca.mcgill.ecse321.townlibrary.model.Transaction;
 
 public class MovieDTO {
 	
@@ -11,18 +13,18 @@ public class MovieDTO {
 	private String name;
 	private Status status;
 	
-	private Library library;
-	private Transaction transaction;
+	private Integer libraryId;
+	//private Transaction transaction;
 	
 	public MovieDTO() {
 	}
 	
-	public MovieDTO(int id, String name, Status status, Library lib, Transaction trans) {
+	public MovieDTO(int id, String name, Status status, Integer libId) {
 		this.id = id;
 		this.name = name;
 		this.status = status;
-		this.library = lib;
-		this.transaction = trans;
+		this.libraryId = libId;
+		//this.transaction = trans;
 	}
 	
 	public static MovieDTO fromModel(Movie m) {
@@ -30,8 +32,10 @@ public class MovieDTO {
 		dto.id = m.getId();
 		dto.name = m.getName();
 		dto.status = m.getStatus();
-		dto.library = m.getLibrary();
-		dto.transaction = m.getTransaction();
+		dto.libraryId = Optional.ofNullable(m.getLibrary())
+				.map(x -> x.getId())
+                .orElse(null);
+		//dto.transaction = m.getTransaction();
 		return dto;
 	}
 	
@@ -47,12 +51,12 @@ public class MovieDTO {
 		return status;
 	}
 	
-	public Library getLibrary() {
-        return library;
+	public Integer getLibraryId() {
+        return libraryId;
     }
 	
-	public Transaction getTransaction() {
-        return transaction;
-    }
+//	public Transaction getTransaction() {
+//        return transaction;
+//    }
 
 }
