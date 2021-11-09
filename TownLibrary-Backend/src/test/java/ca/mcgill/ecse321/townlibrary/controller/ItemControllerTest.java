@@ -92,11 +92,6 @@ public class ItemControllerTest {
 			.statusCode(400)
 			.body(equalTo("MUSIC-ALBUM-NOT-FOUND"));
     }
-    
-    @Test
-    public void testQueryItem() {
-    	final int id = given()
-    			.param("")
-    }
+
 
 }
