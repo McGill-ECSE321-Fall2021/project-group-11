@@ -15,7 +15,7 @@ Overview:
 |-----------------|-------------------------|----|----|----|----|
 | James Chau      | Meeting lead            |17h |    |    |    |    
 | Paul Teng       | Build system manager    |16h |20h |    |    |
-| Jericho Adalin  | Facilitator             |14h |    |    |    |    
+| Jericho Adalin  | Facilitator             |14h |14h |    |    |    
 | Loc Tran        | Time-keeper             |14h |    |    |    |
 | Shu Tian        | Documentation manager   |15h |    |    |    |
 
