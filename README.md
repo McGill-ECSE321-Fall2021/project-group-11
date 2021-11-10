@@ -17,9 +17,9 @@ Overview:
 | Paul Teng       | Build system manager    |16h |20h |    |    |
 | Jericho Adalin  | Facilitator             |14h |14h |    |    |    
 | Loc Tran        | Time-keeper             |14h |    |    |    |
-| Shu Tian        | Documentation manager   |15h |    |    |    |
+| Shu Tian        | Documentation manager   |15h |25h |    |    |
 
-D1-4 Represents individual efforts (in hours) for each deliverable.
+D1-4 Represents individual efforts (in hours) for each deliverable, including team meetings.
 
 ## Reports
 [Deliverable 1](https://github.com/McGill-ECSE321-Fall2021/project-group-11/wiki/Deliverable-1)
