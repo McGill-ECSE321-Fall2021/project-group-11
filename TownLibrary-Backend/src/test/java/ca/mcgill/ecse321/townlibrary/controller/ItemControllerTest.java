@@ -9,12 +9,23 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.invocation.InvocationOnMock;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.lenient;
+
+import ca.mcgill.ecse321.townlibrary.model.*;
+import ca.mcgill.ecse321.townlibrary.repository.ItemRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
+
+import ca.mcgill.ecse321.townlibrary.service.ItemService;
 
 @Tag("integration")
 @SpringBootTest
@@ -29,7 +40,7 @@ public class ItemControllerTest {
     public void setup() {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
-        post("/libraries/100?address=99 boulevard of broken dreams");
+        post("/libraries/321?address=99 boulevard of broken dreams");
     }
 
     @AfterEach
@@ -91,189 +102,190 @@ public class ItemControllerTest {
     }
     
     @Test
-    public void testQueryArchive() {
-	
-    	when().get("/archives/5")
+    public void testCreateAndQueryArchive() {
+    	final int id = given()
+    			.param("name", "Records2021")
+    			.param("libraryId", "321")
+    			.post("/archives/5")
+    			.then().statusCode(200)
+    			.body("name", equalTo("Records2021"))
+    			.body("libraryId", equalTo(321))
+                .extract().response().body().path("id");
+			
+    	when().get("/archives/" + id)
     		.then()
     		.statusCode(200)
-    		.body("id", equalTo(5));
+    		.body("id", equalTo(id))
+    		.body("name", equalTo("Records2021"))
+    		.body("libraryId", equalTo(321));
     	
     	when().get("/archives")
 			.then()
 			.statusCode(200)
 			.body("size()", equalTo(1))
-			.body("[0].id", equalTo(5));
+			.body("[0].id", equalTo(id))
+			.body("[0].name", equalTo("Records2021"))
+			.body("[0].libraryId", equalTo(321));
     }
-//    
-//    @Test
-//    public void testQueryNewspaper() {
-//    	when().post("/newspapers/11")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(11));
-//    		
-//    	when().get("/newspapers/11")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(11));
-//    	
-//    	when().get("/newspapers")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].id", equalTo(11));
-//    }
-//    
-//    @Test
-//    public void testQueryBook() {
-//    	when().post("/books/22")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(22));
-//    		
-//    	when().get("/books/0")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(22));
-//    	
-//    	when().get("/books")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].id", equalTo(22));
-//    }
-//    
-//    @Test
-//    public void testQueryMovie() {
-//    	when().post("/movies/33")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(33));
-//    		
-//    	when().get("/movies/33")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(33));
-//    	
-//    	when().get("/movies")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].id", equalTo(33));
-//    }
-//    
-//    @Test
-//    public void testQueryMusicAlbum() {
-//    	when().post("/musicalbums/44")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(44));
-//    		
-//    	when().get("/musicalbums/44")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("id", equalTo(44));
-//    	
-//    	when().get("/musicalbums")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].id", equalTo(44));
-//    }
     
-//    @Test
-//    public void testQueryArchiveByName() {
-//    	when().post("/archives/byName/Records2021")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Records2021"));
-//    		
-//    	when().get("/archives/byName/Records2021")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Records2021"));
-//    	
-//    	when().get("/archives/byName")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].name", equalTo("Records2021"));
-//    }
-//    
-//    @Test
-//    public void testQueryNewspaperByName() {
-//    	when().post("/newspapers/byName/Gazette")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Gazette"));
-//    		
-//    	when().get("/newspapers/byName/Gazette")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Gazette"));
-//    	
-//    	when().get("/newspapers/byName")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].name", equalTo("Gazette"));
-//    }
-//    
-//    @Test
-//    public void testQueryBookByName() {
-//    	when().post("/books/byName/Dune")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Dune"));
-//    		
-//    	when().get("/books/byName/Dune")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Dune"));
-//    	
-//    	when().get("/books/byName")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].name", equalTo("Dune"));
-//    }
-//    
-//    @Test
-//    public void testQueryMovieByName() {
-//    	when().post("/movies/byName/Interstellar")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Interstellar"));
-//    		
-//    	when().get("/movies/byName/Interstellar")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Interstellar"));
-//    	
-//    	when().get("/movies/byName")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].name", equalTo("Interstellar"));
-//    }
-//    
-//    @Test
-//    public void testQueryMusicAlbumByName() {
-//    	when().post("/musicalbums/byName/Evolve")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Evolve"));
-//    		
-//    	when().get("/musicalbums/byName/Evolve")
-//    		.then()
-//    		.statusCode(200)
-//    		.body("name", equalTo("Evolve"));
-//    	
-//    	when().get("/musicalbums/byName")
-//			.then()
-//			.statusCode(200)
-//			.body("size()", equalTo(1))
-//			.body("[0].name", equalTo("Evolve"));
-//    }
-
+    @Test
+    public void testCreateAndQueryNewspaper() {
+    	final int id = given()
+    			.param("name", "Gazette")
+    			.param("libraryId", "321")
+    			.post("/newspapers/6")
+    			.then().statusCode(200)
+    			.body("name", equalTo("Gazette"))
+    			.body("libraryId", equalTo(321))
+                .extract().response().body().path("id");
+			
+    	when().get("/newspapers/" + id)
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(id))
+    		.body("name", equalTo("Gazette"))
+    		.body("libraryId", equalTo(321));
+    	
+    	when().get("/newspapers")
+			.then()
+			.statusCode(200)
+			.body("size()", equalTo(1))
+			.body("[0].id", equalTo(id))
+			.body("[0].name", equalTo("Gazette"))
+			.body("[0].libraryId", equalTo(321));
+    }
+    
+    @Test
+    public void testCreateAndQueryBook() {
+    	final int id = given()
+    			.param("name", "Dune")
+    			.param("libraryId", "321")
+    			.post("/books/7")
+    			.then().statusCode(200)
+    			.body("name", equalTo("Dune"))
+    			.body("libraryId", equalTo(321))
+                .extract().response().body().path("id");
+			
+    	when().get("/books/" + id)
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(id))
+    		.body("name", equalTo("Dune"))
+    		.body("libraryId", equalTo(321));
+    	
+    	when().get("/books")
+			.then()
+			.statusCode(200)
+			.body("size()", equalTo(1))
+			.body("[0].id", equalTo(id))
+			.body("[0].name", equalTo("Dune"))
+			.body("[0].libraryId", equalTo(321));
+    }
+    
+    @Test
+    public void testCreateAndQueryMovie() {
+    	final int id = given()
+    			.param("name", "Interstellar")
+    			.param("libraryId", "321")
+    			.post("/movies/8")
+    			.then().statusCode(200)
+    			.body("name", equalTo("Interstellar"))
+    			.body("libraryId", equalTo(321))
+                .extract().response().body().path("id");
+			
+    	when().get("/movies/" + id)
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(id))
+    		.body("name", equalTo("Interstellar"))
+    		.body("libraryId", equalTo(321));
+    	
+    	when().get("/movies")
+			.then()
+			.statusCode(200)
+			.body("size()", equalTo(1))
+			.body("[0].id", equalTo(id))
+			.body("[0].name", equalTo("Interstellar"))
+			.body("[0].libraryId", equalTo(321));
+    }
+    
+    @Test
+    public void testCreateAndQueryMusicAlbum() {
+    	final int id = given()
+    			.param("name", "Evolve")
+    			.param("libraryId", "321")
+    			.post("/musicalbums/9")
+    			.then().statusCode(200)
+    			.body("name", equalTo("Evolve"))
+    			.body("libraryId", equalTo(321))
+                .extract().response().body().path("id");
+			
+    	when().get("/musicalbums/" + id)
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(id))
+    		.body("name", equalTo("Evolve"))
+    		.body("libraryId", equalTo(321));
+    	
+    	when().get("/musicalbums")
+			.then()
+			.statusCode(200)
+			.body("size()", equalTo(1))
+			.body("[0].id", equalTo(id))
+			.body("[0].name", equalTo("Evolve"))
+			.body("[0].libraryId", equalTo(321));
+    }
+    
+    @Test
+    public void testReserveBook() {
+    	final int id = given()
+    			.param("name", "Dune")
+    			.param("libraryId", "321")
+    			.post("/books/7")
+    			.then().statusCode(200)
+    			.body("status", equalTo(Status.AVAILABLE.toString()))
+                .extract().response().body().path("id");
+    	
+    	when().put("/books/" + id + "/reserve")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(id))
+    		.body("status", equalTo(Status.RESERVED.toString()));
+    }
+    
+    @Test
+    public void testReserveMovie() {
+    	final int id = given()
+    			.param("name", "Interstellar")
+    			.param("libraryId", "321")
+    			.post("/movies/8")
+    			.then().statusCode(200)
+    			.body("status", equalTo(Status.AVAILABLE.toString()))
+                .extract().response().body().path("id");
+    	
+    	when().put("/movies/" + id + "/reserve")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(id))
+    		.body("status", equalTo(Status.RESERVED.toString()));
+    }
+    
+    @Test
+    public void testReserveMusicAlbum() {
+    	final int id = given()
+    			.param("name", "Evolve")
+    			.param("libraryId", "321")
+    			.post("/musicalbums/9")
+    			.then().statusCode(200)
+    			.body("status", equalTo(Status.AVAILABLE.toString()))
+                .extract().response().body().path("id");
+    	
+    	when().put("/musicalbums/" + id + "/reserve")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(id))
+    		.body("status", equalTo(Status.RESERVED.toString()));
+    }
+    
+    
 }

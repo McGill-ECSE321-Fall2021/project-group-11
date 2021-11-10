@@ -26,6 +26,175 @@ public class ItemService {
 	@Autowired
 	MusicAlbumRepository musicAlbumRepository;
 	
+	/**
+	 * Creates an archive
+	 * @param id		The archive id
+	 * @param name		The archive name
+	 * @param library	The library the archive belongs to
+	 * @return			The created archive
+	 */
+	@Transactional
+	public Archive createArchive(int id, String name, Library library) {
+		String error = "";
+		if (id < 0) {
+			error = error + "Unsupported Id.";
+	    }
+		if (name == null || name.isEmpty()) {
+			error = error + "Archive name cannot be empty.";
+		}
+		if (library == null) {
+			error = error + "Library cannot be null.";
+		}
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+	    
+	    Archive archive = new Archive();
+	    archive.setId(id);
+	    archive.setName(name);
+	    archive.setStatus(Status.AVAILABLE);	//available by default
+	    archive.setLibrary(library);
+	    archiveRepository.save(archive);
+	    itemRepository.save(archive);
+	    return archive;
+	}
+	
+	/**
+	 * Creates a newspaper
+	 * @param id		The newspaper id
+	 * @param name		The newspaper name
+	 * @param library	The library the newspaper belongs to
+	 * @return			The created newspaper
+	 */
+	@Transactional
+	public Newspaper createNewspaper(int id, String name, Library library) {
+		String error = "";
+		if (id < 0) {
+			error = error + "Unsupported Id.";
+	    }
+		if (name == null || name.isEmpty()) {
+			error = error + "Newspaper name cannot be empty.";
+		}
+		if (library == null) {
+			error = error + "Library cannot be null.";
+		}
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+	    
+	    Newspaper item = new Newspaper();
+	    item.setId(id);
+	    item.setName(name);
+	    item.setStatus(Status.AVAILABLE);	//available by default
+	    item.setLibrary(library);
+	    newspaperRepository.save(item);
+	    itemRepository.save(item);
+	    return item;
+	}
+	
+	/**
+	 * Creates a book
+	 * @param id		The book id
+	 * @param name		The book name
+	 * @param library	The library the book belongs to
+	 * @return			The created book
+	 */
+	@Transactional
+	public Book createBook(int id, String name, Library library) {
+		String error = "";
+		if (id < 0) {
+			error = error + "Unsupported Id.";
+	    }
+		if (name == null || name.isEmpty()) {
+			error = error + "Book name cannot be empty.";
+		}
+		if (library == null) {
+			error = error + "Library cannot be null.";
+		}
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+	    
+	    Book item = new Book();
+	    item.setId(id);
+	    item.setName(name);
+	    item.setStatus(Status.AVAILABLE);	//available by default
+	    item.setLibrary(library);
+	    bookRepository.save(item);
+	    itemRepository.save(item);
+	    return item;
+	}
+	
+	/**
+	 * Creates a movie
+	 * @param id		The movie id
+	 * @param name		The movie name
+	 * @param library	The library the movie belongs to
+	 * @return			The created movie
+	 */
+	@Transactional
+	public Movie createMovie(int id, String name, Library library) {
+		String error = "";
+		if (id < 0) {
+			error = error + "Unsupported Id.";
+	    }
+		if (name == null || name.isEmpty()) {
+			error = error + "Movie name cannot be empty.";
+		}
+		if (library == null) {
+			error = error + "Library cannot be null.";
+		}
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+	    
+	    Movie item = new Movie();
+	    item.setId(id);
+	    item.setName(name);
+	    item.setStatus(Status.AVAILABLE);	//available by default
+	    item.setLibrary(library);
+	    movieRepository.save(item);
+	    itemRepository.save(item);
+	    return item;
+	}
+	
+	/**
+	 * Creates a music album
+	 * @param id		The music album id
+	 * @param name		The music album name
+	 * @param library	The library the music album belongs to
+	 * @return			The created music album
+	 */
+	@Transactional
+	public MusicAlbum createMusicAlbum(int id, String name, Library library) {
+		String error = "";
+		if (id < 0) {
+			error = error + "Unsupported Id.";
+	    }
+		if (name == null || name.isEmpty()) {
+			error = error + "MusicAlbum name cannot be empty.";
+		}
+		if (library == null) {
+			error = error + "Library cannot be null.";
+		}
+		error = error.trim();
+	    if (error.length() > 0) {
+	        throw new IllegalArgumentException(error);
+	    }
+	    
+	    MusicAlbum item = new MusicAlbum();
+	    item.setId(id);
+	    item.setName(name);
+	    item.setStatus(Status.AVAILABLE);	//available by default
+	    item.setLibrary(library);
+	    musicAlbumRepository.save(item);
+	    itemRepository.save(item);
+	    return item;
+	}
 	
 	/**
      * Retrieves an item by its id.
