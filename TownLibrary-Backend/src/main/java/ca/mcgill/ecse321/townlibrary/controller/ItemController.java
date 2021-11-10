@@ -113,7 +113,7 @@ public class ItemController {
 		
 		try {
 			final Library library = libraryService.getLibrary(libraryId);
-			final Archive item = itemService.createArchive(libraryId, name, library);
+			final Archive item = itemService.createArchive(id, name, library);
 			return ResponseEntity.ok().body(ArchiveDTO.fromModel(item));
 		} catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -128,7 +128,7 @@ public class ItemController {
 		
 		try {
 			final Library library = libraryService.getLibrary(libraryId);
-			final Newspaper item = itemService.createNewspaper(libraryId, name, library);
+			final Newspaper item = itemService.createNewspaper(id, name, library);
 			return ResponseEntity.ok().body(NewspaperDTO.fromModel(item));
 		} catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -143,7 +143,7 @@ public class ItemController {
 		
 		try {
 			final Library library = libraryService.getLibrary(libraryId);
-			final Movie item = itemService.createMovie(libraryId, name, library);
+			final Movie item = itemService.createMovie(id, name, library);
 			return ResponseEntity.ok().body(MovieDTO.fromModel(item));
 		} catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -158,7 +158,7 @@ public class ItemController {
 		
 		try {
 			final Library library = libraryService.getLibrary(libraryId);
-			final MusicAlbum item = itemService.createMusicAlbum(libraryId, name, library);
+			final MusicAlbum item = itemService.createMusicAlbum(id, name, library);
 			return ResponseEntity.ok().body(MusicAlbumDTO.fromModel(item));
 		} catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -173,7 +173,7 @@ public class ItemController {
 		
 		try {
 			final Library library = libraryService.getLibrary(libraryId);
-			final Book item = itemService.createBook(libraryId, name, library);
+			final Book item = itemService.createBook(id, name, library);
 			return ResponseEntity.ok().body(BookDTO.fromModel(item));
 		} catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
@@ -291,9 +291,9 @@ public class ItemController {
 	@PutMapping(value = { "/books/{id}/checkout", "/books/{id}/checkout/"})
 	public ResponseEntity<?> setBookCheckedout(
 			@PathVariable("id") int id, 
-			@RequestParam("user") UserRole user) {
+			@RequestParam int userId) {
 		try {
-			Book i = (Book) itemService.checkoutItem(id, user);
+			Book i = (Book) itemService.checkoutItem(id, userId);
 			return ResponseEntity.ok(BookDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -302,9 +302,9 @@ public class ItemController {
 	@PutMapping(value = { "/movies/{id}/checkout", "/movies/{id}/checkout/"})
 	public ResponseEntity<?> setMovieCheckedout(
 			@PathVariable("id") int id, 
-			@RequestParam("user") UserRole user) {
+			@RequestParam int userId) {
 		try {
-			Movie i = (Movie) itemService.checkoutItem(id, user);
+			Movie i = (Movie) itemService.checkoutItem(id, userId);
 			return ResponseEntity.ok(MovieDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -313,9 +313,9 @@ public class ItemController {
 	@PutMapping(value = { "/musicalbums/{id}/checkout", "/musicalbums/{id}/checkout/"})
 	public ResponseEntity<?> setMusicAlbumCheckedout(
 			@PathVariable("id") int id, 
-			@RequestParam("user") UserRole user) {
+			@RequestParam int userId) {
 		try {
-			MusicAlbum i = (MusicAlbum) itemService.checkoutItem(id, user);
+			MusicAlbum i = (MusicAlbum) itemService.checkoutItem(id, userId);
 			return ResponseEntity.ok(MusicAlbumDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

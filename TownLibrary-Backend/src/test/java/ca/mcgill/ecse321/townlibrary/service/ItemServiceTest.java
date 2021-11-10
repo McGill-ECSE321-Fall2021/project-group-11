@@ -40,13 +40,16 @@ public class ItemServiceTest {
 	MovieRepository movieDao;
 	@Mock
 	MusicAlbumRepository musicAlbumDao;
+	
+	@Mock
+	UserRoleService userService;
 
 	@InjectMocks
 	private ItemService itemService;
 	
 	private static final Transaction TRANSACTION_MOVIE = new Transaction();
 	private static final Transaction TRANSACTION_MUSIC = new Transaction();
-	private static final UserRole USER = new OnlineMember();
+	private static final int USER_ID = 4444;
 	
 	private static final int BAD_ID = -1;
 	private static final int NONEXISTING_ID = 0;
@@ -197,6 +200,16 @@ public class ItemServiceTest {
 				return aList;
 			} else {
 				return new ArrayList<Archive>();
+			}
+		});
+		lenient().when(userService.getUserRole(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(USER_ID)) {
+				UserRole user = new OfflineMember();
+				user.setId(USER_ID);
+				user.setName("Jhon");
+				return user;
+			} else {
+				return null;
 			}
 		});
 	}
@@ -604,46 +617,46 @@ public class ItemServiceTest {
 	@Test
 	public void testCheckout() {
 		
-		assertEquals(BOOK_ID, itemService.checkoutItem(BOOK_ID, USER).getId());
-		assertEquals(Status.CHECKED_OUT, itemService.checkoutItem(BOOK_ID, USER).getStatus());
+		assertEquals(BOOK_ID, itemService.checkoutItem(BOOK_ID, USER_ID).getId());
+		assertEquals(Status.CHECKED_OUT, itemService.checkoutItem(BOOK_ID, USER_ID).getStatus());
 	
 		try {
-			itemService.checkoutItem(BAD_ID, USER);
+			itemService.checkoutItem(BAD_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Unsupported Id.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(NONEXISTING_ID, USER);
+			itemService.checkoutItem(NONEXISTING_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Item does not exist.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(NEWSPAPER_ID, USER);
+			itemService.checkoutItem(NEWSPAPER_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 		
 		try {
-			itemService.checkoutItem(ARCHIVE_ID, USER);
+			itemService.checkoutItem(ARCHIVE_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(ARCHIVE_ID, USER);
+			itemService.checkoutItem(ARCHIVE_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(MOVIE_ID, USER);
+			itemService.checkoutItem(MOVIE_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("This item is unavailable.", e.getMessage());

@@ -1,31 +1,21 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.lenient;
-
 import ca.mcgill.ecse321.townlibrary.model.*;
-import ca.mcgill.ecse321.townlibrary.repository.ItemRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.WebApplicationContext;
-
-import ca.mcgill.ecse321.townlibrary.service.ItemService;
 
 @Tag("integration")
 @SpringBootTest
@@ -287,5 +277,100 @@ public class ItemControllerTest {
     		.body("status", equalTo(Status.RESERVED.toString()));
     }
     
+    @Test
+    public void testCheckoutBook() {
+    	final int idUser = given()
+                .param("password", "Jhon4444")
+                .param("email", "jhon@email.com")
+                .param("address", "99 boulevard of broken dreams")
+                .param("name", "Jhon")
+                .param("library", "321")
+                .when().post("/online-members/jhon")
+                .then()
+                .statusCode(200)
+                //.body("inTown", equalTo(false))
+                .extract()
+                .response().body().path("id");
+
+    	final int idItem = given()
+    			.param("name", "Dune")
+    			.param("libraryId", "321")
+    			.post("/books/7")
+    			.then().statusCode(200)
+    			.body("status", equalTo(Status.AVAILABLE.toString()))
+                .extract().response().body().path("id");
+    	
+    	given()
+    		.param("userId", idUser)
+    		.when().put("/books/" + idItem + "/checkout")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(idItem))
+    		.body("status", equalTo(Status.CHECKED_OUT.toString()));
+    }
+    
+    @Test
+    public void testCheckoutMovie() {
+    	final int idUser = given()
+                .param("password", "Jhon4444")
+                .param("email", "jhon@email.com")
+                .param("address", "99 boulevard of broken dreams")
+                .param("name", "Jhon")
+                .param("library", "321")
+                .when().post("/online-members/jhon")
+                .then()
+                .statusCode(200)
+                //.body("inTown", equalTo(false))
+                .extract()
+                .response().body().path("id");
+
+    	final int idItem = given()
+    			.param("name", "Interstellar")
+    			.param("libraryId", "321")
+    			.post("/movies/8")
+    			.then().statusCode(200)
+    			.body("status", equalTo(Status.AVAILABLE.toString()))
+                .extract().response().body().path("id");
+    	
+    	given()
+    		.param("userId", idUser)
+    		.when().put("/movies/" + idItem + "/checkout")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(idItem))
+    		.body("status", equalTo(Status.CHECKED_OUT.toString()));
+    }
+    
+    @Test
+    public void testCheckoutMusicAlbum() {
+    	final int idUser = given()
+                .param("password", "Jhon4444")
+                .param("email", "jhon@email.com")
+                .param("address", "99 boulevard of broken dreams")
+                .param("name", "Jhon")
+                .param("library", "321")
+                .when().post("/online-members/jhon")
+                .then()
+                .statusCode(200)
+                //.body("inTown", equalTo(false))
+                .extract()
+                .response().body().path("id");
+
+    	final int idItem = given()
+    			.param("name", "Evolve")
+    			.param("libraryId", "321")
+    			.post("/musicalbums/9")
+    			.then().statusCode(200)
+    			.body("status", equalTo(Status.AVAILABLE.toString()))
+                .extract().response().body().path("id");
+    	
+    	given()
+    		.param("userId", idUser)
+    		.when().put("/musicalbums/" + idItem + "/checkout")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(idItem))
+    		.body("status", equalTo(Status.CHECKED_OUT.toString()));
+    }
     
 }

@@ -26,6 +26,9 @@ public class ItemService {
 	@Autowired
 	MusicAlbumRepository musicAlbumRepository;
 	
+	@Autowired
+	UserRoleService userService;
+	
 	/**
 	 * Creates an archive
 	 * @param id		The archive id
@@ -379,7 +382,7 @@ public class ItemService {
 	 * @return		The checked out item
 	 */
 	@Transactional
-	public Item checkoutItem(int id, UserRole user) {
+	public Item checkoutItem(int id, int userId) {
 		String error = "";
 		Item item = itemRepository.findItemById(id);
 		
@@ -409,7 +412,7 @@ public class ItemService {
 		transaction.setStartDate(startTime);
 		transaction.setEndDate(endTime);
 		transaction.setId(id);
-		transaction.setUserRole(user);
+		transaction.setUserRole(userService.getUserRole(userId));
 		
 		item.setTransaction(transaction);
 		item.setStatus(Status.CHECKED_OUT);
