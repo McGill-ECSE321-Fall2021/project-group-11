@@ -13,7 +13,7 @@ Members: James Chau, Paul Teng, Jericho Adalin, Loc Tran, Shu Tian \
 Overview:
 | Names :shipit:  | Role :trollface:        | D1 | D2 | D3 | D4 |
 |-----------------|-------------------------|----|----|----|----|
-| James Chau      | Meeting lead            |17h |    |    |    |    
+| James Chau      | Meeting lead            |17h |22h |    |    |    
 | Paul Teng       | Build system manager    |16h |20h |    |    |
 | Jericho Adalin  | Facilitator             |14h |14h |    |    |    
 | Loc Tran        | Time-keeper             |14h |    |    |    |
