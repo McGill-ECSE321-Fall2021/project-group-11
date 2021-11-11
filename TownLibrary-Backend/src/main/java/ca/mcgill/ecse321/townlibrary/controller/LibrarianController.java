@@ -43,9 +43,6 @@ public class LibrarianController {
         return ResponseEntity.ok(LibrarianDTO.fromModel(u));
     }
 
-    // Note: presently, it allows librarians to be created whatever.
-    // We may want to restrict this action to only librarians (head or not) by
-    // passing a initiator info like some of the other member path mappings.
     @PostMapping(value={ "/librarians/{name}", "/librarians/{name}/" })
     public ResponseEntity<?> createLibrarian(
             @PathVariable("name") String name,
