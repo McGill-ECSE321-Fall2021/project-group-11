@@ -40,13 +40,16 @@ public class ItemServiceTest {
 	MovieRepository movieDao;
 	@Mock
 	MusicAlbumRepository musicAlbumDao;
+	
+	@Mock
+	UserRoleService userService;
 
 	@InjectMocks
 	private ItemService itemService;
 	
 	private static final Transaction TRANSACTION_MOVIE = new Transaction();
 	private static final Transaction TRANSACTION_MUSIC = new Transaction();
-	private static final UserRole USER = new OnlineMember();
+	private static final int USER_ID = 4444;
 	
 	private static final int BAD_ID = -1;
 	private static final int NONEXISTING_ID = 0;
@@ -199,6 +202,211 @@ public class ItemServiceTest {
 				return new ArrayList<Archive>();
 			}
 		});
+		lenient().when(userService.getUserRole(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(USER_ID)) {
+				UserRole user = new OfflineMember();
+				user.setId(USER_ID);
+				user.setName("Jhon");
+				return user;
+			} else {
+				return null;
+			}
+		});
+	}
+	
+	@Test
+	public void testCreateArchive() {
+		final Library library = new Library();
+		library.setId(321);
+		final Archive archive = itemService.createArchive(ARCHIVE_ID, "Records2021" , library);
+		assertEquals(ARCHIVE_ID, archive.getId());
+		assertEquals("Records2021", archive.getName());
+		assertEquals(Status.AVAILABLE, archive.getStatus());
+		assertEquals(library.getId(), archive.getLibrary().getId());
+		
+		// Bad id
+		try {
+			itemService.createArchive(BAD_ID, "Records2021" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Unsupported Id.", e.getMessage());
+		}
+		
+		// Null name
+		try {
+			itemService.createArchive(ARCHIVE_ID, null , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Archive name cannot be empty.", e.getMessage());
+		}
+		
+		// Empty name
+		try {
+			itemService.createArchive(ARCHIVE_ID, "" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Archive name cannot be empty.", e.getMessage());
+		}
+		
+		// Null library
+		try {
+			itemService.createArchive(ARCHIVE_ID, "Records2021" , null);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Library cannot be null.", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testCreateNewspaper() {
+		final Library library = new Library();
+		library.setId(321);
+		final Newspaper item = itemService.createNewspaper(NEWSPAPER_ID, "Gazette" , library);
+		assertEquals(NEWSPAPER_ID, item.getId());
+		assertEquals("Gazette", item.getName());
+		assertEquals(Status.AVAILABLE, item.getStatus());
+		assertEquals(library.getId(), item.getLibrary().getId());
+		
+		// Bad id
+		try {
+			itemService.createNewspaper(BAD_ID, "Gazette" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Unsupported Id.", e.getMessage());
+		}
+		
+		// Null name
+		try {
+			itemService.createNewspaper(NEWSPAPER_ID, null , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Newspaper name cannot be empty.", e.getMessage());
+		}
+		
+		// Empty name
+		try {
+			itemService.createNewspaper(NEWSPAPER_ID, "" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Newspaper name cannot be empty.", e.getMessage());
+		}
+		
+		// Null library
+		try {
+			itemService.createNewspaper(NEWSPAPER_ID, "Gazette" , null);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Library cannot be null.", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testCreateBook() {
+		final Library library = new Library();
+		library.setId(321);
+		final Book item = itemService.createBook(BOOK_ID, "Dune" , library);
+		assertEquals(BOOK_ID, item.getId());
+		assertEquals("Dune", item.getName());
+		assertEquals(Status.AVAILABLE, item.getStatus());
+		assertEquals(library.getId(), item.getLibrary().getId());
+		
+		// Bad id
+		try {
+			itemService.createBook(BAD_ID, "Dune" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Unsupported Id.", e.getMessage());
+		}
+		
+		// Null name
+		try {
+			itemService.createBook(BOOK_ID, null , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Book name cannot be empty.", e.getMessage());
+		}
+		
+		// Empty name
+		try {
+			itemService.createBook(BOOK_ID, "" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Book name cannot be empty.", e.getMessage());
+		}
+		
+		// Null library
+		try {
+			itemService.createBook(BOOK_ID, "Dune" , null);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Library cannot be null.", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testCreateMovie() {
+		final Library library = new Library();
+		library.setId(321);
+		final Movie item = itemService.createMovie(MOVIE_ID, "Interstellar" , library);
+		assertEquals(MOVIE_ID, item.getId());
+		assertEquals("Interstellar", item.getName());
+		assertEquals(Status.AVAILABLE, item.getStatus());
+		assertEquals(library.getId(), item.getLibrary().getId());
+		
+		// Bad id
+		try {
+			itemService.createMovie(BAD_ID, "Interstellar" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Unsupported Id.", e.getMessage());
+		}
+		
+		// Null name
+		try {
+			itemService.createMovie(MOVIE_ID, null , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Movie name cannot be empty.", e.getMessage());
+		}
+		
+		// Empty name
+		try {
+			itemService.createMovie(MOVIE_ID, "" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Movie name cannot be empty.", e.getMessage());
+		}
+		
+		// Null library
+		try {
+			itemService.createMovie(MOVIE_ID, "Interstellar" , null);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Library cannot be null.", e.getMessage());
+		}
+	}
+	
+	@Test
+	public void testCreateMusicAlbum() {
+		final Library library = new Library();
+		library.setId(321);
+		final MusicAlbum item = itemService.createMusicAlbum(MUSICALBUM_ID, "Evolve" , library);
+		assertEquals(MUSICALBUM_ID, item.getId());
+		assertEquals("Evolve", item.getName());
+		assertEquals(Status.AVAILABLE, item.getStatus());
+		assertEquals(library.getId(), item.getLibrary().getId());
+		
+		// Bad id
+		try {
+			itemService.createMusicAlbum(BAD_ID, "Evolve" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Unsupported Id.", e.getMessage());
+		}
+		
+		// Null name
+		try {
+			itemService.createMusicAlbum(MUSICALBUM_ID, null , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("MusicAlbum name cannot be empty.", e.getMessage());
+		}
+		
+		// Empty name
+		try {
+			itemService.createMusicAlbum(MUSICALBUM_ID, "" , library);
+		} catch (IllegalArgumentException e) {
+			assertEquals("MusicAlbum name cannot be empty.", e.getMessage());
+		}
+		
+		// Null library
+		try {
+			itemService.createMusicAlbum(MUSICALBUM_ID, "Evolve" , null);
+		} catch (IllegalArgumentException e) {
+			assertEquals("Library cannot be null.", e.getMessage());
+		}
 	}
 
 	@Test
@@ -409,46 +617,46 @@ public class ItemServiceTest {
 	@Test
 	public void testCheckout() {
 		
-		assertEquals(BOOK_ID, itemService.checkoutItem(BOOK_ID, USER).getId());
-		assertEquals(Status.CHECKED_OUT, itemService.checkoutItem(BOOK_ID, USER).getStatus());
+		assertEquals(BOOK_ID, itemService.checkoutItem(BOOK_ID, USER_ID).getId());
+		assertEquals(Status.CHECKED_OUT, itemService.checkoutItem(BOOK_ID, USER_ID).getStatus());
 	
 		try {
-			itemService.checkoutItem(BAD_ID, USER);
+			itemService.checkoutItem(BAD_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Unsupported Id.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(NONEXISTING_ID, USER);
+			itemService.checkoutItem(NONEXISTING_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Item does not exist.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(NEWSPAPER_ID, USER);
+			itemService.checkoutItem(NEWSPAPER_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 		
 		try {
-			itemService.checkoutItem(ARCHIVE_ID, USER);
+			itemService.checkoutItem(ARCHIVE_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(ARCHIVE_ID, USER);
+			itemService.checkoutItem(ARCHIVE_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(MOVIE_ID, USER);
+			itemService.checkoutItem(MOVIE_ID, USER_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("This item is unavailable.", e.getMessage());
