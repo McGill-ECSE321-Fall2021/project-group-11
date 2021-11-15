@@ -1,0 +1,27 @@
+name: Test Project Vue App
+
+on:
+  push:
+  pull_request:
+    branches: feature/project-template
+
+defaults:
+  run:
+    working-directory: TownLibrary-Frontend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SPRING_PROFILES_ACTIVE: ci
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up nodejs 12
+      uses: actions/setup-node@v2
+      with:
+        node-version: '12'
+    - name: Build with npm
+      run: npm install  # postinstall will trigger the build
+    - name: Run unit test
+      run: npm run unit
+    # maybe run e2e tests also?
