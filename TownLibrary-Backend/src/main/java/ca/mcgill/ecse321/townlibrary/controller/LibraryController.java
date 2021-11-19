@@ -11,6 +11,7 @@ import ca.mcgill.ecse321.townlibrary.dto.*;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.service.*;
 
+@CrossOrigin(origins="*")
 @RestController
 public class LibraryController {
 

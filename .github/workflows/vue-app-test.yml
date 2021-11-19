@@ -22,6 +22,3 @@ jobs:
         node-version: '12'
     - name: Build with npm
       run: npm install  # postinstall will trigger the build
-    - name: Run unit test
-      run: npm run unit
-    # maybe run e2e tests also?

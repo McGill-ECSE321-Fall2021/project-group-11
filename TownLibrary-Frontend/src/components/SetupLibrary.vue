@@ -44,10 +44,9 @@
 
 <script>
 import axios from 'axios'
-var config = require('../../config')
 
-var frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
-var backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
