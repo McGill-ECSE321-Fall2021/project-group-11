@@ -70,7 +70,11 @@ export default {
       })
       .then(response => {
         // log the user in by storing the user's information
-        this.$store.commit('login', 'online-member', username, password)
+        this.$store.commit('login', {
+          userType: 'online-member',
+          username: username,
+          password: password
+        })
         // and we're ready to jump
         this.$router.push('profile')
       })
@@ -95,13 +99,21 @@ export default {
         AXIOS.post('/head-librarians/' + username)
           .then(response => {
             // it's a head-librarian
-            this.$store.commit('login', 'head-librarian', username, password)
+            this.$store.commit('login', {
+              userType: 'head-librarian',
+              username: username,
+              password: password
+            })
             // and we're ready to jump
             this.$router.push('profile')
           })
           .catch(error => {
             // we know person must be at least a generic librarian
-            this.$store.commit('login', 'librarian', username, password)
+            this.$store.commit('login', {
+              userType: 'librarian',
+              username: username,
+              password: password
+            })
             // and we're ready to jump
             this.$router.push('profile')
           })

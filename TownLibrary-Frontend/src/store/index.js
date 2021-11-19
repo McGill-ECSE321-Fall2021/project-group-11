@@ -17,7 +17,9 @@ export default new Vuex.Store({
     /// - enum userType: 'online-member' | 'librarian' | 'head-librarian'
     /// - string username: username or id depending on member or librarian.
     /// - string password: password
-    login (state, userType, username, password) {
+    login (state, { userType, username, password }) {
+      // We use deconstruction to show what fields are needed, and then we
+      // reconstruct the object to avoid potentially bizarre reference issues
       state.loginStatus = {
         userType: userType,
         username: username,

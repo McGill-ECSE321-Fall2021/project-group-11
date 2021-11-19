@@ -57,7 +57,7 @@ export default {
   },
 
   methods: {
-    createAccount: function (userInfo) {
+    createAccount (userInfo) {
       // make sure we abort early if any of the fields are empty.
       if ('' === this.newOnlineMember.username
           || '' === this.newOnlineMember.password
@@ -78,7 +78,14 @@ export default {
 
       AXIOS.post('/online-members/' + this.newOnlineMember.username, null, params)
         .then(response => {
-          alert("!?" + response)
+          // We already have all the info we need to login, so just do them a
+          // favour by logging them in right now!
+          this.$store.commit('login', {
+            userType: 'online-member',
+            username: this.newOnlineMember.username,
+            password: this.newOnlineMember.password
+          })
+          this.$router.push('profile')
         })
         .catch(error => {
           this.serverResponse = error.response.data.split(',')
@@ -87,7 +94,7 @@ export default {
   },
 
   computed: {
-    errorMessages: function () {
+    errorMessages () {
       let localizedErrs = []
       if ('' === this.newOnlineMember.username)
         localizedErrs.push('Username cannot be empty')
@@ -105,7 +112,9 @@ export default {
       return this.serverResponse.map(res => {
         switch (res) {
         case 'NULL-LIBRARY':
-          return 'Invalid library'
+          // Getting a null library would mean the library does not exist yet,
+          // which likely means setup has not been executed yet...
+          return 'Invalid library, has setup been run yet?'
         case 'DUP-USERNAME':
           return 'Duplicate username'
         case 'DUP-EMAIL':
@@ -129,7 +138,7 @@ export default {
   watch: {
     newOnlineMember: {
       deep: true,
-      handler: function (val) {
+      handler (val) {
         this.serverResponse = []
       }
     }
