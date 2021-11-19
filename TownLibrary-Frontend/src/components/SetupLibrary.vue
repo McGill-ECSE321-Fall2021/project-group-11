@@ -187,8 +187,18 @@ export default {
         switch (res) {
         case 'DUP-LIBRARY':
           return 'Duplicate library (try reloading the page)'
+        case 'DUP-HEAD-LIBRARIAN':
+          return 'Duplicate head librarian'
+        case 'EMPTY-NAME':
+          return 'Empty name'
         case 'EMPTY-ADDRESS':
           return 'Empty address'
+        case 'EMPTY-PASSWORD':
+        case 'UNDERSIZED-PASSWORD':
+        case 'OVERSIZED-PASSWORD':
+          return 'Password must be 4 to 32 characters long'
+        case 'BADCHAR-PASSWORD':
+          return 'Password can only contain alphanumeric characters'
         default:
           return 'Unknown error: ' + res;
         }
