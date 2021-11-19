@@ -95,7 +95,7 @@ export default {
         }
       })
       .then(response => {
-        AXIOS.post('/head-librarians/' + username)
+        AXIOS.get('/head-librarians/' + username)
           .then(response => {
             // it's a head-librarian
             this.$store.commit('login', {
