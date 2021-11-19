@@ -21,7 +21,7 @@ jobs:
       with:
         node-version: '12'
     - run: npm cache clean --force
-    - run: rm -rf node_modules
+    - run: rm -rf node_modules package_lock.json
     - name: Build with npm
       run: npm install  # postinstall will trigger the build
     - name: Run unit test
