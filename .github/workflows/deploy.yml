@@ -1,0 +1,32 @@
+# Why don't we have separate deploy scripts like the tests or like before?
+#
+# Well, in short, Heroku's not happy with us trying to build multiple apps
+# without verified accounts or something like that...
+
+name: Deploy to Heroku
+
+on:
+  workflow_run:
+    workflows: ['Test Project Backend', 'Test Project Vue App']
+    branches: [feature/project-template]
+    types: [ completed ]
+
+jobs:
+  deploy-to-heroku:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: ahmadnassri/action-workflow-run-wait@v1 # because apparently builtin workflows handling is broken...
+    - name: Deploy Backend
+      uses: akhileshns/heroku-deploy@v3.12.12   # plugin for automated heroku deploy
+      with:
+        heroku_api_key: '6c6171f4-6dd1-49c7-bc0d-d25a94f39eee'
+        heroku_app_name: 'townlibrary-backend-321f21-g11'
+        heroku_email: 'yuan-po.teng@mail.mcgill.ca'
+    - name: Deploy Frontend
+      uses: akhileshns/heroku-deploy@v3.12.12   # plugin for automated heroku deploy
+      with:
+        heroku_api_key: '6c6171f4-6dd1-49c7-bc0d-d25a94f39eee'
+        heroku_app_name: 'townlibrary-vue-app-321f21-g11'
+        heroku_email: 'yuan-po.teng@mail.mcgill.ca'
+        appdir: 'TownLibrary-Frontend'  # that's where package.json is at
