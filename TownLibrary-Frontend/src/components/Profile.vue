@@ -6,6 +6,8 @@
       <li>Username: {{ loginStatus.username }}</li>
       <li>Password: {{ loginStatus.password }}</li>
     </ul>
+
+    <button v-on:click="doLogout">Logout</button>
   </div>
 </template>
 
@@ -13,9 +15,22 @@
 export default {
   name: 'profile',
 
-  computed: {
-    loginStatus () {
-      return this.$store.state.loginStatus
+  data () {
+    return {
+      loginStatus: {}
+    }
+  },
+
+  created () {
+    // Copy the login status out so that it does not cause issues when logout
+    // is requested.
+    Object.assign(this.loginStatus, this.$store.state.loginStatus)
+  },
+
+  methods: {
+    doLogout () {
+      this.$store.commit('logout')
+      this.$router.push('login')
     }
   }
 }
