@@ -57,7 +57,7 @@ export default {
   },
 
   methods: {
-    authOnlineMember: function (username, password) {
+    authOnlineMember (username, password) {
       // Empty things will fail miserably, so handle them here...
       if ('' === username || '' === password)
         return
@@ -69,43 +69,51 @@ export default {
         }
       })
       .then(response => {
-        alert("!?" + response)
+        // log the user in by storing the user's information
+        this.$store.commit('login', 'online-member', username, password)
+        // and we're ready to jump
+        this.$router.push('profile')
       })
       .catch(error => {
         this.serverResponse = error.response.data
       })
     },
 
-    authLibrarian: function (username, password) {
+    authLibrarian (username, password) {
       // Empty things will fail miserably, so handle them here...
       if ('' === username || '' === password)
         return
 
-      let params = {
+      // a trick to use is try logging in as generic librarian, and if that
+      // works, check if the id refers to a head-librarian.
+      AXIOS.post('/auth/librarians/' + username, null, {
         params: {
           password: password
         }
-      }
-
-      // try as head librarian and then try as generic librarian
-      AXIOS.post('/auth/head-librarians/' + username, null, params)
-        .then(response => {
-          alert("!?" + response)
-        })
-        .catch(error => {
-          AXIOS.post('/auth/librarians/' + username, null, params)
-            .then(response => {
-              alert("!?" + response)
-            })
-            .catch(error => {
-              this.serverResponse = error.response.data
-            })
-        })
+      })
+      .then(response => {
+        AXIOS.post('/head-librarians/' + username)
+          .then(response => {
+            // it's a head-librarian
+            this.$store.commit('login', 'head-librarian', username, password)
+            // and we're ready to jump
+            this.$router.push('profile')
+          })
+          .catch(error => {
+            // we know person must be at least a generic librarian
+            this.$store.commit('login', 'librarian', username, password)
+            // and we're ready to jump
+            this.$router.push('profile')
+          })
+      })
+      .catch(error => {
+        this.serverResponse = error.response.data
+      })
     }
   },
 
   computed: {
-    errorMessage: function () {
+    errorMessage () {
       if ('' === this.username)
         return (this.onlineMemberMode ? 'Username' : 'ID') + ' cannot be empty'
       if ('' === this.password)
@@ -125,10 +133,10 @@ export default {
   },
 
   watch: {
-    username: function (val) {
+    username (val) {
       this.serverResponse = ''
     },
-    password: function (val) {
+    password (val) {
       this.serverResponse = ''
     }
   }
