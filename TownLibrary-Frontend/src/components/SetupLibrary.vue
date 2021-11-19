@@ -116,6 +116,18 @@ export default {
         this.state = 0
         break
       }
+    },
+    newLibrary: {
+      deep: true, // means we watch the attributes also
+      handler: function (val) {
+        this.serverResponse = []
+      }
+    },
+    newHeadLibrarian: {
+      deep: true,
+      handler: function (val) {
+        this.serverResponse = []
+      }
     }
   },
 
