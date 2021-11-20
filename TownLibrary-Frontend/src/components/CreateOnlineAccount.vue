@@ -23,7 +23,7 @@
     <br/>
 
     Already have an account?
-    <button v-on:click="$router.push('login')">Login</button>
+    <button v-on:click="$router.push('/login')">Login</button>
   </div>
 </template>
 
