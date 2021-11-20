@@ -74,31 +74,29 @@ export default {
       this.$router.push('login')
     },
 
-    reloadUserInfo () {
-      AXIOS.post('/auth/' + this.loginStatus.userType + 's/' + this.loginStatus.username, null, {
-        params: {
-          password: this.loginStatus.password
-        }
-      })
-      .then(response => {
+    async reloadUserInfo () {
+      try {
+        let response = await AXIOS.post('/auth/' + this.loginStatus.userType + 's/' + this.loginStatus.username, null, {
+          params: {
+            password: this.loginStatus.password
+          }
+        })
         this.userInfo = response.data
-      })
-      .catch(error => {
+      } catch (error) {
         // this is awkward because we couldn't get the user's information...
         // assume the worst (maybe the password has changed or something) and
         // logout the user.
         this.doLogout()
-      })
+      }
     },
 
-    reloadLibrarians () {
-      AXIOS.get('/librarians')
-        .then(response => {
-          this.librarians = response.data
-        })
-        .catch(error => {
-          this.librarians = null
-        })
+    async reloadLibrarians () {
+      try {
+        let response = await AXIOS.get('/librarians')
+        this.librarians = response.data
+      } catch (error) {
+        this.librarians = null
+      }
     },
 
     async deleteLibrarian (id) {
