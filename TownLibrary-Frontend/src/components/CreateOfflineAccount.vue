@@ -69,21 +69,18 @@ export default {
   methods: {
     async createAccount (userInfo) {
       // make sure we abort early if any of the fields are empty.
-      if ('' === this.newOfflineMember.name
-          || '' === this.newOfflineMember.address)
+      if ('' === userInfo.name || '' === userInfo.address)
         return
 
-      let params = {
-        params: {
-          address: this.newOfflineMember.address,
-          library: 0,
-          initId: this.initId,
-          initPass: this.initPass
-        }
-      }
-
       try {
-        let response = await AXIOS.post('/offline-members/' + this.newOfflineMember.name, null, params)
+        let response = await AXIOS.post('/offline-members/' + userInfo.name, null, {
+          params: {
+            address: userInfo.address,
+            library: 0,
+            initId: this.initId,
+            initPass: this.initPass
+          }
+        })
         this.createdUser = response.data;
         this.state++;
       } catch (error) {

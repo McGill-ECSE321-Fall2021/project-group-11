@@ -54,16 +54,16 @@ export default {
 
   methods: {
     async createLibrarian (info) {
-      if ('' === this.newLibrarian.name
-          || '' === this.newLibrarian.password
-          || '' === this.newLibrarian.address)
+      if ('' === info.name
+          || '' === info.password
+          || '' === info.address)
         return
 
       try {
-        await AXIOS.post('/librarians/' + this.newLibrarian.name, null, {
+        await AXIOS.post('/librarians/' + info.name, null, {
           params: {
-            password: this.newLibrarian.password,
-            address: this.newLibrarian.address,
+            password: info.password,
+            address: info.address,
             library: 0,
             initId: this.initId,
             initPass: this.initPass
