@@ -27,17 +27,16 @@
       </ul>
 
       <button v-on:click="createHeadLibrarian(newHeadLibrarian)">Next Step</button>
-
     </div>
-    <div v-if="state === 3">
+    <div v-if="state === 2">
       <h2>Setup was a success!</h2>
       <p>
-        You have been assigned an librarian id of {{ createdId }}.
+        You have been assigned an librarian id of {{ createdUser.id }}.
         You will need this, along with your password to login.<br/>
 
         And when you do, remember to <em>login as librarian</em></p>
 
-      <button v-on:click="successRedirect()">Go to login page</button>
+      <button v-on:click="successRedirect()">Done</button>
     </div>
   </div>
 </template>
@@ -70,112 +69,93 @@ export default {
         address: ''
       },
 
-      createdId: -1,
+      createdUser: {},
 
       serverResponse: []
     }
   },
 
-  created: function() {
+  async created () {
     this.state = 0
-  },
 
-  watch: {
-    state: function (val) {
-      switch (val) {
-      case 0:
-        AXIOS.get('/libraries/0')
-          .then(response => {
-            // the library actually exists!
-            this.state = 1
-          })
-          .catch(error => {
-            switch (error.response.data) {
-            case 'NOT-FOUND-LIBRARY':
-              // that's the whole point: if the library is not there, then we
-              // create it!
-              break;
-            default:
-              this.serverResponse = error.response.data.split(',')
-            }
-          })
-        break
-      case 1:
-        AXIOS.get('/libraries/0')
-          .then(response => {
-            // and it actually already has a head librarian assigned to it!
-            if (null !== response.data.headLibrarianId)
-              this.state = 2
-          })
-        // Ignore the error
-        break
-      case 2:
-        // redirect to login page WITHOUT adding a new history entry.
-        this.$router.replace('login')
-        this.state = 0
-        break
+    // Try to enter the correct state:
+    try {
+      let response = await AXIOS.get('/libraries/0')
+
+      if (null === response.data.headLibrarianId) {
+        // we enter state 1: want to assign a head librarian
+        this.state = 1
+        return
       }
-    },
-    newLibrary: {
-      deep: true, // means we watch the attributes also
-      handler: function (val) {
-        this.serverResponse = []
-      }
-    },
-    newHeadLibrarian: {
-      deep: true,
-      handler: function (val) {
-        this.serverResponse = []
-      }
+
+      // reaching this point means that the head librarian has been assigneed
+      // to a library: there is nothing to setup!
+      //
+      // in this case, swap-in the login page
+      this.$router.replace('/login')
+    } catch (error) {
+      if ('NOT-FOUND-LIBRARY' === error.response.data)
+        // we enter state 0: want to create a library
+        return
+
+      this.serverResponse = error.response.data.split(',')
     }
   },
 
   methods: {
-    createLibrary: function (libraryInfo) {
+    async createLibrary (libraryInfo) {
       // disallow empty data
       if ('' === libraryInfo.address)
         return
 
-      AXIOS.post('/libraries/0', null, { params: libraryInfo })
-        .then(response => {
-          // we successfully created the library
-          this.state = 1
-        })
-        .catch(error => {
-          this.serverResponse = error.response.data.split(',')
-        })
+      try {
+        await AXIOS.post('/libraries/0', null, { params: libraryInfo })
+
+        // we successfully created the library
+        this.state++
+      } catch (error) {
+        this.serverResponse = error.response.data.split(',')
+      }
     },
-    createHeadLibrarian: function (headLibrarianInfo) {
+
+    async createHeadLibrarian (headLibrarianInfo) {
       // disallow empty data
       if ('' === headLibrarianInfo.name
           || '' === headLibrarianInfo.password
           || '' === headLibrarianInfo.address)
         return
 
-      AXIOS.post('/head-librarians/' + headLibrarianInfo.name, null, {
-        params: {
-          library: 0,
-          address: headLibrarianInfo.address,
-          password: headLibrarianInfo.password
-        }
-      })
-      .then(response => {
-        // Secret state 3!?
-        this.createdId = response.data.id
-        this.state = 3
-      })
-      .catch(error => {
+      try {
+        let response = await AXIOS.post('/head-librarians/' + headLibrarianInfo.name, null, {
+          params: {
+            library: 0,
+            address: headLibrarianInfo.address,
+            password: headLibrarianInfo.password
+          }
+        })
+
+        this.createdUser = response.data
+        this.state++
+      } catch (error) {
         this.serverResponse = error.response.data.split(',')
-      })
+      }
     },
-    successRedirect: function () {
-      // and let watch do it's magic
-      this.state = 2
+
+    successRedirect () {
+      // Since we have all the information, use it to automatically login the
+      // head-librarian.
+      this.$store.commit('login', {
+        userType: 'head-librarian',
+        username: this.createdUser.id,
+        password: this.newHeadLibrarian.password
+      })
+      this.$router.push('/profile')
+      this.state = 0
     }
   },
 
   computed: {
-    errorMessages: function () {
+    errorMessages () {
       let localizedErrs = []
       switch (this.state) {
       case 0:
@@ -214,6 +194,22 @@ export default {
           return 'Unknown error: ' + res;
         }
       })
+    }
+  },
+
+  watch: {
+    newLibrary: {
+      deep: true,
+      handler (val) {
+        this.serverResponse = []
+      }
+    },
+
+    newHeadLibrarian: {
+      deep: true,
+      handler (val) {
+        this.serverResponse = []
+      }
     }
   }
 }

@@ -22,7 +22,7 @@
       <br/>
 
       Don't have an account yet?
-      <button v-on:click="$router.push('newacc')">Create an online account</button>
+      <button v-on:click="$router.push('/newacc')">Create an online account</button>
     </div>
     <div v-if="!onlineMemberMode">
       Not a librarian?
