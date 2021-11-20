@@ -15,7 +15,8 @@
         <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
       </ul>
 
-      <button v-on:click="createLibrarian(newLibrarian)">Create New Librarian</button>
+      <button v-bind:disabled="0 !== errorMessages.length"
+              v-on:click="createLibrarian(newLibrarian)">Create New Librarian</button>
     </div>
 
     <div v-if="state === 1">
@@ -72,11 +73,6 @@ export default {
 
   methods: {
     async createLibrarian (info) {
-      if ('' === info.name
-          || '' === info.password
-          || '' === info.address)
-        return
-
       try {
         let response = await AXIOS.post('/librarians/' + info.name, null, {
           params: {

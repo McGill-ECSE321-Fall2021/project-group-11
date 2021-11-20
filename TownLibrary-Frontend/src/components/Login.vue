@@ -12,7 +12,8 @@
 
     <p style="color: red">{{ errorMessage }}</p>
 
-    <button v-on:click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
+    <button v-bind:disabled="'' !== errorMessage"
+            v-on:click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
 
     <br/>
 
@@ -57,10 +58,6 @@ export default {
 
   methods: {
     async authOnlineMember (username, password) {
-      // Empty things will fail miserably, so handle them here...
-      if ('' === username || '' === password)
-        return
-
       try {
         // AXIOS post is weird: the request params go on the 3rd slot...
         await AXIOS.post('/auth/online-members/' + username, null, {
@@ -83,10 +80,6 @@ export default {
     },
 
     async authLibrarian (username, password) {
-      // Empty things will fail miserably, so handle them here...
-      if ('' === username || '' === password)
-        return
-
       try {
         // a trick to use is try logging in as generic librarian, and if that
         // works, check if the id refers to a head-librarian.

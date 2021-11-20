@@ -11,7 +11,8 @@
         <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
       </ul>
 
-      <button v-on:click="createLibrary(newLibrary)">Next Step</button>
+      <button v-bind:disabled="0 !== errorMessages.length"
+              v-on:click="createLibrary(newLibrary)">Next Step</button>
     </div>
     <div v-if="state === 1">
       <p>Please enter the head-librarian information below</p>
@@ -26,7 +27,8 @@
         <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
       </ul>
 
-      <button v-on:click="createHeadLibrarian(newHeadLibrarian)">Next Step</button>
+      <button v-bind:disabled="0 !== errorMessages.length"
+              v-on:click="createHeadLibrarian(newHeadLibrarian)">Next Step</button>
     </div>
     <div v-if="state === 2">
       <h2>Setup was a success!</h2>
@@ -104,10 +106,6 @@ export default {
 
   methods: {
     async createLibrary (libraryInfo) {
-      // disallow empty data
-      if ('' === libraryInfo.address)
-        return
-
       try {
         await AXIOS.post('/libraries/0', null, { params: libraryInfo })
 
@@ -119,12 +117,6 @@ export default {
     },
 
     async createHeadLibrarian (headLibrarianInfo) {
-      // disallow empty data
-      if ('' === headLibrarianInfo.name
-          || '' === headLibrarianInfo.password
-          || '' === headLibrarianInfo.address)
-        return
-
       try {
         let response = await AXIOS.post('/head-librarians/' + headLibrarianInfo.name, null, {
           params: {

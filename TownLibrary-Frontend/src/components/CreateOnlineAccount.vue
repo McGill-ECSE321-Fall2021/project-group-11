@@ -19,7 +19,8 @@
       <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
     </ul>
 
-    <button v-on:click="createAccount(newOnlineMember)">Create Online Account</button>
+    <button v-bind:disabled="0 !== errorMessages.length"
+            v-on:click="createAccount(newOnlineMember)">Create Online Account</button>
     <br/>
 
     Already have an account?
@@ -57,15 +58,6 @@ export default {
 
   methods: {
     async createAccount (userInfo) {
-      // make sure we abort early if any of the fields are empty.
-      if ('' === userInfo.username
-          || '' === userInfo.password
-          || '' === userInfo.email
-          || '' === userInfo.name
-          || '' === userInfo.address)
-        return
-
-
         try {
           await AXIOS.post('/online-members/' + userInfo.username, null, {
             params: {

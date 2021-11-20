@@ -13,7 +13,8 @@
         <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
       </ul>
 
-      <button v-on:click="createAccount(newOfflineMember)">Create Offline Account</button>
+      <button v-bind:disabled="0 !== errorMessages.length"
+              v-on:click="createAccount(newOfflineMember)">Create Offline Account</button>
     </div>
 
     <div v-if="state === 1">
@@ -68,10 +69,6 @@ export default {
 
   methods: {
     async createAccount (userInfo) {
-      // make sure we abort early if any of the fields are empty.
-      if ('' === userInfo.name || '' === userInfo.address)
-        return
-
       try {
         let response = await AXIOS.post('/offline-members/' + userInfo.name, null, {
           params: {
