@@ -107,7 +107,7 @@ export default {
           if (null !== response.data.headLibrarianId)
             this.state = 2
         } catch (error) {
-          // Ignore the error
+          this.serverResponse = error.response.data.split(',')
         }
         break
       case 2:
@@ -155,7 +155,7 @@ export default {
         return
 
       try {
-        await AXIOS.post('/head-librarians/' + headLibrarianInfo.name, null, {
+        let response = await AXIOS.post('/head-librarians/' + headLibrarianInfo.name, null, {
           params: {
             library: 0,
             address: headLibrarianInfo.address,
