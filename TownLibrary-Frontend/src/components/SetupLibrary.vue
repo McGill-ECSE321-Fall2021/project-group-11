@@ -27,12 +27,11 @@
       </ul>
 
       <button v-on:click="createHeadLibrarian(newHeadLibrarian)">Next Step</button>
-
     </div>
-    <div v-if="state === 3">
+    <div v-if="state === 2">
       <h2>Setup was a success!</h2>
       <p>
-        You have been assigned an librarian id of {{ createdId }}.
+        You have been assigned an librarian id of {{ createdUser.id }}.
         You will need this, along with your password to login.<br/>
 
         And when you do, remember to <em>login as librarian</em></p>
@@ -70,64 +69,36 @@ export default {
         address: ''
       },
 
-      createdId: -1,
+      createdUser: {},
 
       serverResponse: []
     }
   },
 
-  created () {
+  async created () {
     this.state = 0
-  },
 
-  watch: {
-    async state (val) {
-      switch (val) {
-      case 0:
-        try {
-          await AXIOS.get('/libraries/0')
-          // the library actually exists!
-          this.state = 1
-        } catch (error) {
-          switch (error.response.data) {
-          case 'NOT-FOUND-LIBRARY':
-            // that's the whole point: if the library is not there, then we
-            // create it!
-            break;
-          default:
-            this.serverResponse = error.response.data.split(',')
-          }
-        }
-        break
-      case 1:
-        try {
-          let response = await AXIOS.get('/libraries/0')
+    // Try to enter the correct state:
+    try {
+      let response = await AXIOS.get('/libraries/0')
 
-          // and it actually already has a head librarian assigned to it!
-          if (null !== response.data.headLibrarianId)
-            this.state = 2
-        } catch (error) {
-          this.serverResponse = error.response.data.split(',')
-        }
-        break
-      case 2:
-        // redirect to login page WITHOUT adding a new history entry.
-        this.$router.replace('login')
-        this.state = 0
-        break
+      if (null === response.data.headLibrarianId) {
+        // we enter state 1: want to assign a head librarian
+        this.state = 1
+        return
       }
-    },
-    newLibrary: {
-      deep: true, // means we watch the attributes also
-      handler: function (val) {
-        this.serverResponse = []
-      }
-    },
-    newHeadLibrarian: {
-      deep: true,
-      handler: function (val) {
-        this.serverResponse = []
-      }
+
+      // reaching this point means that the head librarian has been assigneed
+      // to a library: there is nothing to setup!
+      //
+      // in this case, swap-in the login page
+      this.$router.replace('/login')
+    } catch (error) {
+      if ('NOT-FOUND-LIBRARY' === error.response.data)
+        // we enter state 0: want to create a library
+        return
+
+      this.serverResponse = error.response.data.split(',')
     }
   },
 
@@ -141,7 +112,7 @@ export default {
         await AXIOS.post('/libraries/0', null, { params: libraryInfo })
 
         // we successfully created the library
-        this.state = 1
+        this.state++
       } catch (error) {
         this.serverResponse = error.response.data.split(',')
       }
@@ -163,17 +134,18 @@ export default {
           }
         })
 
-        // Secret state 3!?
-        this.createdId = response.data.id
-        this.state = 3
+        this.createdUser = response.data
+        this.state++
       } catch (error) {
         this.serverResponse = error.response.data.split(',')
       }
     },
 
     successRedirect () {
-      // and let watch do it's magic
-      this.state = 2
+      // we could actually redirect right into the profile page, but for now,
+      // swap-in the login page
+      this.$router.replace('/login')
+      this.state = 0
     }
   },
 
@@ -217,6 +189,22 @@ export default {
           return 'Unknown error: ' + res;
         }
       })
+    }
+  },
+
+  watch: {
+    newLibrary: {
+      deep: true,
+      handler (val) {
+        this.serverResponse = []
+      }
+    },
+
+    newHeadLibrarian: {
+      deep: true,
+      handler (val) {
+        this.serverResponse = []
+      }
     }
   }
 }
