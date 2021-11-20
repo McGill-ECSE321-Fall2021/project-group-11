@@ -36,7 +36,7 @@
 
         And when you do, remember to <em>login as librarian</em></p>
 
-      <button v-on:click="successRedirect()">Go to login page</button>
+      <button v-on:click="successRedirect()">Done</button>
     </div>
   </div>
 </template>
@@ -142,9 +142,14 @@ export default {
     },
 
     successRedirect () {
-      // we could actually redirect right into the profile page, but for now,
-      // swap-in the login page
-      this.$router.replace('/login')
+      // Since we have all the information, use it to automatically login the
+      // head-librarian.
+      this.$store.commit('login', {
+        userType: 'head-librarian',
+        username: this.createdUser.id,
+        password: this.newHeadLibrarian.password
+      })
+      this.$router.push('/profile')
       this.state = 0
     }
   },
