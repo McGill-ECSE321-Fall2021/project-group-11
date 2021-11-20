@@ -94,8 +94,18 @@ export default {
 
       return this.serverResponse.map(res => {
         switch (res) {
+        case 'NULL-LIBRARY':
+          // Getting a null library would mean the library does not exist yet,
+          // which likely means setup has not been executed yet...
+          return 'Invalid library, has setup been run yet?'
+        case 'EMPTY-PASSWORD':
+        case 'UNDERSIZED-PASSWORD':
+        case 'OVERSIZED-PASSWORD':
+          return 'Password must be 4 to 32 characters long'
+        case 'BADCHAR-PASSWORD':
+          return 'Password can only contain alphanumeric characters'
         default:
-          return 'Unknown error: ' + res
+          return 'Unknown error: ' + res;
         }
       })
     }
