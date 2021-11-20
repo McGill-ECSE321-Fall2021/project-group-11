@@ -4,8 +4,9 @@ import store from '@/store/index.js'
 import Hello from '@/components/Hello'
 import Login from '@/components/Login'
 import Profile from '@/components/Profile'
-import CreateAccount from '@/components/CreateAccount'
 import SetupLibrary from '@/components/SetupLibrary'
+import CreateAccount from '@/components/CreateAccount'
+import CreateLibrarian from '@/components/CreateLibrarian'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ const router = new Router({
       component: CreateAccount
     },
     {
+      path: '/hire',
+      name: 'Create Librarian',
+      component: CreateLibrarian
+    },
+    {
       path: '/setup',
       name: 'Setup Library',
       component: SetupLibrary
@@ -40,21 +46,27 @@ const router = new Router({
   ]
 })
 
-// Helper function that returns true if-and-only-if the name of the page needs
-// the user to be already logged in.
-function pageNeedsLogin(page) {
+function userCanAccessPage(page, userType) {
+  // note that the user-type may be null!
   switch (page.name) {
-  case 'User Profile':
-    return true
   default:
-    return false
+    // assume all users (including non-logged in) can access the page.
+    return true
+  case 'User Profile':
+    // must be logged in (doesn't matter)
+    return userType !== null
+  case 'Create Librarian':
+    // must be a head-librarian
+    return userType === 'head-librarian'
   }
 }
 
 // Custom global routing rules (such as redirecting to login if not-logged-in
 // yet and stuff)
 router.beforeEach((to, from, next) => {
-  if (pageNeedsLogin(to) && !store.state.loginStatus)
+  if (!userCanAccessPage(to, store.state.loginStatus && store.state.loginStatus.userType))
+    // if insufficient priviledges, just send them over to login page (and let
+    // login handle the other redirections)
     next({ name: 'Login' })
   else if (to.name == 'Login' && store.state.loginStatus)
     next({ name: 'User Profile' })
