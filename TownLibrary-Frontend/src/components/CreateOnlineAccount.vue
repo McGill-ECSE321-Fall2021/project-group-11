@@ -1,5 +1,5 @@
 <template>
-  <div id="create-account">
+  <div id="create-online-account">
     <h1>Create Online Account</h1>
 
     <p>Please enter your information below</p>
@@ -39,7 +39,7 @@ var AXIOS = axios.create({
 })
 
 export default {
-  name: 'create-account',
+  name: 'create-online-account',
 
   data () {
     return {
@@ -56,39 +56,38 @@ export default {
   },
 
   methods: {
-    createAccount (userInfo) {
+    async createAccount (userInfo) {
       // make sure we abort early if any of the fields are empty.
-      if ('' === this.newOnlineMember.username
-          || '' === this.newOnlineMember.password
-          || '' === this.newOnlineMember.email
-          || '' === this.newOnlineMember.name
-          || '' === this.newOnlineMember.address)
-          return
+      if ('' === userInfo.username
+          || '' === userInfo.password
+          || '' === userInfo.email
+          || '' === userInfo.name
+          || '' === userInfo.address)
+        return
 
-      let params = {
-        params: {
-          password: this.newOnlineMember.password,
-          email: this.newOnlineMember.email,
-          name: this.newOnlineMember.name,
-          address: this.newOnlineMember.address,
-          library: 0
-        }
-      }
 
-      AXIOS.post('/online-members/' + this.newOnlineMember.username, null, params)
-        .then(response => {
-          // We already have all the info we need to login, so just do them a
-          // favour by logging them in right now!
-          this.$store.commit('login', {
-            userType: 'online-member',
-            username: this.newOnlineMember.username,
-            password: this.newOnlineMember.password
+        try {
+          await AXIOS.post('/online-members/' + userInfo.username, null, {
+            params: {
+              password: userInfo.password,
+              email: userInfo.email,
+              name: userInfo.name,
+              address: userInfo.address,
+              library: 0
+            }
           })
-          this.$router.push('profile')
+
+        // We already have all the info we need to login, so just do them a
+        // favour by logging them in right now!
+        this.$store.commit('login', {
+          userType: 'online-member',
+          username: userInfo.username,
+          password: userInfo.password
         })
-        .catch(error => {
-          this.serverResponse = error.response.data.split(',')
-        })
+        this.$router.push('/profile')
+      } catch (error) {
+        this.serverResponse = error.response.data.split(',')
+      }
     }
   },
 

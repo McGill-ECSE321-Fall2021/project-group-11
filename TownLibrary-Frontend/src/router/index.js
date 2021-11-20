@@ -5,8 +5,9 @@ import Hello from '@/components/Hello'
 import Login from '@/components/Login'
 import Profile from '@/components/Profile'
 import SetupLibrary from '@/components/SetupLibrary'
-import CreateAccount from '@/components/CreateAccount'
 import CreateLibrarian from '@/components/CreateLibrarian'
+import CreateOnlineAccount from '@/components/CreateOnlineAccount'
+import CreateOfflineAccount from '@/components/CreateOfflineAccount'
 
 Vue.use(Router)
 
@@ -24,14 +25,20 @@ const router = new Router({
       component: Login
     },
     {
-      path: '/newacc',
-      name: 'Create Account',
-      component: CreateAccount
-    },
-    {
-      path: '/hire',
+      path: '/newacc/librarian',
       name: 'Create Librarian',
       component: CreateLibrarian
+    },
+    {
+      path: '/newacc/offline',
+      name: 'Create Offline Account',
+      component: CreateOfflineAccount
+    },
+    {
+      path: '/newacc/online',
+      alias: '/newacc',
+      name: 'Create Online Account',
+      component: CreateOnlineAccount
     },
     {
       path: '/setup',
@@ -58,6 +65,9 @@ function userCanAccessPage(page, userType) {
   case 'Create Librarian':
     // must be a head-librarian
     return userType === 'head-librarian'
+  case 'Create Offline Account':
+    // must be a librarian
+    return userType === 'librarian' || userType === 'head-librarian'
   }
 }
 

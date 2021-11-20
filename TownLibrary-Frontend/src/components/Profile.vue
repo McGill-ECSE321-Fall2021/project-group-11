@@ -10,7 +10,11 @@
       <li>Password: {{ loginStatus.password }}</li>
     </ul>
 
-    <div v-if="'head-librarian' === loginStatus.userType">
+    <div v-if="isLibrarian">
+      <button v-on:click="$router.push('/newacc/offline')">Create a new offline member</button>
+    </div>
+
+    <div v-if="isHeadLibrarian">
       List of Librarians:
       <button v-on:click="reloadLibrarians()">Refresh</button>
       <table>
@@ -32,7 +36,7 @@
       </table>
       <p style="color: red" v-if="librarians == null">Failed to load from server, try again later by clicking on refresh</p>
 
-      <button v-on:click="$router.push('hire')">Add a new librarian</button>
+      <button v-on:click="$router.push('/newacc/librarian')">Add a new librarian</button>
     </div>
   </div>
 </template>
@@ -66,6 +70,36 @@ export default {
 
     this.reloadUserInfo()
     this.reloadLibrarians()
+  },
+
+  computed: {
+    isOnlineMember () {
+      switch (this.loginStatus.userType) {
+      default:
+        return false
+      case 'online-member':
+        return true
+      }
+    },
+
+    isLibrarian () {
+      switch (this.loginStatus.userType) {
+      default:
+        return false
+      case 'librarian':
+      case 'head-librarian':
+        return true
+      }
+    },
+
+    isHeadLibrarian () {
+      switch (this.loginStatus.userType) {
+      default:
+        return false
+      case 'head-librarian':
+        return true
+      }
+    }
   },
 
   methods: {

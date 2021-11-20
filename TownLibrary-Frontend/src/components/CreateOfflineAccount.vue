@@ -1,30 +1,27 @@
 <template>
-  <div id="create-librarian">
-    <h1>Create New Librarian</h1>
+  <div id="create-offline-account">
+    <h1>Create Offline Account</h1>
 
     <div v-if="state === 0">
-      <p>Please enter the librarian's information below</p>
+      <p>Please enter the user's information below</p>
 
-      <input type="text" v-model="newLibrarian.name" placeholder="Name">
+      <input type="text" v-model="newOfflineMember.name" placeholder="Name">
       <br/>
-      <input type="password" v-model="newLibrarian.password" placeholder="Password">
-      <br/>
-      <input type="text" v-model="newLibrarian.address" placeholder="Address">
+      <input type="text" v-model="newOfflineMember.address" placeholder="Address">
 
       <ul>
         <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
       </ul>
 
-      <button v-on:click="createLibrarian(newLibrarian)">Create New Librarian</button>
+      <button v-on:click="createAccount(newOfflineMember)">Create Offline Account</button>
     </div>
 
     <div v-if="state === 1">
       <h2>Successfully added {{ createdUser.name }}!</h2>
       <p>
-        This new librarian has been assigned an librarian id of {{ createdUser.id }}.
-        This is needed, along with the supplied password to login.<br/>
-
-        And when doing so, remember to <em>login as librarian</em></p>
+        This new offline member has been assigned an user id of {{ createdUser.id }}.
+        After the address has been validated,
+        remember to update the status via the user management portal!</p>
 
       <button v-on:click="successRedirect()">Return to profile</button>
     </div>
@@ -43,15 +40,14 @@ var AXIOS = axios.create({
 })
 
 export default {
-  name: 'create-librarian',
+  name: 'create-offline-account',
 
   data () {
     return {
       state: -1,
 
-      newLibrarian: {
+      newOfflineMember: {
         name: '',
-        password: '',
         address: ''
       },
 
@@ -71,31 +67,29 @@ export default {
   },
 
   methods: {
-    async createLibrarian (info) {
-      if ('' === info.name
-          || '' === info.password
-          || '' === info.address)
+    async createAccount (userInfo) {
+      // make sure we abort early if any of the fields are empty.
+      if ('' === userInfo.name || '' === userInfo.address)
         return
 
       try {
-        let response = await AXIOS.post('/librarians/' + info.name, null, {
+        let response = await AXIOS.post('/offline-members/' + userInfo.name, null, {
           params: {
-            password: info.password,
-            address: info.address,
+            address: userInfo.address,
             library: 0,
             initId: this.initId,
             initPass: this.initPass
           }
         })
-        this.createdUser = response.data
-        this.state++
+        this.createdUser = response.data;
+        this.state++;
       } catch (error) {
         this.serverResponse = error.response.data.split(',')
       }
     },
 
     successRedirect () {
-      this.$router.push('/profile')
+      this.$router.replace('/profile')
       this.state = 0
     }
   },
@@ -103,11 +97,9 @@ export default {
   computed: {
     errorMessages () {
       let localizedErrs = []
-      if ('' === this.newLibrarian.name)
+      if ('' === this.newOfflineMember.name)
         localizedErrs.push('Name cannot be empty')
-      if ('' === this.newLibrarian.password)
-        localizedErrs.push('Password cannot be empty')
-      if ('' === this.newLibrarian.address)
+      if ('' === this.newOfflineMember.address)
         localizedErrs.push('Address cannot be empty')
       if (0 !== localizedErrs.length)
         return localizedErrs
@@ -118,12 +110,6 @@ export default {
           // Getting a null library would mean the library does not exist yet,
           // which likely means setup has not been executed yet...
           return 'Invalid library, has setup been run yet?'
-        case 'EMPTY-PASSWORD':
-        case 'UNDERSIZED-PASSWORD':
-        case 'OVERSIZED-PASSWORD':
-          return 'Password must be 4 to 32 characters long'
-        case 'BADCHAR-PASSWORD':
-          return 'Password can only contain alphanumeric characters'
         default:
           return 'Unknown error: ' + res;
         }
@@ -132,7 +118,7 @@ export default {
   },
 
   watch: {
-    newLibrarian: {
+    newOfflineMember: {
       deep: true,
       handler (val) {
         this.serverResponse = []
