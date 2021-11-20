@@ -2,20 +2,32 @@
   <div id="create-librarian">
     <h1>Create New Librarian</h1>
 
-    <p>Please enter the librarian's information below</p>
+    <div v-if="state === 0">
+      <p>Please enter the librarian's information below</p>
 
-    <input type="text" v-model="newLibrarian.name" placeholder="Name">
-    <br/>
-    <input type="password" v-model="newLibrarian.password" placeholder="Password">
-    <br/>
-    <input type="text" v-model="newLibrarian.address" placeholder="Address">
+      <input type="text" v-model="newLibrarian.name" placeholder="Name">
+      <br/>
+      <input type="password" v-model="newLibrarian.password" placeholder="Password">
+      <br/>
+      <input type="text" v-model="newLibrarian.address" placeholder="Address">
 
-    <ul>
-      <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
-    </ul>
+      <ul>
+        <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
+      </ul>
 
-    <button v-on:click="createLibrarian(newLibrarian)">Create New Librarian</button>
-    <br/>
+      <button v-on:click="createLibrarian(newLibrarian)">Create New Librarian</button>
+    </div>
+
+    <div v-if="state === 1">
+      <h2>Successfully added {{ createdUser.name }}!</h2>
+      <p>
+        This new librarian has been assigned an librarian id of {{ createdUser.id }}.
+        This is needed, along with the supplied password to login.<br/>
+
+        And when doing so, remember to <em>login as librarian</em></p>
+
+      <button v-on:click="successRedirect()">Return to profile</button>
+    </div>
   </div>
 </template>
 
@@ -35,11 +47,15 @@ export default {
 
   data () {
     return {
+      state: -1,
+
       newLibrarian: {
         name: '',
         password: '',
         address: ''
       },
+
+      createdUser: {},
 
       initId: '',
       initPass: '',
@@ -50,6 +66,8 @@ export default {
   created () {
     this.initId = this.$store.state.loginStatus.username
     this.initPass = this.$store.state.loginStatus.password
+
+    this.state = 0
   },
 
   methods: {
@@ -60,7 +78,7 @@ export default {
         return
 
       try {
-        await AXIOS.post('/librarians/' + info.name, null, {
+        let response = await AXIOS.post('/librarians/' + info.name, null, {
           params: {
             password: info.password,
             address: info.address,
@@ -69,14 +87,16 @@ export default {
             initPass: this.initPass
           }
         })
-
-        // for now just send them back to profile.
-        // TODO: probably want to, like the setup page, show something like
-        // success! horray! or something...
-        this.$router.push('/profile')
+        this.createdUser = response.data
+        this.state++
       } catch (error) {
         this.serverResponse = error.response.data.split(',')
       }
+    },
+
+    successRedirect () {
+      this.$router.push('/profile')
+      this.state = 0
     }
   },
 
