@@ -76,38 +76,39 @@ export default {
     }
   },
 
-  created: function() {
+  created () {
     this.state = 0
   },
 
   watch: {
-    state: function (val) {
+    async state (val) {
       switch (val) {
       case 0:
-        AXIOS.get('/libraries/0')
-          .then(response => {
-            // the library actually exists!
-            this.state = 1
-          })
-          .catch(error => {
-            switch (error.response.data) {
-            case 'NOT-FOUND-LIBRARY':
-              // that's the whole point: if the library is not there, then we
-              // create it!
-              break;
-            default:
-              this.serverResponse = error.response.data.split(',')
-            }
-          })
+        try {
+          await AXIOS.get('/libraries/0')
+          // the library actually exists!
+          this.state = 1
+        } catch (error) {
+          switch (error.response.data) {
+          case 'NOT-FOUND-LIBRARY':
+            // that's the whole point: if the library is not there, then we
+            // create it!
+            break;
+          default:
+            this.serverResponse = error.response.data.split(',')
+          }
+        }
         break
       case 1:
-        AXIOS.get('/libraries/0')
-          .then(response => {
-            // and it actually already has a head librarian assigned to it!
-            if (null !== response.data.headLibrarianId)
-              this.state = 2
-          })
-        // Ignore the error
+        try {
+          let response = await AXIOS.get('/libraries/0')
+
+          // and it actually already has a head librarian assigned to it!
+          if (null !== response.data.headLibrarianId)
+            this.state = 2
+        } catch (error) {
+          // Ignore the error
+        }
         break
       case 2:
         // redirect to login page WITHOUT adding a new history entry.
@@ -131,51 +132,53 @@ export default {
   },
 
   methods: {
-    createLibrary: function (libraryInfo) {
+    async createLibrary (libraryInfo) {
       // disallow empty data
       if ('' === libraryInfo.address)
         return
 
-      AXIOS.post('/libraries/0', null, { params: libraryInfo })
-        .then(response => {
-          // we successfully created the library
-          this.state = 1
-        })
-        .catch(error => {
-          this.serverResponse = error.response.data.split(',')
-        })
+      try {
+        await AXIOS.post('/libraries/0', null, { params: libraryInfo })
+
+        // we successfully created the library
+        this.state = 1
+      } catch (error) {
+        this.serverResponse = error.response.data.split(',')
+      }
     },
-    createHeadLibrarian: function (headLibrarianInfo) {
+
+    async createHeadLibrarian (headLibrarianInfo) {
       // disallow empty data
       if ('' === headLibrarianInfo.name
           || '' === headLibrarianInfo.password
           || '' === headLibrarianInfo.address)
         return
 
-      AXIOS.post('/head-librarians/' + headLibrarianInfo.name, null, {
-        params: {
-          library: 0,
-          address: headLibrarianInfo.address,
-          password: headLibrarianInfo.password
-        }
-      })
-      .then(response => {
+      try {
+        await AXIOS.post('/head-librarians/' + headLibrarianInfo.name, null, {
+          params: {
+            library: 0,
+            address: headLibrarianInfo.address,
+            password: headLibrarianInfo.password
+          }
+        })
+
         // Secret state 3!?
         this.createdId = response.data.id
         this.state = 3
-      })
-      .catch(error => {
+      } catch (error) {
         this.serverResponse = error.response.data.split(',')
-      })
+      }
     },
-    successRedirect: function () {
+
+    successRedirect () {
       // and let watch do it's magic
       this.state = 2
     }
   },
 
   computed: {
-    errorMessages: function () {
+    errorMessages () {
       let localizedErrs = []
       switch (this.state) {
       case 0:
