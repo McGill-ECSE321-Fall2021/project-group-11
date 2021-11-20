@@ -1,0 +1,135 @@
+<template>
+  <div id="create-offline-account">
+    <h1>Create Offline Account</h1>
+
+    <div v-if="state === 0">
+      <p>Please enter the user's information below</p>
+
+      <input type="text" v-model="newOfflineMember.name" placeholder="Name">
+      <br/>
+      <input type="text" v-model="newOfflineMember.address" placeholder="Address">
+
+      <ul>
+        <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
+      </ul>
+
+      <button v-on:click="createAccount(newOfflineMember)">Create Offline Account</button>
+    </div>
+
+    <div v-if="state === 1">
+      <h2>Successfully added {{ createdUser.name }}!</h2>
+      <p>
+        This new offline member has been assigned an user id of {{ createdUser.id }}.
+        After the address has been validated,
+        remember to update the status via the user management portal!</p>
+
+      <button v-on:click="successRedirect()">Return to profile</button>
+    </div>
+  </div>
+</template>
+
+<script>
+import axios from 'axios'
+
+var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
+
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+
+export default {
+  name: 'create-offline-account',
+
+  data () {
+    return {
+      state: -1,
+
+      newOfflineMember: {
+        name: '',
+        address: ''
+      },
+
+      createdUser: {},
+
+      initId: '',
+      initPass: '',
+      serverResponse: []
+    }
+  },
+
+  created () {
+    this.initId = this.$store.state.loginStatus.username
+    this.initPass = this.$store.state.loginStatus.password
+
+    this.state = 0
+  },
+
+  methods: {
+    async createAccount (userInfo) {
+      // make sure we abort early if any of the fields are empty.
+      if ('' === this.newOfflineMember.name
+          || '' === this.newOfflineMember.address)
+        return
+
+      let params = {
+        params: {
+          address: this.newOfflineMember.address,
+          library: 0,
+          initId: this.initId,
+          initPass: this.initPass
+        }
+      }
+
+      try {
+        let response = await AXIOS.post('/offline-members/' + this.newOfflineMember.name, null, params)
+        this.createdUser = response.data;
+        this.state++;
+      } catch (error) {
+        this.serverResponse = error.response.data.split(',')
+      }
+    },
+
+    successRedirect () {
+      this.$router.replace('/profile')
+      this.state = 0
+    }
+  },
+
+  computed: {
+    errorMessages () {
+      let localizedErrs = []
+      if ('' === this.newOfflineMember.name)
+        localizedErrs.push('Name cannot be empty')
+      if ('' === this.newOfflineMember.address)
+        localizedErrs.push('Address cannot be empty')
+      if (0 !== localizedErrs.length)
+        return localizedErrs
+
+      return this.serverResponse.map(res => {
+        switch (res) {
+        case 'NULL-LIBRARY':
+          // Getting a null library would mean the library does not exist yet,
+          // which likely means setup has not been executed yet...
+          return 'Invalid library, has setup been run yet?'
+        default:
+          return 'Unknown error: ' + res;
+        }
+      })
+    }
+  },
+
+  watch: {
+    newOfflineMember: {
+      deep: true,
+      handler (val) {
+        this.serverResponse = []
+      }
+    }
+  }
+}
+</script>
+
+<style>
+</style>

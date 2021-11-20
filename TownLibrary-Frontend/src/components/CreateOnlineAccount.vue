@@ -1,5 +1,5 @@
 <template>
-  <div id="create-account">
+  <div id="create-online-account">
     <h1>Create Online Account</h1>
 
     <p>Please enter your information below</p>
@@ -39,7 +39,7 @@ var AXIOS = axios.create({
 })
 
 export default {
-  name: 'create-account',
+  name: 'create-online-account',
 
   data () {
     return {
