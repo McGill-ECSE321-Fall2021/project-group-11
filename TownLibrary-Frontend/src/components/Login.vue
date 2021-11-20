@@ -56,18 +56,19 @@ export default {
   },
 
   methods: {
-    authOnlineMember (username, password) {
+    async authOnlineMember (username, password) {
       // Empty things will fail miserably, so handle them here...
       if ('' === username || '' === password)
         return
 
-      // AXIOS post is weird: the request params go on the 3rd slot...
-      AXIOS.post('/auth/online-members/' + username, null, {
-        params: {
-          password: password
-        }
-      })
-      .then(response => {
+      try {
+        // AXIOS post is weird: the request params go on the 3rd slot...
+        await AXIOS.post('/auth/online-members/' + username, null, {
+          params: {
+            password: password
+          }
+        })
+
         // log the user in by storing the user's information
         this.$store.commit('login', {
           userType: 'online-member',
@@ -75,51 +76,49 @@ export default {
           password: password
         })
         // and we're ready to jump
-        this.$router.push('profile')
-      })
-      .catch(error => {
+        this.$router.push('/profile')
+      } catch (error) {
         this.serverResponse = error.response.data
-      })
+      }
     },
 
-    authLibrarian (username, password) {
+    async authLibrarian (username, password) {
       // Empty things will fail miserably, so handle them here...
       if ('' === username || '' === password)
         return
 
-      // a trick to use is try logging in as generic librarian, and if that
-      // works, check if the id refers to a head-librarian.
-      AXIOS.post('/auth/librarians/' + username, null, {
-        params: {
-          password: password
+      try {
+        // a trick to use is try logging in as generic librarian, and if that
+        // works, check if the id refers to a head-librarian.
+        await AXIOS.post('/auth/librarians/' + username, null, {
+          params: {
+            password: password
+          }
+        })
+
+        try {
+          await AXIOS.get('/head-librarians/' + username)
+
+          // it's a head-librarian
+          this.$store.commit('login', {
+            userType: 'head-librarian',
+            username: username,
+            password: password
+          })
+        } catch (error) {
+          // we know person must be at least a generic librarian
+          this.$store.commit('login', {
+            userType: 'librarian',
+            username: username,
+            password: password
+          })
         }
-      })
-      .then(response => {
-        AXIOS.get('/head-librarians/' + username)
-          .then(response => {
-            // it's a head-librarian
-            this.$store.commit('login', {
-              userType: 'head-librarian',
-              username: username,
-              password: password
-            })
-            // and we're ready to jump
-            this.$router.push('profile')
-          })
-          .catch(error => {
-            // we know person must be at least a generic librarian
-            this.$store.commit('login', {
-              userType: 'librarian',
-              username: username,
-              password: password
-            })
-            // and we're ready to jump
-            this.$router.push('profile')
-          })
-      })
-      .catch(error => {
+
+        // and we're ready to jump
+        this.$router.push('/profile')
+      } catch (error) {
         this.serverResponse = error.response.data
-      })
+      }
     }
   },
 

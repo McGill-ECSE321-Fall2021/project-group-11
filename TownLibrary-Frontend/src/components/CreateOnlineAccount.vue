@@ -56,14 +56,14 @@ export default {
   },
 
   methods: {
-    createAccount (userInfo) {
+    async createAccount (userInfo) {
       // make sure we abort early if any of the fields are empty.
       if ('' === this.newOnlineMember.username
           || '' === this.newOnlineMember.password
           || '' === this.newOnlineMember.email
           || '' === this.newOnlineMember.name
           || '' === this.newOnlineMember.address)
-          return
+        return
 
       let params = {
         params: {
@@ -75,20 +75,20 @@ export default {
         }
       }
 
-      AXIOS.post('/online-members/' + this.newOnlineMember.username, null, params)
-        .then(response => {
-          // We already have all the info we need to login, so just do them a
-          // favour by logging them in right now!
-          this.$store.commit('login', {
-            userType: 'online-member',
-            username: this.newOnlineMember.username,
-            password: this.newOnlineMember.password
-          })
-          this.$router.push('profile')
+      try {
+        await AXIOS.post('/online-members/' + this.newOnlineMember.username, null, params)
+
+        // We already have all the info we need to login, so just do them a
+        // favour by logging them in right now!
+        this.$store.commit('login', {
+          userType: 'online-member',
+          username: this.newOnlineMember.username,
+          password: this.newOnlineMember.password
         })
-        .catch(error => {
-          this.serverResponse = error.response.data.split(',')
-        })
+        this.$router.push('/profile')
+      } catch (error) {
+        this.serverResponse = error.response.data.split(',')
+      }
     }
   },
 

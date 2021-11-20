@@ -53,30 +53,30 @@ export default {
   },
 
   methods: {
-    createLibrarian (info) {
+    async createLibrarian (info) {
       if ('' === this.newLibrarian.name
           || '' === this.newLibrarian.password
           || '' === this.newLibrarian.address)
         return
 
-      AXIOS.post('/librarians/' + this.newLibrarian.name, null, {
-        params: {
-          password: this.newLibrarian.password,
-          address: this.newLibrarian.address,
-          library: 0,
-          initId: this.initId,
-          initPass: this.initPass
-        }
-      })
-      .then(response => {
+      try {
+        await AXIOS.post('/librarians/' + this.newLibrarian.name, null, {
+          params: {
+            password: this.newLibrarian.password,
+            address: this.newLibrarian.address,
+            library: 0,
+            initId: this.initId,
+            initPass: this.initPass
+          }
+        })
+
         // for now just send them back to profile.
         // TODO: probably want to, like the setup page, show something like
         // success! horray! or something...
-        this.$router.push('profile')
-      })
-      .catch(error => {
+        this.$router.push('/profile')
+      } catch (error) {
         this.serverResponse = error.response.data.split(',')
-      })
+      }
     }
   },
 
