@@ -4,7 +4,6 @@
   "description": "A Vue.js frontend for Town Library App",
   "author": "group-11",
   "private": true,
-  "postinstall": "npm run build",
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node server.js",
