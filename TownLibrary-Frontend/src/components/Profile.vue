@@ -22,7 +22,8 @@
         </tr>
         <tr v-for="librarian in (librarians || [])">
           <td>
-            <button v-bind:disabled="librarian.id === userInfo.id">Delete</button>
+            <button v-bind:disabled="librarian.id === userInfo.id"
+                    v-on:click="deleteLibrarian(librarian.id)">Delete</button>
           </td>
           <td>{{ librarian.id }}</td>
           <td>{{ librarian.name }}</td>
@@ -98,6 +99,19 @@ export default {
         .catch(error => {
           this.librarians = null
         })
+    },
+
+    async deleteLibrarian (id) {
+      // trigger the delete event
+      await AXIOS.delete('/librarians/' + id, {
+        params: {
+          initId: this.loginStatus.username,
+          initPass: this.loginStatus.password
+        }
+      })
+
+      // and try reloading the list regardless of success or failure
+      this.reloadLibrarians()
     }
   }
 }
