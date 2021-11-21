@@ -51,6 +51,7 @@
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -79,7 +80,7 @@ export default {
 
       createdUser: {},
 
-      serverResponse: []
+      serverResponse: null
     }
   },
 
@@ -102,11 +103,12 @@ export default {
       // in this case, swap-in the login page
       this.$router.replace('/login')
     } catch (error) {
-      if ('NOT-FOUND-LIBRARY' === error.response.data)
+      if (error.response && error.response.data
+          && 'NOT-FOUND-LIBRARY' === error.response.data)
         // we enter state 0: want to create a library
         return
 
-      this.serverResponse = error.response.data.split(',')
+      this.serverResponse = error
     }
   },
 
@@ -118,7 +120,7 @@ export default {
         // we successfully created the library
         this.state++
       } catch (error) {
-        this.serverResponse = error.response.data.split(',')
+        this.serverResponse = error
       }
     },
 
@@ -135,7 +137,7 @@ export default {
         this.createdUser = response.data
         this.state++
       } catch (error) {
-        this.serverResponse = error.response.data.split(',')
+        this.serverResponse = error
       }
     },
 
@@ -172,26 +174,7 @@ export default {
       if (0 !== localizedErrs.length)
         return localizedErrs
 
-      return this.serverResponse.map(res => {
-        switch (res) {
-        case 'DUP-LIBRARY':
-          return 'Duplicate library (try reloading the page)'
-        case 'DUP-HEAD-LIBRARIAN':
-          return 'Duplicate head librarian'
-        case 'EMPTY-NAME':
-          return 'Empty name'
-        case 'EMPTY-ADDRESS':
-          return 'Empty address'
-        case 'EMPTY-PASSWORD':
-        case 'UNDERSIZED-PASSWORD':
-        case 'OVERSIZED-PASSWORD':
-          return 'Password must be 4 to 32 characters long'
-        case 'BADCHAR-PASSWORD':
-          return 'Password can only contain alphanumeric characters'
-        default:
-          return 'Unknown error: ' + res;
-        }
-      })
+      return decodeError(this.serverResponse)
     }
   },
 
@@ -199,14 +182,14 @@ export default {
     newLibrary: {
       deep: true,
       handler (val) {
-        this.serverResponse = []
+        this.serverResponse = null
       }
     },
 
     newHeadLibrarian: {
       deep: true,
       handler (val) {
-        this.serverResponse = []
+        this.serverResponse = null
       }
     }
   }

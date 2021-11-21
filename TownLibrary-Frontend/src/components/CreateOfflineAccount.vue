@@ -34,6 +34,7 @@
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -59,7 +60,7 @@ export default {
 
       initId: '',
       initPass: '',
-      serverResponse: []
+      serverResponse: null
     }
   },
 
@@ -84,7 +85,7 @@ export default {
         this.createdUser = response.data;
         this.state++;
       } catch (error) {
-        this.serverResponse = error.response.data.split(',')
+        this.serverResponse = error
       }
     },
 
@@ -104,16 +105,7 @@ export default {
       if (0 !== localizedErrs.length)
         return localizedErrs
 
-      return this.serverResponse.map(res => {
-        switch (res) {
-        case 'NULL-LIBRARY':
-          // Getting a null library would mean the library does not exist yet,
-          // which likely means setup has not been executed yet...
-          return 'Invalid library, has setup been run yet?'
-        default:
-          return 'Unknown error: ' + res;
-        }
-      })
+      return decodeError(this.serverResponse)
     }
   },
 
@@ -121,7 +113,7 @@ export default {
     newOfflineMember: {
       deep: true,
       handler (val) {
-        this.serverResponse = []
+        this.serverResponse = null
       }
     }
   }

@@ -39,6 +39,7 @@
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -57,7 +58,7 @@ export default {
       username: '',
       password: '',
 
-      serverResponse: []
+      serverResponse: null
     }
   },
 
@@ -80,7 +81,7 @@ export default {
         // and we're ready to jump
         this.$router.push('/profile')
       } catch (error) {
-        this.serverResponse = error.response.data.split(',')
+        this.serverResponse = error
       }
     },
 
@@ -115,7 +116,7 @@ export default {
         // and we're ready to jump
         this.$router.push('/profile')
       } catch (error) {
-        this.serverResponse = error.response.data.split(',')
+        this.serverResponse = error
       }
     }
   },
@@ -130,25 +131,16 @@ export default {
       if (0 !== localizedErrs.length)
         return localizedErrs
 
-      return this.serverResponse.map(res => {
-        switch (res) {
-        case 'BAD-AUTH-ONLINE-MEMBER':
-          return 'Incorrect username or password'
-        case 'BAD-ACCESS':
-          return 'Incorrect id or password'
-        default:
-          return res
-        }
-      })
+      return decodeError(this.serverResponse)
     }
   },
 
   watch: {
     username (val) {
-      this.serverResponse = []
+      this.serverResponse = null
     },
     password (val) {
-      this.serverResponse = []
+      this.serverResponse = null
     }
   }
 }

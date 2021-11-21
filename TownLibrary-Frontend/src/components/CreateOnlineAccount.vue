@@ -33,6 +33,7 @@
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -55,7 +56,7 @@ export default {
         address: ''
       },
 
-      serverResponse: []
+      serverResponse: null
     }
   },
 
@@ -81,7 +82,7 @@ export default {
         })
         this.$router.push('/profile')
       } catch (error) {
-        this.serverResponse = error.response.data.split(',')
+        this.serverResponse = error
       }
     }
   },
@@ -102,29 +103,7 @@ export default {
       if (0 !== localizedErrs.length)
         return localizedErrs
 
-      return this.serverResponse.map(res => {
-        switch (res) {
-        case 'NULL-LIBRARY':
-          // Getting a null library would mean the library does not exist yet,
-          // which likely means setup has not been executed yet...
-          return 'Invalid library, has setup been run yet?'
-        case 'DUP-USERNAME':
-          return 'Duplicate username'
-        case 'DUP-EMAIL':
-          return 'Duplicate email'
-        case 'EMPTY-EMAIL':
-        case 'BADFMT-EMAIL':
-          return 'Invalid Email'
-        case 'EMPTY-PASSWORD':
-        case 'UNDERSIZED-PASSWORD':
-        case 'OVERSIZED-PASSWORD':
-          return 'Password must be 4 to 32 characters long'
-        case 'BADCHAR-PASSWORD':
-          return 'Password can only contain alphanumeric characters'
-        default:
-          return 'Unknown error: ' + res;
-        }
-      })
+      return decodeError(this.serverResponse)
     }
   },
 
@@ -132,7 +111,7 @@ export default {
     newOnlineMember: {
       deep: true,
       handler (val) {
-        this.serverResponse = []
+        this.serverResponse = null
       }
     }
   }
