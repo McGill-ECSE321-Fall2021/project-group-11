@@ -90,6 +90,12 @@ export default {
         this.createdUser = response.data
         this.state++
       } catch (error) {
+        if (error.response && error.response.data
+            && 'BAD-ACCESS' === error.response.data)
+          // how did we get here!? redirect to profile
+          this.$router.replace('/profile')
+          return
+
         this.serverResponse = error
       }
     },
