@@ -30,10 +30,12 @@ export default function decodeError (api_error) {
           return 'Duplicate library, try reloading the page'
         case 'DUP-HEAD-LIBRARIAN':
           return 'Duplicate head-librarian, try reloading the page'
+        case 'BAD-ACCESS':
+          return 'Illegal user access'
 
         case 'BAD-AUTH-ONLINE-MEMBER':
           return 'Incorrect username or password'
-        case 'BAD-ACCESS':
+        case 'BAD-AUTH-LIBRARIAN':
           return 'Incorrect id or password'
 
         case 'EMPTY-NAME':
