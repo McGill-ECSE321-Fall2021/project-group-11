@@ -10,9 +10,14 @@
     <input type="password" v-model="password" placeholder="Password">
     <br/>
 
-    <p style="color: red">{{ errorMessage }}</p>
+    <table>
+      <tr v-for="msg in errorMessages">
+        <td style="color: red">{{ msg }}</td>
+      </tr>
+    </table>
+    <br/>
 
-    <button v-bind:disabled="'' !== errorMessage"
+    <button v-bind:disabled="0 !== errorMessages.length"
             v-on:click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
 
     <br/>
@@ -34,6 +39,7 @@
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -52,7 +58,7 @@ export default {
       username: '',
       password: '',
 
-      serverResponse: ''
+      serverResponse: null
     }
   },
 
@@ -75,7 +81,7 @@ export default {
         // and we're ready to jump
         this.$router.push('/profile')
       } catch (error) {
-        this.serverResponse = error.response.data
+        this.serverResponse = error
       }
     },
 
@@ -110,37 +116,31 @@ export default {
         // and we're ready to jump
         this.$router.push('/profile')
       } catch (error) {
-        this.serverResponse = error.response.data
+        this.serverResponse = error
       }
     }
   },
 
   computed: {
-    errorMessage () {
+    errorMessages () {
+      let localizedErrs = []
       if ('' === this.username)
-        return (this.onlineMemberMode ? 'Username' : 'ID') + ' cannot be empty'
+        localizedErrs.push((this.onlineMemberMode ? 'Username' : 'ID') + ' cannot be empty')
       if ('' === this.password)
-        return 'Password cannot be empty'
+        localizedErrs.push('Password cannot be empty')
+      if (0 !== localizedErrs.length)
+        return localizedErrs
 
-      switch (this.serverResponse) {
-      case '':
-        return ''
-      case 'BAD-AUTH-ONLINE-MEMBER':
-        return 'Incorrect username or password'
-      case 'BAD-ACCESS':
-        return 'Incorrect id or password'
-      default:
-        return 'Unknown error occurred, please try again later'
-      }
+      return decodeError(this.serverResponse)
     }
   },
 
   watch: {
     username (val) {
-      this.serverResponse = ''
+      this.serverResponse = null
     },
     password (val) {
-      this.serverResponse = ''
+      this.serverResponse = null
     }
   }
 }

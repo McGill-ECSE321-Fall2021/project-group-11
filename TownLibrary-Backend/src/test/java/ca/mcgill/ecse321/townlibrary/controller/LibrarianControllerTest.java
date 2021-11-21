@@ -222,7 +222,7 @@ public class LibrarianControllerTest {
             .when().post("/auth/librarians/" + id)
             .then()
             .statusCode(400)
-            .body(equalTo("BAD-ACCESS"));
+            .body(equalTo("BAD-AUTH-LIBRARIAN"));
     }
 
     @Test
@@ -263,7 +263,7 @@ public class LibrarianControllerTest {
             .when().post("/auth/librarians/" + id)
             .then()
             .statusCode(400)
-            .body(equalTo("BAD-ACCESS"));
+            .body(equalTo("BAD-AUTH-LIBRARIAN"));
     }
     @Test
     public void testDeleteLibrarianIllegalAccess(){
