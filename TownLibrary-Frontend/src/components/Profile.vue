@@ -27,7 +27,7 @@
         <tr v-if="librarians === null">
           <td style="color: red">Failed to load from server, try again later by clicking on refresh</td>
         </tr>
-        <tr v-for="librarian in (librarians || [])">
+        <tr v-for="librarian in (librarians || [])" v-bind:key="librarian.id">
           <td>
             <button v-bind:disabled="librarian.id === userInfo.id"
                     v-on:click="deleteLibrarian(librarian.id)">Delete</button>

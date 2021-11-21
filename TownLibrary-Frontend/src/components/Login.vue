@@ -11,7 +11,7 @@
     <br/>
 
     <table>
-      <tr v-for="msg in errorMessages">
+      <tr v-for="msg in errorMessages" v-bind:key="msg">
         <td style="color: red">{{ msg }}</td>
       </tr>
     </table>

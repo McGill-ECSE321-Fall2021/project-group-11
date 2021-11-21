@@ -8,7 +8,7 @@
       <input type="text" v-model="newLibrary.address" placeholder="Address">
 
       <table>
-        <tr v-for="msg in errorMessages">
+        <tr v-for="msg in errorMessages" v-bind:key="msg">
           <td style="color: red">{{ msg }}</td>
         </tr>
       </table>
@@ -27,7 +27,7 @@
       <input type="text" v-model="newHeadLibrarian.address" placeholder="Address">
 
       <table>
-        <tr v-for="msg in errorMessages">
+        <tr v-for="msg in errorMessages" v-bind:key="msg">
           <td style="color: red">{{ msg }}</td>
         </tr>
       </table>
