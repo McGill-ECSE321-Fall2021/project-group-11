@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
     <h2>Welcome back {{ userInfo.name }}!</h2>
-    <button v-on:click="doLogout">Logout</button>
+    <button @click="doLogout">Logout</button>
 
     <p>Just to show that stuff does work:</p>
     <ul>
@@ -11,12 +11,12 @@
     </ul>
 
     <div v-if="isLibrarian">
-      <button v-on:click="$router.push('/newacc/offline')">Create a new offline member</button>
+      <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
     </div>
 
     <div v-if="isHeadLibrarian">
       List of Librarians:
-      <button v-on:click="reloadLibrarians()">Refresh</button>
+      <button @click="reloadLibrarians()">Refresh</button>
       <table>
         <tr v-if="librarians !== null">
           <th><!-- Empty cell just for aligning the table --></th>
@@ -27,10 +27,10 @@
         <tr v-if="librarians === null">
           <td style="color: red">Failed to load from server, try again later by clicking on refresh</td>
         </tr>
-        <tr v-for="librarian in (librarians || [])" v-bind:key="librarian.id">
+        <tr v-for="librarian in (librarians || [])" :key="librarian.id">
           <td>
-            <button v-bind:disabled="librarian.id === userInfo.id"
-                    v-on:click="deleteLibrarian(librarian.id)">Delete</button>
+            <button :disabled="librarian.id === userInfo.id"
+                    @click="deleteLibrarian(librarian.id)">Delete</button>
           </td>
           <td>{{ librarian.id }}</td>
           <td>{{ librarian.name }}</td>
@@ -38,7 +38,7 @@
         </tr>
       </table>
 
-      <button v-on:click="$router.push('/newacc/librarian')">Add a new librarian</button>
+      <button @click="$router.push('/newacc/librarian')">Add a new librarian</button>
     </div>
   </div>
 </template>
