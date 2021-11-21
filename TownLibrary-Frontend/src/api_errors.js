@@ -16,47 +16,65 @@ export default function decodeError (api_error) {
 
   // Extract it into a list of error messages. Note that error messages can be
   // are ',', '.', and '!' separated.
-  return raw_msg.split(/,|!|\./)
-      .map(msg => msg.trim())
-      .filter(msg => 0 !== msg.length)
-      .map(msg => {
-        switch (msg) {
-        default:
-          return msg
+  let errs = []
+  for (let msg of raw_msg.split(/,|!|\./)) {
+    msg = msg.trim()
+    if (0 === msg.length)
+      continue
 
-        case 'NULL-LIBRARY':
-          return 'Invalid library, has setup been performed yet?'
-        case 'DUP-LIBRARY':
-          return 'Duplicate library, try reloading the page'
-        case 'DUP-HEAD-LIBRARIAN':
-          return 'Duplicate head-librarian, try reloading the page'
-        case 'BAD-ACCESS':
-          return 'Illegal user access'
+    switch (msg) {
+    // list of more special/severe errors:
+    // if we find these, we want to report that one alone and ignore all other
+    // errors
+    case 'NULL-LIBRARY':
+      return ['Invalid library, has setup been performed yet?']
+    case 'DUP-LIBRARY':
+      return ['Duplicate library, try reloading the page']
+    case 'DUP-HEAD-LIBRARIAN':
+      return ['Duplicate head-librarian, try reloading the page']
+    case 'BAD-ACCESS':
+      return ['Illegal user access, try reloading the page']
 
-        case 'BAD-AUTH-ONLINE-MEMBER':
-          return 'Incorrect username or password'
-        case 'BAD-AUTH-LIBRARIAN':
-          return 'Incorrect id or password'
-
-        case 'EMPTY-NAME':
-          return 'Name cannot be empty'
-        case 'EMPTY-ADDRESS':
-          return 'Address cannot be empty'
-        case 'EMPTY-PASSWORD':
-          return 'Password cannot be empty'
-        case 'DUP-USERNAME':
-          return 'Username is already taken'
-        case 'DUP-EMAIL':
-          return 'Email is already used'
-        case 'EMPTY-EMAIL':
-          return 'Email cannot be empty'
-        case 'BADFMT-EMAIL':
-          return 'Invalid Email'
-        case 'UNDERSIZED-PASSWORD':
-        case 'OVERSIZED-PASSWORD':
-          return 'Password must be 4 to 32 characters long'
-        case 'BADCHAR-PASSWORD':
-          return 'Password can only contain alphanumeric characters'
-        }
-      })
+    // other errors just add them to the list of errors and report them at the
+    // same time
+    default:
+      errs.push(msg)
+      break
+    case 'BAD-AUTH-ONLINE-MEMBER':
+      errs.push('Incorrect username or password')
+      break
+    case 'BAD-AUTH-LIBRARIAN':
+      errs.push('Incorrect id or password')
+      break
+    case 'EMPTY-NAME':
+      errs.push('Name cannot be empty')
+      break
+    case 'EMPTY-ADDRESS':
+      errs.push('Address cannot be empty')
+      break
+    case 'EMPTY-PASSWORD':
+      errs.push('Password cannot be empty')
+      break
+    case 'DUP-USERNAME':
+      errs.push('Username is already taken')
+      break
+    case 'DUP-EMAIL':
+      errs.push('Email is already used')
+      break
+    case 'EMPTY-EMAIL':
+      errs.push('Email cannot be empty')
+      break
+    case 'BADFMT-EMAIL':
+      errs.push('Invalid Email')
+      break
+    case 'UNDERSIZED-PASSWORD':
+    case 'OVERSIZED-PASSWORD':
+      errs.push('Password must be 4 to 32 characters long')
+      break
+    case 'BADCHAR-PASSWORD':
+      errs.push('Password can only contain alphanumeric characters')
+      break
+    }
+  }
+  return errs
 }
