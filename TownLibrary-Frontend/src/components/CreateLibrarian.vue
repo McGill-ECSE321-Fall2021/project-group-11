@@ -12,14 +12,14 @@
       <input type="text" v-model="newLibrarian.address" placeholder="Address">
 
       <table>
-        <tr v-for="msg in errorMessages">
+        <tr v-for="msg in errorMessages" :key="msg">
           <td style="color: red">{{ msg }}</td>
         </tr>
       </table>
       <br/>
 
-      <button v-bind:disabled="0 !== errorMessages.length"
-              v-on:click="createLibrarian(newLibrarian)">Create New Librarian</button>
+      <button :disabled="0 !== errorMessages.length"
+              @click="createLibrarian(newLibrarian)">Create New Librarian</button>
     </div>
 
     <div v-if="state === 1">
@@ -30,7 +30,7 @@
 
         And when doing so, remember to <em>login as librarian</em></p>
 
-      <button v-on:click="successRedirect()">Return to profile</button>
+      <button @click="successRedirect()">Return to profile</button>
     </div>
   </div>
 </template>

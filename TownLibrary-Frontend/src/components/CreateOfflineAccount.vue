@@ -10,14 +10,14 @@
       <input type="text" v-model="newOfflineMember.address" placeholder="Address">
 
       <table>
-        <tr v-for="msg in errorMessages">
+        <tr v-for="msg in errorMessages" :key="msg">
           <td style="color: red">{{ msg }}</td>
         </tr>
       </table>
       <br/>
 
-      <button v-bind:disabled="0 !== errorMessages.length"
-              v-on:click="createAccount(newOfflineMember)">Create Offline Account</button>
+      <button :disabled="0 !== errorMessages.length"
+              @click="createAccount(newOfflineMember)">Create Offline Account</button>
     </div>
 
     <div v-if="state === 1">
@@ -27,7 +27,7 @@
         After the address has been validated,
         remember to update the status via the user management portal!</p>
 
-      <button v-on:click="successRedirect()">Return to profile</button>
+      <button @click="successRedirect()">Return to profile</button>
     </div>
   </div>
 </template>
