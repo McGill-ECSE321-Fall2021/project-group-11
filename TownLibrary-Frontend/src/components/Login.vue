@@ -3,7 +3,7 @@
     <h1>Login</h1>
 
     <h2>{{ onlineMemberMode ? 'Online Member' : 'Librarian' }}</h2>
-    <p>Please enter your login informtion below</p>
+    <p>Please enter your login information below</p>
 
     <input type="text" v-model="username" :placeholder="onlineMemberMode ? 'Username' : 'ID'">
     <br/>
