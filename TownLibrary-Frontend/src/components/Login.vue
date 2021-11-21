@@ -22,17 +22,15 @@
 
     <br/>
 
-    <div v-if="onlineMemberMode">
-      Not an online member?
-      <button @click="onlineMemberMode = false">Login as librarian</button>
+    <div>
+      {{ onlineMemberMode ? 'Not an online member?' : 'Not a librarian?' }}
+      <button @click="toggleLoginMode()">Login as {{ onlineMemberMode ? 'librarian' : 'online member' }}</button>
       <br/>
+    </div>
 
+    <div v-if="onlineMemberMode">
       Don't have an account yet?
       <button @click="$router.push('/newacc')">Create an online account</button>
-    </div>
-    <div v-if="!onlineMemberMode">
-      Not a librarian?
-      <button @click="onlineMemberMode = true">Login as online member</button>
     </div>
   </div>
 </template>
@@ -118,6 +116,12 @@ export default {
       } catch (error) {
         this.serverResponse = error
       }
+    },
+
+    toggleLoginMode () {
+      this.onlineMemberMode = !this.onlineMemberMode
+      this.username = ''
+      this.password = ''
     }
   },
 
