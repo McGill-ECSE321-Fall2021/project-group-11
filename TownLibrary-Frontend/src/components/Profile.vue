@@ -18,11 +18,14 @@
       List of Librarians:
       <button v-on:click="reloadLibrarians()">Refresh</button>
       <table>
-        <tr>
+        <tr v-if="librarians !== null">
           <th><!-- Empty cell just for aligning the table --></th>
           <th>ID</th>
           <th>Name</th>
           <th>Address</th>
+        </tr>
+        <tr v-if="librarians === null">
+          <td style="color: red">Failed to load from server, try again later by clicking on refresh</td>
         </tr>
         <tr v-for="librarian in (librarians || [])">
           <td>
@@ -34,7 +37,6 @@
           <td>{{ librarian.address }}</td>
         </tr>
       </table>
-      <p style="color: red" v-if="librarians == null">Failed to load from server, try again later by clicking on refresh</p>
 
       <button v-on:click="$router.push('/newacc/librarian')">Add a new librarian</button>
     </div>
