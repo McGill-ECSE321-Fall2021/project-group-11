@@ -20,4 +20,8 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
+table {
+  width: 100%
+}
 </style>

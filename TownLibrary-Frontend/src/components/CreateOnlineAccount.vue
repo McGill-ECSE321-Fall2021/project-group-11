@@ -15,9 +15,12 @@
     <br/>
     <input type="text" v-model="newOnlineMember.address" placeholder="Address">
 
-    <ul>
-      <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
-    </ul>
+    <table>
+      <tr v-for="msg in errorMessages">
+        <td style="color: red">{{ msg }}</td>
+      </tr>
+    </table>
+    <br/>
 
     <button v-bind:disabled="0 !== errorMessages.length"
             v-on:click="createAccount(newOnlineMember)">Create Online Account</button>
