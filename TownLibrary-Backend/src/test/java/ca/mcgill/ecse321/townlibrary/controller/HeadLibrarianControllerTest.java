@@ -150,6 +150,6 @@ public class HeadLibrarianControllerTest {
             .when().post("/auth/head-librarians/" + id)
             .then()
             .statusCode(400)
-            .body(equalTo("BAD-ACCESS"));
+            .body(equalTo("BAD-AUTH-LIBRARIAN"));
     }
 }

@@ -9,12 +9,15 @@
       <br/>
       <input type="text" v-model="newOfflineMember.address" placeholder="Address">
 
-      <ul>
-        <li style="color: red" v-for="msg in errorMessages">{{ msg }}</li>
-      </ul>
+      <table>
+        <tr v-for="msg in errorMessages" :key="msg">
+          <td style="color: red">{{ msg }}</td>
+        </tr>
+      </table>
+      <br/>
 
-      <button v-bind:disabled="0 !== errorMessages.length"
-              v-on:click="createAccount(newOfflineMember)">Create Offline Account</button>
+      <button :disabled="0 !== errorMessages.length"
+              @click="createAccount(newOfflineMember)">Create Offline Account</button>
     </div>
 
     <div v-if="state === 1">
@@ -24,13 +27,14 @@
         After the address has been validated,
         remember to update the status via the user management portal!</p>
 
-      <button v-on:click="successRedirect()">Return to profile</button>
+      <button @click="successRedirect()">Return to profile</button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -56,7 +60,7 @@ export default {
 
       initId: '',
       initPass: '',
-      serverResponse: []
+      serverResponse: null
     }
   },
 
@@ -81,7 +85,13 @@ export default {
         this.createdUser = response.data;
         this.state++;
       } catch (error) {
-        this.serverResponse = error.response.data.split(',')
+        if (error.response && error.response.data
+            && 'BAD-ACCESS' === error.response.data)
+          // how did we get here!? redirect to profile
+          this.$router.replace('/profile')
+          return
+
+        this.serverResponse = error
       }
     },
 
@@ -101,16 +111,7 @@ export default {
       if (0 !== localizedErrs.length)
         return localizedErrs
 
-      return this.serverResponse.map(res => {
-        switch (res) {
-        case 'NULL-LIBRARY':
-          // Getting a null library would mean the library does not exist yet,
-          // which likely means setup has not been executed yet...
-          return 'Invalid library, has setup been run yet?'
-        default:
-          return 'Unknown error: ' + res;
-        }
-      })
+      return decodeError(this.serverResponse)
     }
   },
 
@@ -118,7 +119,7 @@ export default {
     newOfflineMember: {
       deep: true,
       handler (val) {
-        this.serverResponse = []
+        this.serverResponse = null
       }
     }
   }

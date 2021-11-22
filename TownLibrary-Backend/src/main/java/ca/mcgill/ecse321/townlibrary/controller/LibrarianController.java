@@ -71,7 +71,7 @@ public class LibrarianController {
             @RequestParam String password) {
 
         if (!this.librarianService.authenticateLibrarian(id, password))
-            return ResponseEntity.badRequest().body("BAD-ACCESS");
+            return ResponseEntity.badRequest().body("BAD-AUTH-LIBRARIAN");
 
         final Librarian u = this.librarianService.getLibrarian(id);
         return ResponseEntity.ok(LibrarianDTO.fromModel(u));

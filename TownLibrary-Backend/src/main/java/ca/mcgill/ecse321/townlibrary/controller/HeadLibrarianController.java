@@ -59,7 +59,7 @@ public class HeadLibrarianController {
             @RequestParam String password) {
 
         if (!this.headLibrarianService.authenticateHeadLibrarian(id, password))
-            return ResponseEntity.badRequest().body("BAD-ACCESS");
+            return ResponseEntity.badRequest().body("BAD-AUTH-LIBRARIAN");
 
         final HeadLibrarian u = this.headLibrarianService.getHeadLibrarian(id);
         return ResponseEntity.ok(HeadLibrarianDTO.fromModel(u));

@@ -3,37 +3,41 @@
     <h1>Login</h1>
 
     <h2>{{ onlineMemberMode ? 'Online Member' : 'Librarian' }}</h2>
-    <p>Please enter your login informtion below</p>
+    <p>Please enter your login information below</p>
 
-    <input type="text" v-model="username" v-bind:placeholder="onlineMemberMode ? 'Username' : 'ID'">
+    <input type="text" v-model="username" :placeholder="onlineMemberMode ? 'Username' : 'ID'">
     <br/>
     <input type="password" v-model="password" placeholder="Password">
     <br/>
 
-    <p style="color: red">{{ errorMessage }}</p>
+    <table>
+      <tr v-for="msg in errorMessages" :key="msg">
+        <td style="color: red">{{ msg }}</td>
+      </tr>
+    </table>
+    <br/>
 
-    <button v-bind:disabled="'' !== errorMessage"
-            v-on:click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
+    <button :disabled="0 !== errorMessages.length"
+            @click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
 
     <br/>
 
-    <div v-if="onlineMemberMode">
-      Not an online member?
-      <button v-on:click="onlineMemberMode = false">Login as librarian</button>
+    <div>
+      {{ onlineMemberMode ? 'Not an online member?' : 'Not a librarian?' }}
+      <button @click="toggleLoginMode()">Login as {{ onlineMemberMode ? 'librarian' : 'online member' }}</button>
       <br/>
-
-      Don't have an account yet?
-      <button v-on:click="$router.push('/newacc')">Create an online account</button>
     </div>
-    <div v-if="!onlineMemberMode">
-      Not a librarian?
-      <button v-on:click="onlineMemberMode = true">Login as online member</button>
+
+    <div v-if="onlineMemberMode">
+      Don't have an account yet?
+      <button @click="$router.push('/newacc')">Create an online account</button>
     </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -52,7 +56,7 @@ export default {
       username: '',
       password: '',
 
-      serverResponse: ''
+      serverResponse: null
     }
   },
 
@@ -75,7 +79,7 @@ export default {
         // and we're ready to jump
         this.$router.push('/profile')
       } catch (error) {
-        this.serverResponse = error.response.data
+        this.serverResponse = error
       }
     },
 
@@ -110,37 +114,37 @@ export default {
         // and we're ready to jump
         this.$router.push('/profile')
       } catch (error) {
-        this.serverResponse = error.response.data
+        this.serverResponse = error
       }
+    },
+
+    toggleLoginMode () {
+      this.onlineMemberMode = !this.onlineMemberMode
+      this.username = ''
+      this.password = ''
     }
   },
 
   computed: {
-    errorMessage () {
+    errorMessages () {
+      let localizedErrs = []
       if ('' === this.username)
-        return (this.onlineMemberMode ? 'Username' : 'ID') + ' cannot be empty'
+        localizedErrs.push((this.onlineMemberMode ? 'Username' : 'ID') + ' cannot be empty')
       if ('' === this.password)
-        return 'Password cannot be empty'
+        localizedErrs.push('Password cannot be empty')
+      if (0 !== localizedErrs.length)
+        return localizedErrs
 
-      switch (this.serverResponse) {
-      case '':
-        return ''
-      case 'BAD-AUTH-ONLINE-MEMBER':
-        return 'Incorrect username or password'
-      case 'BAD-ACCESS':
-        return 'Incorrect id or password'
-      default:
-        return 'Unknown error occurred, please try again later'
-      }
+      return decodeError(this.serverResponse)
     }
   },
 
   watch: {
     username (val) {
-      this.serverResponse = ''
+      this.serverResponse = null
     },
     password (val) {
-      this.serverResponse = ''
+      this.serverResponse = null
     }
   }
 }
