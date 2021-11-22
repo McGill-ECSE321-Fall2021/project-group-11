@@ -1,23 +1,19 @@
 <template>
   <div id="homepage">
-    <h2>People</h2>
-    <table>
-      <tr>
-          <td>John</td>
-          <td>Event to attend</td>
-      </tr>
-      <tr>
-          <td>
-              <input type="text" placeholder="Person Name">
-          </td>
-          <td>
-              <button>Create</button>
-          </td>
-      </tr>
-    </table>
-    <p>
-      <span style="color:red">Error: Message text comes here</span>
-    </p>
+    <h1>Welcome</h1> <br>
+
+    <h3>Item catalogue</h3>
+    <button>Items</button> 
+    <br><br>
+
+    <h3>Events</h3>
+    <button>Events</button> 
+    <br><br>
+
+    <h3>Log in</h3>
+    <p>To book items or events, you need to sign in to your account</p>
+    <button @click="$router.push('/login')">Log in </button>
+    <button @click="$router.push('/newacc')">Sign up </button>
   </div>
 </template>
 
