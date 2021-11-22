@@ -8,6 +8,7 @@ import SetupLibrary from '@/components/SetupLibrary'
 import CreateLibrarian from '@/components/CreateLibrarian'
 import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
+import Homepage from '@/components/Homepage'
 
 Vue.use(Router)
 
@@ -16,8 +17,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Homepage',
+      component: Homepage
     },
     {
       path: '/login',
