@@ -2,23 +2,28 @@
 	<div id="create-item">
 		<h1>Create Item</h1>
 
+		<input type="text" v-model="newItem.id" placeholder="Item ID">
+		<br/>
 		<input type="text" v-model="newItem.name" placeholder="Item Name">
 		<br/>
-		<select v-model="newItem">
+		<select v-model="newItem.type">
 			<option disabled value="">Item Type</option>
-			<option v-bind:value="{ type: archive }">Archive</option>
-			<option v-bind:value="{ type: newspaper }">Newspaper</option>
-			<option v-bind:value="{ type: book }">Book</option>
-			<option v-bind:value="{ type: movie }">Movie</option>
-			<option v-bind:value="{ type: musicalbum }">Music Album</option>
+			<option value="archive">Archive</option>
+			<option value="newspaper">Newspaper</option>
+			<option value="book">Book</option>
+			<option value="movie">Movie</option>
+			<option value="musicalbum">Music Album</option>
 		</select>
 
-		<button>Add Item</button>
+		<button @click="createItem(newItem)">Add Item</button>
+		<br/>|
+		<button @click="$router.push('/browseitem')">Browse Items</button>
 	</div>
 </template>
 
 <script>
 import axios from 'axios'
+import decodeError from '../api_errors.js'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -34,20 +39,63 @@ export default {
   data () {
     return {
       newItem: {
+		id: '',
         name: '',
         type: '',
       },
 
-      serverResponse: []
+      serverResponse: null
 	}
   },
 
   methods: {
-	  async createItem (itemInfo) {
-		  if (itemInfo.type == archive) {
-			  //WIP
+	async createItem (itemInfo) {
+		try {
+		  if (itemInfo.type == "archive") {
+			  console.log("Archive selected");
+			  await AXIOS.post('/archives/' + itemInfo.id , null, {
+				  params: {
+					  name: itemInfo.name,
+					  libraryId: 0
+				  }
+			  })
+		  } else if (itemInfo.type == "newspaper") {
+			  console.log("Newspaper selected");
+			  await AXIOS.post('/newspapers/' + itemInfo.id , null, {
+				  params: {
+					  name: itemInfo.name,
+					  libraryId: 0
+				  }
+			  })
+		  } else if (itemInfo.type == "book") {
+			  console.log("Book selected");
+			  await AXIOS.post('/books/' + itemInfo.id , null, {
+				  params: {
+					  name: itemInfo.name,
+					  libraryId: 0
+				  }
+			  })
+		  } else if (itemInfo.type == "movie") {
+			  console.log("Movie selected");
+			  await AXIOS.post('/movies/' + itemInfo.id , null, {
+				  params: {
+					  name: itemInfo.name,
+					  libraryId: 0
+				  }
+			  })
+		  } else if (itemInfo.type == "musicalbum") {
+			  console.log("MusicAlbum selected");
+			  await AXIOS.post('/musicalbums/' + itemInfo.id , null, {
+				  params: {
+					  name: itemInfo.name,
+					  libraryId: 0
+				  }
+			  })
 		  }
-	  }
+	 	} catch (error) {
+        	this.serverResponse = error
+      	}
+	}
   }
 }
 </script>

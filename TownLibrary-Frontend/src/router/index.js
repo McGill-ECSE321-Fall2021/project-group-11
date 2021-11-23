@@ -9,6 +9,7 @@ import CreateLibrarian from '@/components/CreateLibrarian'
 import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
 import CreateItem from '@/components/CreateItem'
+import BrowseItem from '@/components/BrowseItem'
 
 Vue.use(Router)
 
@@ -55,6 +56,11 @@ const router = new Router({
       path: '/additem',
       name: 'Create Item',
       component: CreateItem
+    },
+    {
+      path: '/browseitem',
+      name: 'Browse Item',
+      component: BrowseItem
     }
   ]
 })
