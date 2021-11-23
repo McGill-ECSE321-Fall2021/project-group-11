@@ -7,7 +7,7 @@
     <br><br>
 
     <h3>Events</h3>
-    <button>Events</button> 
+    <button @click="$router.push('/events')">Events</button> 
     <br><br>
 
     <h3>Log in</h3>

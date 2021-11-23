@@ -9,6 +9,8 @@ import CreateLibrarian from '@/components/CreateLibrarian'
 import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
 import Homepage from '@/components/Homepage'
+import CreateEvent from '@/components/CreateEvent'
+import Events from '@/components/Events'
 
 Vue.use(Router)
 
@@ -50,6 +52,16 @@ const router = new Router({
       path: '/profile',
       name: 'User Profile',
       component: Profile
+    },
+    {
+      path: '/create-event',
+      name: 'Create Event',
+      component: CreateEvent
+    },
+    {
+      path: '/events',
+      name: 'Events',
+      component: Events
     }
   ]
 })
