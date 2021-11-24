@@ -9,8 +9,7 @@
                 <button class="exit-button" v-on:click="open=false">x</button>
                 <h5 style="text-align:left;">{{scheduleOwner}} schedule</h5>
                 <body class="content">
-                    <calendar v-bind:user="loginStatus.userType" v-bind:user-schedule="scheduleArray"> </calendar>
-                    <h1>ddd</h1>
+                    <calendar :user="loginStatus.userType" :user-schedule="getSchedule" :user-id="entityId"> </calendar>
                 </body>
             </div>
         </div>
@@ -42,7 +41,7 @@ export default {
         },
         scheduleOwner:{
             type: String,
-            required: true,
+            // required: true,
             default: "Library"
         }
 
@@ -76,12 +75,14 @@ export default {
             try {
                 if (this.entityId === 0){
                     const request = await AXIOS.get('/schedules/library/0')
-                    this.scheduleArray = request.data
+                    // this.scheduleArray = request.data
+                    return request.data
                 }
                
             } catch (error) {
                 if (error.response.status == '400'){
-                    this.scheduleArray = []
+                    // this.scheduleArray = []
+                    return []
                 }
             }
         }
