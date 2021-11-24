@@ -1,7 +1,27 @@
 <template>
     <div id="transaction">
         <h2> Transactions </h2>
-
+            <table>
+                <tr>
+                    <th><!-- Empty cell just for aligning the table --></th>
+                    <th>Transaction id</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Type</th>
+                    <th>Renew</th>
+                </tr>
+                <tr v-for="transaction in transactions" :key="transaction.id">
+                    <td>   </td>
+                    <td> {{ transaction.id }} </td>
+                    <td> {{ getTransactionObject(transaction.id) }} </td>
+                    <td> {{ transaction.startDate }} </td>
+                    <td> {{ transaction.endDate }} </td>
+                    <td> Event </td>
+                    <td> 
+                        <button @click="renewItem(transaction.id)">Renew</button> 
+                    </td>
+                </tr>
+            </table>
         <div>
             <button @click="$router.push('/profile')">Return</button>
         </div>
@@ -11,7 +31,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios, { Axios } from 'axios'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -26,15 +46,30 @@ export default {
     name: "transaction",
     data() {
         return{
-            transactions: []
+            transactions: [],
+            errorTransaction: ''
         }
+    },
+    created: function() {
+        
+        this.reloadTransactions
     },
 
     methods: {
+        async reloadTransactions(id) {
+            AXIOS.get('/Transactions/'.concat(id), {}, {})
+                .then(response => {
+                    this.transactions = response.data
+                })
+                .catch(e => {
+                    this.errorTransaction = e
+                })
+        },
 
-        async getUserTransactions(id) {
-            AXIOS.get('/Transactions/')
+        async getTransactionObject(id){
+            
         }
+
     }
 }
 

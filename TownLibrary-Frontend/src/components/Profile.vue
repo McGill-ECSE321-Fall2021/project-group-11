@@ -42,7 +42,10 @@
 
     </div>
     <div v-if="isOnlineMember">
-      <button @click="$router.push('/profile/transactions')">View transactions</button>
+      <button @click="$router.push({name: 'User Transactions',
+                                    params: {
+                                      id: userInfo.id
+                                   }})">View transactions</button>
       <button @click="$router.push({name:'Personal Information', 
                                     params:{
                                       id:       userInfo.id,
