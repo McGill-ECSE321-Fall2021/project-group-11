@@ -21,10 +21,15 @@ public class EventController {
     private LibraryService libraryService;
 
     @GetMapping(value = { "/events", "/events/"})
-    public List<EventDTO> getAllEvents() {
+    /*public List<EventDTO> getAllEvents() {
         return eventService.getAllEvents()
             .stream().map(EventDTO::fromModel)
             .collect(Collectors.toList());
+    }*/
+    public ResponseEntity<?> getAllEvents() {
+        final List<EventDTO> el = this.eventService.getAllEvents()
+            .stream().map(EventDTO::fromModel).collect(Collectors.toList());
+        return ResponseEntity.ok().body(el);
     }
 
     @GetMapping(value = {"/events/{id}", "/events/{id}/"})
