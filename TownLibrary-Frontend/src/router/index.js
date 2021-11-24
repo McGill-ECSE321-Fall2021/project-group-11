@@ -10,6 +10,7 @@ import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
 import ScheduleViewer from '@/components/ScheduleViewer'
 import CreateSchedule from '@/components/CreateSchedule'
+import Calendar from '@/components/Calendar'
 
 Vue.use(Router)
 
@@ -62,6 +63,11 @@ const router = new Router({
       path: '/schedule/create',
       name: 'Create Schedule',
       component: CreateSchedule
+    },
+    {
+      path: '/schedule/calendar',
+      name: 'Calendar',
+      component: Calendar
     }
   ]
 })
