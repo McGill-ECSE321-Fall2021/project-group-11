@@ -4,7 +4,6 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 import ca.mcgill.ecse321.townlibrary.model.Transaction;
-import ca.mcgill.ecse321.townlibrary.model.UserRole;
 
 public class TransactionDTO {
 

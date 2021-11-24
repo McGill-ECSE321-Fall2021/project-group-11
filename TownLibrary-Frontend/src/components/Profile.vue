@@ -39,7 +39,20 @@
       </table>
 
       <button @click="$router.push('/newacc/librarian')">Add a new librarian</button>
+
     </div>
+    <div v-if="isOnlineMember">
+      <button @click="$router.push('/profile/transactions')">View transactions</button>
+      <button @click="$router.push({name:'Personal Information', 
+                                    params:{
+                                      id:       userInfo.id,
+                                      fullName: userInfo.name,
+                                      email:    userInfo.email,
+                                      address:  userInfo.address      
+                                  }})">View personal information</button>
+      <button @click="$router.push('')">View event schedule</button>
+    </div>
+
   </div>
 </template>
 
@@ -56,7 +69,6 @@ var AXIOS = axios.create({
 
 export default {
   name: 'profile',
-
   data () {
     return {
       loginStatus: {},
@@ -69,9 +81,10 @@ export default {
     // Copy the login status out so that it does not cause issues when logout
     // is requested.
     Object.assign(this.loginStatus, this.$store.state.loginStatus)
-
     this.reloadUserInfo()
     this.reloadLibrarians()
+
+    
   },
 
   computed: {
