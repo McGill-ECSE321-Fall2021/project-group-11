@@ -2,25 +2,21 @@
 	<div id="events">
 		<h1>Events</h1>
 		<br> <br>
+		<h2>Create event:</h2>
+		<button @click="$router.push('/create-event')">Create Event</button>
+		<br><br>
 		<h2>Event listing:</h2>
 		<table>
-			<tr v-if="events === null">
-				<td>There are no events available at the moment. You can create one here:</td>
-			</tr>
-			<br>
-
-			<tr v-if="events === null">
-				<button @click="$router.push('/create-event')">Create Event</button>
-			</tr>
-			<tr v-if="events !== null">
+			<tr>
 				<th>Name</th>
-				<th>ID</th>
-			</tr>
+				<th>Event ID</th>
 			<tr v-for="event in (events || [])" :key="event.id">
 				<td>{{ event.name }}</td>
 				<td>{{ event.id }}</td>
 			</tr>
 		</table>
+		<br><br>
+		<button @click="$router.push('/')">Home</button>
 	</div>
 </template>
 

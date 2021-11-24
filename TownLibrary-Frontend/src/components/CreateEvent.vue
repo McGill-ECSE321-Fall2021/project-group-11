@@ -6,7 +6,8 @@
       <input type="text" v-model="newEvent.name" placeholder="Event Name">
       <br/><br>
 
-      <button @click="createEvent(newEvent)">Add Event</button>
+      <button @click="createEvent(newEvent)">Create</button><br>
+      Note: events can only be created if you are signed in to an account.
       <br/><br>
       <button @click="$router.push('/events')">View Events</button>
     </div>
@@ -14,7 +15,7 @@
     <div v-if="state === 1">
       <h2>Successfully added {{ createdEvent.name }}</h2>
       <p>This event has been assigned an Event ID of {{ createdEvent.id }}!</p>
-      <button @click="successRedirect()">Return to create event page</button>
+      <button @click="successRedirect()">Return to event page</button>
     </div>
   </div>
 
@@ -60,7 +61,7 @@ export default {
     },
 
     successRedirect() {
-      this.$router.push('/create-event')
+      this.$router.push('events')
       this.state = 0
     }
   }
