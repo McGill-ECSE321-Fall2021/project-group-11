@@ -1,7 +1,26 @@
 <template>
 	<div id="events">
 		<h1>Events</h1>
-        <button @click="$router.push('/create-event')">Create a new event</button>
+		<br> <br>
+		<h2>Event listing:</h2>
+		<table>
+			<tr v-if="events === null">
+				<td>There are no events available at the moment. You can create one here:</td>
+			</tr>
+			<br>
+
+			<tr v-if="events === null">
+				<button @click="$router.push('/create-event')">Create Event</button>
+			</tr>
+			<tr v-if="events !== null">
+				<th>Name</th>
+				<th>ID</th>
+			</tr>
+			<tr v-for="event in (events || [])" :key="event.id">
+				<td>{{ event.name }}</td>
+				<td>{{ event.id }}</td>
+			</tr>
+		</table>
 	</div>
 </template>
 
@@ -17,61 +36,21 @@ export default {
 	name: 'events',
 	data () {
 		return {
-			archives: [],
-			newspapers: [],
-			books: [],
-			movies: [],
-			musicalbums: []
+			events: []
 		}
 	},
 	created () {
-		this.loadArchives()
-		this.loadNewspapers()
-		this.loadBooks()
-		this.loadMovies()
-		this.loadMusicAlbums()
+		this.loadEvents()
 	},
 	methods: {
-		async loadArchives() {
+		async loadEvents() {
 			try {
-				let response = await AXIOS.get('/archives')
-				this.archives = response.data
+				let response = await AXIOS.get('/events')
+				this.events = response.data
 			} catch (error) {
-				this.archives = null
+				this.events = null
 			}
-		},
-		async loadNewspapers() {
-			try {
-				let response = await AXIOS.get('/newspapers')
-				this.newspapers = response.data
-			} catch (error) {
-				this.newspapers = null
-			}
-		},
-		async loadBooks() {
-			try {
-				let response = await AXIOS.get('/books')
-				this.books = response.data
-			} catch (error) {
-				this.books = null
-			}
-		},
-		async loadMovies() {
-			try {
-				let response = await AXIOS.get('/movies')
-				this.movies = response.data
-			} catch (error) {
-				this.movies = null
-			}
-		},
-		async loadMusicAlbums() {
-			try {
-				let response = await AXIOS.get('/musicalbums')
-				this.musicalbums = response.data
-			} catch (error) {
-				this.musicalbums = null
-			}
-		},
+		}
 	}
 }
 </script>
