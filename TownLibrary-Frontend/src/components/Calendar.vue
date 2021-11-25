@@ -67,6 +67,7 @@ var AXIOS = axios.create({
 export default {
     name: "calendar",
     
+
     props: {
         // user who is currently logged in
         user: {

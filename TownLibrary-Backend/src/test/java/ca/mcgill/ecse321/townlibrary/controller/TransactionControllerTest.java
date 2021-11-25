@@ -79,7 +79,7 @@ public class TransactionControllerTest {
             .param("startDate", "2021-11-07T00:00:00")
             .param("endDate", "2021-11-09T00:00:00")
             .param("transactionType", TransactionType.books)
-            .when().post("/transactions/" + this.idLibrarian + "/0")
+            .when().post("/transactions/" + this.idLibrarian)
             .then()
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);

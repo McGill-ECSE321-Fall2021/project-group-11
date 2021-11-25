@@ -300,7 +300,7 @@ public class ItemControllerTest {
             .param("startDate", "2021-11-07T00:00:00")
             .param("endDate", "2021-11-09T00:00:00")
 			.param("transactionType", TransactionType.books)
-            .when().post("/transactions/" + this.idUser + "/0")
+            .when().post("/transactions/" + this.idUser)
             .then()
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);
@@ -330,7 +330,7 @@ public class ItemControllerTest {
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
 				.param("transactionType", TransactionType.movies)
-                .when().post("/transactions/" + this.idUser + "/0")
+                .when().post("/transactions/" + this.idUser)
                 .then()
                 .statusCode(200)
                 .extract().response().as(TransactionDTO.class);
@@ -360,7 +360,7 @@ public class ItemControllerTest {
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
 				.param("transactionType", TransactionType.musicalbums)
-                .when().post("/transactions/" + this.idUser + "/0")
+                .when().post("/transactions/" + this.idUser)
                 .then()
                 .statusCode(200)
                 .extract().response().as(TransactionDTO.class);
@@ -389,7 +389,7 @@ public class ItemControllerTest {
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
 				.param("transactionType", TransactionType.musicalbums)
-                .when().post("/transactions/" + this.idUser + "/0")
+                .when().post("/transactions/" + this.idUser)
                 .then()
                 .statusCode(200)
                 .extract().response().as(TransactionDTO.class);

@@ -57,47 +57,39 @@ public class TransactionServiceTest {
 	
 	@Test
 	public void testCreateTransaction() {
-		
-		assertEquals(TRANSACTION_ID, service.createTransaction(TRANSACTION_ID, START_TIME, END_TIME, USER, TYPE).getId());
-		
+
 		try {
-			service.createTransaction(BAD_ID, START_TIME, END_TIME, USER, TYPE);
-		} catch (IllegalArgumentException e) {
-			assertEquals("Unsupported Id.", e.getMessage());
-		}
-		
-		try {
-			service.createTransaction(TRANSACTION_ID, null, END_TIME, USER, TYPE);
+			service.createTransaction( null, END_TIME, USER, TYPE);
 		} catch (IllegalArgumentException e) {
 			assertEquals("Transaction start time cannot be empty.", e.getMessage());
 		}
 		
 		try {
-			service.createTransaction(TRANSACTION_ID, START_TIME, null, USER, TYPE);
+			service.createTransaction(START_TIME, null, USER, TYPE);
 		} catch (IllegalArgumentException e) {
 			assertEquals("Transaction end time cannot be empty.", e.getMessage());
 		}
 		
 		try {
-			service.createTransaction(TRANSACTION_ID, START_TIME, START_TIME, USER, TYPE);
+			service.createTransaction( START_TIME, START_TIME, USER, TYPE);
 		} catch (IllegalArgumentException e) {
 			assertEquals("Transaction end time cannot be before start time.", e.getMessage());
 		}
 		
 		try {
-			service.createTransaction(TRANSACTION_ID, END_TIME, START_TIME, USER, TYPE);
+			service.createTransaction( END_TIME, START_TIME, USER, TYPE);
 		} catch (IllegalArgumentException e) {
 			assertEquals("Transaction end time cannot be before start time.", e.getMessage());
 		}
 		
 		try {
-			service.createTransaction(TRANSACTION_ID, START_TIME, END_TIME, null, TYPE);
+			service.createTransaction( START_TIME, END_TIME, null, TYPE);
 		} catch (IllegalArgumentException e) {
 			assertEquals("User cannot be empty.", e.getMessage());
 		}
 
 		try {
-			service.createTransaction(TRANSACTION_ID, START_TIME, END_TIME, USER, null);
+			service.createTransaction( START_TIME, END_TIME, USER, null);
 		} catch (IllegalArgumentException e) {
 			assertEquals("Type cannot be empty.", e.getMessage());
 		}
