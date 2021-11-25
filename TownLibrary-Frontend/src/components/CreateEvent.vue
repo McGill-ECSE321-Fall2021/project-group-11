@@ -25,7 +25,7 @@
 import axios from 'axios'
 import decodeError from '../api_errors.js'
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
+var backendUrl = 'https://' + process.env.API_HOST + ':' + process.env.API_PORT
 var AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
@@ -54,7 +54,7 @@ export default {
             })
             this.createdEvent = response.data
             this.state++
-            
+
         } catch (error) {
             this.serverResponse = error
         }
