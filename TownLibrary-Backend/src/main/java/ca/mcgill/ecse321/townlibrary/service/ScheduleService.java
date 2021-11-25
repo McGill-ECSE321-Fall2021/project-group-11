@@ -60,7 +60,7 @@ public class ScheduleService {
         if (startTime == (null) || endTime == (null)) throw new IllegalArgumentException("NULL-TIME");
         if (startTime.after(endTime)) throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
         for (DailySchedule schedule : dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).get())){
-            if (schedule.getDayOfWeek().toString().equals(dayOfWeek.toString())) throw new IllegalArgumentException("ALREADY-SCHEDULE-ON-DAY");
+            if (schedule.getDayOfWeek()== dayOfWeek) throw new IllegalArgumentException("ALREADY-SCHEDULE-ON-DAY");
         }
         
         Library library = libraryRepository.findById(libraryId).get();
