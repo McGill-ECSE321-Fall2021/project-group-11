@@ -15,7 +15,8 @@
 				<td>{{ archive.id }}</td>
 				<td>{{ archive.name }}</td>
 				<td>
-					<button>View</button>
+					<button @click="viewItem(archive.id, archive.name, 'archive')">
+						View</button>
 				</td>
 			</tr>
 			<tr>
@@ -25,7 +26,8 @@
 				<td>{{ newspaper.id }}</td>
 				<td>{{ newspaper.name }}</td>
 				<td>
-					<button>View</button>
+					<button @click="viewItem(newspaper.id, newspaper.name, 'newspaper')">
+						View</button>
 				</td>
 			</tr>
 			<tr>
@@ -35,8 +37,7 @@
 				<td>{{ book.id }}</td>
 				<td>{{ book.name }}</td>
 				<td>
-					<button @click="$router.push(
-						{name: 'Item', params: { id: book.id, name: book.name }})">
+					<button @click="viewItem(book.id, book.name, 'book')">
 						View</button>
 				</td>
 			</tr>
@@ -47,7 +48,8 @@
 				<td>{{ movie.id }}</td>
 				<td>{{ movie.name }}</td>
 				<td>
-					<button>View</button>
+					<button @click="viewItem(movie.id, movie.name, 'movie')">
+						View</button>
 				</td>
 			</tr>
 			<tr>
@@ -57,7 +59,8 @@
 				<td>{{ musicalbum.id }}</td>
 				<td>{{ musicalbum.name }}</td>
 				<td>
-					<button>View</button>
+					<button @click="viewItem(musicalbum.id, musicalbum.name, 'musicalbum')">
+						View</button>
 				</td>
 			</tr>
 		</table>
@@ -86,8 +89,6 @@ export default {
 			books: [],
 			movies: [],
 			musicalbums: [],
-			id: '',
-			name: ''
 		}
 	},
 
@@ -100,13 +101,12 @@ export default {
 	},
 
 	methods: {
-		async viewItem(id, name) {
-			this.store.commit('browse-item', {
-				id: id,
-				name: name
-			})
+		async viewItem(itemId, itemName, itemType) {
+			console.log(itemName)
 
-			this.$router.push('/item')
+			this.$router.push({name: 'Item', 
+				params: { id: itemId, name: itemName, type: itemType }});
+
 		},
 
 		async loadArchives() {

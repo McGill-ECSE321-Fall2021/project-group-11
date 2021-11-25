@@ -14,9 +14,17 @@
 			<option value="movie">Movie</option>
 			<option value="musicalbum">Music Album</option>
 		</select>
+		<br/>
 
-		<button @click="createItem(newItem)">Add Item</button>
-		<br/>|
+		<table>
+			<tr v-for="msg in errorMessages" :key="msg">
+				<td style="color: red">{{ msg }}</td>
+			</tr>
+		</table>
+
+		<button :disabled="0 !== errorMessages.length"
+				@click="createItem(newItem)">Add Item</button>
+		<br/>
 		<button @click="$router.push('/browseitem')">View Items</button>
 	</div>
 </template>
@@ -51,51 +59,46 @@ export default {
   methods: {
 	async createItem (itemInfo) {
 		try {
-		  if (itemInfo.type == "archive") {
-			  console.log("Archive selected");
-			  await AXIOS.post('/archives/' + itemInfo.id , null, {
+			console.log(itemInfo.type + " selected");
+			  await AXIOS.post('/' + itemInfo.type + 's/' + itemInfo.id , null, {
 				  params: {
 					  name: itemInfo.name,
+					  type: itemInfo.type,
 					  libraryId: 0
 				  }
 			  })
-		  } else if (itemInfo.type == "newspaper") {
-			  console.log("Newspaper selected");
-			  await AXIOS.post('/newspapers/' + itemInfo.id , null, {
-				  params: {
-					  name: itemInfo.name,
-					  libraryId: 0
-				  }
-			  })
-		  } else if (itemInfo.type == "book") {
-			  console.log("Book selected");
-			  await AXIOS.post('/books/' + itemInfo.id , null, {
-				  params: {
-					  name: itemInfo.name,
-					  libraryId: 0
-				  }
-			  })
-		  } else if (itemInfo.type == "movie") {
-			  console.log("Movie selected");
-			  await AXIOS.post('/movies/' + itemInfo.id , null, {
-				  params: {
-					  name: itemInfo.name,
-					  libraryId: 0
-				  }
-			  })
-		  } else if (itemInfo.type == "musicalbum") {
-			  console.log("MusicAlbum selected");
-			  await AXIOS.post('/musicalbums/' + itemInfo.id , null, {
-				  params: {
-					  name: itemInfo.name,
-					  libraryId: 0
-				  }
-			  })
-		  }
+
+
+		//   if (itemInfo.type == "archive") {
+		// 	  console.log("Archive selected");
+		// 	  await AXIOS.post('/archives/' + itemInfo.id , null, {
+		// 		  params: {
+		// 			  name: itemInfo.name,
+		// 			  type: itemInfo.type,
+		// 			  libraryId: 0
+		// 		  }
+		// 	  })
+
 	 	} catch (error) {
         	this.serverResponse = error
       	}
 	}
-  }
+  },
+
+  computed: {
+    errorMessages () {
+      let localizedErrs = []
+      if ('' === this.newItem.id)
+        localizedErrs.push('Please enter an ID')
+      if ('' === this.newItem.name)
+        localizedErrs.push('Please enter a name')
+      if ('' === this.newItem.type)
+        localizedErrs.push('Please select a type')
+      if (0 !== localizedErrs.length)
+        return localizedErrs
+
+      return decodeError(this.serverResponse)
+    }
+  },
 }
 </script>
