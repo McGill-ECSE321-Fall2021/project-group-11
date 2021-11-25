@@ -222,9 +222,7 @@ export default {
                                         endTime : latestEndTime
                                     }
                                 })
-                                if (request.status == '200'){
-                                    console.log("library-post-success")
-                                }
+                            
                             // for librarians
                             } else {
                                 let request = await AXIOS.post('/schedules/librarian/'+ id +'/'+this.dayOfWeek[day], null ,
@@ -234,9 +232,6 @@ export default {
                                         endTime : latestEndTime
                                     }
                                 })
-                                if (request.status == '200'){
-                                    console.log("librarian-post-success")
-                                }
                             }
 
                         }catch (error){
@@ -254,9 +249,7 @@ export default {
                                                 newEndTime : latestEndTime
                                             }
                                         })
-                                        if (request.status == '200'){
-                                            console.log("put-success")
-                                        }
+                                 
                                     }else console.log("same schedule, do nothing.")
 
                                 } catch (error) {
@@ -271,9 +264,6 @@ export default {
                         // else keep as is
                         if (!isEmptyObject(this.checkSchedulesByDay(this.dayOfWeek[day]))){
                             let request = await AXIOS.delete('/schedules/'+scheduleId)
-                            if (request.status == '200'){
-                                console.log("delete-success")
-                            }
                         }
                     }
                 }
