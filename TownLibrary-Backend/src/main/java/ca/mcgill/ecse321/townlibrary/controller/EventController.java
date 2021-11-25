@@ -66,7 +66,7 @@ public class EventController {
         }
     }
 
-    @PostMapping(value = {"/events/add/{id}", "/events/add/{id}/"})
+    /*@PostMapping(value = {"/events/add/{id}", "/events/add/{id}/"})
     public ResponseEntity<?> addUser(
         @PathVariable("id") int Id,
         @RequestParam int eventId) {
@@ -80,5 +80,5 @@ public class EventController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
 
-    }
+    }*/
 }
