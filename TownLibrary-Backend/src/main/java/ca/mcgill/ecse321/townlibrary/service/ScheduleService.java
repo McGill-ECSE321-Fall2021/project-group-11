@@ -99,7 +99,7 @@ public class ScheduleService {
             throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
         }
         for (DailySchedule schedule : dailyScheduleRepository.findByLibrarian(librarianRepository.findById(librarianId).get())){
-            if (schedule.getDayOfWeek().toString().equals(dayOfWeek.toString())) throw new IllegalArgumentException("ALREADY-SCHEDULE-ON-DAY");
+            if (schedule.getDayOfWeek() == dayOfWeek) throw new IllegalArgumentException("ALREADY-SCHEDULE-ON-DAY");
         }
         
         Librarian librarian = librarianRepository.findLibrarianById(librarianId);
