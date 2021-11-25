@@ -3,36 +3,34 @@
     <h1>Login</h1>
 
     <h2>{{ onlineMemberMode ? 'Online Member' : 'Librarian' }}</h2>
-    <p>Please enter your login informtion below</p>
+    <p>Please enter your login information below</p>
 
-    <input type="text" v-model="username" v-bind:placeholder="onlineMemberMode ? 'Username' : 'ID'">
+    <input type="text" v-model="username" :placeholder="onlineMemberMode ? 'Username' : 'ID'">
     <br/>
     <input type="password" v-model="password" placeholder="Password">
     <br/>
 
     <table>
-      <tr v-for="msg in errorMessages">
+      <tr v-for="msg in errorMessages" :key="msg">
         <td style="color: red">{{ msg }}</td>
       </tr>
     </table>
     <br/>
 
-    <button v-bind:disabled="0 !== errorMessages.length"
-            v-on:click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
+    <button :disabled="0 !== errorMessages.length"
+            @click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
 
     <br/>
 
-    <div v-if="onlineMemberMode">
-      Not an online member?
-      <button v-on:click="onlineMemberMode = false">Login as librarian</button>
+    <div>
+      {{ onlineMemberMode ? 'Not an online member?' : 'Not a librarian?' }}
+      <button @click="toggleLoginMode()">Login as {{ onlineMemberMode ? 'librarian' : 'online member' }}</button>
       <br/>
-
-      Don't have an account yet?
-      <button v-on:click="$router.push('/newacc')">Create an online account</button>
     </div>
-    <div v-if="!onlineMemberMode">
-      Not a librarian?
-      <button v-on:click="onlineMemberMode = true">Login as online member</button>
+
+    <div v-if="onlineMemberMode">
+      Don't have an account yet?
+      <button @click="$router.push('/newacc')">Create an online account</button>
     </div>
   </div>
 </template>
@@ -118,6 +116,12 @@ export default {
       } catch (error) {
         this.serverResponse = error
       }
+    },
+
+    toggleLoginMode () {
+      this.onlineMemberMode = !this.onlineMemberMode
+      this.username = ''
+      this.password = ''
     }
   },
 

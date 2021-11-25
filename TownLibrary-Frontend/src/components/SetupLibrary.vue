@@ -8,14 +8,14 @@
       <input type="text" v-model="newLibrary.address" placeholder="Address">
 
       <table>
-        <tr v-for="msg in errorMessages">
+        <tr v-for="msg in errorMessages" :key="msg">
           <td style="color: red">{{ msg }}</td>
         </tr>
       </table>
       <br/>
 
-      <button v-bind:disabled="0 !== errorMessages.length"
-              v-on:click="createLibrary(newLibrary)">Next Step</button>
+      <button :disabled="0 !== errorMessages.length"
+              @click="createLibrary(newLibrary)">Next Step</button>
     </div>
     <div v-if="state === 1">
       <p>Please enter the head-librarian information below</p>
@@ -27,14 +27,14 @@
       <input type="text" v-model="newHeadLibrarian.address" placeholder="Address">
 
       <table>
-        <tr v-for="msg in errorMessages">
+        <tr v-for="msg in errorMessages" :key="msg">
           <td style="color: red">{{ msg }}</td>
         </tr>
       </table>
       <br/>
 
-      <button v-bind:disabled="0 !== errorMessages.length"
-              v-on:click="createHeadLibrarian(newHeadLibrarian)">Next Step</button>
+      <button :disabled="0 !== errorMessages.length"
+              @click="createHeadLibrarian(newHeadLibrarian)">Next Step</button>
     </div>
     <div v-if="state === 2">
       <h2>Setup was a success!</h2>
@@ -44,7 +44,7 @@
 
         And when you do, remember to <em>login as librarian</em></p>
 
-      <button v-on:click="successRedirect()">Done</button>
+      <button @click="successRedirect()">Done</button>
     </div>
   </div>
 </template>

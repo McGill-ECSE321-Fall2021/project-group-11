@@ -16,18 +16,18 @@
     <input type="text" v-model="newOnlineMember.address" placeholder="Address">
 
     <table>
-      <tr v-for="msg in errorMessages">
+      <tr v-for="msg in errorMessages" :key="msg">
         <td style="color: red">{{ msg }}</td>
       </tr>
     </table>
     <br/>
 
-    <button v-bind:disabled="0 !== errorMessages.length"
-            v-on:click="createAccount(newOnlineMember)">Create Online Account</button>
+    <button :disabled="0 !== errorMessages.length"
+            @click="createAccount(newOnlineMember)">Create Online Account</button>
     <br/>
 
     Already have an account?
-    <button v-on:click="$router.push('/login')">Login</button>
+    <button @click="$router.push('/login')">Login</button>
   </div>
 </template>
 
