@@ -325,13 +325,14 @@ public class ItemController {
 		}
 	}
 
-	@GetMapping(value = {"/movies/{id}/transactions", "/movies/{id}/transactions/"})
-	public ResponseEntity<?> getMovieByTransaction( @PathVariable("id") int id,
-		@RequestParam int transactionId ){
+	@GetMapping(value = {"/{transactionType}/transactions/{transactionId}",
+						 "/{transactionType}/transactions/{transactionId}/" })
+	public ResponseEntity<?> getMovieByTransaction( @PathVariable("transactionId") int transactionId,
+		@PathVariable("transactionType") TransactionType transactionType){
 		try {
 			Transaction transaction = transactionService.getTransaction(transactionId);
-			MusicAlbum movie = (MusicAlbum) itemService.getItemByTransaction(transaction);
-			return ResponseEntity.ok(MusicAlbumDTO.fromModel(movie));
+			Item  item = (MusicAlbum) itemService.getItemByTransaction(transaction);
+			return ResponseEntity.ok(ItemDTO.fromModel(item));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}

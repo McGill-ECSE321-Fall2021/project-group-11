@@ -300,6 +300,7 @@ public class ItemControllerTest {
             .param("startDate", "2021-11-07T00:00:00")
             .param("endDate", "2021-11-09T00:00:00")
             .param("userId", this.idUser)
+			.param("transactionType", TransactionType.BOOKS)
             .when().post("/transactions/0")
             .then()
             .statusCode(200)
@@ -330,6 +331,7 @@ public class ItemControllerTest {
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
                 .param("userId", this.idUser)
+				.param("transactionType", TransactionType.MOVIES)
                 .when().post("/transactions/0")
                 .then()
                 .statusCode(200)
@@ -360,6 +362,7 @@ public class ItemControllerTest {
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
                 .param("userId", this.idUser)
+				.param("transactionType", TransactionType.MUSICALBUMS)
                 .when().post("/transactions/0")
                 .then()
                 .statusCode(200)
@@ -383,5 +386,40 @@ public class ItemControllerTest {
     		.body("id", equalTo(idItem))
     		.body("status", equalTo(Status.CHECKED_OUT.toString()));
     }
-    
+    @Test
+	public void testGetItemfromTransaction(){
+		TransactionDTO dto = given()
+                .param("startDate", "2021-11-07T00:00:00")
+                .param("endDate", "2021-11-09T00:00:00")
+                .param("userId", this.idUser)
+				.param("transactionType", TransactionType.MUSICALBUMS)
+                .when().post("/transactions/0")
+                .then()
+                .statusCode(200)
+                .extract().response().as(TransactionDTO.class);
+            
+            final int idTransaction = dto.id;
+		
+		final int idItem = given()
+			.param("name", "Evolve")
+			.param("libraryId", "321")
+			.post("/musicalbums/9")
+			.then().statusCode(200)
+			.body("status", equalTo(Status.AVAILABLE.toString()))
+			.extract().response().body().path("id");
+
+		given()
+    		.param("transactionId", idTransaction)
+    		.when().put("/musicalbums/" + idItem + "/checkout")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(idItem))
+    		.body("status", equalTo(Status.CHECKED_OUT.toString()));
+
+		given()
+			.when().get("/" + dto.type.toString().toLowerCase() + "/transactions/" + idTransaction)
+			.then()
+			.statusCode(200)
+			.body("id", equalTo(idItem));
+	}
 }

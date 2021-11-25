@@ -12,9 +12,8 @@ public class BookDTO {
 	private int id;
 	private String name;
 	private Status status;
-	
 	private Integer libraryId;
-	//private Transaction transaction;
+	private	Integer transactionId;
 	
 	public BookDTO() {
 	}
@@ -35,7 +34,9 @@ public class BookDTO {
 		dto.libraryId = Optional.ofNullable(b.getLibrary())
 				.map(x -> x.getId())
                 .orElse(null);
-		//dto.transaction = b.getTransaction();
+		dto.transactionId = Optional.ofNullable(b.getTransaction())
+				.map(x -> x.getId())
+				.orElse(null);
 		return dto;
 	}
 	

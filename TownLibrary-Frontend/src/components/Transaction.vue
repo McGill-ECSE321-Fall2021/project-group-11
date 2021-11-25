@@ -88,7 +88,7 @@ export default {
 
 
         async renewTransactionObject(id){
-
+            
         }
     }
 }

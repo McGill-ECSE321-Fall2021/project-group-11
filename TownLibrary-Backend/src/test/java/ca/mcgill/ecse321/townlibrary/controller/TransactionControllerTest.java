@@ -79,7 +79,7 @@ public class TransactionControllerTest {
             .param("startDate", "2021-11-07T00:00:00")
             .param("endDate", "2021-11-09T00:00:00")
             .param("userId", this.idLibrarian)
-            .param("transactionType", TransactionType.Item)
+            .param("transactionType", TransactionType.BOOKS)
             .when().post("/transactions/0")
             .then()
             .statusCode(200)

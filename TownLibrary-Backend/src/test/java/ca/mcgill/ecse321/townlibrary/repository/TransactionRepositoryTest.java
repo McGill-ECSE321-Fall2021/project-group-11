@@ -113,7 +113,7 @@ public class TransactionRepositoryTest {
         transaction = new Transaction();
         transaction.setId(transactionId);
         transaction.setUserRole(joe);
-        transaction.setType(TransactionType.Item);
+        transaction.setType(TransactionType.BOOKS);
         transaction.setEndDate(new Timestamp(10));
         this.transactionRepository.save(transaction);
 
@@ -121,12 +121,12 @@ public class TransactionRepositoryTest {
 
         transaction = this.transactionRepository.findById(transactionId).get();
         Assertions.assertNotNull(transaction);
-        Assertions.assertEquals(TransactionType.Item, transaction.getType());
+        Assertions.assertEquals(TransactionType.BOOKS, transaction.getType());
 
 
-        transaction.setType(TransactionType.Event);
+        transaction.setType(TransactionType.EVENTS);
         transaction = this.transactionRepository.findById(transactionId).get();
         Assertions.assertNotNull(transaction);
-        Assertions.assertNotEquals(TransactionType.Event, transaction.getType());
+        Assertions.assertNotEquals(TransactionType.EVENTS, transaction.getType());
     }
 }
