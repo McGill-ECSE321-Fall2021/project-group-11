@@ -59,6 +59,9 @@ public class ScheduleService {
         if (dayOfWeek == (null)) throw new IllegalArgumentException("NULL-DAY-OF-WEEK");
         if (startTime == (null) || endTime == (null)) throw new IllegalArgumentException("NULL-TIME");
         if (startTime.after(endTime)) throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
+        for (DailySchedule schedule : dailyScheduleRepository.findByLibrary(libraryRepository.findById(libraryId).get())){
+            if (schedule.getDayOfWeek()== dayOfWeek) throw new IllegalArgumentException("ALREADY-SCHEDULE-ON-DAY");
+        }
         
         Library library = libraryRepository.findById(libraryId).get();
         DailySchedule dailySchedule = new DailySchedule();
@@ -95,18 +98,21 @@ public class ScheduleService {
         if (startTime.after(endTime)){
             throw new IllegalArgumentException("START-TIME-AFTER-END-TIME");
         }
-        else{
-            Librarian librarian = librarianRepository.findLibrarianById(librarianId);
-            DailySchedule dailySchedule = new DailySchedule();
-            dailySchedule.setLibrarian(librarian);
-            dailySchedule.setDayOfWeek(dayOfWeek);
-            dailySchedule.setStartTime(startTime);
-            dailySchedule.setEndTime(endTime);
-    
-            dailyScheduleRepository.save(dailySchedule);
-    
-            return dailySchedule;
+        for (DailySchedule schedule : dailyScheduleRepository.findByLibrarian(librarianRepository.findById(librarianId).get())){
+            if (schedule.getDayOfWeek() == dayOfWeek) throw new IllegalArgumentException("ALREADY-SCHEDULE-ON-DAY");
         }
+        
+        Librarian librarian = librarianRepository.findLibrarianById(librarianId);
+        DailySchedule dailySchedule = new DailySchedule();
+        dailySchedule.setLibrarian(librarian);
+        dailySchedule.setDayOfWeek(dayOfWeek);
+        dailySchedule.setStartTime(startTime);
+        dailySchedule.setEndTime(endTime);
+
+        dailyScheduleRepository.save(dailySchedule);
+
+        return dailySchedule;
+        
     }
 
     /** Gets all schedules of given library
