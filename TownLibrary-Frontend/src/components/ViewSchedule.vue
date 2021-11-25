@@ -22,8 +22,7 @@ export default {
     props: {
         loginStatus:{
             type: Object,
-            required: true,
-            default: false
+            required: true
         },
         // could prob use an object instead 
         entityId:{
@@ -32,7 +31,6 @@ export default {
         },
         scheduleOwner:{
             type: String,
-            required: true,
             default: "Library"
         }
 

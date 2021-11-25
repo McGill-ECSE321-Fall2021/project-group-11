@@ -3,7 +3,7 @@
     <h1>Welcome</h1> <br>
 
     <h3>Item catalogue</h3>
-    <button>Items</button>
+    <button @click="$router.push('/browseitem')">Items</button>
     <br><br>
 
     <h3>Events</h3>
