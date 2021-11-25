@@ -44,12 +44,12 @@ public class EventController {
         return ResponseEntity.ok(EventDTO.fromModel(e));
     }
 
-    @GetMapping(value={"/events/{id}/users", "/events/{id}/users/"})
+    /*@GetMapping(value={"/events/{id}/users", "/events/{id}/users/"})
     public ResponseEntity<?> getEventUsers(
         @PathVariable("id") int id) {
             final Event e = eventService.getEventById(id);
             return ResponseEntity.ok(e.getUsers());
-    }
+    }*/
     
     
     @PostMapping(value = { "/events/{name}", "/events/{name}/"})

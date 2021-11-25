@@ -56,8 +56,8 @@ public abstract class UserRole {
         this.library = lib;
     }
 
-    @ManyToMany
+    /*@ManyToMany
     public Set<Event> getEvents() {
         return this.events;
-    }
+    }*/
 }

@@ -1,12 +1,9 @@
 package ca.mcgill.ecse321.townlibrary.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Set;
 
 import javax.persistence.*;
 
-import org.apache.catalina.User;
 
 import java.util.List;
 
@@ -43,10 +40,10 @@ public class Event {
         return transaction;
     }
 
-    @ManyToMany
-    public List<UserRole> getUsers() {
+    /*@ManyToOne
+    public ArrayList<UserRole> getUsers() {
         return users;
-    }
+    }*/
 
     public void setId(int id) {
         this.id = id;

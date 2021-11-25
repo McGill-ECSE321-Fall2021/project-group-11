@@ -22,13 +22,15 @@
 			<input type="text" v-model="eventId" placeholder="Event ID">
 			<br>
 			<button @click="eventDetails(eventId)">Event details</button>
+			<br>
+			<button @click="$router.push('/')">Home</button>
 		</div>
 		<div v-if="state === 1">
-			<h2>Event "eventId"</h2>
+			<h2>Name: {{loadedEvent.name}}</h2>
+			<h2>ID: {{loadedEvent.id}}</h2>
 			<br>
-			<button @click="successRedirect()">Return to events
+			<button @click="successRedirect()">Return to events</button>
 		</div>
-		<button @click="$router.push('/')">Home</button>
 	</div>
 </template>
 
@@ -65,7 +67,7 @@ export default {
 		},
 		async eventDetails(id) {
 			try {
-				let response = await AXIOS.post('/events/' + id, null, {
+				let response = await AXIOS.get('/events/' + id, null, {
 					params: {
 						lib: 0
 					}
