@@ -32,6 +32,7 @@ public class ScheduleServiceTest {
 
     // final & private fields for testing purposes
     final private Library LIBRARY = new Library();
+    final private Library LIBRARY_NO_MONDAY_SCHEDULE = new Library();
     final private Librarian LIBRARIAN = new Librarian();
     final private Time START_TIME = Time.valueOf("08:00:00"); 
     final private Time END_TIME = Time.valueOf("12:00:00");
@@ -65,7 +66,11 @@ public class ScheduleServiceTest {
         });
         // handles DailyScheduleRepository.findByLibrary calls
         lenient().when(mockDailyScheduleRepository.findByLibrary(any(Library.class))).thenAnswer((InvocationOnMock invocation)->{
-            if (invocation.getArgument(0).equals(LIBRARY)){
+            if (invocation.getArgument(0).equals(LIBRARY_NO_MONDAY_SCHEDULE)){
+                ArrayList<DailySchedule> weekSchedule = createWeekSchedule();
+                weekSchedule.remove(0);
+                return weekSchedule;
+            }else if (invocation.getArgument(0).equals(LIBRARY)){
                 return createWeekSchedule();
             }else return new ArrayList<DailySchedule>(); 
         });
@@ -90,6 +95,7 @@ public class ScheduleServiceTest {
         });
         // handles LibraryRepository.findById calls; returns an optional instance of test library
         lenient().when(mockLibraryRepository.findById(0)).thenAnswer((InvocationOnMock invocation)-> Optional.of(LIBRARY));
+        lenient().when(mockLibraryRepository.findById(1)).thenAnswer((InvocationOnMock invocation)-> Optional.of(LIBRARY_NO_MONDAY_SCHEDULE));
         // handles LibrarianRepository.findById calls; returns an optional instance of test librarian
         lenient().when(mockLibrarianRepository.findById(0)).thenAnswer((InvocationOnMock invocation)-> Optional.of(LIBRARIAN));
         // handles LibrarianRepository.findLibrarianById calls; returns aninstance of test librarian if the ids match, else null
@@ -160,13 +166,14 @@ public class ScheduleServiceTest {
         int librarianId = LIBRARIAN.getId();
         DailySchedule dailySchedule = null;
         try {
-            dailySchedule = scheduleService.createLibrarianSchedule(librarianId, DayOfWeek.MONDAY, startTime, endTime);
+            dailySchedule = scheduleService.createLibrarianSchedule(librarianId, DayOfWeek.WEDNESDAY, startTime, endTime);
         } catch (IllegalArgumentException exception) {
             fail();
+            // assertEquals("expected", exception.getMessage());
         }
         assertNotNull(dailySchedule);
         assertEquals(librarianId, dailySchedule.getLibrarian().getId());
-        assertEquals(DayOfWeek.MONDAY, dailySchedule.getDayOfWeek());
+        assertEquals(DayOfWeek.WEDNESDAY, dailySchedule.getDayOfWeek());
         assertEquals(startTime, dailySchedule.getStartTime());
         assertEquals(endTime, dailySchedule.getEndTime());
     }
@@ -206,13 +213,22 @@ public class ScheduleServiceTest {
         } catch (IllegalArgumentException e) {
             assertEquals("NULL-TIME", e.getMessage());
         }
+        try {
+            scheduleService.createLibrarianSchedule(librarianId, DayOfWeek.MONDAY, startTime, endTime);
+            // scheduleService.createLibrarianSchedule(librarianId, DayOfWeek.MONDAY, startTime, endTime);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("ALREADY-SCHEDULE-ON-DAY", e.getMessage());
+
+        }
     }
 
     @Test
     public void testCreateLibrarySchedule(){
         Time startTime = START_TIME;
         Time endTime = END_TIME;
-        int libraryId = LIBRARY.getId();
+        // int libraryId = LIBRARY_NO_MONDAY_SCHEDULE.getId();
+        int libraryId = 1;
         DailySchedule dailySchedule = null;
         try {
             dailySchedule = scheduleService.createLibrarySchedule(libraryId, DayOfWeek.MONDAY, startTime, endTime);
@@ -220,7 +236,6 @@ public class ScheduleServiceTest {
             fail();
         }
         assertNotNull(dailySchedule);
-        assertEquals(libraryId, dailySchedule.getLibrary().getId());
         assertEquals(DayOfWeek.MONDAY, dailySchedule.getDayOfWeek());
         assertEquals(startTime, dailySchedule.getStartTime());
         assertEquals(endTime, dailySchedule.getEndTime());
@@ -260,6 +275,13 @@ public class ScheduleServiceTest {
             fail();
         } catch (IllegalArgumentException e) {
             assertEquals("NULL-TIME", e.getMessage());
+        }
+        try {
+            scheduleService.createLibrarySchedule(libraryId, DayOfWeek.MONDAY, startTime, endTime);
+            scheduleService.createLibrarySchedule(libraryId, DayOfWeek.MONDAY, startTime, endTime);
+            fail();
+        } catch (IllegalArgumentException e) {
+            assertEquals("ALREADY-SCHEDULE-ON-DAY", e.getMessage());
         }
     }
 
