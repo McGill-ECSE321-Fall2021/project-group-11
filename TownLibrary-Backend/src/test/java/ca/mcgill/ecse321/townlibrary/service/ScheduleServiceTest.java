@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.townlibrary.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.lenient;
 
 import java.sql.Time;

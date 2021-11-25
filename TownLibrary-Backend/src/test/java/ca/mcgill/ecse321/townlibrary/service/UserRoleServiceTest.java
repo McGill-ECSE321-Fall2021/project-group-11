@@ -10,7 +10,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.UserRoleRepository;
 
-import java.sql.Timestamp;
 import java.util.*;
 
 import static org.mockito.Mockito.lenient;

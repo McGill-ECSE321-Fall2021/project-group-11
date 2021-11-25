@@ -24,10 +24,12 @@ public class TransactionController {
         private UserRoleService userRoleService;
 
         @GetMapping(value = { "/transactions", "/transactions/"})
-        public List<TransactionDTO> getAllTransaction() {
-            return transactionService.getAllTransactions()
-                .stream().map(TransactionDTO::fromModel)
+        public ResponseEntity<?> getAllTransaction() {
+            final List<TransactionDTO> allTransactions = this.transactionService.getAllTransactions()
+                .stream()
+                .map(TransactionDTO::fromModel)
                 .collect(Collectors.toList());
+            return ResponseEntity.ok().body(allTransactions);
         }
 
         @GetMapping(value = {"/transactions/{id}", "/transactions/{id}/"})
@@ -44,11 +46,12 @@ public class TransactionController {
             @PathVariable("id") int id,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date startDate,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date endDate,
+            @RequestParam TransactionType transactionType,
             @RequestParam int userId) {
 
             try {
                 final UserRole ur = userRoleService.getUserRole(userId);
-                final Transaction t = transactionService.createTransaction(id, new Timestamp(startDate.getTime()), new Timestamp(endDate.getTime()), ur);
+                final Transaction t = transactionService.createTransaction(id, new Timestamp(startDate.getTime()), new Timestamp(endDate.getTime()), ur, transactionType);
                 return ResponseEntity.ok().body(TransactionDTO.fromModel(t));
             }
             catch (IllegalArgumentException ex) {
