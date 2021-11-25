@@ -31,7 +31,8 @@ public class TransactionController {
         }
 
         @GetMapping(value = {"/transactions/{id}", "/transactions/{id}/"})
-        public ResponseEntity<?> getTransaction(@PathVariable("id") int id) {
+        public ResponseEntity<?> getTransaction(@PathVariable("id") int id,
+        @RequestParam String transactionType) {
             final Transaction t = transactionService.getTransaction(id);
             if (t == null) {
                 return ResponseEntity.badRequest().body("NOT-FOUND-TRANSACTION");
@@ -44,6 +45,7 @@ public class TransactionController {
             @PathVariable("id") int id,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date startDate,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date endDate,
+            @RequestParam String transactionType,
             @RequestParam int userId) {
 
             try {

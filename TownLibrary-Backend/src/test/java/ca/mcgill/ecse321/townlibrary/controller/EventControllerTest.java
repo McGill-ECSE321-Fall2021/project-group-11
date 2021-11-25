@@ -12,10 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
-import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+
 
 
 // Heavily inspired by Paul's integration testing files
@@ -53,7 +52,7 @@ public class EventControllerTest {
                 .body(equalTo("NOT-FOUND-EVENT"));
         }
 
-        /*@Test
+        @Test
         public void testGetEvent() {
             final int id = given()
             .param("lib", "10001")
@@ -67,7 +66,7 @@ public class EventControllerTest {
                 .body("id", equalTo(id))
                 .body("name", equalTo("event1"))
                 .body("lib", equalTo("10001"));
-        }*/
+        }
 
         @Test
         public void testCreateEventAndQuery() {

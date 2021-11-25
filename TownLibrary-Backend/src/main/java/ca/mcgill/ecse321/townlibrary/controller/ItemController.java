@@ -15,6 +15,9 @@ import ca.mcgill.ecse321.townlibrary.service.*;
 @RestController
 public class ItemController {
 	
+	@Autowired 
+	private TransactionService transactionService;
+
 	@Autowired
     private LibraryService libraryService;
 	
@@ -321,4 +324,17 @@ public class ItemController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+
+	@GetMapping(value = {"/movies/{id}/transactions", "/movies/{id}/transactions/"})
+	public ResponseEntity<?> getMovieByTransaction( @PathVariable("id") int id,
+		@RequestParam int transactionId ){
+		try {
+			Transaction transaction = transactionService.getTransaction(transactionId);
+			MusicAlbum movie = (MusicAlbum) itemService.getItemByTransaction(transaction);
+			return ResponseEntity.ok(MusicAlbumDTO.fromModel(movie));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+	}
+		
 }

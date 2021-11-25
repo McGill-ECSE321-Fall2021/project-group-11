@@ -14,10 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
-import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
-import static org.mockito.Mockito.inOrder;
+
 
 // Heavily inspired by Paul's integration testing files
 

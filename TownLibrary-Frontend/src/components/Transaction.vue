@@ -47,6 +47,8 @@ export default {
     data() {
         return{
             transactions: [],
+            transactionObjects: [],
+            type: [],
             errorTransaction: ''
         }
     },
@@ -57,19 +59,37 @@ export default {
 
     methods: {
         async reloadTransactions(id) {
-            AXIOS.get('/Transactions/'.concat(id), {}, {})
+            AXIOS.get('/transactions/', {})
                 .then(response => {
                     this.transactions = response.data
                 })
                 .catch(e => {
                     this.errorTransaction = e
                 })
+            if (!this.errorTransaction > 0)
+            {
+                for (transaction in this.transactions) {
+                    if (transaction.userId !== id){
+                        this.transactions.splice(this.transactions.indexOf(transaction), 1)
+                    }
+                }
+            }
+            
         },
 
-        async getTransactionObject(id){
-            
-        }
+        async getTransactionObjects(){
+            for (transaction in this.transactions) {
+                    
 
+
+            }
+        },
+        
+
+
+        async renewTransactionObject(id){
+
+        }
     }
 }
 
