@@ -324,18 +324,16 @@ public class ItemController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-
 	@GetMapping(value = {"/{transactionType}/transactions/{transactionId}",
-						 "/{transactionType}/transactions/{transactionId}/" })
+	"/{transactionType}/transactions/{transactionId}/"})
 	public ResponseEntity<?> getMovieByTransaction( @PathVariable("transactionId") int transactionId,
 		@PathVariable("transactionType") TransactionType transactionType){
 		try {
 			Transaction transaction = transactionService.getTransaction(transactionId);
-			Item  item = (MusicAlbum) itemService.getItemByTransaction(transaction);
+			Item  item = itemService.getItemByTransaction(transaction);
 			return ResponseEntity.ok(ItemDTO.fromModel(item));
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
-	}
-		
+	}	
 }

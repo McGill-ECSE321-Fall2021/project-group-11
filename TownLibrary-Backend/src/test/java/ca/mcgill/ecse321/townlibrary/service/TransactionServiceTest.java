@@ -33,7 +33,7 @@ public class TransactionServiceTest {
 	//private static final int NONEXISTING_ID = 0;
 	private static final int TRANSACTION_ID = 99;
 	private static final UserRole USER = new OfflineMember();
-	private static final TransactionType TYPE = TransactionType.BOOKS;
+	private static final TransactionType TYPE = TransactionType.books;
 	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis());
 	private static final Timestamp END_TIME = new Timestamp(START_TIME.getTime() + 1000 * 86400 * 14);
 	
