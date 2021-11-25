@@ -10,6 +10,7 @@ import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
 import CreateItem from '@/components/CreateItem'
 import BrowseItem from '@/components/BrowseItem'
+import Item from '@/components/Item'
 
 Vue.use(Router)
 
@@ -61,6 +62,11 @@ const router = new Router({
       path: '/browseitem',
       name: 'Browse Item',
       component: BrowseItem
+    },
+    {
+      path: '/item',
+      name: 'Item',
+      component: Item
     }
   ]
 })

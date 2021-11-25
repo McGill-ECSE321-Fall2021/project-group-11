@@ -27,7 +27,8 @@ public class ItemService {
 	MusicAlbumRepository musicAlbumRepository;
 	
 	@Autowired
-	UserRoleService userService;
+	TransactionService transactionService;
+	//UserRoleService userService;
 	
 	/**
 	 * Creates an archive
@@ -382,7 +383,7 @@ public class ItemService {
 	 * @return		The checked out item
 	 */
 	@Transactional
-	public Item checkoutItem(int id, int userId) {
+	public Item checkoutItem(int id, int transactionId) {
 		String error = "";
 		Item item = itemRepository.findItemById(id);
 		
@@ -404,17 +405,17 @@ public class ItemService {
 	        throw new IllegalArgumentException(error);
 	    }
 	    
-	    // Create a transaction associated with checked out item
-		Transaction transaction = new Transaction();
-		Timestamp startTime = new Timestamp(System.currentTimeMillis());
-		// Checked out for 2 weeks at a time by default
-		Timestamp endTime = new Timestamp(startTime.getTime() + 1000 * 86400 * 14);
-		transaction.setStartDate(startTime);
-		transaction.setEndDate(endTime);
-		transaction.setId(id);
-		transaction.setUserRole(userService.getUserRole(userId));
+//	    // Create a transaction associated with checked out item
+//		Transaction transaction = new Transaction();
+//		Timestamp startTime = new Timestamp(System.currentTimeMillis());
+//		// Checked out for 2 weeks at a time by default
+//		Timestamp endTime = new Timestamp(startTime.getTime() + 1000 * 86400 * 14);
+//		transaction.setStartDate(startTime);
+//		transaction.setEndDate(endTime);
+//		transaction.setId(id);
+//		transaction.setUserRole(userService.getUserRole(userId));   
 		
-		item.setTransaction(transaction);
+		item.setTransaction(transactionService.getTransaction(transactionId));
 		item.setStatus(Status.CHECKED_OUT);
 		
 		return item;

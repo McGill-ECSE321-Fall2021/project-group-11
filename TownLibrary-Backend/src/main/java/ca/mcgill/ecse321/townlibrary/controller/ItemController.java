@@ -291,9 +291,9 @@ public class ItemController {
 	@PutMapping(value = { "/books/{id}/checkout", "/books/{id}/checkout/"})
 	public ResponseEntity<?> setBookCheckedout(
 			@PathVariable("id") int id, 
-			@RequestParam int userId) {
+			@RequestParam int transactionId) {
 		try {
-			Book i = (Book) itemService.checkoutItem(id, userId);
+			Book i = (Book) itemService.checkoutItem(id, transactionId);
 			return ResponseEntity.ok(BookDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -302,9 +302,9 @@ public class ItemController {
 	@PutMapping(value = { "/movies/{id}/checkout", "/movies/{id}/checkout/"})
 	public ResponseEntity<?> setMovieCheckedout(
 			@PathVariable("id") int id, 
-			@RequestParam int userId) {
+			@RequestParam int transactionId) {
 		try {
-			Movie i = (Movie) itemService.checkoutItem(id, userId);
+			Movie i = (Movie) itemService.checkoutItem(id, transactionId);
 			return ResponseEntity.ok(MovieDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
@@ -313,9 +313,9 @@ public class ItemController {
 	@PutMapping(value = { "/musicalbums/{id}/checkout", "/musicalbums/{id}/checkout/"})
 	public ResponseEntity<?> setMusicAlbumCheckedout(
 			@PathVariable("id") int id, 
-			@RequestParam int userId) {
+			@RequestParam int transactionId) {
 		try {
-			MusicAlbum i = (MusicAlbum) itemService.checkoutItem(id, userId);
+			MusicAlbum i = (MusicAlbum) itemService.checkoutItem(id, transactionId);
 			return ResponseEntity.ok(MusicAlbumDTO.fromModel(i));
 		} catch (IllegalArgumentException e) {
 			return ResponseEntity.badRequest().body(e.getMessage());

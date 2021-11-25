@@ -17,7 +17,7 @@
 
 		<button @click="createItem(newItem)">Add Item</button>
 		<br/>|
-		<button @click="$router.push('/browseitem')">Browse Items</button>
+		<button @click="$router.push('/browseitem')">View Items</button>
 	</div>
 </template>
 

@@ -2,55 +2,66 @@
 	<div id="browse-item">
 		<h1>Item Catalogue</h1>
 
-		<h4>Archives</h4>
 		<table>
-			<tr v-for="archive in (archives || [])" :key="archive.name">
+			<tr>
+				<th>ID</th>
+				<th>Title</th>
+				<th>Details</th>
+			</tr>
+			<tr>
+				<td colspan="3"><h4>Archives</h4></td>
+			</tr>
+			<tr v-for="archive in (archives || [])" :key="archive.id">
+				<td>{{ archive.id }}</td>
 				<td>{{ archive.name }}</td>
 				<td>
 					<button>View</button>
 				</td>
 			</tr>
-		</table>
-
-		<h4>Newspapers</h4>
-		<table>
-			<tr v-for="newspaper in (newspapers || [])" :key="newspaper.name">
+			<tr>
+				<td colspan="3"><h4>Newspapers</h4></td>
+			</tr>
+			<tr v-for="newspaper in (newspapers || [])" :key="newspaper.id">
+				<td>{{ newspaper.id }}</td>
 				<td>{{ newspaper.name }}</td>
 				<td>
 					<button>View</button>
 				</td>
 			</tr>
-		</table>
-
-		<h4>Books</h4>
-		<table>
-			<tr v-for="book in (books || [])" :key="book.name">
+			<tr>
+				<td colspan="3"><h4>Books</h4></td>
+			</tr>
+			<tr v-for="book in (books || [])" :key="book.id">
+				<td>{{ book.id }}</td>
 				<td>{{ book.name }}</td>
 				<td>
-					<button>View</button>
+					<button @click="$router.push(
+						{name: 'Item', params: { id: book.id, name: book.name }})">
+						View</button>
 				</td>
 			</tr>
-		</table>
-
-		<h4>Movies</h4>
-		<table>
-			<tr v-for="movie in (movies || [])" :key="movie.name">
+			<tr>
+				<td colspan="3"><h4>Movies</h4></td>
+			</tr>
+			<tr v-for="movie in (movies || [])" :key="movie.id">
+				<td>{{ movie.id }}</td>
 				<td>{{ movie.name }}</td>
 				<td>
 					<button>View</button>
 				</td>
 			</tr>
-		</table>
-
-		<h4>Music Albums</h4>
-		<table>
-			<tr v-for="musicalbum in (musicalbums || [])" :key="musicalbum.name">
+			<tr>
+				<td colspan="3"><h4>Music Albums</h4></td>
+			</tr>
+			<tr v-for="musicalbum in (musicalbums || [])" :key="musicalbum.id">
+				<td>{{ musicalbum.id }}</td>
 				<td>{{ musicalbum.name }}</td>
 				<td>
 					<button>View</button>
 				</td>
 			</tr>
 		</table>
+
 	</div>
 </template>
 
@@ -74,7 +85,9 @@ export default {
 			newspapers: [],
 			books: [],
 			movies: [],
-			musicalbums: []
+			musicalbums: [],
+			id: '',
+			name: ''
 		}
 	},
 
@@ -87,6 +100,15 @@ export default {
 	},
 
 	methods: {
+		async viewItem(id, name) {
+			this.store.commit('browse-item', {
+				id: id,
+				name: name
+			})
+
+			this.$router.push('/item')
+		},
+
 		async loadArchives() {
 			try {
 				let response = await AXIOS.get('/archives')
