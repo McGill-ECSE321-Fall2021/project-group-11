@@ -23,17 +23,24 @@ public class TransactionController {
         @Autowired
         private UserRoleService userRoleService;
 
-        @GetMapping(value = { "/transactions", "/transactions/"})
-        public ResponseEntity<?> getAllTransaction() {
-            final List<TransactionDTO> allTransactions = this.transactionService.getAllTransactions()
+        @GetMapping(value = { "/transactions/{userId}", "/transactions/{userId}"})
+        public ResponseEntity<?> getAllTransaction(@PathVariable("userId") int userId) {
+
+            try {
+                UserRole user = userRoleService.getUserRole(userId);
+                final List<TransactionDTO> allTransactions = this.transactionService.getTransactionsByUser(user)
                 .stream()
                 .map(TransactionDTO::fromModel)
                 .collect(Collectors.toList());
-            return ResponseEntity.ok().body(allTransactions);
+                return ResponseEntity.ok().body(allTransactions);
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         }
 
-        @GetMapping(value = {"/transactions/{id}", "/transactions/{id}/"})
-        public ResponseEntity<?> getTransaction(@PathVariable("id") int id) {
+        @GetMapping(value = {"/transactions/{userId}/{id}", "/transactions/{userId}/{id}/"})
+        public ResponseEntity<?> getTransaction(@PathVariable("id") int id,
+                                                @PathVariable("userId") int userId) {
             final Transaction t = transactionService.getTransaction(id);
             if (t == null) {
                 return ResponseEntity.badRequest().body("NOT-FOUND-TRANSACTION");
@@ -41,13 +48,13 @@ public class TransactionController {
             return ResponseEntity.ok(TransactionDTO.fromModel(t));
         }
 
-        @PostMapping(value = { "/transactions/{id}", "/transactions/{id}/"})
+        @PostMapping(value = { "/transactions/{userId}/{id}", "/transactions/{userId}/{id}/"})
         public ResponseEntity<?> createTransaction(
             @PathVariable("id") int id,
+            @PathVariable("userId") int userId,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date startDate,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date endDate,
-            @RequestParam TransactionType transactionType,
-            @RequestParam int userId) {
+            @RequestParam TransactionType transactionType) {
 
             try {
                 final UserRole ur = userRoleService.getUserRole(userId);
