@@ -56,7 +56,7 @@ public class ScheduleController {
             ScheduleDTO dto = ScheduleDTO.convertScheduleDTO(service.createLibrarianSchedule(librarianId, dayOfWeek, new Time(startTime.getTime()), new Time(endTime.getTime())));
             return ResponseEntity.ok().body(dto);
         }catch(Exception exception){
-            return ResponseEntity.badRequest().body(exception.getMessage());//"SCHEDULE-NOT-ABLE-CREATE");
+            return ResponseEntity.badRequest().body(exception.getMessage());
         }
 
     }

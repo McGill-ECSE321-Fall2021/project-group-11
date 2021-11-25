@@ -8,9 +8,6 @@ import SetupLibrary from '@/components/SetupLibrary'
 import CreateLibrarian from '@/components/CreateLibrarian'
 import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
-import ScheduleViewer from '@/components/ScheduleViewer'
-import CreateSchedule from '@/components/CreateSchedule'
-import Calendar from '@/components/Calendar'
 
 Vue.use(Router)
 
@@ -53,22 +50,6 @@ const router = new Router({
       name: 'User Profile',
       component: Profile
     },
-    // these below are temporary
-    {
-      path: '/schedule/view',
-      name: 'Schedule Viewer',
-      component: ScheduleViewer
-    },
-    {
-      path: '/schedule/create',
-      name: 'Create Schedule',
-      component: CreateSchedule
-    },
-    {
-      path: '/schedule/calendar',
-      name: 'Calendar',
-      component: Calendar
-    }
   ]
 })
 

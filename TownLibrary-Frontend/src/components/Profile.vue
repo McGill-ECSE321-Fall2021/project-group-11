@@ -15,7 +15,6 @@
     </div>
 
     <div v-if="isHeadLibrarian">
-      <create-schedule v-bind:login-status="loginStatus" v-bind:entity-id="0"> </create-schedule>
       List of Librarians:
       <button v-on:click="reloadLibrarians()">Refresh</button>
       <table>
@@ -46,7 +45,6 @@
 
 <script>
 import axios from 'axios'
-import CreateSchedule from './CreateSchedule.vue'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
@@ -58,9 +56,6 @@ var AXIOS = axios.create({
 
 export default {
   name: 'profile',
-  components:{
-    'create-schedule':CreateSchedule
-  },
   data () {
     return {
       loginStatus: {},
