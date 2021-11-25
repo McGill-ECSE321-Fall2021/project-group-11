@@ -3,8 +3,8 @@
 		<h2>Item Details</h2>
 
 		<ul>
-			<li>ID: {{ itemInfo.id }}</li>
-			<li>Title: {{ itemInfo.name }}</li>
+			<li>ID: {{ this.$route.params.id }}</li>
+			<li>Title: {{ this.$route.params.name }}</li>
 			<li>Status?</li>
 		</ul>
 
@@ -32,8 +32,12 @@ export default {
 
 	data () {
 		return {
-			itemInfo: {}
+
 		}
+	},
+
+	created () {
+		console.log('Params: ', this.$route.params);
 	}
 	
 }
