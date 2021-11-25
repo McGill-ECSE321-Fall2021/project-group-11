@@ -4,6 +4,8 @@ import store from '@/store/index.js'
 import Hello from '@/components/Hello'
 import Login from '@/components/Login'
 import Profile from '@/components/Profile'
+import Personal from '@/components/Personal'
+import Transaction from '@/components/Transaction'
 import SetupLibrary from '@/components/SetupLibrary'
 import CreateLibrarian from '@/components/CreateLibrarian'
 import CreateOnlineAccount from '@/components/CreateOnlineAccount'
@@ -11,6 +13,7 @@ import CreateOfflineAccount from '@/components/CreateOfflineAccount'
 import CreateItem from '@/components/CreateItem'
 import BrowseItem from '@/components/BrowseItem'
 import Item from '@/components/Item'
+
 
 Vue.use(Router)
 
@@ -67,7 +70,20 @@ const router = new Router({
       path: '/item',
       name: 'Item',
       component: Item
-    }
+    },
+
+    {
+      path: '/profile/transactions',
+      name: 'User Transactions',
+      component: Transaction
+    },
+
+    {
+      path: '/profile/personal',
+      name: 'Personal Information',
+      component: Personal
+    },
+
   ]
 })
 

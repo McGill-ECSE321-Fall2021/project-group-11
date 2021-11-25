@@ -1,24 +1,24 @@
 package ca.mcgill.ecse321.townlibrary.service;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullSource;
-import org.junit.jupiter.params.provider.EmptySource;
-import org.mockito.Spy;
-import org.mockito.Mock;
-import org.mockito.InjectMocks;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import ca.mcgill.ecse321.townlibrary.model.*;
-import ca.mcgill.ecse321.townlibrary.repository.*;
+import static org.mockito.Mockito.lenient;
 
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EmptySource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Spy;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import ca.mcgill.ecse321.townlibrary.model.HeadLibrarian;
+import ca.mcgill.ecse321.townlibrary.model.Library;
+import ca.mcgill.ecse321.townlibrary.repository.HeadLibrarianRepository;
+import ca.mcgill.ecse321.townlibrary.repository.LibraryRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class HeadLibrarianServiceTest {

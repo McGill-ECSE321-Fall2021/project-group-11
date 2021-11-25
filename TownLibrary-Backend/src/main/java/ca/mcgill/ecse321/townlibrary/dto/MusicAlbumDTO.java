@@ -14,7 +14,7 @@ public class MusicAlbumDTO {
 	private Status status;
 	
 	private Integer libraryId;
-	//private Transaction transaction;
+	private	Integer transactionId;
 	
 	public MusicAlbumDTO() {
 	}
@@ -35,7 +35,9 @@ public class MusicAlbumDTO {
 		dto.libraryId = Optional.ofNullable(m.getLibrary())
 				.map(x -> x.getId())
                 .orElse(null);
-		//dto.transaction = m.getTransaction();
+		dto.transactionId = Optional.ofNullable(m.getTransaction())
+				.map(x -> x.getId())
+                .orElse(null);
 		return dto;
 	}
 	

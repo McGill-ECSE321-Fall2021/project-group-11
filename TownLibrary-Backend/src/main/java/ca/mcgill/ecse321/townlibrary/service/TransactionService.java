@@ -18,7 +18,7 @@ public class TransactionService {
 	TransactionRepository transactionRepository;
 
 	@Transactional
-	public Transaction createTransaction(int id, Timestamp start, Timestamp end, UserRole user) {
+	public Transaction createTransaction(int id, Timestamp start, Timestamp end, UserRole user, TransactionType type) {
 
 		String error = "";
 		if (id < 0) {
@@ -36,6 +36,14 @@ public class TransactionService {
 		if (user == null) {
 			error = error + "User cannot be empty.";
 		}
+		if (type == null) {
+			error = error + "Type cannot be empty.";
+		}
+		// if (!(type.equals(TransactionType.Event) || (type.equals(TransactionType.Item))))
+		// {
+		// 	error = error + "Type not valid.";
+		// }
+
 		error = error.trim();
 	    if (error.length() > 0) {
 	        throw new IllegalArgumentException(error);
@@ -46,6 +54,7 @@ public class TransactionService {
 		transaction.setStartDate(start);
 		transaction.setEndDate(end);
 		transaction.setUserRole(user);
+		transaction.setType(type);
 		transactionRepository.save(transaction);
 		return transaction;
 	}
@@ -70,7 +79,7 @@ public class TransactionService {
 	@Transactional
     public List<Transaction> getAllTransactions() {
         final List<Transaction> transactions = new ArrayList<Transaction>();
-        for (Transaction t : transactionRepository.findAll()) {
+        for (Transaction t : this.transactionRepository.findAll()) {
         	transactions.add(t);
         }
         return transactions;

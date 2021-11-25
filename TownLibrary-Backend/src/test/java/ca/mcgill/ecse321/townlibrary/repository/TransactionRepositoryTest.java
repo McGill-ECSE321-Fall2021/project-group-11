@@ -101,4 +101,32 @@ public class TransactionRepositoryTest {
         Assertions.assertEquals(1, ret.size());
         Assertions.assertEquals(201, ret.get(0).getId());
     }
+    @Test
+    public void testSetTransactionType(){
+        // Setup some dummy users
+        final OfflineMember joe = new OfflineMember();
+        joe.setName("Joe Schmoe");
+        this.userRoleRepository.save(joe);
+
+        int transactionId = 200;
+        Transaction transaction;
+        transaction = new Transaction();
+        transaction.setId(transactionId);
+        transaction.setUserRole(joe);
+        transaction.setType(TransactionType.books);
+        transaction.setEndDate(new Timestamp(10));
+        this.transactionRepository.save(transaction);
+
+        transaction = null;
+
+        transaction = this.transactionRepository.findById(transactionId).get();
+        Assertions.assertNotNull(transaction);
+        Assertions.assertEquals(TransactionType.books, transaction.getType());
+
+
+        transaction.setType(TransactionType.events);
+        transaction = this.transactionRepository.findById(transactionId).get();
+        Assertions.assertNotNull(transaction);
+        Assertions.assertNotEquals(TransactionType.events, transaction.getType());
+    }
 }

@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 import java.util.Optional;
 
 import ca.mcgill.ecse321.townlibrary.model.Transaction;
-import ca.mcgill.ecse321.townlibrary.model.UserRole;
+import ca.mcgill.ecse321.townlibrary.model.TransactionType;
 
 public class TransactionDTO {
 
@@ -12,6 +12,7 @@ public class TransactionDTO {
     public Timestamp startDate;
     public Timestamp endDate;
     public Integer userId;
+	public TransactionType type;
 
     public static TransactionDTO fromModel(Transaction t) {
     	final TransactionDTO dto = new TransactionDTO();
@@ -21,6 +22,7 @@ public class TransactionDTO {
     	dto.userId = Optional.ofNullable(t.getUserRole())
 				.map(x -> x.getId())
 				.orElse(null);
+		dto.type = t.getType();
     	return dto;
     }
 }

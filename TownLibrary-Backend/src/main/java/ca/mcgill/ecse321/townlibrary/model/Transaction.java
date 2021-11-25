@@ -10,7 +10,7 @@ public class Transaction {
 
     private Timestamp startDate;
     private Timestamp endDate;
-
+    private TransactionType type = null;
     private UserRole userRole;
 
     @Id
@@ -45,6 +45,12 @@ public class Transaction {
 
     public void setUserRole(UserRole ur) {
         this.userRole = ur;
+    }
+    public void setType(TransactionType type) {
+        if (this.type == null) this.type = type;
+    }
+    public TransactionType getType(){
+        return this.type;
     }
 
     @Override

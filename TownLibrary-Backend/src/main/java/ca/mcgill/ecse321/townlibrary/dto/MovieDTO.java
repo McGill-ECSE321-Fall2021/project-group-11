@@ -14,7 +14,7 @@ public class MovieDTO {
 	private Status status;
 	
 	private Integer libraryId;
-	//private Transaction transaction;
+	private Integer transactionId;
 	
 	public MovieDTO() {
 	}
@@ -35,7 +35,9 @@ public class MovieDTO {
 		dto.libraryId = Optional.ofNullable(m.getLibrary())
 				.map(x -> x.getId())
                 .orElse(null);
-		//dto.transaction = m.getTransaction();
+		dto.transactionId = Optional.ofNullable(m.getTransaction())
+				.map(x -> x.getId())
+                .orElse(null);
 		return dto;
 	}
 	
