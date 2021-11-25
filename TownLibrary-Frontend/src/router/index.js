@@ -11,6 +11,9 @@ import CreateOfflineAccount from '@/components/CreateOfflineAccount'
 import Homepage from '@/components/Homepage'
 import CreateEvent from '@/components/CreateEvent'
 import Events from '@/components/Events'
+import CreateItem from '@/components/CreateItem'
+import BrowseItem from '@/components/BrowseItem'
+import Item from '@/components/Item'
 
 Vue.use(Router)
 
@@ -61,7 +64,21 @@ const router = new Router({
     {
       path: '/events',
       name: 'Events',
-      component: Events
+      component: Events},
+      {
+      path: '/additem',
+      name: 'Create Item',
+      component: CreateItem
+    },
+    {
+      path: '/browseitem',
+      name: 'Browse Item',
+      component: BrowseItem
+    },
+    {
+      path: '/item',
+      name: 'Item',
+      component: Item
     }
   ]
 })
