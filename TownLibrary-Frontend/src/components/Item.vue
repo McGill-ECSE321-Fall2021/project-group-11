@@ -10,8 +10,9 @@
 
 		<div v-if="!isViewOnly">
 			<button :disabled="this.status !== 'AVAILABLE'"
-					@click="reserveItem(id)">Reserve</button>
-			<button>Checkout</button>
+					@click="reserveItem(item.id)">Reserve</button>
+			<button :disabled="this.status === 'CHECKED_OUT'"
+					@click="checkoutItem(item.id)">Checkout</button>
 		</div>
 		<button @click="$router.push('/browseitem')">Back</button>
 	</div>
@@ -77,13 +78,17 @@ export default {
 		},
 
 		// async checkoutItem (itemId) {
+		// 	console.log("here")
 		// 	// Set the transaction id to the same as the associated item's id
-		// 	let transaction = await AXIOS.post('transactions/' + itemId, null, {
+		// 	let response = await AXIOS.post('transactions/' + itemId, null, {
 		// 		params: {
-
+		// 			startDate: "2021-11-07T00:00:00",
+		// 			endDate: "2021-11-09T00:00:00",
+		// 			transactionType: this.item.type + "s"
 		// 		}
 		// 	})
-		// 	console.log(transaction.data)
+		// 	console.log(response.data)
+		// 	return this.status
 		// }
 	}
 	
