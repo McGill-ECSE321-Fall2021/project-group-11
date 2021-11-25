@@ -10,7 +10,7 @@
 
 		<div v-if="!isViewOnly">
 			<button :disabled="this.status !== 'AVAILABLE'"
-					@click="reserveBook(id)">Reserve</button>
+					@click="reserveItem(id)">Reserve</button>
 			<button>Checkout</button>
 		</div>
 		<button @click="$router.push('/browseitem')">Back</button>
@@ -63,23 +63,28 @@ export default {
 
 	methods: {
 		async showStatus (itemId) {
-			try {
-				let response = await AXIOS.get('/' + this.item.type + 's/' + itemId)
-				this.status = response.data.status
-				console.log(response.data)
-				return this.status
-				
-			} catch (error) {
-				this.books = null
-			}
+			let response = await AXIOS.get('/' + this.item.type + 's/' + itemId)
+			this.status = response.data.status
+			console.log(response.data)
+			return this.status
 		},
 
-		async reserveBook (itemId) {
+		async reserveItem (itemId) {
 			let response = await AXIOS.put('/' + this.item.type + 's/' + itemId + '/reserve')
 			this.status = response.data.status
 			console.log(response.data.status)
 			return this.status
-		}
+		},
+
+		// async checkoutItem (itemId) {
+		// 	// Set the transaction id to the same as the associated item's id
+		// 	let transaction = await AXIOS.post('transactions/' + itemId, null, {
+		// 		params: {
+
+		// 		}
+		// 	})
+		// 	console.log(transaction.data)
+		// }
 	}
 	
 }
