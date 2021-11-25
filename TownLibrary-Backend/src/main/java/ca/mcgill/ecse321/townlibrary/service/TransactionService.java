@@ -39,10 +39,6 @@ public class TransactionService {
 		if (type == null) {
 			error = error + "Type cannot be empty.";
 		}
-		// if (!(type.equals(TransactionType.Event) || (type.equals(TransactionType.Item))))
-		// {
-		// 	error = error + "Type not valid.";
-		// }
 
 		error = error.trim();
 	    if (error.length() > 0) {

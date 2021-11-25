@@ -17,8 +17,8 @@
                     <td> {{ transaction.startDate }} </td>
                     <td> {{ transaction.endDate }} </td>
                     <td> Event </td>
-                    <td> 
-                        <button @click="renewItem(transaction.id)">Renew</button> 
+                    <td>
+                        <button @click="renewItem(transaction.id)">Renew</button>
                     </td>
                 </tr>
             </table>
@@ -34,7 +34,7 @@
 import axios, { Axios } from 'axios'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
+var backendUrl = 'https://' + process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -53,7 +53,7 @@ export default {
         }
     },
     created: function() {
-        
+
         this.reloadTransactions
     },
 
@@ -74,21 +74,21 @@ export default {
                     }
                 }
             }
-            
+
         },
 
         async getTransactionObjects(){
             for (transaction in this.transactions) {
-                    
+
 
 
             }
         },
-        
+
 
 
         async renewTransactionObject(id){
-            
+
         }
     }
 }

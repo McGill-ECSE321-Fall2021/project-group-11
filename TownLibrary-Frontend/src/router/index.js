@@ -10,6 +10,9 @@ import SetupLibrary from '@/components/SetupLibrary'
 import CreateLibrarian from '@/components/CreateLibrarian'
 import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
+import Homepage from '@/components/Homepage'
+import CreateEvent from '@/components/CreateEvent'
+import Events from '@/components/Events'
 import CreateItem from '@/components/CreateItem'
 import BrowseItem from '@/components/BrowseItem'
 import Item from '@/components/Item'
@@ -22,8 +25,8 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'Hello',
-      component: Hello
+      name: 'Homepage',
+      component: Homepage
     },
     {
       path: '/login',
@@ -57,6 +60,15 @@ const router = new Router({
       component: Profile
     },
     {
+      path: '/create-event',
+      name: 'Create Event',
+      component: CreateEvent
+    },
+    {
+      path: '/events',
+      name: 'Events',
+      component: Events},
+      {
       path: '/additem',
       name: 'Create Item',
       component: CreateItem

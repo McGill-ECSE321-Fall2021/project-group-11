@@ -299,9 +299,8 @@ public class ItemControllerTest {
         TransactionDTO dto = given()
             .param("startDate", "2021-11-07T00:00:00")
             .param("endDate", "2021-11-09T00:00:00")
-            .param("userId", this.idUser)
 			.param("transactionType", TransactionType.books)
-            .when().post("/transactions/0")
+            .when().post("/transactions/" + this.idUser + "/0")
             .then()
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);
@@ -330,9 +329,8 @@ public class ItemControllerTest {
     	TransactionDTO dto = given()
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
-                .param("userId", this.idUser)
 				.param("transactionType", TransactionType.movies)
-                .when().post("/transactions/0")
+                .when().post("/transactions/" + this.idUser + "/0")
                 .then()
                 .statusCode(200)
                 .extract().response().as(TransactionDTO.class);
@@ -361,9 +359,8 @@ public class ItemControllerTest {
     	TransactionDTO dto = given()
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
-                .param("userId", this.idUser)
 				.param("transactionType", TransactionType.musicalbums)
-                .when().post("/transactions/0")
+                .when().post("/transactions/" + this.idUser + "/0")
                 .then()
                 .statusCode(200)
                 .extract().response().as(TransactionDTO.class);
@@ -391,9 +388,8 @@ public class ItemControllerTest {
 		TransactionDTO dto = given()
                 .param("startDate", "2021-11-07T00:00:00")
                 .param("endDate", "2021-11-09T00:00:00")
-                .param("userId", this.idUser)
 				.param("transactionType", TransactionType.musicalbums)
-                .when().post("/transactions/0")
+                .when().post("/transactions/" + this.idUser + "/0")
                 .then()
                 .statusCode(200)
                 .extract().response().as(TransactionDTO.class);

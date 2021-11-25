@@ -14,9 +14,6 @@ import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static org.hamcrest.Matchers.*;
 
-
-
-
 // Heavily inspired by Paul's integration testing files
 
 @Tag("integration")
@@ -89,5 +86,5 @@ public class EventControllerTest {
                     .body("size()", equalTo(1))
                     .body("[0].id", equalTo(id))
                     .body("[0].libId", equalTo(10001));
-        }       
+        }
 }

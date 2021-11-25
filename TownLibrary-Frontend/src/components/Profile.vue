@@ -2,6 +2,8 @@
   <div id="profile">
     <h2>Welcome back {{ userInfo.name }}!</h2>
     <button @click="doLogout">Logout</button>
+    <br><br>
+    <button @click="$router.push('/')">Home</button>
 
     <p>Just to show that stuff does work:</p>
     <ul>
@@ -46,12 +48,12 @@
                                     params: {
                                       id: userInfo.id
                                    }})">View transactions</button>
-      <button @click="$router.push({name:'Personal Information', 
+      <button @click="$router.push({name:'Personal Information',
                                     params:{
                                       id:       userInfo.id,
                                       fullName: userInfo.name,
                                       email:    userInfo.email,
-                                      address:  userInfo.address      
+                                      address:  userInfo.address
                                   }})">View personal information</button>
       <button @click="$router.push('')">View event schedule</button>
     </div>
@@ -63,7 +65,7 @@
 import axios from 'axios'
 
 var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
+var backendUrl = 'https://' + process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -87,7 +89,7 @@ export default {
     this.reloadUserInfo()
     this.reloadLibrarians()
 
-    
+
   },
 
   computed: {
