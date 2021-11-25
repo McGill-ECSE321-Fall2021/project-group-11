@@ -17,7 +17,6 @@ import ca.mcgill.ecse321.townlibrary.repository.OnlineMemberRepository;
 
 import java.util.Optional;
 
-
 import static org.mockito.Mockito.lenient;
 
 

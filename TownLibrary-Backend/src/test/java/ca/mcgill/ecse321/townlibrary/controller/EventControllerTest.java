@@ -58,14 +58,14 @@ public class EventControllerTest {
             .param("lib", "10001")
             .post("/events/event1")
             .then().statusCode(200)
-            .body("lib", equalTo("10001"))
+            .body("libId", equalTo(10001))
             .extract().response().body().path("id");
 
             when().get("/events/" + id)
                 .then().statusCode(200)
                 .body("id", equalTo(id))
                 .body("name", equalTo("event1"))
-                .body("lib", equalTo("10001"));
+                .body("libId", equalTo(10001));
         }
 
         @Test

@@ -122,5 +122,11 @@ public class TransactionRepositoryTest {
         transaction = this.transactionRepository.findById(transactionId).get();
         Assertions.assertNotNull(transaction);
         Assertions.assertEquals(TransactionType.Item, transaction.getType());
+
+
+        transaction.setType(TransactionType.Event);
+        transaction = this.transactionRepository.findById(transactionId).get();
+        Assertions.assertNotNull(transaction);
+        Assertions.assertNotEquals(TransactionType.Event, transaction.getType());
     }
 }
