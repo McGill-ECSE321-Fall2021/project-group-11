@@ -58,13 +58,13 @@ public class TransactionControllerTest {
     @Test
     public void testStartTransactions() {
         // Make sure its empty
-        when().get("/transactions")
+        when().get("/transactions/" + idLibrarian)
             .then()
             .statusCode(200)
             .body("$", empty());
 
         // Since empty, any transaction search should return error
-        when().get("/transactions/1")
+        when().get("/transactions/" + idLibrarian + "/0")
             .then().statusCode(400)
             .body(equalTo("NOT-FOUND-TRANSACTION"));
     }
@@ -78,9 +78,8 @@ public class TransactionControllerTest {
         TransactionDTO dto = given()
             .param("startDate", "2021-11-07T00:00:00")
             .param("endDate", "2021-11-09T00:00:00")
-            .param("userId", this.idLibrarian)
             .param("transactionType", TransactionType.books)
-            .when().post("/transactions/0")
+            .when().post("/transactions/" + this.idLibrarian + "/0")
             .then()
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);
@@ -91,7 +90,7 @@ public class TransactionControllerTest {
 
         final int id = dto.id;
 
-            dto = when().get("/transactions/" + id)
+            dto = when().get("/transactions/" + this.idLibrarian + "/" + id)
                 .then().statusCode(200)
                 .body("id", equalTo(id))
                 .extract().response().as(TransactionDTO.class);
@@ -100,7 +99,7 @@ public class TransactionControllerTest {
         assertThat(dto.endDate, equalTo(expectedEndDate));
         assertThat(dto.userId, equalTo(this.idLibrarian));
 
-            dto = when().get("/transactions/")
+            dto = when().get("/transactions/" + this.idLibrarian)
                 .then().statusCode(200)
                 .body("size()", equalTo(1))
                 .extract().response().as(TransactionDTO[].class)[0];
