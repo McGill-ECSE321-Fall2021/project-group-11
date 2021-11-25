@@ -56,6 +56,7 @@ export default {
 			  await AXIOS.post('/archives/' + itemInfo.id , null, {
 				  params: {
 					  name: itemInfo.name,
+					  type: itemInfo.type,
 					  libraryId: 0
 				  }
 			  })
@@ -64,6 +65,7 @@ export default {
 			  await AXIOS.post('/newspapers/' + itemInfo.id , null, {
 				  params: {
 					  name: itemInfo.name,
+					  type: itemInfo.type,
 					  libraryId: 0
 				  }
 			  })
@@ -72,6 +74,7 @@ export default {
 			  await AXIOS.post('/books/' + itemInfo.id , null, {
 				  params: {
 					  name: itemInfo.name,
+					  type: itemInfo.type,
 					  libraryId: 0
 				  }
 			  })
@@ -80,6 +83,7 @@ export default {
 			  await AXIOS.post('/movies/' + itemInfo.id , null, {
 				  params: {
 					  name: itemInfo.name,
+					  type: itemInfo.type,
 					  libraryId: 0
 				  }
 			  })
@@ -88,6 +92,7 @@ export default {
 			  await AXIOS.post('/musicalbums/' + itemInfo.id , null, {
 				  params: {
 					  name: itemInfo.name,
+					  type: itemInfo.type,
 					  libraryId: 0
 				  }
 			  })
