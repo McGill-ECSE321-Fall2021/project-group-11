@@ -15,6 +15,9 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 import static io.restassured.module.mockmvc.matcher.RestAssuredMockMvcMatchers.*;
 import static org.hamcrest.Matchers.*;
 
+import java.sql.Timestamp;
+
+import ca.mcgill.ecse321.townlibrary.dto.TransactionDTO;
 import ca.mcgill.ecse321.townlibrary.model.*;
 
 @Tag("integration")
@@ -25,12 +28,25 @@ public class ItemControllerTest {
 	
 	@Autowired
     private WebApplicationContext webApplicationContext;
+	
+	private int idUser;
 
     @BeforeEach
     public void setup() {
         RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
         post("/libraries/321?address=99 boulevard of broken dreams");
+        
+        this.idUser = given()
+                .param("password", "Jhon4444")
+                .param("email", "jhon@email.com")
+                .param("address", "99 boulevard of broken dreams")
+                .param("name", "Jhon")
+                .param("library", "321")
+                .when().post("/online-members/jhon")
+                .then()
+                .extract()
+                .response().body().path("id");
     }
 
     @AfterEach
@@ -279,19 +295,18 @@ public class ItemControllerTest {
     
     @Test
     public void testCheckoutBook() {
-    	final int idUser = given()
-                .param("password", "Jhon4444")
-                .param("email", "jhon@email.com")
-                .param("address", "99 boulevard of broken dreams")
-                .param("name", "Jhon")
-                .param("library", "321")
-                .when().post("/online-members/jhon")
-                .then()
-                .statusCode(200)
-                //.body("inTown", equalTo(false))
-                .extract()
-                .response().body().path("id");
-
+    	
+        TransactionDTO dto = given()
+            .param("startDate", "2021-11-07T00:00:00")
+            .param("endDate", "2021-11-09T00:00:00")
+            .param("userId", this.idUser)
+            .when().post("/transactions/0")
+            .then()
+            .statusCode(200)
+            .extract().response().as(TransactionDTO.class);
+        
+        final int idTransaction = dto.id;
+    			
     	final int idItem = given()
     			.param("name", "Dune")
     			.param("libraryId", "321")
@@ -301,7 +316,7 @@ public class ItemControllerTest {
                 .extract().response().body().path("id");
     	
     	given()
-    		.param("userId", idUser)
+    		.param("transactionId", idTransaction)
     		.when().put("/books/" + idItem + "/checkout")
     		.then()
     		.statusCode(200)
@@ -311,18 +326,16 @@ public class ItemControllerTest {
     
     @Test
     public void testCheckoutMovie() {
-    	final int idUser = given()
-                .param("password", "Jhon4444")
-                .param("email", "jhon@email.com")
-                .param("address", "99 boulevard of broken dreams")
-                .param("name", "Jhon")
-                .param("library", "321")
-                .when().post("/online-members/jhon")
+    	TransactionDTO dto = given()
+                .param("startDate", "2021-11-07T00:00:00")
+                .param("endDate", "2021-11-09T00:00:00")
+                .param("userId", this.idUser)
+                .when().post("/transactions/0")
                 .then()
                 .statusCode(200)
-                //.body("inTown", equalTo(false))
-                .extract()
-                .response().body().path("id");
+                .extract().response().as(TransactionDTO.class);
+            
+            final int idTransaction = dto.id;
 
     	final int idItem = given()
     			.param("name", "Interstellar")
@@ -333,7 +346,7 @@ public class ItemControllerTest {
                 .extract().response().body().path("id");
     	
     	given()
-    		.param("userId", idUser)
+    		.param("transactionId", idTransaction)
     		.when().put("/movies/" + idItem + "/checkout")
     		.then()
     		.statusCode(200)
@@ -343,18 +356,16 @@ public class ItemControllerTest {
     
     @Test
     public void testCheckoutMusicAlbum() {
-    	final int idUser = given()
-                .param("password", "Jhon4444")
-                .param("email", "jhon@email.com")
-                .param("address", "99 boulevard of broken dreams")
-                .param("name", "Jhon")
-                .param("library", "321")
-                .when().post("/online-members/jhon")
+    	TransactionDTO dto = given()
+                .param("startDate", "2021-11-07T00:00:00")
+                .param("endDate", "2021-11-09T00:00:00")
+                .param("userId", this.idUser)
+                .when().post("/transactions/0")
                 .then()
                 .statusCode(200)
-                //.body("inTown", equalTo(false))
-                .extract()
-                .response().body().path("id");
+                .extract().response().as(TransactionDTO.class);
+            
+            final int idTransaction = dto.id;
 
     	final int idItem = given()
     			.param("name", "Evolve")
@@ -365,7 +376,7 @@ public class ItemControllerTest {
                 .extract().response().body().path("id");
     	
     	given()
-    		.param("userId", idUser)
+    		.param("transactionId", idTransaction)
     		.when().put("/musicalbums/" + idItem + "/checkout")
     		.then()
     		.statusCode(200)

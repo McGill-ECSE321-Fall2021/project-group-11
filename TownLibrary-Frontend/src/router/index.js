@@ -8,6 +8,9 @@ import SetupLibrary from '@/components/SetupLibrary'
 import CreateLibrarian from '@/components/CreateLibrarian'
 import CreateOnlineAccount from '@/components/CreateOnlineAccount'
 import CreateOfflineAccount from '@/components/CreateOfflineAccount'
+import CreateItem from '@/components/CreateItem'
+import BrowseItem from '@/components/BrowseItem'
+import Item from '@/components/Item'
 
 Vue.use(Router)
 
@@ -49,6 +52,21 @@ const router = new Router({
       path: '/profile',
       name: 'User Profile',
       component: Profile
+    },
+    {
+      path: '/additem',
+      name: 'Create Item',
+      component: CreateItem
+    },
+    {
+      path: '/browseitem',
+      name: 'Browse Item',
+      component: BrowseItem
+    },
+    {
+      path: '/item',
+      name: 'Item',
+      component: Item
     }
   ]
 })

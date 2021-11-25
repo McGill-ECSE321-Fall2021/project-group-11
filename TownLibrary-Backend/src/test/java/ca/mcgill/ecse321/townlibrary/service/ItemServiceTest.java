@@ -43,12 +43,15 @@ public class ItemServiceTest {
 	
 	@Mock
 	UserRoleService userService;
+	@Mock
+	TransactionService transactionService;
 
 	@InjectMocks
 	private ItemService itemService;
 	
 	private static final Transaction TRANSACTION_MOVIE = new Transaction();
 	private static final Transaction TRANSACTION_MUSIC = new Transaction();
+	private static final int TRANSACTION_ID = 100;
 	private static final int USER_ID = 4444;
 	
 	private static final int BAD_ID = -1;
@@ -208,6 +211,21 @@ public class ItemServiceTest {
 				user.setId(USER_ID);
 				user.setName("Jhon");
 				return user;
+			} else {
+				return null;
+			}
+		});
+		lenient().when(transactionService.getTransaction(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(TRANSACTION_ID)) {
+				Transaction trans = new Transaction();
+				trans.setId(TRANSACTION_ID);
+				Timestamp startTime = new Timestamp(System.currentTimeMillis());
+				// Checked out for 2 weeks at a time by default
+				Timestamp endTime = new Timestamp(startTime.getTime() + 1000 * 86400 * 14);
+				trans.setStartDate(startTime);
+				trans.setEndDate(endTime);
+				trans.setUserRole(userService.getUserRole(USER_ID));
+				return trans;
 			} else {
 				return null;
 			}
@@ -617,46 +635,46 @@ public class ItemServiceTest {
 	@Test
 	public void testCheckout() {
 		
-		assertEquals(BOOK_ID, itemService.checkoutItem(BOOK_ID, USER_ID).getId());
-		assertEquals(Status.CHECKED_OUT, itemService.checkoutItem(BOOK_ID, USER_ID).getStatus());
+		assertEquals(BOOK_ID, itemService.checkoutItem(BOOK_ID, TRANSACTION_ID).getId());
+		assertEquals(Status.CHECKED_OUT, itemService.checkoutItem(BOOK_ID, TRANSACTION_ID).getStatus());
 	
 		try {
-			itemService.checkoutItem(BAD_ID, USER_ID);
+			itemService.checkoutItem(BAD_ID, TRANSACTION_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Unsupported Id.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(NONEXISTING_ID, USER_ID);
+			itemService.checkoutItem(NONEXISTING_ID, TRANSACTION_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Item does not exist.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(NEWSPAPER_ID, USER_ID);
+			itemService.checkoutItem(NEWSPAPER_ID, TRANSACTION_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 		
 		try {
-			itemService.checkoutItem(ARCHIVE_ID, USER_ID);
+			itemService.checkoutItem(ARCHIVE_ID, TRANSACTION_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(ARCHIVE_ID, USER_ID);
+			itemService.checkoutItem(ARCHIVE_ID, TRANSACTION_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("Cannot checkout archives or newspapers.", e.getMessage());
 		}
 
 		try {
-			itemService.checkoutItem(MOVIE_ID, USER_ID);
+			itemService.checkoutItem(MOVIE_ID, TRANSACTION_ID);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("This item is unavailable.", e.getMessage());
