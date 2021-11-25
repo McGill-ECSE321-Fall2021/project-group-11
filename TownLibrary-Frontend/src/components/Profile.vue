@@ -56,7 +56,7 @@ var AXIOS = axios.create({
 
 export default {
   name: 'profile',
-
+  
   data () {
     return {
       loginStatus: {},
