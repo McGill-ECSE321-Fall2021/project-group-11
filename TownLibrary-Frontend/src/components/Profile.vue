@@ -2,6 +2,8 @@
   <div id="profile">
     <h2>Welcome back {{ userInfo.name }}!</h2>
     <button @click="doLogout">Logout</button>
+    <br><br>
+    <button @click="$router.push('/')">Home</button>
 
     <p>Just to show that stuff does work:</p>
     <ul>
