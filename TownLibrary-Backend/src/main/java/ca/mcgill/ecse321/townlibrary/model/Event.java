@@ -1,6 +1,14 @@
 package ca.mcgill.ecse321.townlibrary.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Set;
+
 import javax.persistence.*;
+
+import org.apache.catalina.User;
+
+import java.util.List;
 
 @Entity
 public class Event {
@@ -12,6 +20,8 @@ public class Event {
     private Library library;
 
     private Transaction transaction;
+
+    private ArrayList<UserRole> users = new ArrayList<UserRole>();
 
     @Id
     @GeneratedValue
@@ -33,6 +43,11 @@ public class Event {
         return transaction;
     }
 
+    @ManyToMany
+    public List<UserRole> getUsers() {
+        return users;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
@@ -48,5 +63,12 @@ public class Event {
     public void setTransaction(Transaction transaction) {
         this.transaction = transaction;
     }
+    
+    public void addUser(UserRole user) {
+        users.add(user);
+    }
 
+    public void removeUser(UserRole user) {
+        users.remove(user);
+    }
 }

@@ -2,20 +2,32 @@
 	<div id="events">
 		<h1>Events</h1>
 		<br> <br>
-		<h2>Create event:</h2>
-		<button @click="$router.push('/create-event')">Create Event</button>
-		<br><br>
-		<h2>Event listing:</h2>
-		<table>
-			<tr>
-				<th>Name</th>
-				<th>Event ID</th>
-			<tr v-for="event in (events || [])" :key="event.id">
-				<td>{{ event.name }}</td>
-				<td>{{ event.id }}</td>
-			</tr>
-		</table>
-		<br><br>
+		<div v-if="state === 0">
+			<h2>Create event:</h2>
+			<button @click="$router.push('/create-event')">Create Event</button>
+			<br><br>
+			<h2>Event listing:</h2>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Event ID</th>
+				<tr v-for="event in (events || [])" :key="event.id">
+					<td>{{ event.name }}</td>
+					<td>{{ event.id }}</td>
+				</tr>
+			</table>
+			<br><br>
+			<h2>View event details</h2>
+			<br>
+			<input type="text" v-model="eventId" placeholder="Event ID">
+			<br>
+			<button @click="eventDetails(eventId)">Event details</button>
+		</div>
+		<div v-if="state === 1">
+			<h2>Event "eventId"</h2>
+			<br>
+			<button @click="successRedirect()">Return to events
+		</div>
 		<button @click="$router.push('/')">Home</button>
 	</div>
 </template>
@@ -32,7 +44,11 @@ export default {
 	name: 'events',
 	data () {
 		return {
-			events: []
+			state: 0,
+
+			events: [],
+			eventId: '',
+			loadedEvent: {}
 		}
 	},
 	created () {
@@ -46,7 +62,24 @@ export default {
 			} catch (error) {
 				this.events = null
 			}
-		}
+		},
+		async eventDetails(id) {
+			try {
+				let response = await AXIOS.post('/events/' + id, null, {
+					params: {
+						lib: 0
+					}
+				})
+				this.loadedEvent = response.data
+				this.state++
+			} catch(error) {
+				this.loadedEvent = null
+			}
+		},
+		successRedirect() {
+		this.$router.push('events')
+		this.state = 0
+    }
 	}
 }
 </script>

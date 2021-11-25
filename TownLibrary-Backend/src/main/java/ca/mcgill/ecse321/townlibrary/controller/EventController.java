@@ -20,6 +20,9 @@ public class EventController {
     @Autowired 
     private LibraryService libraryService;
 
+    @Autowired
+    private OnlineMemberService onlineMemberService;
+
     @GetMapping(value = { "/events", "/events/"})
     /*public List<EventDTO> getAllEvents() {
         return eventService.getAllEvents()
@@ -40,6 +43,14 @@ public class EventController {
         }
         return ResponseEntity.ok(EventDTO.fromModel(e));
     }
+
+    @GetMapping(value={"/events/{id}/users", "/events/{id}/users/"})
+    public ResponseEntity<?> getEventUsers(
+        @PathVariable("id") int id) {
+            final Event e = eventService.getEventById(id);
+            return ResponseEntity.ok(e.getUsers());
+    }
+    
     
     @PostMapping(value = { "/events/{name}", "/events/{name}/"})
     public ResponseEntity<?> createEvent(
@@ -53,5 +64,21 @@ public class EventController {
         catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
+    }
+
+    @PostMapping(value = {"/events/add/{id}", "/events/add/{id}/"})
+    public ResponseEntity<?> addUser(
+        @PathVariable("id") int Id,
+        @RequestParam int eventId) {
+        try {
+            final Event e = eventService.getEventById(eventId);
+            final UserRole u = onlineMemberService.getOnlineMember(Id);
+            eventService.addUserToEvent(e, u);
+            return ResponseEntity.ok().body(EventDTO.fromModel(e));
+        }
+        catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+
     }
 }

@@ -120,4 +120,28 @@ public class EventServiceTest {
         e = this.eventService.getEventByTransaction(new Transaction());
         Assertions.assertNull(e);
     }
+
+    @Test
+    public void testAddUsersToEvent() {
+        final UserRole u1 = new OnlineMember();
+        u1.setId(4000);
+        u1.setName("jogn ");
+        final Event e = new Event();
+        Assertions.assertEquals(0, e.getUsers().size());
+        e.addUser(u1);
+        Assertions.assertEquals(1, e.getUsers().size());
+    }
+
+    @Test
+    public void testRemoveUsersFromEvent() {
+        final UserRole u1 = new OnlineMember();
+        u1.setId(4000);
+        u1.setName("jogn ");
+        final Event e = new Event();
+        Assertions.assertEquals(0, e.getUsers().size());
+        e.addUser(u1);
+        Assertions.assertEquals(1, e.getUsers().size());
+        e.removeUser(u1);
+        Assertions.assertEquals(0, e.getUsers().size());
+    }
 }

@@ -90,5 +90,5 @@ public class EventControllerTest {
                     .body("size()", equalTo(1))
                     .body("[0].id", equalTo(id))
                     .body("[0].libId", equalTo(10001));
-        }       
+        }
 }
