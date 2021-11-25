@@ -338,15 +338,7 @@ export default {
                     break
             }
         },
-
-        /** Check if object is empty.
-         * 
-         * @param obj - some object
-         */
-        isEmptyObject(obj){
-            return JSON.stringify(obj) === '{}'
-        },
-
+        
         /** Clears all the checkbox
          *  Taken directly from stackoverflow from user T J 
          *  stackoverflow.com/questions/22574344/how-to-make-a-button-that-will-uncheck-all-checkboxes/22574416
