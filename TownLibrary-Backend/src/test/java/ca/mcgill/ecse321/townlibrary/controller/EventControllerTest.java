@@ -35,10 +35,12 @@ public class EventControllerTest {
             post("/libraries/10001?address=sad street");
 
             this.userId = given()
-                .param("password", "jojo123")
-                .param("address", "410 Chili Street")
+                .param("password", "toothpaste2")
+                .param("email", "mintyfresh@teeth.com")
+                .param("address", "246 Clean Avenue")
+                .param("name", "Chip Skylark")
                 .param("library", "0")
-                .post("/head-librarians/Joe Schmoe")
+                .post("/online-members/chip_skylark")
                 .then()
                 .extract()
                 .response().body().path("id");
@@ -101,7 +103,7 @@ public class EventControllerTest {
         public void testCreateEventAndQuery() {
             final int id = given()
                 .param("lib", "10001")
-                .post("/events/event1")
+                .post("/events/event2")
                 .then().statusCode(200)
                 .body("libId", equalTo(10001))
                 .extract().response().body().path("id");
@@ -115,8 +117,8 @@ public class EventControllerTest {
                 when().get("/events")
                     .then()
                     .statusCode(200)
-                    .body("size()", equalTo(1))
-                    .body("[0].id", equalTo(id))
-                    .body("[0].libId", equalTo(10001));
+                    .body("size()", equalTo(2))
+                    .body("[1].id", equalTo(id))
+                    .body("[1].libId", equalTo(10001));
         }
 }
