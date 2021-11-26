@@ -83,6 +83,7 @@ public class DailyScheduleRepositoryTest {
 
         // Test query results by checking if it returns the right amount of schedules
         List<DailySchedule> persistDailySchedules = this.dailyScheduleRepository.findByLibrarian(librarian);
+        System.out.println(persistDailySchedules.size());
         Assertions.assertEquals(2, persistDailySchedules.size());
         persistDailySchedules = this.dailyScheduleRepository.findByDayOfWeek(DayOfWeek.TUESDAY);
         Assertions.assertEquals(1, persistDailySchedules.size());
