@@ -29,14 +29,7 @@
 		<div v-if="state === 1">
 			<h2>Name: {{loadedEvent.name}}</h2>
 			<h2>ID: {{loadedEvent.id}}</h2>
-			<table>
-				<tr>
-					<th>Name</th>
-					<th>User ID</th>
-				</tr>
-				<tr v-for="user in (users || [])" :key="user.id">
-					<td>{{user.name}}</td>
-					<td>{{user.id}}</td>
+			<h2>Registered Users: {{loadedEvent.users}}</h2>
 			<br>
 			<input type="text" v-model="userId" placeholder="Online Member ID">
 			<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
@@ -64,7 +57,7 @@ export default {
 			eventId: '',
 			loadedEvent: {},
 			users: [],
-			serviceResponse = null
+			serverResponse: null
 		}
 	},
 	created () {

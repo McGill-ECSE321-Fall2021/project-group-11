@@ -69,8 +69,8 @@ public class EventController {
 
     @PostMapping(value = {"/events/{eventid}/{userid}", "/events/{eventid}/{userid}/"})
     public ResponseEntity<?> addUser(
-        @PathVariable("userid") int userId,
-        @PathVariable("eventid") int eventId) {
+        @PathVariable("eventid") int eventId,
+        @PathVariable("userid") int userId) {
         try {
             final Event e = eventService.getEventById(eventId);
             final UserRole u = onlineMemberService.getOnlineMember(userId);
