@@ -17,8 +17,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import ca.mcgill.ecse321.townlibrary.repository.*;
+import ch.qos.logback.core.subst.Token.Type;
 import ca.mcgill.ecse321.townlibrary.model.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,9 +28,14 @@ public class TransactionServiceTest {
 	
 	@Mock
 	TransactionRepository transactionDao;
+
+	@Mock 
+	ItemRepository itemDao;
 	
 	@InjectMocks
 	private TransactionService service;
+	private static final Transaction INVALID_TRANSACTION = new Transaction();
+	private static final Transaction VALID_TRANSACTION = new Transaction();
 	private static final UserRole USER = new OfflineMember();
 	private static final TransactionType TYPE = TransactionType.books;
 	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis());
@@ -49,6 +56,30 @@ public class TransactionServiceTest {
 				return new ArrayList<Transaction>();
 			}
 		});
+		lenient().when(itemDao.findItemByTransaction(any(Transaction.class))).thenAnswer((InvocationOnMock invocation) -> {
+			if (invocation.getArgument(0).equals(INVALID_TRANSACTION)){
+				Item item = new Book();
+				item.setStatus(Status.AVAILABLE);
+				item.setTransaction(INVALID_TRANSACTION);
+				return item;
+			} else if(invocation.getArgument(0).equals(VALID_TRANSACTION)) {
+				VALID_TRANSACTION.setUserRole(USER);
+				VALID_TRANSACTION.setStartDate(START_TIME);
+				VALID_TRANSACTION.setEndDate(END_TIME);
+				VALID_TRANSACTION.setType(TYPE);
+				Item item = new Book();
+				item.setStatus(Status.CHECKED_OUT);
+				item.setTransaction(VALID_TRANSACTION);
+				return item;
+			} else {
+				return null;
+			}
+		});
+		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
+			return invocation.getArgument(0);
+		};
+		lenient().when(itemDao.save(any(Item.class))).thenAnswer(returnParameterAsAnswer);
+		lenient().when(transactionDao.save(any(Transaction.class))).thenAnswer(returnParameterAsAnswer);
 	}
 	
 	@Test
@@ -113,6 +144,25 @@ public class TransactionServiceTest {
 			fail();
 		}
 
+	}
+	@Test 
+	public void testRenewTransactionInvalidItem(){
+		try {
+			Transaction transaction = service.renewTransaction(INVALID_TRANSACTION);
+			fail();
+		} catch (Exception e) {
+			assertEquals("NOT-CHECKED-OUT", e.getMessage());
+		}
+	}
+
+	@Test 
+	public void testRenewTransactionValidItem(){
+		try {
+			Transaction transaction = service.renewTransaction(VALID_TRANSACTION);
+			assertEquals(transaction.getStartDate().getTime(), VALID_TRANSACTION.getEndDate().getTime());
+		} catch (Exception e) {
+			fail();
+		}
 	}
 
 }

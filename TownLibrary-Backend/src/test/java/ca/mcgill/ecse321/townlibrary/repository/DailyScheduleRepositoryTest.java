@@ -72,12 +72,12 @@ public class DailyScheduleRepositoryTest {
 
         // Write their attributes and save them on the database
         mondaySchedule.setDayOfWeek(DayOfWeek.MONDAY);
-        mondaySchedule.setId(25);
+        // mondaySchedule.setId(25);
         mondaySchedule.setLibrarian(librarian);
         this.dailyScheduleRepository.save(mondaySchedule);
 
         tuesdaySchedule.setDayOfWeek(DayOfWeek.TUESDAY);
-        tuesdaySchedule.setId(26);
+        // tuesdaySchedule.setId(26);
         tuesdaySchedule.setLibrarian(librarian);
         this.dailyScheduleRepository.save(tuesdaySchedule);
 
