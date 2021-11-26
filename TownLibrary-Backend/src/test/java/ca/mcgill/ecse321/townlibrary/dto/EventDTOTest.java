@@ -37,7 +37,10 @@ public class EventDTOTest {
         Assertions.assertEquals(l.getId(), dto.libId);
         Assertions.assertEquals(e.getUsers(), dto.users);;
     
-    
+        UserRole u = new OnlineMember();
+        Set<UserRole> users = new HashSet<>();
+        users.add(u);
+        e.setUsers(users);
 
         dto = EventDTO.fromModel(e);
         Assertions.assertEquals(e.getId(), dto.id);
