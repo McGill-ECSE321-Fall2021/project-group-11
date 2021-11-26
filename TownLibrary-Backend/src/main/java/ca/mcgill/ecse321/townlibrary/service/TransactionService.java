@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.townlibrary.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -71,14 +70,6 @@ public class TransactionService {
 		return transactionRepository.findByUserRole(user);
 	}
 
-	@Transactional
-    public List<Transaction> getAllTransactions() {
-        final List<Transaction> transactions = new ArrayList<Transaction>();
-        for (Transaction t : this.transactionRepository.findAll()) {
-        	transactions.add(t);
-        }
-        return transactions;
-    }
 	@Transactional
 	public Transaction renewTransaction(Transaction oldTransaction){
 		
