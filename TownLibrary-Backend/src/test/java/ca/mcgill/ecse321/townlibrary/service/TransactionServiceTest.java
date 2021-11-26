@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.townlibrary.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
@@ -28,10 +29,6 @@ public class TransactionServiceTest {
 	
 	@InjectMocks
 	private TransactionService service;
-	
-	private static final int BAD_ID = -1;
-	//private static final int NONEXISTING_ID = 0;
-	private static final int TRANSACTION_ID = 99;
 	private static final UserRole USER = new OfflineMember();
 	private static final TransactionType TYPE = TransactionType.books;
 	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis());
@@ -42,7 +39,6 @@ public class TransactionServiceTest {
 		lenient().when(transactionDao.findByUserRole(any(UserRole.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(USER)) {
 				Transaction transaction = new Transaction();
-				transaction.setId(TRANSACTION_ID);
 				transaction.setUserRole(USER);
 				
 				List<Transaction> tList = new ArrayList<Transaction>();
@@ -97,16 +93,26 @@ public class TransactionServiceTest {
 	}
 	
 	@Test
-	public void testGetTransactionByUser() {
+	public void testGetTransactionByNullUser() {
 		assertEquals(1, service.getTransactionsByUser(USER).size());
-		assertEquals(TRANSACTION_ID, service.getTransactionsByUser(USER).get(0).getId());
-		
+	
 		try {
 			service.getTransactionsByUser(null);
 			fail();
 		} catch (IllegalArgumentException e) {
 			assertEquals("User cannot be empty.", e.getMessage());
 		}
+	}
+	@Test
+	public void testGetTransactionByValidUser(){
+
+		try {
+			final List<Transaction> transactions = service.getTransactionsByUser(USER);
+			assertNotEquals(transactions.size(), 0);
+		} catch (Exception e) {
+			fail();
+		}
+
 	}
 
 }

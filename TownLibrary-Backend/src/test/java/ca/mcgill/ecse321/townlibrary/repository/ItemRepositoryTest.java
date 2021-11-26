@@ -75,7 +75,7 @@ public class ItemRepositoryTest {
 		
 		item = itemRepository.findItemByTransaction(transaction3);
 		assertNotNull(item);
-		assertEquals(33, item.getTransaction().getId());
+		assertEquals(id3, item.getId());
 		
 	}
 
