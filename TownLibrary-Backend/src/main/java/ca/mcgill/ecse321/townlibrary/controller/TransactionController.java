@@ -48,9 +48,8 @@ public class TransactionController {
             return ResponseEntity.ok(TransactionDTO.fromModel(t));
         }
 
-        @PostMapping(value = { "/transactions/{userId}/{id}", "/transactions/{userId}/{id}/"})
+        @PostMapping(value = { "/transactions/{userId}/", "/transactions/{userId}"})
         public ResponseEntity<?> createTransaction(
-            @PathVariable("id") int id,
             @PathVariable("userId") int userId,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date startDate,
             @RequestParam @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") Date endDate,
@@ -58,12 +57,23 @@ public class TransactionController {
 
             try {
                 final UserRole ur = userRoleService.getUserRole(userId);
-                final Transaction t = transactionService.createTransaction(id, new Timestamp(startDate.getTime()), new Timestamp(endDate.getTime()), ur, transactionType);
+                final Transaction t = transactionService.createTransaction(new Timestamp(startDate.getTime()), new Timestamp(endDate.getTime()), ur, transactionType);
                 return ResponseEntity.ok().body(TransactionDTO.fromModel(t));
             }
             catch (IllegalArgumentException ex) {
                 return ResponseEntity.badRequest().body(ex.getMessage());
             }
 
+        }
+        @PostMapping(value = {"transactions/{userId}/{id}/", "transactions/{userId}/{id}/"})
+        public ResponseEntity<?> renewTransaction(@PathVariable("id") int id,
+            @PathVariable("userId") int userId) {
+            try {
+                final Transaction oldTransaction = transactionService.getTransaction(id);
+                final Transaction transaction = transactionService.renewTransaction(oldTransaction);
+                return ResponseEntity.ok().body(TransactionDTO.fromModel(transaction));
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         }
 }
