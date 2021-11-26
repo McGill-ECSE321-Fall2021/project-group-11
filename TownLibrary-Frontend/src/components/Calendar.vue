@@ -5,7 +5,7 @@
             <!-- header table row -->
             <thead>
                 <tr>
-                    <td class="empty"></td>
+                    <th id="empty"></th>
                     <th v-for="day in dayOfWeek" :key="day"> {{day}} </th>
                 </tr>
             </thead>
@@ -19,6 +19,8 @@
                     <td v-for="n in dayOfWeek.length" :key="n" id="data">
                         <!-- reads entity's schedule and checks (colours cell) if there's a schedule at that timeslot -->
                         <!-- if user is head-librarian, can modify -->
+                        <!-- <div id="test"> -->
+                        <!-- <label> -->
                         <input type="checkbox" 
                             :id="[n, idx1+1]" :value="checkboxLocation(n, idx1+1)"
                             v-if="
@@ -40,6 +42,8 @@
                             time.endTime) 
                             && user !== 'head-librarian'" then onclick="return false;">
                         <input type="checkbox" v-else-if="user !== 'head-librarian'" then checked onclick="return false;">
+                        <!-- </label> -->
+                        <!-- </div> -->
 
                     </td>
                 </tr>
@@ -49,6 +53,8 @@
     <input class="reset-button" id="reset" type="reset" v-if="user === 'head-librarian'">
     <button class="clear-button" @click="clearCheckboxes()" v-if="user === 'head-librarian'">Clear</button>
     </form>
+    <p>DJSDSLKJSLDFLDSFJDLJ</p>
+
     </div>
 </template>
 
@@ -117,55 +123,7 @@ export default {
     },
 
     async created() {  
-        this.getSchedule() 
-        // try {
-        //     // these are to get schedule (and store in this.schedules)
-        //     // for library
-        //     if (this.entityId === 0){
-        //         const request = await AXIOS.get('/schedules/library/0')
-        //         this.schedules = request.data
-        //     }
-        //     // for librarian
-        //     else{
-        //         const request = await AXIOS.get('/schedules/librarian/' + this.entityId)
-        //         this.schedules = request.data
-        //     }
-
-        //     // this is to sort schedule by day (by storing in object this.schedulesByDay)
-        //     for (var i in this.schedules){
-        //         switch(this.schedules.at(i).dayOfWeek){
-        //             case 'MONDAY':
-        //                 this.schedulesByDay.MONDAY = this.schedules.at(i)
-        //                 break
-        //             case 'TUESDAY':
-        //                 this.schedulesByDay.TUESDAY = this.schedules.at(i)
-        //                 break
-        //             case 'WEDNESDAY':
-        //                 this.schedulesByDay.WEDNESDAY = this.schedules.at(i)
-        //                 break
-        //             case 'THURSDAY':
-        //                 this.schedulesByDay.THURSDAY = this.schedules.at(i)
-        //                 break
-        //             case 'FRIDAY':
-        //                 this.schedulesByDay.FRIDAY = this.schedules.at(i)
-        //                 break
-        //             case 'SATURDAY':
-        //                 this.schedulesByDay.SATURDAY = this.schedules.at(i)
-        //                 break
-        //             case 'SUNDAY':
-        //                 this.schedulesByDay.SUNDAY = this.schedules.at(i)
-        //                 break
-        //             default:
-        //                 console.log("uh")   
-        //                 break
-        //         }
-        //     }
-            
-        // } catch (error) {
-        //     console.log(error)
-        // }
-        
-        
+        this.getSchedule()     
     },
 
     methods:{
@@ -353,6 +311,9 @@ export default {
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false)
         },
         
+        /** Get a schedule in database
+
+         */
         async getSchedule(){
             this.schedules=[]
             this.schedulesByDay={
@@ -413,14 +374,19 @@ export default {
         }
         }
     },
- 
+    mounted(){
+        // jquery causes and error, something with import
+        // see if this works? 
+        //https://stackoverflow.com/questions/659508/how-can-i-shift-select-multiple-checkboxes-like-gmail
+
+    }
 
 }
 </script>
 
 <style scoped>
 
-    .empty{border:none;}
+    #empty{border:none;}
 
     td {
         border: 1px solid #bfbfbf;
@@ -437,6 +403,7 @@ export default {
         height: 40px;
         border: 1px solid #000;
         text-align: center;
+        user-select: none;
     }
     input[type='checkbox']{
         -webkit-appearance: none;
@@ -449,5 +416,13 @@ export default {
     input[type='checkbox']:checked{
         background: #abc;
     }
+    /* label{display:block;background-color:#000} */
+    td input:after {
+  background-color: red;
+}
+
+table td.highlighted {
+  background-color: #999;
+}
    
 </style>

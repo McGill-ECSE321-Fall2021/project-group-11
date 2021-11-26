@@ -1,11 +1,14 @@
 <template>
-  <div id="homepage">
+  <div id="homepage" style="background-color:red;">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <form>
     <h1>TO DO HERE: CHANGE THIS PAGE WITH LIKE A SEARCH BAR TO LOOK FOR ITEM OR SMTH</h1>
+    <img src="../assets/test.jpg">
     <div class="search">
       <input type="text" class="search-bar" placeholder="Search an item by name..." size="50">
-      <button type="submit" class="submit-button">Search</button>
+      <button type="submit" class="submit-button"><i class="fa fa-search"></i></button>
     </div>
-    <h1>Welcome</h1> <br>
+    <!-- <h1>Welcome</h1> <br>
 
     <h3>Item catalogue</h3>
     <button @click="$router.push('/browseitem')">Items</button>
@@ -18,7 +21,8 @@
     <h3>Log in</h3>
     <p>To book items or events, you need to sign in to your account</p>
     <button @click="$router.push('/profile')">Profile</button>
-    <button @click="$router.push('/profile')">Sign In</button>
+    <button @click="$router.push('/profile')">Sign In</button> -->
+    </form>
   </div>
 </template>
 
@@ -45,4 +49,11 @@ export default {
 </script>
 
 <style>
+ 
+  .search{
+    position:absolute;
+    top:650px;
+    left:36%;
+    right:auto;
+  }
 </style>
