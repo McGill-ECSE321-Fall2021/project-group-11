@@ -11,9 +11,10 @@
 				<tr>
 					<th>Name</th>
 					<th>Event ID</th>
+				</tr>
 				<tr v-for="event in (events || [])" :key="event.id">
-					<td>{{ event.name }}</td>
-					<td>{{ event.id }}</td>
+					<td>{{event.name}}</td>
+					<td>{{event.id}}</td>
 				</tr>
 			</table>
 			<br><br>
@@ -28,6 +29,17 @@
 		<div v-if="state === 1">
 			<h2>Name: {{loadedEvent.name}}</h2>
 			<h2>ID: {{loadedEvent.id}}</h2>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>User ID</th>
+				</tr>
+				<tr v-for="user in (users || [])" :key="user.id">
+					<td>{{user.name}}</td>
+					<td>{{user.id}}</td>
+			<br>
+			<input type="text" v-model="userId" placeholder="Online Member ID">
+			<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
 			<br>
 			<button @click="successRedirect()">Return to events</button>
 		</div>
@@ -50,7 +62,9 @@ export default {
 
 			events: [],
 			eventId: '',
-			loadedEvent: {}
+			loadedEvent: {},
+			users: [],
+			serviceResponse = null
 		}
 	},
 	created () {
@@ -76,6 +90,21 @@ export default {
 				this.state++
 			} catch(error) {
 				this.loadedEvent = null
+			}
+		},
+		async addUserToEvent(eventid, userid) {
+			try {
+				await AXIOS.post("/events/" + eventid + "/" + userid, null)
+			} catch(error) {
+				this.serverResponse = null
+			}
+		}, 
+		async getEventUsers(eventid) {
+			try {
+				let response = await AXIOS.get("/events/" + eventid + "/users", null)
+				this.users = response.data
+			} catch(error) {
+				this.users = null
 			}
 		},
 		successRedirect() {
