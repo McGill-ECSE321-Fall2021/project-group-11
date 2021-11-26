@@ -8,9 +8,10 @@
       </div>
 
       <div id="right">
-        <button class="header-button" @click="$router.push('/login')" v-if="!isLoggedIn">Log in</button>
         <button class="header-button" @click="$router.push('/newacc')" v-if="!isLoggedIn">Sign up</button>
-        <button class="header-button" @click="$router.push('/profile')" v-if="isLoggedIn">Account</button>
+        <button class="header-button" @click="$router.push('/login')" v-if="!isLoggedIn">Log in</button>
+        <button class="header-button" @click="$router.push('/profile')" v-if="isLoggedIn">Profile</button>
+        <button class="header-button" @click="$store.commit('logout');$router.push('/')" v-if="isLoggedIn">Log out</button>
         <button class="header-button" @click="$router.push('/')">Home</button>
       </div> 
    
@@ -46,7 +47,6 @@ export default {
   margin-top: 50px;
 }
 
-
 table {
   width: 100%
 }
@@ -67,6 +67,7 @@ table {
 
 .header-button{
   padding: 5px;
+  margin-top:0px;
   border: none;
   background: none;
 }

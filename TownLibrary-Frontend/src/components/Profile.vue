@@ -15,7 +15,11 @@
     <div v-if="isLibrarian">
       <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
       <button @click="$router.push('/additem')">Add item</button>
+      <br><br>view library
       <view-schedule :login-status="loginStatus" :entity-id="0"></view-schedule>
+      <br>
+      <label v-if="loginStatus.userType !== 'head-librarian'">view own schedule</label>
+      <view-schedule v-if="loginStatus.userType !== 'head-librarian'" :login-status="loginStatus" :entity-id="userInfo.id" :scheduleOwner="userInfo.name"></view-schedule>
     
     </div>
 
@@ -34,7 +38,7 @@
         </tr>
         <tr v-for="librarian in (librarians || [])" :key="librarian.id">
           <td>
-            <view-schedule v-if="librarian.id !== userInfo.id" :login-status="loginStatus" :entityId="librarian.id" :scheduleOwner="librarian.name"> </view-schedule>
+            <view-schedule v-if="librarian.id !== userInfo.id" :login-status="loginStatus" :entity-id="librarian.id" :schedule-owner="librarian.name"> </view-schedule>
             <button :disabled="librarian.id === userInfo.id"
                     @click="deleteLibrarian(librarian.id)">Delete</button>
           </td>
@@ -52,12 +56,12 @@
                                     params: {
                                       id: userInfo.id
                                    }})">View transactions</button>
-      <button @click="$router.push({name:'Personal Information',
+      <button @click="$router.push({name:'Personal Information', 
                                     params:{
                                       id:       userInfo.id,
                                       fullName: userInfo.name,
                                       email:    userInfo.email,
-                                      address:  userInfo.address
+                                      address:  userInfo.address      
                                   }})">View personal information</button>
       <button @click="$router.push('')">View event schedule</button>
     </div>
@@ -69,7 +73,7 @@
 import axios from 'axios'
 import ViewSchedule from './ViewSchedule.vue'
 
-var frontendUrl = process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var frontendUrl =  process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
@@ -100,7 +104,7 @@ export default {
     this.reloadUserInfo()
     this.reloadLibrarians()
 
-
+    
   },
 
   computed: {

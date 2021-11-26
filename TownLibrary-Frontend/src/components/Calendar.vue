@@ -116,53 +116,54 @@ export default {
         }        
     },
 
-    async created() {   
-        try {
-            // these are to get schedule (and store in this.schedules)
-            // for library
-            if (this.entityId === 0){
-                const request = await AXIOS.get('/schedules/library/0')
-                this.schedules = request.data
-            }
-            // for librarian
-            else{
-                const request = await AXIOS.get('/schedules/librarian/' + this.entityId)
-                this.schedules = request.data
-            }
+    async created() {  
+        this.getSchedule() 
+        // try {
+        //     // these are to get schedule (and store in this.schedules)
+        //     // for library
+        //     if (this.entityId === 0){
+        //         const request = await AXIOS.get('/schedules/library/0')
+        //         this.schedules = request.data
+        //     }
+        //     // for librarian
+        //     else{
+        //         const request = await AXIOS.get('/schedules/librarian/' + this.entityId)
+        //         this.schedules = request.data
+        //     }
 
-            // this is to sort schedule by day (by storing in object this.schedulesByDay)
-            for (var i in this.schedules){
-                switch(this.schedules.at(i).dayOfWeek){
-                    case 'MONDAY':
-                        this.schedulesByDay.MONDAY = this.schedules.at(i)
-                        break
-                    case 'TUESDAY':
-                        this.schedulesByDay.TUESDAY = this.schedules.at(i)
-                        break
-                    case 'WEDNESDAY':
-                        this.schedulesByDay.WEDNESDAY = this.schedules.at(i)
-                        break
-                    case 'THURSDAY':
-                        this.schedulesByDay.THURSDAY = this.schedules.at(i)
-                        break
-                    case 'FRIDAY':
-                        this.schedulesByDay.FRIDAY = this.schedules.at(i)
-                        break
-                    case 'SATURDAY':
-                        this.schedulesByDay.SATURDAY = this.schedules.at(i)
-                        break
-                    case 'SUNDAY':
-                        this.schedulesByDay.SUNDAY = this.schedules.at(i)
-                        break
-                    default:
-                        console.log("uh")   
-                        break
-                }
-            }
+        //     // this is to sort schedule by day (by storing in object this.schedulesByDay)
+        //     for (var i in this.schedules){
+        //         switch(this.schedules.at(i).dayOfWeek){
+        //             case 'MONDAY':
+        //                 this.schedulesByDay.MONDAY = this.schedules.at(i)
+        //                 break
+        //             case 'TUESDAY':
+        //                 this.schedulesByDay.TUESDAY = this.schedules.at(i)
+        //                 break
+        //             case 'WEDNESDAY':
+        //                 this.schedulesByDay.WEDNESDAY = this.schedules.at(i)
+        //                 break
+        //             case 'THURSDAY':
+        //                 this.schedulesByDay.THURSDAY = this.schedules.at(i)
+        //                 break
+        //             case 'FRIDAY':
+        //                 this.schedulesByDay.FRIDAY = this.schedules.at(i)
+        //                 break
+        //             case 'SATURDAY':
+        //                 this.schedulesByDay.SATURDAY = this.schedules.at(i)
+        //                 break
+        //             case 'SUNDAY':
+        //                 this.schedulesByDay.SUNDAY = this.schedules.at(i)
+        //                 break
+        //             default:
+        //                 console.log("uh")   
+        //                 break
+        //         }
+        //     }
             
-        } catch (error) {
-            console.log(error)
-        }
+        // } catch (error) {
+        //     console.log(error)
+        // }
         
         
     },
