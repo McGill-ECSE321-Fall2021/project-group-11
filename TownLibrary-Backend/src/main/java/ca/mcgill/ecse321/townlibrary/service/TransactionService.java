@@ -88,6 +88,13 @@ public class TransactionService {
 
 		return newTransaction;
 	}
+	@Transactional
+	public boolean returnTransaction(Integer transactionId){
+		final Transaction transaction = this.transactionRepository.findById(transactionId).orElseThrow(() ->
+		new IllegalArgumentException("TRANSACTION-NOT-FOUND"));
+				this.transactionRepository.delete(transaction);
+		return !this.transactionRepository.findById(transactionId).isPresent();
+	}
 
 
 }

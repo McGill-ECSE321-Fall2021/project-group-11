@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.townlibrary.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
@@ -9,7 +10,9 @@ import static org.mockito.Mockito.lenient;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +23,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
 
 import ca.mcgill.ecse321.townlibrary.repository.*;
-import ch.qos.logback.core.subst.Token.Type;
 import ca.mcgill.ecse321.townlibrary.model.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -148,7 +150,7 @@ public class TransactionServiceTest {
 	@Test 
 	public void testRenewTransactionInvalidItem(){
 		try {
-			Transaction transaction = service.renewTransaction(INVALID_TRANSACTION);
+			service.renewTransaction(INVALID_TRANSACTION);
 			fail();
 		} catch (Exception e) {
 			assertEquals("NOT-CHECKED-OUT", e.getMessage());
@@ -162,6 +164,32 @@ public class TransactionServiceTest {
 			assertEquals(transaction.getStartDate().getTime(), VALID_TRANSACTION.getEndDate().getTime());
 		} catch (Exception e) {
 			fail();
+		}
+	}
+	@Test
+	public void testReturnExistingTransaction(){
+		
+		lenient().when(this.transactionDao.findById(VALID_TRANSACTION.getId())).
+                thenReturn(Optional.of(VALID_TRANSACTION)).thenReturn(Optional.empty());
+		try {
+			Boolean deleted = service.returnTransaction(INVALID_TRANSACTION.getId());
+			assertTrue(deleted);
+		} catch (Exception e) {
+			fail();
+		}
+	}
+
+	@Test
+	public void testReturnNonExistantTransaction(){
+
+		lenient().when(this.transactionDao.findById(INVALID_TRANSACTION.getId())).
+            thenReturn(Optional.empty());
+
+		try {
+			Boolean deleted = service.returnTransaction(INVALID_TRANSACTION.getId());
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals("TRANSACTION-NOT-FOUND", e.getMessage());
 		}
 	}
 
