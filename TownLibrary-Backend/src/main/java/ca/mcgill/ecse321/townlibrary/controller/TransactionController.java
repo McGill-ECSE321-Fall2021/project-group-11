@@ -65,13 +65,23 @@ public class TransactionController {
             }
 
         }
-        @PostMapping(value = {"transactions/{userId}/{id}/", "transactions/{userId}/{id}/"})
+        @PostMapping(value = {"transactions/{userId}/{id}", "transactions/{userId}/{id}/"})
         public ResponseEntity<?> renewTransaction(@PathVariable("id") int id,
             @PathVariable("userId") int userId) {
             try {
                 final Transaction oldTransaction = transactionService.getTransaction(id);
                 final Transaction transaction = transactionService.renewTransaction(oldTransaction);
                 return ResponseEntity.ok().body(TransactionDTO.fromModel(transaction));
+            } catch (Exception e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
+        }
+        @DeleteMapping(value = {"transactions/{userId}/{id}", "transactions/{userId}/{id}/"})
+        public ResponseEntity<?> returnTransaction(@PathVariable("id") int id,
+        @PathVariable("userId") int userId) {
+            try {
+                final Boolean deleted = transactionService.returnTransaction(id);
+                return ResponseEntity.ok().body(deleted);
             } catch (Exception e) {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
