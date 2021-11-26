@@ -53,10 +53,6 @@ public class EventServiceTest {
 
     @Test
     public void testEventSetNullTransaction() {
-        /*lenient().when(this.mockEventRepository.findById(0))
-                .thenAnswer(invocation -> Optional.of(new Event()));
-
-        Event e;*/
         final Event e = new Event();
         final Transaction transaction = null;
 
@@ -121,27 +117,16 @@ public class EventServiceTest {
         Assertions.assertNull(e);
     }
 
-    /*@Test
-    public void testAddUsersToEvent() {
-        final UserRole u1 = new OnlineMember();
-        u1.setId(4000);
-        u1.setName("jogn ");
-        final Event e = new Event();
-        Assertions.assertEquals(0, e.getUsers().size());
-        e.addUser(u1);
-        Assertions.assertEquals(1, e.getUsers().size());
-    }
-
     @Test
-    public void testRemoveUsersFromEvent() {
+    public void addAndRemoveUsersEvent() {
         final UserRole u1 = new OnlineMember();
         u1.setId(4000);
         u1.setName("jogn ");
         final Event e = new Event();
         Assertions.assertEquals(0, e.getUsers().size());
-        e.addUser(u1);
+        eventService.addUserToEvent(e, u1);
         Assertions.assertEquals(1, e.getUsers().size());
-        e.removeUser(u1);
+        eventService.removeUserFromEvent(e, u1);
         Assertions.assertEquals(0, e.getUsers().size());
-    }*/
+    }
 }

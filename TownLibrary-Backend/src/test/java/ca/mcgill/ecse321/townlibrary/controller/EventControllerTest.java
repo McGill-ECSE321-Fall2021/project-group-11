@@ -25,11 +25,28 @@ public class EventControllerTest {
         @Autowired
         private WebApplicationContext webApplicationContext;
 
+        private int eventId;
+        private int userId;
+
         @BeforeEach
         public void setup() {
             RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
             post("/libraries/10001?address=sad street");
+
+            this.userId = given()
+                .param("password", "jojo123")
+                .param("address", "410 Chili Street")
+                .param("library", "0")
+                .post("/head-librarians/Joe Schmoe")
+                .then()
+                .extract()
+                .response().body().path("id");
+
+            this.eventId = given()
+                .param("lib", "10001")
+                .post("/events/event1")
+                .then().extract().response().body().path("id");
         }
 
         @AfterEach
@@ -63,6 +80,21 @@ public class EventControllerTest {
                 .body("id", equalTo(id))
                 .body("name", equalTo("event1"))
                 .body("libId", equalTo(10001));
+        }
+
+        @Test
+        public void testAddUsersAndGetEventUsers() {
+            when()
+            .post("/events/" + eventId + "/" + userId)
+            .then()
+            .statusCode(200)
+            .extract().response().body().path("id");
+
+            when()
+            .get("/events/" + eventId + "/users")
+            .then()
+            .statusCode(200)
+            .body("size()", equalTo(1));
         }
 
         @Test

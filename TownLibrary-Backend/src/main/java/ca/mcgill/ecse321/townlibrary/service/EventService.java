@@ -71,7 +71,7 @@ public class EventService {
      * @return
      */
 
-    /*@Transactional
+    @Transactional
     public void addUserToEvent(Event e, UserRole user) {
         if (user == null) {
             throw new IllegalArgumentException("Invalid user");
@@ -79,7 +79,7 @@ public class EventService {
         if (e == null) {
             throw new IllegalArgumentException("Invalid event");
         }
-        e.addUser(user);
+        e.getUsers().add(user);;
     }
 
     @Transactional
@@ -90,8 +90,8 @@ public class EventService {
         if (e == null) {
             throw new IllegalArgumentException("Invalid event");
         }
-        e.removeUser(user);
-    }*/
+        e.getUsers().remove(user);
+    }
 
     /**
      * Retrieves an event by its id

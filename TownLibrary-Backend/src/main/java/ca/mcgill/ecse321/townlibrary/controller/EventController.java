@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.townlibrary.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +26,6 @@ public class EventController {
     private OnlineMemberService onlineMemberService;
 
     @GetMapping(value = { "/events", "/events/"})
-    /*public List<EventDTO> getAllEvents() {
-        return eventService.getAllEvents()
-            .stream().map(EventDTO::fromModel)
-            .collect(Collectors.toList());
-    }*/
     public ResponseEntity<?> getAllEvents() {
         final List<EventDTO> el = this.eventService.getAllEvents()
             .stream().map(EventDTO::fromModel).collect(Collectors.toList());
@@ -44,12 +41,16 @@ public class EventController {
         return ResponseEntity.ok(EventDTO.fromModel(e));
     }
 
-    /*@GetMapping(value={"/events/{id}/users", "/events/{id}/users/"})
+    @GetMapping(value={"/events/{id}/users", "/events/{id}/users/"})
     public ResponseEntity<?> getEventUsers(
         @PathVariable("id") int id) {
             final Event e = eventService.getEventById(id);
-            return ResponseEntity.ok(e.getUsers());
-    }*/
+            final Set<Integer> users = new HashSet<>();
+            for (UserRole u : e.getUsers()) {
+                users.add(u.getId());
+            }
+            return ResponseEntity.ok(users);
+    }
     
     
     @PostMapping(value = { "/events/{name}", "/events/{name}/"})
@@ -66,13 +67,13 @@ public class EventController {
         }
     }
 
-    /*@PostMapping(value = {"/events/add/{id}", "/events/add/{id}/"})
+    @PostMapping(value = {"/events/{eventid}/{userid}", "/events/{eventid}/{userid}/"})
     public ResponseEntity<?> addUser(
-        @PathVariable("id") int Id,
-        @RequestParam int eventId) {
+        @PathVariable("userid") int userId,
+        @PathVariable("eventid") int eventId) {
         try {
             final Event e = eventService.getEventById(eventId);
-            final UserRole u = onlineMemberService.getOnlineMember(Id);
+            final UserRole u = onlineMemberService.getOnlineMember(userId);
             eventService.addUserToEvent(e, u);
             return ResponseEntity.ok().body(EventDTO.fromModel(e));
         }
@@ -80,5 +81,5 @@ public class EventController {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
 
-    }*/
+    }
 }
