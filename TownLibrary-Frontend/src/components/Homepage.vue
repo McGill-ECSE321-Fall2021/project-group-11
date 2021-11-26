@@ -1,5 +1,10 @@
 <template>
   <div id="homepage">
+    <h1>TO DO HERE: CHANGE THIS PAGE WITH LIKE A SEARCH BAR TO LOOK FOR ITEM OR SMTH</h1>
+    <div class="search">
+      <input type="text" class="search-bar" placeholder="Search an item by name..." size="50">
+      <button type="submit" class="submit-button">Search</button>
+    </div>
     <h1>Welcome</h1> <br>
 
     <h3>Item catalogue</h3>
@@ -13,7 +18,7 @@
     <h3>Log in</h3>
     <p>To book items or events, you need to sign in to your account</p>
     <button @click="$router.push('/profile')">Profile</button>
-    <button @click="$router.push('/newacc')">Sign up </button>
+    <button @click="$router.push('/profile')">Sign In</button>
   </div>
 </template>
 
@@ -30,7 +35,12 @@ var AXIOS = axios.create({
 })
 
 export default {
-  name: 'homepage'
+  name: 'homepage',
+  computed:{
+    isLoggedIn(){
+      return this.$store.state.loginStatus !== null
+    }
+  }
 }
 </script>
 

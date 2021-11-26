@@ -5,7 +5,7 @@
             <!-- header table row -->
             <thead>
                 <tr>
-                    <th></th>
+                    <td class="empty"></td>
                     <th v-for="day in dayOfWeek" :key="day"> {{day}} </th>
                 </tr>
             </thead>
@@ -46,7 +46,7 @@
             </tbody>
         </table>
     <button class="submit-button" @click="requestSelected(entityId)" v-if="user === 'head-librarian'">Submit</button>
-    <input class="reset-button" type="reset" v-if="user === 'head-librarian'">
+    <input class="reset-button" id="reset" type="reset" v-if="user === 'head-librarian'">
     <button class="clear-button" @click="clearCheckboxes()" v-if="user === 'head-librarian'">Clear</button>
     </form>
     </div>
@@ -215,28 +215,23 @@ export default {
                             // attempt post (create schedule) first
                             // for library
                             if (id == 0){
-                                let request = await AXIOS.post('/schedules/library/0/'+this.dayOfWeek[day], null ,
+                                await AXIOS.post('/schedules/library/0/'+this.dayOfWeek[day], null ,
                                 {
                                     params:{
                                         startTime : earliestStartTime,
                                         endTime : latestEndTime
                                     }
                                 })
-                                if (request.status == '200'){
-                                    console.log("library-post-success")
-                                }
+
                             // for librarians
                             } else {
-                                let request = await AXIOS.post('/schedules/librarian/'+ id +'/'+this.dayOfWeek[day], null ,
+                                await AXIOS.post('/schedules/librarian/'+ id +'/'+this.dayOfWeek[day], null ,
                                 {
                                     params:{
                                         startTime : earliestStartTime,
                                         endTime : latestEndTime
                                     }
                                 })
-                                if (request.status == '200'){
-                                    console.log("librarian-post-success")
-                                }
                             }
 
                         }catch (error){
@@ -248,16 +243,13 @@ export default {
                                     // else do nothing
                                     if (!(this.checkSchedulesByDay(this.dayOfWeek[day]).startTime == earliestStartTime+":00" &&
                                     this.checkSchedulesByDay(this.dayOfWeek[day]).endTime == latestEndTime+":00")){
-                                        let request = await AXIOS.put('/schedules/'+scheduleId, null,{
+                                        await AXIOS.put('/schedules/'+scheduleId, null,{
                                             params:{
                                                 newStartTime : earliestStartTime,
                                                 newEndTime : latestEndTime
                                             }
                                         })
-                                        if (request.status == '200'){
-                                            console.log("put-success")
-                                        }
-                                    }else console.log("same schedule, do nothing.")
+                                    }
 
                                 } catch (error) {
                                     console.log(error)
@@ -270,16 +262,19 @@ export default {
                         // if the schedule exists, delete request
                         // else keep as is
                         if (!isEmptyObject(this.checkSchedulesByDay(this.dayOfWeek[day]))){
-                            let request = await AXIOS.delete('/schedules/'+scheduleId)
-                            if (request.status == '200'){
-                                console.log("delete-success")
-                            }
+                            await AXIOS.delete('/schedules/'+scheduleId)
                         }
                     }
                 }
-                    
+                this.getSchedule()
+                var resetButton = document.getElementById("reset")
+                resetButton.click() 
+                setTimeout(function() {
+                    window.alert("Schedule successfully updated!")
+                },100) 
+                
             } catch (error) {
-                console.log(error)
+                window.alert("Something went wrong.")
             }
         },
 
@@ -355,6 +350,66 @@ export default {
          */
         clearCheckboxes(){
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false)
+        },
+        
+        async getSchedule(){
+            this.schedules=[]
+            this.schedulesByDay={
+                MONDAY: {},
+                TUESDAY: {},
+                WEDNESDAY: {},
+                THURSDAY: {},
+                FRIDAY: {},
+                SATURDAY: {},
+                SUNDAY: {}
+            }
+
+            try {
+            // these are to get schedule (and store in this.schedules)
+            // for library
+            if (this.entityId === 0){
+                const request = await AXIOS.get('/schedules/library/0')
+                this.schedules = request.data
+            }
+            // for librarian
+            else{
+                const request = await AXIOS.get('/schedules/librarian/' + this.entityId)
+                this.schedules = request.data
+            }
+
+            // this is to sort schedule by day (by storing in object this.schedulesByDay)
+            for (var i in this.schedules){
+                switch(this.schedules.at(i).dayOfWeek){
+                    case 'MONDAY':
+                        this.schedulesByDay.MONDAY = this.schedules.at(i)
+                        break
+                    case 'TUESDAY':
+                        this.schedulesByDay.TUESDAY = this.schedules.at(i)
+                        break
+                    case 'WEDNESDAY':
+                        this.schedulesByDay.WEDNESDAY = this.schedules.at(i)
+                        break
+                    case 'THURSDAY':
+                        this.schedulesByDay.THURSDAY = this.schedules.at(i)
+                        break
+                    case 'FRIDAY':
+                        this.schedulesByDay.FRIDAY = this.schedules.at(i)
+                        break
+                    case 'SATURDAY':
+                        this.schedulesByDay.SATURDAY = this.schedules.at(i)
+                        break
+                    case 'SUNDAY':
+                        this.schedulesByDay.SUNDAY = this.schedules.at(i)
+                        break
+                    default:
+                        console.log("uh")   
+                        break
+                }
+            }
+            
+        } catch (error) {
+            console.log(error)
+        }
         }
     },
  
@@ -363,21 +418,23 @@ export default {
 </script>
 
 <style scoped>
-    
+
+    .empty{border:none;}
+
     td {
-        border: 1px solid #999;
+        border: 1px solid #bfbfbf;
         align-content: center;
         vertical-align: middle;
     }
     table{
         width: 1200px;
         height: 600px;
-        border: 2px solid #000;
+        border: 0px solid #000;
     }
     th {
         width: 150px;
         height: 40px;
-        border: 1px solid #999;
+        border: 1px solid #000;
         text-align: center;
     }
     input[type='checkbox']{
