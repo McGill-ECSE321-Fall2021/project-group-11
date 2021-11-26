@@ -77,17 +77,26 @@ export default {
 			return this.status
 		},
 
+
+		// // WIP below
+		// async createTransaction (userId, itemId) {
+		// 	console.log("creating transaction")
+		// 	await AXIOS.post('/transactions/' + userId + itemId, null, {
+		// 		  params: {
+		// 			  startDate: "2021-11-01T00:00:00",
+		// 			  endDate: "2021-11-15T00:00:00",
+		// 			  transactionType: itemInfo.type + "s"
+		// 		  }
+		// 	  })
+		// },
+
 		// async checkoutItem (itemId) {
-		// 	console.log("here")
-		// 	// Set the transaction id to the same as the associated item's id
-		// 	let response = await AXIOS.post('transactions/' + itemId, null, {
-		// 		params: {
-		// 			startDate: "2021-11-07T00:00:00",
-		// 			endDate: "2021-11-09T00:00:00",
-		// 			transactionType: this.item.type + "s"
-		// 		}
-		// 	})
-		// 	console.log(response.data)
+		// 	console.log("checkout")
+		// 	let response = await AXIOS.put
+		// 		('/' + this.item.type + 's/' + itemId + '/checkout',
+		// 		{transactionId: createTransaction(userId, itemId)})
+		// 	this.status = response.data.status
+		// 	console.log(response.data.status)
 		// 	return this.status
 		// }
 	}
