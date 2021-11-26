@@ -16,6 +16,9 @@ public class LibrarianService {
     private LibrarianRepository librarianRepository;
 
     @Autowired
+    private DailyScheduleRepository dailyScheduleRepository;
+
+    @Autowired
     private PasswordValidator passwordValidator;
 
     /**
@@ -114,8 +117,10 @@ public class LibrarianService {
      */
     @Transactional
     public boolean deleteLibrarian(int id){
-        this.librarianRepository.delete(this.librarianRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("LIBRARIAN-NOT-FOUND")));
+        final Librarian librarian = this.librarianRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("LIBRARIAN-NOT-FOUND"));
+        this.dailyScheduleRepository.deleteByLibrarian(librarian);
+        this.librarianRepository.delete(librarian);
         return !this.librarianRepository.findById(id).isPresent();
     }
 }

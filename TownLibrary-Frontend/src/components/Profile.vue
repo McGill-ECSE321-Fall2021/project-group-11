@@ -2,6 +2,8 @@
   <div id="profile">
     <h2>Welcome back {{ userInfo.name }}!</h2>
     <button @click="doLogout">Logout</button>
+    <br><br>
+    <button @click="$router.push('/')">Home</button>
 
     <p>Just to show that stuff does work:</p>
     <ul>
@@ -12,6 +14,9 @@
 
     <div v-if="isLibrarian">
       <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
+      <button @click="$router.push('/additem')">Add item</button>
+      <view-schedule :login-status="loginStatus" :entity-id="0"></view-schedule>
+    
     </div>
 
     <div v-if="isHeadLibrarian">
@@ -29,6 +34,7 @@
         </tr>
         <tr v-for="librarian in (librarians || [])" :key="librarian.id">
           <td>
+            <view-schedule v-if="librarian.id !== userInfo.id" :login-status="loginStatus" :entityId="librarian.id" :scheduleOwner="librarian.name"> </view-schedule>
             <button :disabled="librarian.id === userInfo.id"
                     @click="deleteLibrarian(librarian.id)">Delete</button>
           </td>
@@ -46,12 +52,12 @@
                                     params: {
                                       id: userInfo.id
                                    }})">View transactions</button>
-      <button @click="$router.push({name:'Personal Information', 
+      <button @click="$router.push({name:'Personal Information',
                                     params:{
                                       id:       userInfo.id,
                                       fullName: userInfo.name,
                                       email:    userInfo.email,
-                                      address:  userInfo.address      
+                                      address:  userInfo.address
                                   }})">View personal information</button>
       <button @click="$router.push('')">View event schedule</button>
     </div>
@@ -61,9 +67,10 @@
 
 <script>
 import axios from 'axios'
+import ViewSchedule from './ViewSchedule.vue'
 
-var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
+var frontendUrl = process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -71,7 +78,13 @@ var AXIOS = axios.create({
 })
 
 export default {
+  components: { ViewSchedule },
   name: 'profile',
+
+  component:{
+    'view-schedule':ViewSchedule
+  },
+
   data () {
     return {
       loginStatus: {},
@@ -87,7 +100,7 @@ export default {
     this.reloadUserInfo()
     this.reloadLibrarians()
 
-    
+
   },
 
   computed: {

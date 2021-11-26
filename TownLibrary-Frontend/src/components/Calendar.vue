@@ -54,10 +54,10 @@
 
 <script>
 import axios from 'axios'
-import { isEmptyObject } from 'jquery'
+import { isEmptyObject, $ } from 'jquery'
 
-var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'http://' + process.env.API_HOST + ':' + process.env.API_PORT
+var frontendUrl =  process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
     baseURL: backendUrl,
@@ -223,7 +223,9 @@ export default {
                                         endTime : latestEndTime
                                     }
                                 })
-                            
+                                if (request.status == '200'){
+                                    console.log("library-post-success")
+                                }
                             // for librarians
                             } else {
                                 let request = await AXIOS.post('/schedules/librarian/'+ id +'/'+this.dayOfWeek[day], null ,
@@ -233,6 +235,9 @@ export default {
                                         endTime : latestEndTime
                                     }
                                 })
+                                if (request.status == '200'){
+                                    console.log("librarian-post-success")
+                                }
                             }
 
                         }catch (error){
@@ -250,7 +255,9 @@ export default {
                                                 newEndTime : latestEndTime
                                             }
                                         })
-                                 
+                                        if (request.status == '200'){
+                                            console.log("put-success")
+                                        }
                                     }else console.log("same schedule, do nothing.")
 
                                 } catch (error) {
@@ -265,6 +272,9 @@ export default {
                         // else keep as is
                         if (!isEmptyObject(this.checkSchedulesByDay(this.dayOfWeek[day]))){
                             let request = await AXIOS.delete('/schedules/'+scheduleId)
+                            if (request.status == '200'){
+                                console.log("delete-success")
+                            }
                         }
                     }
                 }
@@ -339,7 +349,7 @@ export default {
                     break
             }
         },
-        
+
         /** Clears all the checkbox
          *  Taken directly from stackoverflow from user T J 
          *  stackoverflow.com/questions/22574344/how-to-make-a-button-that-will-uncheck-all-checkboxes/22574416

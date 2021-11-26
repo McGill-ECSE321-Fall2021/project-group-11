@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.townlibrary.model;
 
+import java.util.Set;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,8 @@ public abstract class UserRole {
     private String address;
 
     private Library library;
+
+    private Set<Event> events;
 
     protected UserRole() {
         // so no one can do anonymous inner class black magic
@@ -51,4 +55,9 @@ public abstract class UserRole {
     public void setLibrary(Library lib) {
         this.library = lib;
     }
+
+    /*@ManyToMany
+    public Set<Event> getEvents() {
+        return this.events;
+    }*/
 }

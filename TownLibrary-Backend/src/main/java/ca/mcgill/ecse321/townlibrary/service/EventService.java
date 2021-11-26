@@ -65,6 +65,33 @@ public class EventService {
         e.setTransaction(transaction);
         eventRepository.save(e);
     }
+    /**
+     * 
+     * @param id
+     * @return
+     */
+
+    /*@Transactional
+    public void addUserToEvent(Event e, UserRole user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid user");
+        }
+        if (e == null) {
+            throw new IllegalArgumentException("Invalid event");
+        }
+        e.addUser(user);
+    }
+
+    @Transactional
+    public void removeUserFromEvent(Event e, UserRole user) {
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid user");
+        }
+        if (e == null) {
+            throw new IllegalArgumentException("Invalid event");
+        }
+        e.removeUser(user);
+    }*/
 
     /**
      * Retrieves an event by its id
