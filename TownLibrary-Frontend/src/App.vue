@@ -1,7 +1,7 @@
 <template>
   <body>
   <div id="app">
-    <div class="header-bar"> 
+    <div class="header-bar" > 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
       <label id="library-name">BEEG YOSHI'S LAND</label>
@@ -53,13 +53,16 @@ export default {
 
 #router-view {
   position:absolute;
+  /* display: block; */
+  /* border: 10px solid black; */
   margin-top: 40px;
-  padding-top: 20px;
+  padding-block: 50px;
   top:0;
   right:0;
   left:0;
   bottom:0;
-  background-image: url('./assets/test-background.jpg');
+  background-color: powderblue;
+  /* background-image: url('./assets/test-background.jpg'); */
   /* add background here yup */
   
 }
@@ -74,6 +77,16 @@ button{
   color:white;
   text-shadow: 0 0 3px black, 0 0 3px black;
   
+}
+button:disabled{
+  background-color:#206218;
+  /* border: 1px #123b0d; */
+  border: 3px outset;
+  border-color: rgba(2, 112, 10, 0.404);
+  /* border-style: outset; */
+  text-transform: uppercase;
+  color:white;
+  text-shadow: 0 0 3px black, 0 0 3px black;
 }
 
 table {

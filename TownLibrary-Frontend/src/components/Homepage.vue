@@ -1,5 +1,5 @@
 <template>
-  <div id="homepage">
+  <div id="homepage" background-image="../assets/test-background.jpg">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <form> -->
     <img src="../assets/test.png" id="logo">
@@ -182,6 +182,10 @@ export default {
 
 <style>
  
+  #homepage{
+    background-image: url("../assets/test-background.jpg");
+  }
+
   #logo{
     -moz-user-select: none;
     -webkit-user-select: none;

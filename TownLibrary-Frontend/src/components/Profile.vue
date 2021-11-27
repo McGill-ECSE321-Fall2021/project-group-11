@@ -1,16 +1,14 @@
 <template>
   <div id="profile">
-    <h2>Welcome back {{ userInfo.name }}!</h2>
+    <h2>Welcome back, {{ userInfo.name }}!</h2>
     <button @click="doLogout">Logout</button>
     <br><br>
-    <button @click="$router.push('/')">Home</button>
-
-    <p>Just to show that stuff does work:</p>
+    <!-- <p>Just to show that stuff does work:</p>
     <ul>
       <li>User type: {{ loginStatus.userType }}</li>
       <li>Username: {{ loginStatus.username }}</li>
       <li>Password: {{ loginStatus.password }}</li>
-    </ul>
+    </ul> -->
 
     <div v-if="isLibrarian">
       <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
