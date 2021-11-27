@@ -9,16 +9,16 @@ import ca.mcgill.ecse321.townlibrary.model.TransactionType;
 public class TransactionDTO {
 
 	public int id;
-    public Timestamp startDate;
-    public Timestamp endDate;
+    public Long startDate;
+    public Long endDate;
     public Integer userId;
 	public TransactionType type;
 
     public static TransactionDTO fromModel(Transaction t) {
     	final TransactionDTO dto = new TransactionDTO();
     	dto.id = t.getId();
-    	dto.startDate = t.getStartDate();
-    	dto.endDate = t.getEndDate();
+    	dto.startDate = t.getStartDate().getTime();
+    	dto.endDate = t.getEndDate().getTime();
     	dto.userId = Optional.ofNullable(t.getUserRole())
 				.map(x -> x.getId())
 				.orElse(null);

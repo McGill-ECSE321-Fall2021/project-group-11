@@ -161,7 +161,8 @@ public class TransactionServiceTest {
 	public void testRenewTransactionValidItem(){
 		try {
 			Transaction transaction = service.renewTransaction(VALID_TRANSACTION);
-			assertEquals(transaction.getStartDate().getTime(), VALID_TRANSACTION.getEndDate().getTime());
+			assertEquals(transaction.getStartDate().getTime(), VALID_TRANSACTION.getStartDate().getTime());
+			assertEquals(transaction.getStartDate(), END_TIME);
 		} catch (Exception e) {
 			fail();
 		}

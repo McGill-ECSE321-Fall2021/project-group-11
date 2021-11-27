@@ -10,6 +10,7 @@
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Renew</th>
+                    <th>Return</th>
                 </tr>
                 <tr v-for="(transaction, index) in transactions" :key="transaction.id">
                     <td>   </td>
@@ -20,7 +21,12 @@
                     <td> {{ transaction.endDate }} </td>
                     <td> Event </td>
                     <td>
-                        <button @click="renewItem(transaction.id)">Renew</button>
+                        <button
+                        @click="renewItem(transaction,this.$route.params.id)">Renew</button>
+                    </td>
+                    <td>
+                        <button
+                        @click="returnItem(transaction, this.$route.params.id)">Return</button>
                     </td>
                 </tr>
             </table>
@@ -79,13 +85,24 @@ export default {
                 this.errorTransaction = e
             }
         },
-        async renewItem(transaction){
+        async renewItem(transaction, id){
             try {
-                let response = await AXIOS.get('')
+                let response = await AXIOS.post('/transactions/' + id + '/' + transaction.id , null, {})
+                this.reloadTransactions(id)
             } catch (error) {
-                this. errorTransaction = e
+                this.errorTransaction = e
+            }
+        },
+
+        async returnItem(transaction, id){
+            try {
+                let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
+                this.reloadTransactions(id)
+            } catch (error) {
+                this.errorTransaction = e
             }
         }
+
     }
 }
 

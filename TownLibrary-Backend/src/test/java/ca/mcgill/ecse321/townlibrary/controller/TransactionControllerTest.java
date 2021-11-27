@@ -100,8 +100,8 @@ public class TransactionControllerTest {
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);
 
-        assertThat(dto.startDate, equalTo(expectedStartDate));
-        assertThat(dto.endDate, equalTo(expectedEndDate));
+        assertThat(dto.startDate, equalTo(expectedStartDate.getTime()));
+        assertThat(dto.endDate, equalTo(expectedEndDate.getTime()));
         assertThat(dto.userId, equalTo(this.idLibrarian));
 
         final int id = dto.id;
@@ -111,8 +111,8 @@ public class TransactionControllerTest {
                 .body("id", equalTo(id))
                 .extract().response().as(TransactionDTO.class);
 
-        assertThat(dto.startDate, equalTo(expectedStartDate));
-        assertThat(dto.endDate, equalTo(expectedEndDate));
+        assertThat(dto.startDate, equalTo(expectedStartDate.getTime()));
+        assertThat(dto.endDate, equalTo(expectedEndDate.getTime()));
         assertThat(dto.userId, equalTo(this.idLibrarian));
 
             dto = when().get("/transactions/" + this.idLibrarian)
@@ -120,9 +120,8 @@ public class TransactionControllerTest {
                 .body("size()", equalTo(1))
                 .extract().response().as(TransactionDTO[].class)[0];
 
-        assertThat(dto.startDate, equalTo(expectedStartDate));
-        assertThat(dto.startDate, equalTo(expectedStartDate));
-        assertThat(dto.endDate, equalTo(expectedEndDate));
+        assertThat(dto.startDate, equalTo(expectedStartDate.getTime()));
+        assertThat(dto.endDate, equalTo(expectedEndDate.getTime()));
         assertThat(dto.userId, equalTo(this.idLibrarian));
     }
     @Test
@@ -155,7 +154,7 @@ public class TransactionControllerTest {
     		.body("status", equalTo(Status.CHECKED_OUT.toString()));
 
         TransactionDTO renewedDto = given()
-            .when().post("/transactions/" + dto.userId + "/" + dto.id )
+            .when().put("/transactions/" + dto.userId + "/" + dto.id )
             .then()
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);
@@ -177,6 +176,22 @@ public class TransactionControllerTest {
             .extract().response().as(TransactionDTO.class);
         
             final int idTransaction = dto.id;
+
+            final int idItem = given()
+    			.param("name", "Dune")
+    			.param("libraryId", "10005")
+    			.post("/books/7")
+    			.then().statusCode(200)
+    			.body("status", equalTo(Status.AVAILABLE.toString()))
+                .extract().response().body().path("id");
+    	
+    	given()
+    		.param("transactionId", idTransaction)
+    		.when().put("/books/" + idItem + "/checkout")
+    		.then()
+    		.statusCode(200)
+    		.body("id", equalTo(idItem))
+    		.body("status", equalTo(Status.CHECKED_OUT.toString()));
 
             final Boolean deleted = given()
                 .when().delete("/transactions/" + this.idUser + "/" + idTransaction)
