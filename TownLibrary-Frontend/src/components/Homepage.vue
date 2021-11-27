@@ -22,7 +22,8 @@
     <!-- <h1>Welcome</h1> <br>
 
     <h3>Item catalogue</h3>
-    <button @click="$router.push('/browseitem')">Items</button>
+    <button @click="$router.push({name:'Browse Item',
+                                  params: {userId: userId}})">Items</button>
     <br><br>
 
     <h3>Events</h3>
@@ -190,7 +191,7 @@ export default {
 </script>
 
 <style scoped>
- 
+
   #homepage-content{
     position:absolute;
     top:0;

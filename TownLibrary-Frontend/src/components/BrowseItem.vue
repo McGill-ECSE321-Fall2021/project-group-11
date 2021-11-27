@@ -65,6 +65,14 @@
 			</tr>
 		</table>
 
+		<div v-if="isLibrarian">
+			<button @click="$router.push({name: 'Create Item',
+                                    params: {
+                                      userType: loggedUser.userType,
+                                      userId: loggedUser.userId
+                                   }})">Add item</button>
+		</div>
+
 	</div>
 </template>
 
@@ -84,6 +92,11 @@ export default {
 
 	data () {
 		return {
+			loggedUser: {
+				userType: '',
+				userId: '',
+	  		},
+
 			archives: [],
 			newspapers: [],
 			books: [],
@@ -98,6 +111,21 @@ export default {
 		this.loadBooks()
 		this.loadMovies()
 		this.loadMusicAlbums()
+
+		console.log('Params: ', this.$route.params)
+		this.loggedUser = this.$route.params
+	},
+
+	computed: {
+		isLibrarian () {
+			switch (this.loggedUser.userType) {
+			default:
+				return false
+			case 'librarian':
+			case 'head-librarian':
+				return true
+			}
+    	}
 	},
 
 	methods: {
@@ -105,8 +133,8 @@ export default {
 			console.log(itemName)
 
 			this.$router.push({name: 'Item',
-				params: { id: itemId, name: itemName, type: itemType }});
-
+				params: { itemId: itemId, itemName: itemName, itemType: itemType,
+				userType: this.loggedUser.userType, userId: this.loggedUser.userId }});
 		},
 
 		async loadArchives() {
@@ -152,7 +180,8 @@ export default {
 			} catch (error) {
 				this.musicalbums = null
 			}
-		},
+		}
+
 	}
 }
 </script>

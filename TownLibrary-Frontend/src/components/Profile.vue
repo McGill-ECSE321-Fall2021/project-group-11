@@ -12,7 +12,11 @@
 
     <div v-if="isLibrarian">
       <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
-      <button @click="$router.push('/additem')">Add item</button>
+      <button @click="$router.push({name: 'Create Item',
+                                    params: {
+                                      userType: loginStatus.userType,
+                                      userId: userInfo.id
+                                   }})">Add item</button>
       <br>
       <input type="text" placeholder="Member ID" v-model="affectedUserId">
       <button @click="getAddressOfAffectedUser">Get address</button>
@@ -157,6 +161,9 @@ export default {
           }
         })
         this.userInfo = response.data
+
+        // just overwrite the id...
+        this.loginStatus.userId = this.userInfo.id
       } catch (error) {
         // this is awkward because we couldn't get the user's information...
         // assume the worst (maybe the password has changed or something) and

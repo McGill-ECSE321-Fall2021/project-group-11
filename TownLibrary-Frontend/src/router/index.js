@@ -106,6 +106,7 @@ function userCanAccessPage(page, userType) {
     // assume all users (including non-logged in) can access the page.
     return true
   case 'User Profile':
+  case 'Item':
     // must be logged in (doesn't matter)
     return userType !== null
   case 'Create Librarian':

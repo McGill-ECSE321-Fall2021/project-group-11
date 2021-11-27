@@ -64,7 +64,7 @@ export default {
     async authOnlineMember (username, password) {
       try {
         // AXIOS post is weird: the request params go on the 3rd slot...
-        await AXIOS.post('/auth/online-members/' + username, null, {
+        let response = await AXIOS.post('/auth/online-members/' + username, null, {
           params: {
             password: password
           }
@@ -73,6 +73,7 @@ export default {
         // log the user in by storing the user's information
         this.$store.commit('login', {
           userType: 'online-member',
+          userId: response.data.id,
           username: username,
           password: password
         })
@@ -99,6 +100,7 @@ export default {
           // it's a head-librarian
           this.$store.commit('login', {
             userType: 'head-librarian',
+            userId: username,
             username: username,
             password: password
           })
@@ -106,6 +108,7 @@ export default {
           // we know person must be at least a generic librarian
           this.$store.commit('login', {
             userType: 'librarian',
+            userId: username,
             username: username,
             password: password
           })

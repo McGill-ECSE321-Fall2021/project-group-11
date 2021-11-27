@@ -16,12 +16,14 @@ export default new Vuex.Store({
     /// When you do commit the mutation, you need several payloads:
     /// - enum userType: 'online-member' | 'librarian' | 'head-librarian'
     /// - string username: username or id depending on member or librarian.
+    /// - int userId: the user id
     /// - string password: password
-    login (state, { userType, username, password }) {
+    login (state, { userType, userId, username, password }) {
       // We use deconstruction to show what fields are needed, and then we
       // reconstruct the object to avoid potentially bizarre reference issues
       state.loginStatus = {
         userType: userType,
+        userId: userId,
         username: username,
         password: password
       }
