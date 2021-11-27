@@ -72,10 +72,10 @@ table {
 }
 
 .header-bar{
-  position: absolute;
+  position: fixed;
   width: 100%;
   height:50px;
-  background-image: url("./assets/test.jpg");
+  background-image: url("./assets/test.png");
 }
 
 .header-button{

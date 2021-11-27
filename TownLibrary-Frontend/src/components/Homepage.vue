@@ -1,9 +1,9 @@
 <template>
-  <div id="homepage" style="background-color:red;">
+  <div id="homepage">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <form>
     <h1>TO DO HERE: CHANGE THIS PAGE WITH LIKE A SEARCH BAR TO LOOK FOR ITEM OR SMTH</h1>
-    <img src="../assets/test.jpg">
+    <img src="../assets/test.png">
     <div class="search">
       <input type="text" class="search-bar" placeholder="Search an item by name..." size="50">
       <button type="submit" class="submit-button"><i class="fa fa-search"></i></button>
