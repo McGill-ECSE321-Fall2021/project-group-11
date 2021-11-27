@@ -90,7 +90,7 @@ export default {
             if (this.errorTransaction === "")
             {
                 try {
-                    let response = await AXIOS.post('/transactions/' + id + '/' + transaction.id , null, {})
+                    let response = await AXIOS.put('/transactions/' + id + '/' + transaction.id , null, {})
                     this.reloadTransactions(id)
                 } catch (error) {
                     this.errorTransaction = e
