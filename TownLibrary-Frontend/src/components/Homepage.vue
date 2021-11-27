@@ -1,11 +1,12 @@
 <template>
-  <div id="homepage" background-image="../assets/test-background.jpg">
+  <div id="homepage">
+    <div id="homepage-content">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- <form> -->
     <img src="../assets/test.png" id="logo">
     <div class="search">
       <!-- <input type="text" class="search-bar" placeholder="Search an item by name..." size="50"> -->
-      <input id="search-input" list="items" placeholder="SEARCH ITEM BY NAME..." size="46">
+      <input id="search-input" list="items" placeholder="Search an item by name..." size="46">
       <datalist id="items">
         <option v-for="archive in this.archives" :key="archive.id" :value="'ARCHIVE'+': '+archive.name"></option>
         <option v-for="newspaper in this.newspapers" :key="newspaper.id" :value="'NEWSPAPER'+': '+newspaper.name"></option>
@@ -14,6 +15,9 @@
         <option v-for="movie in this.movies" :key="movie.id" :value="'MOVIE'+': '+movie.name"></option>
       </datalist>
       <button id="search-button" @click="searchItem()"><i class="fa fa-search"></i></button>
+      <br><br>
+      <view-schedule :login-status="$store.state.loginStatus" :entityId="0"></view-schedule>
+
     </div>
     <!-- <h1>Welcome</h1> <br>
 
@@ -31,11 +35,14 @@
     <button @click="$router.push('/profile')">Sign In</button> -->
     <!-- </form> -->
   </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios'
 import decodeError from '../api_errors.js'
+import ViewSchedule from "./ViewSchedule.vue"
+
 
 var frontendUrl = process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
@@ -47,6 +54,8 @@ var AXIOS = axios.create({
 
 export default {
   name: 'homepage',
+  components: { 'view-schedule':ViewSchedule },
+
   computed:{
     isLoggedIn(){
       return this.$store.state.loginStatus !== null
@@ -180,10 +189,17 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
  
-  #homepage{
+  #homepage-content{
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    height:100%;
     background-image: url("../assets/test-background.jpg");
+      /* background-color: red; */
   }
 
   #logo{

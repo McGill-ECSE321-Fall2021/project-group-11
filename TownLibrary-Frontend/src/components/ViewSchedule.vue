@@ -7,7 +7,7 @@
                 <h1 class="title"> <b>{{scheduleOwner.toUpperCase()}}'S SCHEDULE</b> </h1>
                 <button class="exit-button" v-on:click="open=false">x</button>
                 <body class="content">
-                    <calendar :user="loginStatus.userType" :entity-id="entityId"> </calendar>
+                    <calendar :user="loginStatus && loginStatus.userType" :entity-id="entityId"> </calendar>
                 </body>
             </div>
         </div>
@@ -22,7 +22,8 @@ export default {
     props: {
         loginStatus:{
             type: Object,
-            required: true
+            // required: true
+            default: {}
         },
         // could prob use an object instead 
         entityId:{
@@ -46,16 +47,16 @@ export default {
         }
     },
  
-    computed: {
-        isHeadLibrarian(){
-            switch (this.loginStatus.userType) {
-                default:
-                    return false
-                case 'head-librarian':
-                    return true
-            }
-        }, 
-    }
+    // computed: {
+    //     isHeadLibrarian(){
+    //         switch (this.loginStatus.userType) {
+    //             default:
+    //                 return false
+    //             case 'head-librarian':
+    //                 return true
+    //         }
+    //     }, 
+    // }
 }
 
 </script>
@@ -80,7 +81,10 @@ export default {
         right: 0;
     }
     .modal-card{
-        background-color:#3B77BC;
+        background-color: #bfbfc1;
+        border: 3px outset black;
+        border-left: 1px outset white;
+        border-top: 1px outset white;
         padding: 50px;
         position: fixed;
         top: 10%;
@@ -92,7 +96,6 @@ export default {
         padding: 0;
         border: none;
         background: none;
-        text-shadow:0 0 3px #DE482B, 0 0 3px #DE482B,0 0 3px #DE482B;
     }
     .title{
         position: absolute;
@@ -101,6 +104,7 @@ export default {
         right: 0%;
         font-size: 25px;
         user-select: none;
+        color:black;
         /* border-bottom: 1px solid black; */
     }
     /* table, th, td{border:1px solid black;} */

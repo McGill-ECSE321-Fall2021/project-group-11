@@ -71,12 +71,12 @@ var AXIOS = axios.create({
 export default {
     name: "calendar",
     
-
     props: {
         // user who is currently logged in
         user: {
             type: String,
-            required: true,
+            // required: true,
+            default: 'no-user'
         },
         // entity (schedule's owner) id
         entityId:{
@@ -385,8 +385,9 @@ export default {
 
 <style scoped>
     #calendar{
-        background-color:#3B77BC;
-        font-family:'Consolas', Courier, monospace;
+        background-color:#bfbfc1;
+        font-family: 'Consolas', Helvetica, Arial, sans-serif;
+        
     }
 
     #empty{
@@ -394,18 +395,17 @@ export default {
     }
 
     .reset-button{
-         background-color:#3ab82c;
-        /* border: 1px #123b0d; */
-        border: 3px outset;
-        border-color: rgba(2, 112, 10, 0.404);
-        /* border-style: outset; */
-        text-transform: uppercase;
-        color:white;
-        text-shadow: 0 0 3px black, 0 0 3px black;
+        border: 3px outset rgba(0, 0, 0, 0.856);
+        border-top:1px outset white;
+        border-left:1px outset white;
+        text-transform: capitalize; 
+        color: black;
+        background-color:#bfbfc1;
+        /* text-shadow: 0 0 3px black, 0 0 3px black; */
     }
 
     td {
-        border: 2px solid white;
+        border: 2px solid black;
         align-content: center;
         vertical-align: middle;
     }
@@ -416,10 +416,10 @@ export default {
     th {
         width: 150px;
         height: 40px;
-        border: 3px solid #fff;
+        border: 3px outset black;
         text-align: center;
         user-select: none;
-        color:white;
+        color: black;
     }
     input[type='checkbox']{
         -webkit-appearance: none;
