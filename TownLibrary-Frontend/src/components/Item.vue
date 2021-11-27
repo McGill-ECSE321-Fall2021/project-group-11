@@ -79,6 +79,8 @@ export default {
 
 
 		// // WIP below
+		// Add offlinemember id field if librarian logged in
+
 		// async createTransaction (userId, itemId) {
 		// 	console.log("creating transaction")
 		// 	await AXIOS.post('/transactions/' + userId + itemId, null, {
