@@ -169,7 +169,7 @@ export default {
 
         default:
           window.alert("No such item.")
-          
+          return
       }
 
       var itemId = item.id
@@ -181,7 +181,7 @@ export default {
 </script>
 
 <style>
- 
+
   #homepage{
     background-image: url("../assets/test-background.jpg");
   }
