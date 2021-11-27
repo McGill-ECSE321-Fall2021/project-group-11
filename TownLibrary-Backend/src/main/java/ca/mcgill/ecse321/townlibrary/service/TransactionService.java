@@ -71,27 +71,30 @@ public class TransactionService {
 	}
 
 	@Transactional
-	public Transaction renewTransaction(Transaction oldTransaction){
-		
-		Transaction newTransaction = new Transaction();
+	public Transaction renewTransaction(Transaction transaction){
 
-		Item item = itemRepository.findItemByTransaction(oldTransaction);
+		Item item = itemRepository.findItemByTransaction(transaction);
 		if (!item.getStatus().equals(Status.CHECKED_OUT)) {
 			throw new IllegalArgumentException("NOT-CHECKED-OUT");
 		}
-		Timestamp oldEndDate = oldTransaction.getEndDate();
-		
+		Timestamp oldEndDate = transaction.getEndDate();
 		Timestamp newStartDate = oldEndDate;
 		Timestamp newEndDate = new Timestamp(oldEndDate.getTime() + 1000 * 86400 * 14);
 
-		newTransaction = createTransaction(newStartDate, newEndDate, oldTransaction.getUserRole(), oldTransaction.getType());
+		transaction.setStartDate(newStartDate);
+		transaction.setEndDate(newEndDate);
+		transactionRepository.save(transaction);
 
-		return newTransaction;
+		return transaction;
 	}
 	@Transactional
 	public boolean returnTransaction(Integer transactionId){
 		final Transaction transaction = this.transactionRepository.findById(transactionId).orElseThrow(() ->
 		new IllegalArgumentException("TRANSACTION-NOT-FOUND"));
+				final Item item = this.itemRepository.findItemByTransaction(transaction);
+				item.setTransaction(null);
+				item.setStatus(Status.AVAILABLE);
+				this.itemRepository.save(item);
 				this.transactionRepository.delete(transaction);
 		return !this.transactionRepository.findById(transactionId).isPresent();
 	}

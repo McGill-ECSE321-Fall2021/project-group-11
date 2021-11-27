@@ -65,7 +65,7 @@ public class TransactionController {
             }
 
         }
-        @PostMapping(value = {"transactions/{userId}/{id}", "transactions/{userId}/{id}/"})
+        @PutMapping(value = {"/transactions/{userId}/{id}", "/transactions/{userId}/{id}/"})
         public ResponseEntity<?> renewTransaction(@PathVariable("id") int id,
             @PathVariable("userId") int userId) {
             try {
@@ -76,7 +76,7 @@ public class TransactionController {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         }
-        @DeleteMapping(value = {"transactions/{userId}/{id}", "transactions/{userId}/{id}/"})
+        @DeleteMapping(value = {"/transactions/{userId}/{id}", "/transactions/{userId}/{id}/"})
         public ResponseEntity<?> returnTransaction(@PathVariable("id") int id,
         @PathVariable("userId") int userId) {
             try {
