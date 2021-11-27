@@ -51,7 +51,7 @@ export default {
         name: '',
         type: '',
 	  },
-	  
+
 	  loggedUser: {
 		userType: '',
 		userId: '',
@@ -66,6 +66,15 @@ export default {
 	this.loggedUser = this.$route.params
 	},
 
+  watch: {
+    newItem: {
+      deep: true,
+      handler (val) {
+        this.serverResponse = null
+      }
+    }
+  },
+
   methods: {
 	async createItem (itemInfo) {
 		try {
@@ -78,7 +87,7 @@ export default {
 				}
 			})
 
-			navBrowse()
+			this.navBrowse()
 
 	 	} catch (error) {
         	this.serverResponse = error
