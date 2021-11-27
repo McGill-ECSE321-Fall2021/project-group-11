@@ -80,7 +80,7 @@ export default {
         right: 0;
     }
     .modal-card{
-        background: #FFFFFF;
+        background-color:#3B77BC;
         padding: 50px;
         position: fixed;
         top: 10%;
@@ -92,6 +92,7 @@ export default {
         padding: 0;
         border: none;
         background: none;
+        text-shadow:0 0 3px #DE482B, 0 0 3px #DE482B,0 0 3px #DE482B;
     }
     .title{
         position: absolute;

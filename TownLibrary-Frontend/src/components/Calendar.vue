@@ -48,13 +48,11 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table><br>
     <button class="submit-button" @click="requestSelected(entityId)" v-if="user === 'head-librarian'">Submit</button>
     <input class="reset-button" id="reset" type="reset" v-if="user === 'head-librarian'">
     <button class="clear-button" @click="clearCheckboxes()" v-if="user === 'head-librarian'">Clear</button>
     </form>
-    <p>DJSDSLKJSLDFLDSFJDLJ</p>
-
     </div>
 </template>
 
@@ -385,25 +383,42 @@ export default {
 </script>
 
 <style scoped>
+    #calendar{
+        background-color:#3B77BC;
+        font-family:'Consolas', Courier, monospace;
+    }
 
-    #empty{border:none;}
+    #empty{
+        border:none;
+    }
+
+    .reset-button{
+         background-color:#3ab82c;
+        /* border: 1px #123b0d; */
+        border: 3px outset;
+        border-color: rgba(2, 112, 10, 0.404);
+        /* border-style: outset; */
+        text-transform: uppercase;
+        color:white;
+        text-shadow: 0 0 3px black, 0 0 3px black;
+    }
 
     td {
-        border: 1px solid #bfbfbf;
+        border: 2px solid white;
         align-content: center;
         vertical-align: middle;
     }
     table{
         width: 1200px;
         height: 600px;
-        border: 0px solid #000;
     }
     th {
         width: 150px;
         height: 40px;
-        border: 1px solid #000;
+        border: 3px solid #fff;
         text-align: center;
         user-select: none;
+        color:white;
     }
     input[type='checkbox']{
         -webkit-appearance: none;
@@ -414,15 +429,8 @@ export default {
 
     }
     input[type='checkbox']:checked{
-        background: #abc;
+        background: rgba(255, 217, 4, 0.7);
     }
-    /* label{display:block;background-color:#000} */
-    td input:after {
-  background-color: red;
-}
 
-table td.highlighted {
-  background-color: #999;
-}
    
 </style>
