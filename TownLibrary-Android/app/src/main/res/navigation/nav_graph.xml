@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/LoginFragment">
+    app:startDestination="@id/ProfileFragment">
 
     <fragment
         android:id="@+id/LoginFragment"
@@ -15,27 +15,13 @@
             android:id="@+id/action_LoginFragment_to_SignupFragment"
             app:destination="@id/SignupFragment"/>
 
-        <action
-            android:id="@+id/action_LoginFragment_to_ProfileFragment"
-            app:destination="@id/ProfileFragment"/>
-
     </fragment>
 
     <fragment
         android:id="@+id/SignupFragment"
         android:name="ca.mcgill.ecse321.townlibrary.SignupFragment"
         android:label="Sign Up"
-        tools:layout="@layout/fragment_signup">
-
-        <action
-            android:id="@+id/action_SignupFragment_to_LoginFragment"
-            app:destination="@id/LoginFragment"/>
-
-        <action
-            android:id="@+id/action_SignupFragment_to_ProfileFragment"
-            app:destination="@id/ProfileFragment"/>
-
-    </fragment>
+        tools:layout="@layout/fragment_signup"/>
 
     <fragment
         android:id="@+id/ProfileFragment"

@@ -74,9 +74,9 @@ public class LoginFragment extends Fragment {
                             LoginStatus.INSTANCE.login(userId, username, password);
                             LoginStatus.INSTANCE.setPreferredDisplayName(name);
 
-                            // Transition into the profile screen
+                            // Return to the fragment that requested a login
                             NavHostFragment.findNavController(LoginFragment.this)
-                                    .navigate(R.id.action_LoginFragment_to_ProfileFragment);
+                                    .popBackStack();
                         } catch (JSONException ex) {
                             // This is really bad because it means the schema
                             // of the DTO is out of sync. Just Snackbar it and

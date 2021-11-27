@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -39,7 +40,7 @@ public class SignupFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(SignupFragment.this)
-                        .navigate(R.id.action_SignupFragment_to_LoginFragment);
+                        .popBackStack();
             }
         });
 
@@ -81,9 +82,11 @@ public class SignupFragment extends Fragment {
                             LoginStatus.INSTANCE.login(userId, username, password);
                             LoginStatus.INSTANCE.setPreferredDisplayName(name);
 
-                            // Transition into the profile screen
-                            NavHostFragment.findNavController(SignupFragment.this)
-                                    .navigate(R.id.action_SignupFragment_to_ProfileFragment);
+                            // Return to the fragment that requested a login.
+                            // But we only enter here via login, meaning we need to pop twice!
+                            final NavController navController = NavHostFragment.findNavController(SignupFragment.this);
+                            navController.popBackStack();
+                            navController.popBackStack();
                         } catch (JSONException ex) {
                             // This is really bad because it means the schema
                             // of the DTO is out of sync. Just Snackbar it and
