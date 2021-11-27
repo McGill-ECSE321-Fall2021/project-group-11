@@ -14,6 +14,9 @@
 
     <div v-if="isLibrarian">
       <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
+      <button @click="$router.push('/additem')">Add item</button>
+      <view-schedule :login-status="loginStatus" :entity-id="0"></view-schedule>
+    
     </div>
 
     <div v-if="isHeadLibrarian">
@@ -31,6 +34,7 @@
         </tr>
         <tr v-for="librarian in (librarians || [])" :key="librarian.id">
           <td>
+            <view-schedule v-if="librarian.id !== userInfo.id" :login-status="loginStatus" :entityId="librarian.id" :scheduleOwner="librarian.name"> </view-schedule>
             <button :disabled="librarian.id === userInfo.id"
                     @click="deleteLibrarian(librarian.id)">Delete</button>
           </td>
@@ -63,9 +67,10 @@
 
 <script>
 import axios from 'axios'
+import ViewSchedule from './ViewSchedule.vue'
 
-var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'https://' + process.env.API_HOST + ':' + process.env.API_PORT
+var frontendUrl = process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -73,7 +78,13 @@ var AXIOS = axios.create({
 })
 
 export default {
+  components: { ViewSchedule },
   name: 'profile',
+
+  component:{
+    'view-schedule':ViewSchedule
+  },
+
   data () {
     return {
       loginStatus: {},

@@ -29,4 +29,11 @@ public interface DailyScheduleRepository extends CrudRepository<DailySchedule, I
      * @return              List of schedules for that librarian
      */
     List<DailySchedule> findByLibrarian(Librarian librarian);
+
+    /**
+     * Delete schedule by librarian
+     *
+     * @param librarian -   A librarian
+     */
+    void deleteByLibrarian(Librarian librarian);
 }

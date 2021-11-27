@@ -21,8 +21,8 @@
 <script>
 import axios from 'axios'
 
-var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'https://' + process.env.API_HOST + ':' + process.env.API_PORT
+var frontendUrl = process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -40,7 +40,7 @@ export default {
 				type: '',
 			},
 			status: ''
-			
+
 		}
 	},
 

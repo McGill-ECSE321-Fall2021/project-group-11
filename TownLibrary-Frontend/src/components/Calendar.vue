@@ -13,31 +13,31 @@
             <tbody>
                 <!-- each row -->
                 <!-- time header | data cell | data cell | data cell | ...   -->
-                <tr v-for="(time,idx1) in timeslot" :key="idx1">
+                <tr v-for="(time,idx1) in timeslot" :key="idx1"> 
                     <th>{{time.startTime}}-{{time.endTime}}</th>
                     <!-- each data cell is just a big checkbox that contains value (day, {startTime, endTime}) -->
                     <td v-for="n in dayOfWeek.length" :key="n" id="data">
                         <!-- reads entity's schedule and checks (colours cell) if there's a schedule at that timeslot -->
                         <!-- if user is head-librarian, can modify -->
-                        <input type="checkbox"
+                        <input type="checkbox" 
                             :id="[n, idx1+1]" :value="checkboxLocation(n, idx1+1)"
                             v-if="
                             !checkIfWithinRange(
                             checkSchedulesByDay(n).startTime,
                             checkSchedulesByDay(n).endTime,
                             time.startTime,
-                            time.endTime)
+                            time.endTime) 
                             && user === 'head-librarian'">
                         <input type="checkbox" :id="[n, idx1+1]" v-else-if="user === 'head-librarian'" then checked>
-
+                        
                         <!-- if not, cannot modify/interact with checkboxes -->
-                        <input type="checkbox"
+                        <input type="checkbox" 
                             v-if="
                             !checkIfWithinRange(
                             checkSchedulesByDay(n).startTime,
                             checkSchedulesByDay(n).endTime,
                             time.startTime,
-                            time.endTime)
+                            time.endTime) 
                             && user !== 'head-librarian'" then onclick="return false;">
                         <input type="checkbox" v-else-if="user !== 'head-librarian'" then checked onclick="return false;">
 
@@ -54,10 +54,10 @@
 
 <script>
 import axios from 'axios'
-import { isEmptyObject } from 'jquery'
+import { isEmptyObject, $ } from 'jquery'
 
-var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'https://' + process.env.API_HOST + ':' + process.env.API_PORT
+var frontendUrl =  process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
     baseURL: backendUrl,
@@ -66,6 +66,7 @@ var AXIOS = axios.create({
 
 export default {
     name: "calendar",
+    
 
     props: {
         // user who is currently logged in
@@ -113,10 +114,10 @@ export default {
                 SUNDAY: {}
 
             }
-        }
+        }        
     },
 
-    async created() {
+    async created() {   
         try {
             // these are to get schedule (and store in this.schedules)
             // for library
@@ -155,21 +156,21 @@ export default {
                         this.schedulesByDay.SUNDAY = this.schedules.at(i)
                         break
                     default:
-                        console.log("uh")
+                        console.log("uh")   
                         break
                 }
             }
-
+            
         } catch (error) {
             console.log(error)
         }
-
-
+        
+        
     },
 
     methods:{
         /** Creates, updates or delete schedules depending on cells highlighted (checkbox checked)
-         *
+         * 
          * @param id - entity's id (for example, a library or librarian)
          */
         // prob should add stuff to handle exceptions
@@ -190,7 +191,7 @@ export default {
                     // iterate through all the checked cells
                     for(var n=0; n < checkboxArray.length; n++){
                         var scheduleCell = Object.values(checkboxArray[n])[0]
-
+                      
                         // if that cell is during that day
                         // look for earliest start time and latest end time
                         if (this.dayOfWeek[day] == scheduleCell.day) {
@@ -222,7 +223,9 @@ export default {
                                         endTime : latestEndTime
                                     }
                                 })
-
+                                if (request.status == '200'){
+                                    console.log("library-post-success")
+                                }
                             // for librarians
                             } else {
                                 let request = await AXIOS.post('/schedules/librarian/'+ id +'/'+this.dayOfWeek[day], null ,
@@ -232,6 +235,9 @@ export default {
                                         endTime : latestEndTime
                                     }
                                 })
+                                if (request.status == '200'){
+                                    console.log("librarian-post-success")
+                                }
                             }
 
                         }catch (error){
@@ -249,7 +255,9 @@ export default {
                                                 newEndTime : latestEndTime
                                             }
                                         })
-
+                                        if (request.status == '200'){
+                                            console.log("put-success")
+                                        }
                                     }else console.log("same schedule, do nothing.")
 
                                 } catch (error) {
@@ -257,17 +265,20 @@ export default {
                                 }
                             }
                         }
-
+                        
                     // no checked boxes, so no schedule on that day
                     }else{
                         // if the schedule exists, delete request
                         // else keep as is
                         if (!isEmptyObject(this.checkSchedulesByDay(this.dayOfWeek[day]))){
                             let request = await AXIOS.delete('/schedules/'+scheduleId)
+                            if (request.status == '200'){
+                                console.log("delete-success")
+                            }
                         }
                     }
                 }
-
+                    
             } catch (error) {
                 console.log(error)
             }
@@ -275,17 +286,17 @@ export default {
 
         /** Returns an object with properties "day" and "time".
          * Used to give a value to checkbox given their location in the table
-         *
+         * 
          * @param dayInput - index for dayOfWeek
          * @param timeInput - index for timeslot
          */
         checkboxLocation(dayInput, timeInput){
             var dayString = ''
             var timeObject = {}
-
+            
             dayString = this.dayOfWeek[dayInput-1]
             timeObject = this.timeslot[timeInput-1]
-
+        
             let location = {
                 "day":dayString,
                 "time":timeObject
@@ -294,7 +305,7 @@ export default {
         },
 
         /** Checks whether the time cell fits within a time slot.
-         *
+         * 
          * @param startTime - time slot startTime
          * @param endTime - time slot endTime
          * @param currentStartTime - time cell startTime
@@ -306,8 +317,8 @@ export default {
         },
 
         /** Return a schedule on a day
-         *
-         * @param day - day of week in integer/string
+         * 
+         * @param day - day of week in integer/string 
          */
         // wait what the hell, I had a GET request for this :)
         checkSchedulesByDay(day){
@@ -340,20 +351,20 @@ export default {
         },
 
         /** Clears all the checkbox
-         *  Taken directly from stackoverflow from user T J
+         *  Taken directly from stackoverflow from user T J 
          *  stackoverflow.com/questions/22574344/how-to-make-a-button-that-will-uncheck-all-checkboxes/22574416
          */
         clearCheckboxes(){
             document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false)
         }
     },
-
+ 
 
 }
 </script>
 
 <style scoped>
-
+    
     td {
         border: 1px solid #999;
         align-content: center;
@@ -381,5 +392,5 @@ export default {
     input[type='checkbox']:checked{
         background: #abc;
     }
-
+   
 </style>

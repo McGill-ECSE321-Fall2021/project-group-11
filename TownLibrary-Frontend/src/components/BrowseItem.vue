@@ -71,8 +71,8 @@
 <script>
 import axios from 'axios'
 
-var frontendUrl = 'http://' + process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
-var backendUrl = 'https://' + process.env.API_HOST + ':' + process.env.API_PORT
+var frontendUrl = process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
 
 var AXIOS = axios.create({
   baseURL: backendUrl,
@@ -104,7 +104,7 @@ export default {
 		async viewItem(itemId, itemName, itemType) {
 			console.log(itemName)
 
-			this.$router.push({name: 'Item', 
+			this.$router.push({name: 'Item',
 				params: { id: itemId, name: itemName, type: itemType }});
 
 		},

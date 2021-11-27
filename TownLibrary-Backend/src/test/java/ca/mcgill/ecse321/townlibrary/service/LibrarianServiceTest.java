@@ -14,7 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 
 import ca.mcgill.ecse321.townlibrary.model.*;
-import ca.mcgill.ecse321.townlibrary.repository.LibrarianRepository;
+import ca.mcgill.ecse321.townlibrary.repository.*;
 
 import java.util.Optional;
 
@@ -28,6 +28,9 @@ public class LibrarianServiceTest {
 
     @Mock
     private LibrarianRepository mockLibrarianRepository;
+
+    @Mock
+    private DailyScheduleRepository mockDailyScheduleRepository;
 
     @Spy
     private PasswordValidator passwordValidator;
