@@ -15,10 +15,9 @@
                 <tr v-for="(transaction, index) in transactions" :key="transaction.id">
                     <td>   </td>
                     <td> {{ transaction.type }} </td>
-                    <td> {{ items[index].name }} </td>
+                    <!-- <td> {{ items[index].name }} </td> -->
                     <td> {{ transaction.startDate }} </td>
                     <td> {{ transaction.endDate }} </td>
-                    <td> Event </td>
                     <td>
                         <button
                         @click="renewItem(transaction,this.$route.params.id)">Renew</button>
@@ -68,21 +67,25 @@ export default {
                 let response  = await AXIOS.get('/transactions/' + id)
                 this.transactions = response.data
             } catch (error) {
-                this.errorTransaction  = e
+                this.errorTransaction  = error
             }
-            for (transaction in this.transactions){
-                this.getTransactionItem(transaction, id)
+            for (let transaction in this.transactions){
+                await this.getTransactionItem(this.transactions[transaction], transaction)
             }
         },
 
-        async getTransactionItem(transaction){
+        async getTransactionItem(transaction, index){
 
             try {
                 let response = await  AXIOS.get('/' + transaction.type + '/transactions/' + transaction.id)     
-                this.items[this.transactions.indexOf(transaction)] = response.data
+                this.items[index] = response.data
+                console.log(response.data)
+                
             } catch (error) {
-                this.errorTransaction = e
+                console.log(error)
+                this.errorTransaction = error
             }
+            
         },
         async renewItem(transaction, id){
 

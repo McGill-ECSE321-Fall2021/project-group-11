@@ -3,24 +3,24 @@
 		<h2>Item Details</h2>
 
 		<ul>
-			<li>ID: {{ this.itemId }}</li>
-			<li>Title: {{ this.itemName }}</li>
-			<li>Status: {{ this.status }}</li>
+			<li>ID: {{ itemId }}</li>
+			<li>Title: {{ itemName }}</li>
+			<li>Status: {{ status }}</li>
 		</ul>
 
 		<div v-if="!isViewOnly">
 			<div v-if="!isLibrarian">
-				<button :disabled="this.status === 'CHECKED_OUT'"
+				<button :disabled="status === 'CHECKED_OUT'"
 						@click="createTransactionOnline">Checkout</button>
 			</div>
 			<div v-if="isLibrarian">
 				<input type="number" v-model="offlineMemberId" placeholder="Offline Member Id">
 				<br/>
-				<button :disabled="this.status === 'CHECKED_OUT'"
+				<button :disabled="status === 'CHECKED_OUT'"
 						@click="createTransactionOffline">Checkout</button>
 			</div>
 
-			<button :disabled="this.status !== 'AVAILABLE'"
+			<button :disabled="status !== 'AVAILABLE'"
 					@click="reserveItem">Reserve</button>
 		</div>
 		<button @click="navBrowse">Back</button>
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import axios, { Axios } from 'axios'
 
 var frontendUrl = process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
 var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
@@ -118,7 +118,7 @@ export default {
 			console.log("creating transaction")
 			console.log(this.userId)
 
-			await AXIOS.post('/transactions/' + this.userId + this.itemId, null, {
+			let transaction = await AXIOS.post('/transactions/' + this.userId, null, {
 				  params: {
 					  startDate: new Date(),
 					  // 2 weeks later
@@ -127,7 +127,7 @@ export default {
 				  }
 			})
 
-			checkoutItem()
+			await this.checkoutItem(transaction.data.id)
 		},
 
 		// Offline member's id must be typed in manually by the librarian
@@ -135,7 +135,7 @@ export default {
 			console.log("creating transaction")
 			console.log(this.offlineMemberId)
 
-			await AXIOS.post('/transactions/' + this.offlineMemberId + this.itemId, null, {
+			let transaction = await AXIOS.post('/transactions/' + this.offlineMemberId, null, {
 				  params: {
 					  startDate: new Date(),
 					  // 2 weeks later
@@ -144,15 +144,17 @@ export default {
 				  }
 			})
 
-			checkoutItem()
+			await this.checkoutItem(transaction.data.id)
 		},
 
-		async checkoutItem () {
+		async checkoutItem (transactionId) {
 			console.log("checkout")
 
-			let response = await AXIOS.put
-				('/' + this.itemType + 's/' + this.itemId + '/checkout',
-				{ transactionId: this.itemId })
+			let response = await AXIOS.put('/' + this.itemType + 's/' + this.itemId + '/checkout', null, {
+				params : {
+					transactionId: transactionId
+				}
+			}) 
 
 			this.status = response.data.status
 			console.log(response.data.status)
