@@ -39,7 +39,7 @@ public class EventControllerTest {
                 .param("email", "mintyfresh@teeth.com")
                 .param("address", "246 Clean Avenue")
                 .param("name", "Chip Skylark")
-                .param("library", "0")
+                .param("library", "10001")
                 .post("/online-members/chip_skylark")
                 .then()
                 .extract()
