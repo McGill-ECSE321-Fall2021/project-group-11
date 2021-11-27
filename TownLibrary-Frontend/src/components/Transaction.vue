@@ -1,26 +1,31 @@
 <template>
     <div id="transaction">
         <h2> Transactions </h2>
-            <table>
+        <span v-if="errorTransaction" style="color:red">Error : {{ errorTransaction }} </span>
+            <table id="transactions">
                 <tr>
                     <th><!-- Empty cell just for aligning the table --></th>
-                    <th>Transaction id</th>
                     <th>Type</th>
                     <th>Name</th>
                     <th>Start Date</th>
                     <th>End Date</th>
                     <th>Renew</th>
+                    <th>Return</th>
                 </tr>
                 <tr v-for="(transaction, index) in transactions" :key="transaction.id">
                     <td>   </td>
-                    <td> {{ transaction.id }} </td>
                     <td> {{ transaction.type }} </td>
                     <td> {{ items[index].name }} </td>
                     <td> {{ transaction.startDate }} </td>
                     <td> {{ transaction.endDate }} </td>
                     <td> Event </td>
                     <td>
-                        <button @click="renewItem(transaction.id)">Renew</button>
+                        <button
+                        @click="renewItem(transaction,this.$route.params.id)">Renew</button>
+                    </td>
+                    <td>
+                        <button
+                        @click="returnItem(transaction, this.$route.params.id)">Return</button>
                     </td>
                 </tr>
             </table>
@@ -50,7 +55,7 @@ export default {
         return{
             transactions: [],
             items: [],
-            errorTransaction: ''
+            errorTransaction: 'Hello World'
         }
     },
     created: function() {
@@ -79,15 +84,54 @@ export default {
                 this.errorTransaction = e
             }
         },
-        async renewItem(transaction){
-            try {
-                let response = await AXIOS.get('')
-            } catch (error) {
-                this. errorTransaction = e
+        async renewItem(transaction, id){
+
+            this.isAfterDate(transaction.endDate)
+            if (this.errorTransaction === "")
+            {
+                try {
+                    let response = await AXIOS.put('/transactions/' + id + '/' + transaction.id , null, {})
+                    this.reloadTransactions(id)
+                } catch (error) {
+                    this.errorTransaction = e
+                }
+            }
+        },
+
+        async returnItem(transaction, id){
+            this.isAfterDate(transaction.endDate)
+            if (this.errorTransaction === "")
+            {
+                try {
+                    let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
+                    this.reloadTransactions(id)
+                } catch (error) {
+                    this.errorTransaction = e
+                }
+            }
+        },
+        isAfterDate(date){
+            var today = new Date();
+            var transactionDate = new Date(date);
+            if (today > transactionDate) {
+                this.errorTransaction = 'Action not possible';
             }
         }
+
     }
 }
 
 
 </script>
+
+<style>
+
+#transactions {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+    max-width: 800px;
+}
+
+</style>
