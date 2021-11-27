@@ -17,7 +17,7 @@ export default function decodeError (api_error) {
   // Extract it into a list of error messages. Note that error messages can be
   // are ',', '.', and '!' separated.
   let errs = []
-  for (let msg of raw_msg.split(/,|!|\./)) {
+  for (let msg of raw_msg.split(/[,!.]/)) {
     msg = msg.trim()
     if (0 === msg.length)
       continue
