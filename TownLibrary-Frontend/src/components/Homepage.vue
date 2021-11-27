@@ -178,7 +178,7 @@ export default {
 
         default:
           window.alert("No such item.")
-          
+          return
       }
 
       var itemId = item.id

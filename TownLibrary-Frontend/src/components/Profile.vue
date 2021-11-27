@@ -64,7 +64,8 @@
                                       id:       userInfo.id,
                                       fullName: userInfo.name,
                                       email:    userInfo.email,
-                                      address:  userInfo.address
+                                      address:  userInfo.address,
+                                      inTown:   userInfo.inTown
                                   }})">View personal information</button>
       <button @click="$router.push('')">View event schedule</button>
     </div>
