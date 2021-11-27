@@ -45,7 +45,7 @@
         </tr>
         <tr v-for="librarian in (librarians || [])" :key="librarian.id" class="librarian-table-row">
           <td class="librarian-table-button">
-            <view-schedule :login-status="loginStatus" :entity-id="librarian.id" :schedule-owner="librarian.name" v-if="librarian.id !== userInfo.id"> </view-schedule>
+            <view-schedule :disabled="true" class="librarian-schedule-button" :login-status="loginStatus" :entity-id="librarian.id" :schedule-owner="librarian.name"> </view-schedule>
             <button class="delete-librarian-button" :disabled="librarian.id === userInfo.id"
                     @click="deleteLibrarian(librarian.id)">Delete</button>
           </td>
@@ -161,9 +161,6 @@ export default {
           }
         })
         this.userInfo = response.data
-
-        // just overwrite the id...
-        this.loginStatus.userId = this.userInfo.id
       } catch (error) {
         // this is awkward because we couldn't get the user's information...
         // assume the worst (maybe the password has changed or something) and
