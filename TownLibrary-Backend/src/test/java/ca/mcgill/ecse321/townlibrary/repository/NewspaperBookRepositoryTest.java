@@ -33,9 +33,9 @@ public class NewspaperBookRepositoryTest {
 	public void testPersistAndLoadNewspaper() {
 		// setup associated transaction object
 		Transaction transaction = new Transaction();
-		transaction.setId(44);
 		transactionRepository.save(transaction);
-		
+		Integer transactionId = transaction.getId();
+
 		// write Newspaper
 		Integer newsId = 3301;
 		String name = "Globe&Mail";
@@ -54,22 +54,22 @@ public class NewspaperBookRepositoryTest {
 		assertEquals(newsId, newspaper.getId());
 		assertEquals(name, newspaper.getName());
 		assertEquals(status, newspaper.getStatus());
-		assertEquals(44, newspaper.getTransaction().getId());
+		assertEquals(transactionId, newspaper.getTransaction().getId());
 		
 		List<Newspaper> newspaperList = newspaperRepository.findNewspaperByName(name);
 		assertNotNull(newspaperList);
 		assertEquals(newsId, newspaperList.get(0).getId());
 		assertEquals(name, newspaperList.get(0).getName());
 		assertEquals(status, newspaperList.get(0).getStatus());
-		assertEquals(44, newspaperList.get(0).getTransaction().getId());
+		assertEquals(transactionId, newspaperList.get(0).getTransaction().getId());
 	}
 	
 	@Test
 	public void testPersistAndLoadBook() {
 		// setup associated transaction object
 		Transaction transaction = new Transaction();
-		transaction.setId(55);
 		transactionRepository.save(transaction);
+		Integer transactionId = transaction.getId();
 		
 		// write Book
 		Integer bookId = 2501;
@@ -89,14 +89,14 @@ public class NewspaperBookRepositoryTest {
 		assertEquals(bookId, book.getId());
 		assertEquals(name, book.getName());
 		assertEquals(status, book.getStatus());
-		assertEquals(55, book.getTransaction().getId());
+		assertEquals(transactionId, book.getTransaction().getId());
 		
 		List<Book> bookList = bookRepository.findByNameContaining("Du");
 		assertNotNull(bookList);
 		assertEquals(bookId, bookList.get(0).getId());
 		assertEquals(name, bookList.get(0).getName());
 		assertEquals(status, bookList.get(0).getStatus());
-		assertEquals(55, bookList.get(0).getTransaction().getId());
+		assertEquals(transactionId, bookList.get(0).getTransaction().getId());
 	}
 
 }

@@ -1,3 +1,6 @@
+# Prevent unfortunate branch switching stuff
+TownLibrary-Android
+
 HELP.md
 .gradle
 build/

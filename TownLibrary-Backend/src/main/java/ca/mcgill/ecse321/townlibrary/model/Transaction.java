@@ -14,6 +14,7 @@ public class Transaction {
     private UserRole userRole;
 
     @Id
+    @GeneratedValue
     public int getId() {
         return this.id;
     }

@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.townlibrary.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.sql.Timestamp;
 
@@ -17,13 +16,13 @@ public class TransactionService {
 	@Autowired
 	TransactionRepository transactionRepository;
 
+	@Autowired 
+	ItemRepository itemRepository;
+
 	@Transactional
-	public Transaction createTransaction(int id, Timestamp start, Timestamp end, UserRole user, TransactionType type) {
+	public Transaction createTransaction(Timestamp start, Timestamp end, UserRole user, TransactionType type) {
 
 		String error = "";
-		if (id < 0) {
-			error = error + "Unsupported Id.";
-	    }
 		if (start == null) {
 			error = error + "Transaction start time cannot be empty.";
 		}
@@ -46,7 +45,6 @@ public class TransactionService {
 	    }
 
 		Transaction transaction = new Transaction();
-		transaction.setId(id);
 		transaction.setStartDate(start);
 		transaction.setEndDate(end);
 		transaction.setUserRole(user);
@@ -73,14 +71,33 @@ public class TransactionService {
 	}
 
 	@Transactional
-    public List<Transaction> getAllTransactions() {
-        final List<Transaction> transactions = new ArrayList<Transaction>();
-        for (Transaction t : this.transactionRepository.findAll()) {
-        	transactions.add(t);
-        }
-        return transactions;
-    }
+	public Transaction renewTransaction(Transaction transaction){
 
+		Item item = itemRepository.findItemByTransaction(transaction);
+		if (!item.getStatus().equals(Status.CHECKED_OUT)) {
+			throw new IllegalArgumentException("NOT-CHECKED-OUT");
+		}
+		Timestamp oldEndDate = transaction.getEndDate();
+		Timestamp newStartDate = oldEndDate;
+		Timestamp newEndDate = new Timestamp(oldEndDate.getTime() + 1000 * 86400 * 14);
+
+		transaction.setStartDate(newStartDate);
+		transaction.setEndDate(newEndDate);
+		transactionRepository.save(transaction);
+
+		return transaction;
+	}
+	@Transactional
+	public boolean returnTransaction(Integer transactionId){
+		final Transaction transaction = this.transactionRepository.findById(transactionId).orElseThrow(() ->
+		new IllegalArgumentException("TRANSACTION-NOT-FOUND"));
+				final Item item = this.itemRepository.findItemByTransaction(transaction);
+				item.setTransaction(null);
+				item.setStatus(Status.AVAILABLE);
+				this.itemRepository.save(item);
+				this.transactionRepository.delete(transaction);
+		return !this.transactionRepository.findById(transactionId).isPresent();
+	}
 
 
 }
