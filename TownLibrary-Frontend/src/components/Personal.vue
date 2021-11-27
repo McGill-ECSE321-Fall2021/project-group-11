@@ -1,8 +1,8 @@
 <template>
     <div id="personal">
         <h2> Account Information </h2>
-        <div id="info"> 
-            <label class="title"> Library ID </label>
+        <div id="info">
+            <label class="title"> User ID </label>
             <label class="textbox"> {{ this.$route.params.id }} </label> <br>
             <label class="title"> Full Name </label>
             <label class="textbox"> {{ this.$route.params.fullName }} </label> <br>
@@ -10,6 +10,8 @@
             <label class="textbox">  {{ this.$route.params.email }} </label> <br>
             <label class="title"> Address </label>
             <label class="textbox">  {{ this.$route.params.address }}</label> <br>
+            <label class="title"> In Town? </label>
+            <label class="textbox">  {{ this.$route.params.inTown }} </label> <br>
         </div>
 
         <div>
