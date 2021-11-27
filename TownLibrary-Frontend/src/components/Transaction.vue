@@ -1,10 +1,10 @@
 <template>
     <div id="transaction">
         <h2> Transactions </h2>
+        <span v-if="errorTransaction" style="color:red">Error : {{ errorTransaction }} </span>
             <table>
                 <tr>
                     <th><!-- Empty cell just for aligning the table --></th>
-                    <th>Transaction id</th>
                     <th>Type</th>
                     <th>Name</th>
                     <th>Start Date</th>
@@ -14,7 +14,6 @@
                 </tr>
                 <tr v-for="(transaction, index) in transactions" :key="transaction.id">
                     <td>   </td>
-                    <td> {{ transaction.id }} </td>
                     <td> {{ transaction.type }} </td>
                     <td> {{ items[index].name }} </td>
                     <td> {{ transaction.startDate }} </td>
@@ -56,7 +55,7 @@ export default {
         return{
             transactions: [],
             items: [],
-            errorTransaction: ''
+            errorTransaction: 'Hello World'
         }
     },
     created: function() {
@@ -86,20 +85,36 @@ export default {
             }
         },
         async renewItem(transaction, id){
-            try {
-                let response = await AXIOS.post('/transactions/' + id + '/' + transaction.id , null, {})
-                this.reloadTransactions(id)
-            } catch (error) {
-                this.errorTransaction = e
+
+            this.isAfterDate(transaction.endDate)
+            if (this.errorTransaction === "")
+            {
+                try {
+                    let response = await AXIOS.post('/transactions/' + id + '/' + transaction.id , null, {})
+                    this.reloadTransactions(id)
+                } catch (error) {
+                    this.errorTransaction = e
+                }
             }
         },
 
         async returnItem(transaction, id){
-            try {
-                let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
-                this.reloadTransactions(id)
-            } catch (error) {
-                this.errorTransaction = e
+            this.isAfterDate(transaction.endDate)
+            if (this.errorTransaction === "")
+            {
+                try {
+                    let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
+                    this.reloadTransactions(id)
+                } catch (error) {
+                    this.errorTransaction = e
+                }
+            }
+        },
+        isAfterDate(date){
+            var today = new Date();
+            var transactionDate = new Date(date);
+            if (today > transactionDate) {
+                this.errorTransaction = 'Action not possible';
             }
         }
 

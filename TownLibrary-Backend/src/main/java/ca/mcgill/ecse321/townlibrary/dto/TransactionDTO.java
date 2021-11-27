@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.townlibrary.dto;
 
-import java.sql.Timestamp;
 import java.util.Optional;
 
 import ca.mcgill.ecse321.townlibrary.model.Transaction;
