@@ -2,7 +2,7 @@
     <div id="transaction">
         <h2> Transactions </h2>
         <span v-if="errorTransaction" style="color:red">Error : {{ errorTransaction }} </span>
-            <table>
+            <table id="transactions">
                 <tr>
                     <th><!-- Empty cell just for aligning the table --></th>
                     <th>Type</th>
@@ -123,3 +123,15 @@ export default {
 
 
 </script>
+
+<style>
+
+#transactions {
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid black;
+    border-collapse: collapse;
+    max-width: 800px;
+}
+
+</style>
