@@ -62,8 +62,8 @@ export default {
 		this.itemName = this.$route.params.itemName
 		this.itemType = this.$route.params.itemType
 
-		this.userType = this.$route.params.userType
-		this.userId = this.$route.params.userId
+    this.userType = this.$store.state.loginStatus.userType
+    this.userId = this.$store.state.loginStatus.userId
 
 		this.showStatus()
 	},
@@ -112,7 +112,7 @@ export default {
 		},
 
 
-		// Online members have their id stored in this.userId 
+		// Online members have their id stored in this.userId
 		// and may checkout by themselves
 		async createTransactionOnline () {
 			console.log("creating transaction")

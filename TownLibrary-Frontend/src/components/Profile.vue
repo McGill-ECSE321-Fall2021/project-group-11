@@ -161,6 +161,9 @@ export default {
           }
         })
         this.userInfo = response.data
+
+        // just overwrite the id...
+        this.loginStatus.userId = this.userInfo.id
       } catch (error) {
         // this is awkward because we couldn't get the user's information...
         // assume the worst (maybe the password has changed or something) and
