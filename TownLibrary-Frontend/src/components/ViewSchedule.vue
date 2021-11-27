@@ -4,7 +4,7 @@
         <div class="modal-block" v-if="open">
             <div class="overlay"></div>
             <div class="modal-card card">
-                <h1 class="title"> <b>{{scheduleOwner}}'s Schedule</b> </h1>
+                <h1 class="title"> <b>{{scheduleOwner.toUpperCase()}}'S SCHEDULE</b> </h1>
                 <button class="exit-button" v-on:click="open=false">x</button>
                 <body class="content">
                     <calendar :user="loginStatus.userType" :entity-id="entityId"> </calendar>
@@ -80,7 +80,7 @@ export default {
         right: 0;
     }
     .modal-card{
-        background: #FFFFFF;
+        background-color:#3B77BC;
         padding: 50px;
         position: fixed;
         top: 10%;
@@ -92,6 +92,7 @@ export default {
         padding: 0;
         border: none;
         background: none;
+        text-shadow:0 0 3px #DE482B, 0 0 3px #DE482B,0 0 3px #DE482B;
     }
     .title{
         position: absolute;
@@ -99,6 +100,7 @@ export default {
         left: 0%;
         right: 0%;
         font-size: 25px;
+        user-select: none;
         /* border-bottom: 1px solid black; */
     }
     /* table, th, td{border:1px solid black;} */

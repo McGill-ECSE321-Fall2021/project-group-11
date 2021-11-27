@@ -22,8 +22,8 @@
 			<input type="text" v-model="eventId" placeholder="Event ID">
 			<br>
 			<button @click="eventDetails(eventId)">Event details</button>
-			<br>
-			<button @click="$router.push('/')">Home</button>
+			<!-- <br>
+			<button @click="$router.push('/')">Home</button> -->
 		</div>
 		<div v-if="state === 1">
 			<h2>Name: {{loadedEvent.name}}</h2>
