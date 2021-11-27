@@ -4,7 +4,7 @@ export default function decodeError (api_error) {
 
   if (!api_error.response || !api_error.response.data)
     // happens when there is an network error
-    return ['Network error, please reload and try again later']
+    return ['Oooops!!! Looks like something went wrong. In the meantime, try refreshing.']
 
   let raw_msg = api_error.response.data
   if (typeof raw_msg !== 'string' && !(raw_msg instanceof String))

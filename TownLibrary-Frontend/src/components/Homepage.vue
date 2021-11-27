@@ -2,7 +2,7 @@
   <div id="homepage">
     <div id="homepage-content">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <!-- <form> -->
+    <form autocomplete="off">
     <img src="../assets/test.png" id="logo">
     <div class="search">
       <!-- <input type="text" class="search-bar" placeholder="Search an item by name..." size="50"> -->
@@ -33,7 +33,7 @@
     <p>To book items or events, you need to sign in to your account</p>
     <button @click="$router.push('/profile')">Profile</button>
     <button @click="$router.push('/profile')">Sign In</button> -->
-    <!-- </form> -->
+    </form>
   </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
     <div id="view-schedule">
-        <button @click="open=true">View schedule</button>
+        <button @click="open=true" :disabled="notEnabled">View schedule</button>
         <div class="modal-block" v-if="open">
             <div class="overlay"></div>
             <div class="modal-card card">
@@ -33,6 +33,11 @@ export default {
         scheduleOwner:{
             type: String,
             default: "Library"
+        },
+
+        notEnabled:{
+            type: Boolean,
+            default:false
         }
 
     },
@@ -62,6 +67,10 @@ export default {
 </script>
 
 <style scoped>
+
+    button:disabled{
+        border:none;
+    }
     .modal-block{
         position: fixed;
         top: 0;

@@ -14,7 +14,7 @@
       <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
       <button @click="$router.push('/additem')">Add item</button>
       <br>
-      <input type="text" v-model="affectedUserId">
+      <input type="text" placeholder="Member ID" v-model="affectedUserId">
       <button @click="getAddressOfAffectedUser">Get address</button>
       <button @click="setInTownAffectedUser(true)">Set In Town</button>
       <button @click="setInTownAffectedUser(false)">Set Out of Town</button>
@@ -39,10 +39,10 @@
         <tr v-if="librarians === null">
           <td style="color: red">Failed to load from server, try again later by clicking on refresh</td>
         </tr>
-        <tr v-for="librarian in (librarians || [])" :key="librarian.id">
-          <td>
-            <view-schedule v-if="librarian.id !== userInfo.id" :login-status="loginStatus" :entity-id="librarian.id" :schedule-owner="librarian.name"> </view-schedule>
-            <button :disabled="librarian.id === userInfo.id"
+        <tr v-for="librarian in (librarians || [])" :key="librarian.id" class="librarian-table-row">
+          <td class="librarian-table-button">
+            <view-schedule :login-status="loginStatus" :entity-id="librarian.id" :schedule-owner="librarian.name" v-if="librarian.id !== userInfo.id"> </view-schedule>
+            <button class="delete-librarian-button" :disabled="librarian.id === userInfo.id"
                     @click="deleteLibrarian(librarian.id)">Delete</button>
           </td>
           <td>{{ librarian.id }}</td>
@@ -244,4 +244,21 @@ export default {
 </script>
 
 <style>
+  .librarian-table-row{
+    width:100%;
+    text-align:center
+  }
+  .librarian-schedule-button{
+    display: inline;
+  } 
+  .librarian-schedule-button:disabled{
+    display: inline;
+  }
+  .delete-librarian-button{
+    display: inline;
+  }
+  .delete-librarian-button:disabled{
+    display: inline;
+
+  }
 </style>
