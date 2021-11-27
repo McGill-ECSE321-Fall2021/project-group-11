@@ -3,7 +3,8 @@
     <h2>Welcome back {{ userInfo.name }}!</h2>
     <button @click="doLogout">Logout</button>
     <br><br>
-    <button @click="$router.push('/')">Home</button>
+    <button @click="$router.push({name:'Homepage',
+                                  params: {userId: userInfo.id}})">Home</button>
 
     <p>Just to show that stuff does work:</p>
     <ul>
@@ -14,7 +15,11 @@
 
     <div v-if="isLibrarian">
       <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
-      <button @click="$router.push('/additem')">Add item</button>
+      <button @click="$router.push({name: 'Create Item',
+                                    params: {
+                                      userType: loginStatus.userType,
+                                      userId: userInfo.id
+                                   }})">Add item</button>
       <view-schedule :login-status="loginStatus" :entity-id="0"></view-schedule>
     
     </div>

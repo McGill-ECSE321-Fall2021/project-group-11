@@ -3,7 +3,8 @@
     <h1>Welcome</h1> <br>
 
     <h3>Item catalogue</h3>
-    <button @click="$router.push('/browseitem')">Items</button>
+    <button @click="$router.push({name:'Browse Item',
+                                  params: {userId: userId}})">Items</button>
     <br><br>
 
     <h3>Events</h3>
@@ -30,7 +31,18 @@ var AXIOS = axios.create({
 })
 
 export default {
-  name: 'homepage'
+  name: 'homepage',
+
+  data () {
+    return {
+      userId: ''
+    }
+  },
+
+  created () {
+    console.log('Params: ', this.$route.params)
+		this.userId = this.$route.params.userId
+  }
 }
 </script>
 

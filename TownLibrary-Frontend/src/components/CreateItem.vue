@@ -2,7 +2,7 @@
 	<div id="create-item">
 		<h1>Create Item</h1>
 
-		<input type="text" v-model="newItem.id" placeholder="Item ID">
+		<input type="number" v-model="newItem.id" placeholder="Item ID">
 		<br/>
 		<input type="text" v-model="newItem.name" placeholder="Item Name">
 		<br/>
@@ -25,7 +25,7 @@
 		<button :disabled="0 !== errorMessages.length"
 				@click="createItem(newItem)">Add Item</button>
 		<br/>
-		<button @click="$router.push('/browseitem')">View Items</button>
+		<button @click="navBrowse">View Items</button>
 	</div>
 </template>
 
@@ -50,38 +50,46 @@ export default {
 		id: '',
         name: '',
         type: '',
-      },
+	  },
+	  
+	  loggedUser: {
+		userType: '',
+		userId: '',
+	  },
 
       serverResponse: null
 	}
   },
 
+  created () {
+	console.log('Params: ', this.$route.params)
+	this.loggedUser = this.$route.params
+	},
+
   methods: {
 	async createItem (itemInfo) {
 		try {
 			console.log(itemInfo.type + " selected");
-			  await AXIOS.post('/' + itemInfo.type + 's/' + itemInfo.id , null, {
-				  params: {
-					  name: itemInfo.name,
-					  type: itemInfo.type,
-					  libraryId: 0
-				  }
-			  })
+			await AXIOS.post('/' + itemInfo.type + 's/' + itemInfo.id , null, {
+				params: {
+					name: itemInfo.name,
+					type: itemInfo.type,
+					libraryId: 0,
+				}
+			})
 
-
-		//   if (itemInfo.type == "archive") {
-		// 	  console.log("Archive selected");
-		// 	  await AXIOS.post('/archives/' + itemInfo.id , null, {
-		// 		  params: {
-		// 			  name: itemInfo.name,
-		// 			  type: itemInfo.type,
-		// 			  libraryId: 0
-		// 		  }
-		// 	  })
+			navBrowse()
 
 	 	} catch (error) {
         	this.serverResponse = error
       	}
+	},
+
+	// Navigate to Browse Item page with useful params
+	async navBrowse () {
+		await this.$router.push(
+			{name: 'Browse Item',
+			params: { userType: this.loggedUser.userType, userId: this.loggedUser.userId }})
 	}
   },
 
