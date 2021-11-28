@@ -15,16 +15,16 @@
                 <tr v-for="(transaction, index) in transactions" :key="transaction.id">
                     <td>   </td>
                     <td> {{ transaction.type }} </td>
-                    <!-- <td> {{ items[index].name }} </td> -->
+                    <td> {{ items[index].name }} </td>
                     <td> {{ transaction.startDate }} </td>
                     <td> {{ transaction.endDate }} </td>
                     <td>
                         <button
-                        @click="renewItem(transaction,this.$route.params.id)">Renew</button>
+                        @click="renewItem(transaction,$route.params.id)">Renew</button>
                     </td>
                     <td>
                         <button
-                        @click="returnItem(transaction, this.$route.params.id)">Return</button>
+                        @click="returnItem(transaction, $route.params.id)">Return</button>
                     </td>
                 </tr>
             </table>
@@ -65,27 +65,27 @@ export default {
         async reloadTransactions(id) {
             try {
                 let response  = await AXIOS.get('/transactions/' + id)
-                this.transactions = response.data
+                let listOfTransactions = response.data
+
+                for (let transaction in listOfTransactions){
+                    await this.getTransactionItem(listOfTransactions[transaction], transaction)
+                }
+
+                // Update this last to trigger a reactive change!
+                this.transactions = listOfTransactions
             } catch (error) {
                 this.errorTransaction  = error
-            }
-            for (let transaction in this.transactions){
-                await this.getTransactionItem(this.transactions[transaction], transaction)
             }
         },
 
         async getTransactionItem(transaction, index){
-
             try {
-                let response = await  AXIOS.get('/' + transaction.type + '/transactions/' + transaction.id)     
+                let response = await  AXIOS.get('/' + transaction.type + '/transactions/' + transaction.id)
                 this.items[index] = response.data
-                console.log(response.data)
-                
             } catch (error) {
-                console.log(error)
                 this.errorTransaction = error
             }
-            
+
         },
         async renewItem(transaction, id){
 
