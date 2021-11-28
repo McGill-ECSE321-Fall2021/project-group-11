@@ -58,11 +58,12 @@
       <button @click="$router.push('/newacc/librarian')">Add a new librarian</button>
 
     </div>
-    <div v-if="isOnlineMember">
+    <div v-if="isOnlineMember" id="buttonblock">
+      <br>
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
                                       id: userInfo.id
-                                   }})">View transactions</button>
+                                   }})" class="buttonofblocks">transactions</button> <br> <br>
       <button @click="$router.push({name:'Personal Information',
                                     params:{
                                       id:       userInfo.id,
@@ -70,8 +71,8 @@
                                       email:    userInfo.email,
                                       address:  userInfo.address,
                                       inTown:   userInfo.inTown
-                                  }})">View personal information</button>
-      <button @click="$router.push('')">View event schedule</button>
+                                  }})" class="buttonofblocks">personal information</button> <br> <br>
+      <button @click="$router.push('')" class="buttonofblocks" >event schedule</button>
     </div>
 
   </div>
@@ -265,4 +266,20 @@ export default {
     display: inline;
 
   }
+  #buttonblock{
+  display: block;
+  padding-top: 10px;
+  margin: auto;
+  margin-bottom: 10px;
+  background-color: #bfbfc1;
+  width: 15%;
+  height: 27%;
+  border: 5px outset rgba(0, 0, 0, 0.8);
+  border-left: 2px outset white;
+  border-top: 2px outset white;
+}
+
+.buttonofblocks {
+  width : 90%;
+}
 </style>

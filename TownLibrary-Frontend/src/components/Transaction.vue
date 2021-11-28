@@ -1,7 +1,7 @@
 <template>
     <div id="transaction">
         <h2> Transactions </h2>
-        <span v-if="errorTransaction" style="color:red">Error : {{ errorTransaction }} </span>
+        <span v-if="errorTransaction" style="color:#de482b">{{ errorTransaction }} </span>
             <table id="transactions">
                 <tr class="type-header">
                     <th><!-- Empty cell just for aligning the table --></th>
@@ -93,12 +93,13 @@ export default {
                     let response = await AXIOS.put('/transactions/' + id + '/' + transaction.id , null, {})
                     this.reloadTransactions(id)
                 } catch (error) {
-                    this.errorTransaction = e
+                    this.errorTransaction = error
                 }
             }
         },
 
         async returnItem(transaction, id){
+            var response = '';
             this.isAfterDate(transaction.endDate)
             if (this.errorTransaction === "")
             {
@@ -106,7 +107,7 @@ export default {
                     let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
                     this.reloadTransactions(id)
                 } catch (error) {
-                    this.errorTransaction = e
+                    this.errorTransaction = error.response.status
                 }
             }
         },
