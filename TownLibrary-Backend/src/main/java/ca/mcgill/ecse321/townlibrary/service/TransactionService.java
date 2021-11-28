@@ -77,11 +77,7 @@ public class TransactionService {
 		if (!item.getStatus().equals(Status.CHECKED_OUT)) {
 			throw new IllegalArgumentException("NOT-CHECKED-OUT");
 		}
-		Timestamp oldEndDate = transaction.getEndDate();
-		Timestamp newStartDate = oldEndDate;
-		Timestamp newEndDate = new Timestamp(oldEndDate.getTime() + 1000 * 86400 * 14);
-
-		transaction.setStartDate(newStartDate);
+		Timestamp newEndDate = new Timestamp(transaction.getEndDate().getTime() + 1000 * 86400 * 14);
 		transaction.setEndDate(newEndDate);
 		transactionRepository.save(transaction);
 

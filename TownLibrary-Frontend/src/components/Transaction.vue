@@ -3,33 +3,30 @@
         <h2> Transactions </h2>
         <span v-if="errorTransaction" style="color:red">Error : {{ errorTransaction }} </span>
             <table id="transactions">
-                <tr>
+                <tr class="type-header">
                     <th><!-- Empty cell just for aligning the table --></th>
-                    <th>Type</th>
+                    <th>Category</th>
                     <th>Name</th>
                     <th>Start Date</th>
                     <th>End Date</th>
-                    <th>Renew</th>
-                    <th>Return</th>
+                    <th colspan="2">Modify</th>
                 </tr>
-                <tr v-for="(transaction, index) in transactions" :key="transaction.id">
-                    <td>   </td>
-                    <td> {{ transaction.type }} </td>
-                    <td> {{ items[index].name }} </td>
-                    <td> {{ transaction.startDate }} </td>
-                    <td> {{ transaction.endDate }} </td>
-                    <td>
-                        <button
+                <tr v-for="(transaction, index) in transactions" :key="transaction.id" class="infoheader">
+                    <td >   </td>
+                    <td class="info"> {{ transaction.type }} </td>
+                    <td class="info"> {{ items[index].name }} </td>
+                    <td class="info"> {{ fromUTCtoString(transaction.startDate)}} </td>
+                    <td class="info"> {{ fromUTCtoString(transaction.endDate) }} </td>
+                    <td class="info">
+                        <button class='modify'
                         @click="renewItem(transaction,$route.params.id)">Renew</button>
-                    </td>
-                    <td>
-                        <button
+                        <button class='modify'
                         @click="returnItem(transaction, $route.params.id)">Return</button>
                     </td>
                 </tr>
             </table>
         <div>
-            <button @click="$router.push('/profile')">Return</button>
+            <button @click="$router.push('/profile')">Back</button>
         </div>
 
     </div>
@@ -54,7 +51,7 @@ export default {
         return{
             transactions: [],
             items: [],
-            errorTransaction: 'Hello World'
+            errorTransaction: ''
         }
     },
     created: function() {
@@ -119,6 +116,11 @@ export default {
             if (today > transactionDate) {
                 this.errorTransaction = 'Action not possible';
             }
+        },
+        fromUTCtoString(time){
+            var date = new Date(time).toString().split(' ')
+            var displayDate = date[1] + ' ' + date[2] + ',' + date[3]
+            return displayDate;
         }
 
     }
@@ -130,11 +132,32 @@ export default {
 <style>
 
 #transactions {
-    margin-left: auto;
-    margin-right: auto;
-    border: 1px solid black;
     border-collapse: collapse;
-    max-width: 800px;
+    border: 5px outset rgba(0, 0, 0, 0.8);
+    border-left: 2px outset white;
+    border-top: 2px outset white;
+    background-color:#bfbfc1;
+    color: black;
+    margin-left:auto;
+    margin-right:auto;
+    width: 50%;
+    margin-bottom: 20px;
+    table-layout: auto;
 }
+
+
+.type-header{
+        vertical-align: center;
+        font-size: 20px;
+        font-weight: bolder;
+        border-bottom: 3px outset rgba(0, 0, 0, 0.80);
+
+    }
+
+.info {
+    padding-top: 3px;
+    padding-bottom: 3px;
+}
+
 
 </style>
