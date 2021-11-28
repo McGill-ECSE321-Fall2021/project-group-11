@@ -9,16 +9,13 @@
 			<h2>Event listing:</h2>
 			<table>
 				<tr>
-					<th>Delete</th>
 					<th>Name</th>
 					<th>Event ID</th>
 				</tr>
 				<tr v-for="event in (events || [])" :key="event.id">
-					<button @click="deleteEvent(event.id)">Delete</button>
 					<td>{{event.name}}</td>
 					<td>{{event.id}}</td>
 				</tr>
-				<tr {{events}}> </tr> 
 			</table>
 			<br><br>
 			<h2>View event details</h2>
@@ -105,10 +102,6 @@ export default {
 				this.users = null
 			}
 		},
-		async deleteEvent(eventId) {
-			await AXIOS.delete('/events/delete' + eventId)
-			this.loadEvents;
-		}, 
 		successRedirect() {
 		// this.$router.push('events')
 		this.state = 0
