@@ -73,10 +73,11 @@ public class TransactionService {
 	@Transactional
 	public Transaction renewTransaction(Transaction transaction){
 
-		Item item = itemRepository.findItemByTransaction(transaction);
-		if (!item.getStatus().equals(Status.CHECKED_OUT)) {
-			throw new IllegalArgumentException("NOT-CHECKED-OUT");
+		Timestamp currentDate = new Timestamp(System.currentTimeMillis());
+		if (currentDate.getTime() < transaction.getEndDate().getTime() - 1000 * 86400 * 7) {
+			throw new IllegalArgumentException("OUT-OF-TIMEFRAME");
 		}
+
 		Timestamp newEndDate = new Timestamp(transaction.getEndDate().getTime() + 1000 * 86400 * 14);
 		transaction.setEndDate(newEndDate);
 		transactionRepository.save(transaction);

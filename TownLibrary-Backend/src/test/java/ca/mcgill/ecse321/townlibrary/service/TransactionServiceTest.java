@@ -148,12 +148,12 @@ public class TransactionServiceTest {
 
 	}
 	@Test 
-	public void testRenewTransactionInvalidItem(){
+	public void testRenewTransactionInvalidTime(){
 		try {
 			service.renewTransaction(INVALID_TRANSACTION);
 			fail();
 		} catch (Exception e) {
-			assertEquals("NOT-CHECKED-OUT", e.getMessage());
+			assertEquals("OUT-OF-TIMEFRAME", e.getMessage());
 		}
 	}
 
