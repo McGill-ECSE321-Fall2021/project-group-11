@@ -63,7 +63,7 @@ export default {
   methods: {
     async createAccount (userInfo) {
         try {
-          await AXIOS.post('/online-members/' + userInfo.username, null, {
+          let response = await AXIOS.post('/online-members/' + userInfo.username, null, {
             params: {
               password: userInfo.password,
               email: userInfo.email,
@@ -77,6 +77,7 @@ export default {
         // favour by logging them in right now!
         this.$store.commit('login', {
           userType: 'online-member',
+          userId: response.data.id,
           username: userInfo.username,
           password: userInfo.password
         })

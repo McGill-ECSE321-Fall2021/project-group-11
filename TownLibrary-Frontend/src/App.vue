@@ -5,15 +5,15 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
       <label id="library-name">BEEG YOSHI'S LIBRARY</label>
       <div id="left"> 
-        <button class="header-button" @click="$router.push('/browseitem')">browse items</button>
-        <button class="header-button" @click="$router.push('/events')">browse an event</button>
+        <button class="header-button" @click="$router.push('/browseitem')">Browse Items</button>
+        <button class="header-button" @click="$router.push('/events')">Browse An Event</button>
       </div>
 
       <div id="right">
-        <button id="signup-button" class="header-button" @click="$router.push('/newacc')" v-if="!isLoggedIn">sign up</button>
-        <button id="login-button" class="header-button" @click="$router.push('/login')" v-if="!isLoggedIn">log in</button>
-        <button id="profile-button" class="header-button" @click="$router.push('/profile')" v-if="isLoggedIn">profile</button>
-        <button id="logout-button" class="header-button" @click="$store.commit('logout');$router.push('/')" v-if="isLoggedIn">log out</button>
+        <button id="signup-button" class="header-button" @click="$router.push('/newacc')" v-if="!isLoggedIn">Sign Up</button>
+        <button id="login-button" class="header-button" @click="$router.push('/login')" v-if="!isLoggedIn">Log In</button>
+        <button id="profile-button" class="header-button" @click="$router.push('/profile')" v-if="isLoggedIn">Profile</button>
+        <button id="logout-button" class="header-button" @click="$store.commit('logout');$router.push('/')" v-if="isLoggedIn">Log Out</button>
         <button id="home-button" class="header-button" @click="$router.push('/')"><i class="fa fa-home"></i></button>
       </div> 
    

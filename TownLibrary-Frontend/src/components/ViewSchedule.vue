@@ -33,7 +33,7 @@ export default {
         scheduleOwner:{
             type: String,
             default: "Library"
-        }
+        },
 
     },
 
@@ -62,6 +62,7 @@ export default {
 </script>
 
 <style scoped>
+
     .modal-block{
         position: fixed;
         top: 0;

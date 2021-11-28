@@ -77,6 +77,7 @@ export default {
 		},
 		async eventDetails(id) {
 			try {
+				if (id.trim() == "") return
 				let response = await AXIOS.get('/events/' + id, null, {
 					params: {
 						lib: 0
@@ -85,6 +86,7 @@ export default {
 				this.loadedEvent = response.data
 				this.state++
 			} catch(error) {
+				window.alert("This event does not exist.")
 				this.loadedEvent = null
 			}
 		},
@@ -108,7 +110,7 @@ export default {
 			this.loadEvents;
 		}, 
 		successRedirect() {
-		this.$router.push('events')
+		// this.$router.push('events')
 		this.state = 0
     }
 	}
