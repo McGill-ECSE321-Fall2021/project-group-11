@@ -2,7 +2,7 @@
   <div id="login">
     <h1>Login</h1>
 
-    <h2>{{ onlineMemberMode ? 'Online Member' : 'Librarian' }}</h2>
+    <h3>{{ onlineMemberMode ? 'Online Member' : 'Librarian' }}</h3>
     <p>Please enter your login information below</p>
 
     <input type="text" v-model="username" :placeholder="onlineMemberMode ? 'Username' : 'ID'">
@@ -12,7 +12,7 @@
 
     <table>
       <tr v-for="msg in errorMessages" :key="msg">
-        <td style="color: red">{{ msg }}</td>
+        <td style="color: #DE482B">{{ msg }}</td>
       </tr>
     </table>
     <br/>
@@ -21,9 +21,11 @@
             @click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
 
     <br/>
+    <br/>
 
+    <div id="login-buttons">
     <div>
-      {{ onlineMemberMode ? 'Not an online member?' : 'Not a librarian?' }}
+      {{ onlineMemberMode ? 'Not an online member?' : 'Not a librarian?' }} 
       <button @click="toggleLoginMode()">Login as {{ onlineMemberMode ? 'librarian' : 'online member' }}</button>
       <br/>
     </div>
@@ -32,6 +34,7 @@
       Don't have an account yet?
       <button @click="$router.push('/newacc')">Create an online account</button>
     </div>
+  </div>
   </div>
 </template>
 
@@ -154,4 +157,31 @@ export default {
 </script>
 
 <style>
+  #login-buttons{
+    display:block;
+    margin-left: auto;
+    margin-right:auto;
+    width:33%;
+  }
+  .text{
+
+    /* border: 1px solid black; */
+    float:left;
+    
+  }
+  .some-button{
+    /* display:inline-block; */
+    /* border: 1px solid black; */
+
+    float:right;
+  }
+  .on-top{
+    margin-top:0;
+    top:0;
+  }
+  .on-bottom{
+    margin-bottom:0;
+  }
+
+
 </style>

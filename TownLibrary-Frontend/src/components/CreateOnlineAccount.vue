@@ -17,7 +17,7 @@
 
     <table>
       <tr v-for="msg in errorMessages" :key="msg">
-        <td style="color: red">{{ msg }}</td>
+        <td style="color: #DE482B">{{ msg }}</td>
       </tr>
     </table>
     <br/>
@@ -25,6 +25,7 @@
     <button :disabled="0 !== errorMessages.length"
             @click="createAccount(newOnlineMember)">Create Online Account</button>
     <br/>
+    <br>
 
     Already have an account?
     <button @click="$router.push('/login')">Login</button>
