@@ -85,7 +85,7 @@ public class EventControllerTest {
         }
 
         @Test
-        public void testAddUsersAndGetEventUsers() {
+        public void testAddRemoveUsersAndGetEventUsers() {
             when()
             .post("/events/" + eventId + "/" + userId)
             .then()
@@ -97,6 +97,18 @@ public class EventControllerTest {
             .then()
             .statusCode(200)
             .body("size()", equalTo(1));
+
+            when()
+            .post("/events/remove/" + eventId + "/" + userId)
+            .then()
+            .statusCode(200)
+            .extract().response().body().path("id");
+            
+            when()
+            .get("/events/" + eventId + "/users")
+            .then()
+            .statusCode(200)
+            .body("size()", equalTo(0));
         }
 
         @Test

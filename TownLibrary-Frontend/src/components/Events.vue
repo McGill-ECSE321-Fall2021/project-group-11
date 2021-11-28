@@ -7,19 +7,34 @@
 			<button @click="$router.push('/create-event')">Create Event</button>
 			<br><br>
 			<h2>Event listing:</h2>
-			<table>
-				<tr>
-					<th>Name</th>
-					<th>Event ID</th>
-				</tr>
-				<tr v-for="event in (events || [])" :key="event.id">
-					<td>{{event.name}}</td>
-					<td>{{event.id}}</td>
-				</tr>
-			</table>
+			<div v-if="isLibrarian">
+				<table>
+					<tr>
+						<th></th>
+						<th>Name</th>
+						<th>Event ID</th>
+					</tr>
+					<tr v-for="event in (events || [])" :key="event.id">
+						<td><button @click="deleteEvent(event.id)">delete</button>
+						<td>{{event.name}}</td>
+						<td>{{event.id}}</td>
+					</tr>
+				</table>
+			</div>
+			<div v-else>
+				<table>
+					<tr>
+						<th>Name</th>
+						<th>Event ID</th>
+					</tr>
+					<tr v-for="event in (events || [])" :key="event.id">
+						<td>{{event.name}}</td>
+						<td>{{event.id}}</td>
+					</tr>
+				</table>
+			</div>
 			<br><br>
 			<h2>View event details</h2>
-			<br>
 			<input type="text" v-model="eventId" placeholder="Event ID">
 			<br>
 			<button @click="eventDetails(eventId)">Event details</button>
@@ -27,14 +42,27 @@
 			<button @click="$router.push('/')">Home</button> -->
 		</div>
 		<div v-if="state === 1">
-			<h2>Name: {{loadedEvent.name}}</h2>
-			<h2>ID: {{loadedEvent.id}}</h2>
-			<h2>Registered Users: {{loadedEvent.users}}</h2>
-			<br>
-			<input type="text" v-model="userId" placeholder="Online Member ID">
-			<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
-			<br>
-			<button @click="successRedirect()">Return to events</button>
+			<div v-if="isLibrarian">
+				<h2>Name: {{loadedEvent.name}}</h2>
+				<h2>ID: {{loadedEvent.id}}</h2>
+				<h2>Registered Users: {{loadedEvent.users}}</h2>
+				<br>
+				<input type="text" v-model="userId" placeholder="Online Member ID">
+				<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
+				<button @click="removeUserFromEvent(loadedEvent.id, userId)">Remove user from event</button>
+				<br>{{serverResponse}}
+				<button @click="successRedirect()">Return to events</button>
+			</div>
+			<div v-else>
+				<h2>Name: {{loadedEvent.name}}</h2>
+				<h2>ID: {{loadedEvent.id}}</h2>
+				<h2>Registered Users: {{loadedEvent.users}}</h2>
+				<br>
+				<input type="text" v-model="userId" placeholder="Online Member ID">
+				<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
+				<br>
+				<button @click="successRedirect()">Return to events</button>
+			</div>
 		</div>
 	</div>
 </template>
@@ -57,12 +85,27 @@ export default {
 			eventId: '',
 			loadedEvent: {},
 			users: [],
-			serverResponse: null
+			serverResponse: null,
+
+			loginStatus: {}
 		}
 	},
 	created () {
+		Object.assign(this.loginStatus, this.$store.state.loginStatus)
 		this.loadEvents()
 	},
+
+	computed: {
+		isLibrarian() {
+			switch (this.loginStatus.userType) {
+				default: return false
+				case 'librarian':
+				case 'head-librarian':
+					return true
+			}
+		}
+	},
+
 	methods: {
 		async loadEvents() {
 			try {
@@ -81,7 +124,7 @@ export default {
 					}
 				})
 				this.loadedEvent = response.data
-				this.state++
+				this.state = 1
 			} catch(error) {
 				window.alert("This event does not exist.")
 				this.loadedEvent = null
@@ -89,11 +132,20 @@ export default {
 		},
 		async addUserToEvent(eventid, userid) {
 			try {
-				await AXIOS.post("/events/" + eventid + "/" + userid, null)
+				let response = await AXIOS.post("/events/" + eventid + "/" + userid, null)
+				this.loadedEvent = response.data
 			} catch(error) {
-				this.serverResponse = null
+				this.serverResponse = "nol"
 			}
 		}, 
+		async removeUserFromEvent(eventid, userid) {
+			try {
+				let response = await AXIOS.post("/events/remove/" + eventid + "/" + userid, null)
+				this.loadedEvent = response.data
+			} catch(error) {
+				this.serverResponse = "hello"
+			}
+		},
 		async getEventUsers(eventid) {
 			try {
 				let response = await AXIOS.get("/events/" + eventid + "/users", null)
@@ -102,8 +154,14 @@ export default {
 				this.users = null
 			}
 		},
+		async deleteEvent(eventid) {
+			await AXIOS.delete("/events/delete/" + eventid)
+			this.loadEvents()
+		},
+
 		successRedirect() {
 		// this.$router.push('events')
+		this.loadedEvent = null
 		this.state = 0
     }
 	}

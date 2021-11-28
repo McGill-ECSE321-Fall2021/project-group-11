@@ -46,10 +46,10 @@ public class EventService {
 
     @Transactional
     public boolean deleteEvent(int eventId) {
-        final Event e = this.eventRepository.findEventById(eventId);
-        if (e == null) throw new IllegalArgumentException("EVENT-NOT-FOUND");
-        eventRepository.delete(e);
-        return (e == null);
+        final Event e = this.eventRepository.findById(eventId).orElseThrow(() ->
+                new IllegalArgumentException("EVENT-NOT-FOUND"));
+        this.eventRepository.delete(e);
+        return !this.eventRepository.findById(eventId).isPresent();
     }
 
     /**
