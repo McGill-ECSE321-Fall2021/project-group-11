@@ -159,7 +159,7 @@ public class TransactionControllerTest {
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);
 
-        assertThat(dto.endDate, equalTo(renewedDto.startDate));
+        assertThat(dto.endDate + 1000 * 86400 * 14, equalTo(renewedDto.endDate));
         assertThat(dto.type, equalTo(renewedDto.type));
         assertThat(dto.userId, equalTo(renewedDto.userId));
     }
