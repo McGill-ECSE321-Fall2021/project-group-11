@@ -73,8 +73,7 @@ public class TransactionService {
 	@Transactional
 	public Transaction renewTransaction(Transaction transaction){
 
-		Timestamp currentDate = new Timestamp(System.currentTimeMillis());
-		if (currentDate.getTime() < transaction.getEndDate().getTime() - 1000 * 86400 * 7) {
+		if (System.currentTimeMillis() <= transaction.getEndDate().getTime() - 1000 * 86400 * 7) {
 			throw new IllegalArgumentException("OUT-OF-TIMEFRAME");
 		}
 

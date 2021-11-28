@@ -40,8 +40,8 @@ public class TransactionServiceTest {
 	private static final Transaction VALID_TRANSACTION = new Transaction();
 	private static final UserRole USER = new OfflineMember();
 	private static final TransactionType TYPE = TransactionType.books;
-	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis());
-	private static final Timestamp END_TIME = new Timestamp(START_TIME.getTime() + 1000 * 86400 * 14);
+	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis() - 1000 * 86400 * 11);
+	private static final Timestamp END_TIME = new Timestamp(System.currentTimeMillis() + 1000 * 86400 * 3);
 	
 	@BeforeEach
 	public void setMockOutput() {
@@ -60,6 +60,7 @@ public class TransactionServiceTest {
 		});
 		lenient().when(itemDao.findItemByTransaction(any(Transaction.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(INVALID_TRANSACTION)){
+				INVALID_TRANSACTION.setEndDate(new Timestamp (System.currentTimeMillis() + 1000 * 86400 * 8));
 				Item item = new Book();
 				item.setStatus(Status.AVAILABLE);
 				item.setTransaction(INVALID_TRANSACTION);
@@ -150,6 +151,7 @@ public class TransactionServiceTest {
 	@Test 
 	public void testRenewTransactionInvalidTime(){
 		try {
+			itemDao.findItemByTransaction(INVALID_TRANSACTION);
 			service.renewTransaction(INVALID_TRANSACTION);
 			fail();
 		} catch (Exception e) {
@@ -160,6 +162,7 @@ public class TransactionServiceTest {
 	@Test 
 	public void testRenewTransactionValidItem(){
 		try {
+			itemDao.findItemByTransaction(VALID_TRANSACTION);
 			Transaction transaction = service.renewTransaction(VALID_TRANSACTION);
 			assertEquals(transaction.getStartDate().getTime(), VALID_TRANSACTION.getStartDate().getTime());
 			assertEquals(transaction.getEndDate().getTime() - 1000 * 86400 * 14, END_TIME.getTime());
