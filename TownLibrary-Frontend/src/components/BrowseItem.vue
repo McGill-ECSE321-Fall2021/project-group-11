@@ -174,16 +174,8 @@
 				</td>
 			</tr>
 		</table> -->
-		<!-- euh this does not show up unless you click "view" beforehand and are logged in as librarian -->
-		<!-- maybe just use from profile instead? -->
-		<!-- <div v-if="isLibrarian">
-			<button @click="$router.push({name: 'Create Item',
-                                    params: {
-                                      userType: loggedUser.userType,
-                                      userId: loggedUser.userId
-                                   }})">Add item</button>
-		</div> -->
-
+    <button v-if="isLibrarian"
+            @click="$router.push({ name: 'Create Item' })">Add item</button>
 	</div>
 </template>
 
@@ -203,10 +195,7 @@ export default {
 
 	data () {
 		return {
-			loggedUser: {
-				userType: '',
-				userId: '',
-	  		},
+			userType: '',
 
 			archives: [],
 			newspapers: [],
@@ -224,15 +213,12 @@ export default {
 		this.loadMovies()
 		this.loadMusicAlbums()
 
-		// this did not seem to work?
-		console.log('Params: ', this.$route.params)
-		this.loggedUser = this.$route.params
-
+    this.userType = this.$store.state.loginStatus && this.$store.state.loginStatus.userType
 	},
 
 	computed: {
 		isLibrarian () {
-			switch (this.loggedUser.userType) {
+			switch (this.userType) {
 			default:
 				return false
 			case 'librarian':
@@ -247,8 +233,7 @@ export default {
 			console.log(itemName)
 
 			this.$router.push({name: 'Item',
-				params: { itemId: itemId, itemName: itemName, itemType: itemType,
-				userType: this.loggedUser.userType, userId: this.loggedUser.userId }});
+				params: { itemId: itemId, itemName: itemName, itemType: itemType }});
 		},
 
 		async loadArchives() {
@@ -319,7 +304,7 @@ export default {
 		font-size: 30px;
 		font-weight: bolder;
 		border-bottom: 3px outset rgba(0, 0, 0, 0.80);
-		
+
 	}
 	.info-row{
 		/* border-bottom: 2px solid black;
