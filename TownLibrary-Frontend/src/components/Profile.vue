@@ -117,10 +117,12 @@
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
                                       id: userId
-                                   }})" class="buttonofblocks">transactions</button>
+                                   }})" class="buttonofblocks">transactions</button> 
+      <br>
       <button @click="$router.push({ name:'Personal Information' })" class="buttonofblocks">personal information</button>
-      <br> <br>
+      <br>
       <button @click="$router.push('')" class="buttonofblocks">event schedule</button>
+      <br>
     </div>
 
   </div>
@@ -360,9 +362,9 @@ export default {
     width: auto;
   }
 
-  #buttonblock{
+#buttonblock{
   display: block;
-  padding-top: 10px;
+  /* padding-top: 10px; */
   margin: auto;
   margin-bottom: 10px;
   background-color: #bfbfc1;
@@ -375,6 +377,7 @@ export default {
 
 .buttonofblocks {
   width : 90%;
+  margin-bottom: 20px;
 }
   .button-header-schedule{
     width: auto;
