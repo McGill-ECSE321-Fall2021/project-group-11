@@ -86,7 +86,7 @@ export default {
 			console.log(itemName)
 
 			this.$router.push({name: 'Item',
-				params: { id: itemId, name: itemName, type: itemType }});
+				params: { itemId: itemId, itemName: itemName, itemType: itemType }});
 
 		},
 
@@ -198,7 +198,8 @@ export default {
     left:0;
     right:0;
     bottom:0;
-    height:100%;
+    height:100vh;
+    width:100%;
     background-image: url("../assets/test-background.jpg");
       /* background-color: red; */
   }
@@ -210,9 +211,17 @@ export default {
     pointer-events: none;
   }
 
-  #search-input::placeholder{
-    font-family: 'Consolas', Arial, Helvetica, sans-serif;
-
+  #search-input{
+    padding-left: 10px;
+    font-family: 'Fixedsys', Arial, Helvetica, sans-serif;
+    font-weight: 100;
+    font-size: 18px;
+    border: 2px outset black;
+    border-bottom: 2px outset white;
+    border-right: 2px outset white;
+  }
+  #search-input:focus{
+    outline: none;
   }
 
   .search{

@@ -67,8 +67,9 @@ const router = new Router({
     {
       path: '/events',
       name: 'Events',
-      component: Events},
-      {
+      component: Events
+    },
+    {
       path: '/additem',
       name: 'Create Item',
       component: CreateItem
@@ -113,12 +114,17 @@ function userCanAccessPage(page, userType) {
     return true
   case 'User Profile':
   case 'Item':
-    // must be logged in (doesn't matter)
+  case 'Create Event':
+    // must be logged in (doesn't matter who)
     return userType !== null
+  case 'Personal Information':
+    // must be a online-member
+    return userType === 'online-member'
   case 'Create Librarian':
     // must be a head-librarian
     return userType === 'head-librarian'
   case 'Create Offline Account':
+  case 'Create Item':
     // must be a librarian
     return userType === 'librarian' || userType === 'head-librarian'
   }
@@ -130,7 +136,13 @@ router.beforeEach((to, from, next) => {
   if (!userCanAccessPage(to, store.state.loginStatus && store.state.loginStatus.userType))
     // if insufficient priviledges, just send them over to login page (and let
     // login handle the other redirections)
-    next({ name: 'Login' })
+    next({
+      name: 'Login',
+      params: {
+        redirect: to.name,
+        with: to.params
+      }
+    })
   else if (to.name == 'Login' && store.state.loginStatus)
     next({ name: 'User Profile' })
   else

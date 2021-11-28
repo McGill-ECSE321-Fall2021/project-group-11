@@ -5,15 +5,15 @@
         <br>
         <div id="info">
             <label class="title"> User ID </label>
-            <label class="textbox"> {{ this.$route.params.id }} </label> <br>
+            <label class="textbox"> {{ $store.state.loginStatus.userInfo.id }} </label> <br>
             <label class="title"> Full Name </label>
-            <label class="textbox"> {{ this.$route.params.fullName }} </label> <br>
+            <label class="textbox"> {{ $store.state.loginStatus.userInfo.name }} </label> <br>
             <label class="title"> Email </label>
-            <label class="textbox">  {{ this.$route.params.email }} </label> <br>
+            <label class="textbox">  {{ $store.state.loginStatus.userInfo.email }} </label> <br>
             <label class="title"> Address </label>
-            <label class="textbox">  {{ this.$route.params.address }}</label> <br>
+            <label class="textbox">  {{ $store.state.loginStatus.userInfo.address }}</label> <br>
             <label class="title"> In Town </label>
-            <label class="textbox">  {{ this.$route.params.inTown }} </label> <br>
+            <label class="textbox">  {{ $store.state.loginStatus.userInfo.inTown }} </label> <br>
         </div>
 
         <div>
@@ -26,9 +26,7 @@
 
 
 <script>
-import Login from './Login.vue'
 export default {
-  components: { Login },
     name: 'Personal'
 }
 </script>

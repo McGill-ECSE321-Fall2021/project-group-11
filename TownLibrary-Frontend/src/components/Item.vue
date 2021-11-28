@@ -1,13 +1,12 @@
 <template>
 	<div id="item">
 		<h2>Item Details</h2>
-
-		<ul>
-			<li>ID: {{ itemId }}</li>
-			<li>Title: {{ itemName }}</li>
-			<li>Status: {{ status }}</li>
-		</ul>
-
+		<div id="block">
+		<table id="info-table">
+			<tr><td>ID: {{ itemId }} </td></tr>
+			<tr><td>Title: {{ itemName }} </td></tr>
+			<tr><td>Status: {{ status }} </td></tr>
+		</table>
 		<div v-if="!isViewOnly">
 			<div v-if="!isLibrarian">
 				<button :disabled="status === 'CHECKED_OUT'"
@@ -24,6 +23,7 @@
 					@click="reserveItem">Reserve</button>
 		</div>
 		<button @click="navBrowse">Back</button>
+		</div>
 	</div>
 </template>
 
@@ -62,8 +62,8 @@ export default {
 		this.itemName = this.$route.params.itemName
 		this.itemType = this.$route.params.itemType
 
-    this.userType = this.$store.state.loginStatus.userType
-    this.userId = this.$store.state.loginStatus.userId
+		this.userType = this.$store.state.loginStatus.userType
+		this.userId = this.$store.state.loginStatus.userInfo.id
 
 		this.showStatus()
 	},
@@ -91,10 +91,9 @@ export default {
 
 	methods: {
 		// Navigate to Browse Item page with useful params
-		async navBrowse () {
-			await this.$router.push(
-				{name: 'Browse Item',
-				params: { userType: this.userType, userId: this.userId }})
+		navBrowse () {
+			// await this.$router.push({ name: 'Browse Item' })
+			window.history.back();
 		},
 
 		async showStatus () {
@@ -164,3 +163,35 @@ export default {
 
 }
 </script>
+
+<style scoped>
+
+	#block{
+		display:block;
+		border: 3px outset black;
+		border-left: 2px outset white;
+		border-top: 2px outset white;
+		background-color: #bfbfc1;
+		color: black;
+		width: 20%;
+		margin: 0 auto;
+		padding: 10px;
+		margin-top: 20px;
+	}
+	button{
+		margin-block:10px;
+	}
+	#info-table{
+		border-collapse: separate;
+		border-spacing: 0 5px;
+	}
+	td{
+		text-align: left;
+		padding-left: 5px;
+		border: 2px outset black;
+		border-right: 2px outset white;
+		border-bottom: 2px outset white;
+		background-color: white;
+	}
+
+</style>

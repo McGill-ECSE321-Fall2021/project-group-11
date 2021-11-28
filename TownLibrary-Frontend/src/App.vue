@@ -1,9 +1,9 @@
 <template>
   <body>
   <div id="app">
-    <div class="header-bar" > 
+    <div id="header-bar" > 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <label id="library-name">BEEG YOSHI'S LIBRARY</label>
+      <label id="library-name">Big Yoshi's Library</label>
       <div id="left"> 
         <button class="header-button" @click="$router.push('/browseitem')">Browse Items</button>
         <button class="header-button" @click="$router.push('/events')">Browse An Event</button>
@@ -16,9 +16,12 @@
         <button id="logout-button" class="header-button" @click="$store.commit('logout');$router.push('/')" v-if="isLoggedIn">Log Out</button>
         <button id="home-button" class="header-button" @click="$router.push('/')"><i class="fa fa-home"></i></button>
       </div> 
-   
+    
     </div>
+    
     <router-view id="router-view"></router-view>
+
+
   </div>
   </body>
 </template>
@@ -36,12 +39,12 @@ export default{
 </script>
 
 <style>
+@font-face {
+  font-family: Fixedsys;
+  src: url(./fonts/fixedsys-excelsior-301-cufonfonts-webfont/FSEX300.woff);
+}
 #app {
-  /* @font-face {
-    font-family: ;
-    src: url();
-  } */
-  font-family: 'Consolas', Helvetica, Arial, sans-serif;
+  font-family: 'Fixedsys', Helvetica, Arial, sans-serif;
   /* font-family: 'Consolas', Courier, monospace; */
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
@@ -51,21 +54,30 @@ export default{
   margin: 0px;
   height: 100%;
   width:100%;
-  overflow: auto;
+  overflow:auto;
+  /* background-color:#018281;
+  background-attachment: scroll; */
 
 }
 
 #router-view {
-  position:absolute;
+  position:relative;
   /* display: block; */
   /* border: 10px solid black; */
-  margin-top: 53px;
-  padding-block: 50px;
-  top:0;
-  right:0;
-  left:0;
-  bottom:0;
+  /* margin-top: 53px; */
+  /* padding-block: 50px; */
+  padding-top: 50px;
+  padding-bottom: 20px;
+  top:0%;
+  right:0%;
+  left:0%;
+  bottom:0%;
+  width: 100%;
+  /* height:100vh; */
+  min-height: 100vh;
   background:#018281;
+  /* background-attachment: scroll; */
+
   /* background-image: url('./assets/test-background.jpg'); */
   /* add background here yup */
   
@@ -87,7 +99,7 @@ button:disabled{
   border-left:1px outset white;
   text-transform: capitalize;
   color: white;
-  background-color:#727275;
+  background-color:#8a8a8b;
   /* text-shadow: 0 0 3px black, 0 0 3px black; */
 }
 
@@ -96,14 +108,17 @@ table {
 }
 
 #library-name{
+  font-family: 'Fixedsys', Helvetica, Arial, sans-serif;
   position:absolute;
-  left:44%; /* CHANGE THIS LATER */
+  left:45%; /* CHANGE THIS LATER */
   right:auto;
   margin-top: 10px;
 }
 
-.header-bar{
-  position: fixed;
+#header-bar{
+  position: sticky;
+  position: -webkit-sticky;
+  z-index: 10000;
   width: 100%;
   height:53px;
   color: black;
@@ -125,18 +140,6 @@ table {
 .header-button + .header-button{
   margin-left: 10px;
 }
-
-/* #home-button{
-  text-shadow: 0 0 3px #DE482B, 0 0 3px #DE482B;
-}
-
-#logout-button, #login-button{
-  text-shadow: 0 0 3px #FCCF03
-}
-
-#profile-button, #signup-button{
-  text-shadow: 0 0 3px #81c046
-} */
 
 #left{
   float: left;

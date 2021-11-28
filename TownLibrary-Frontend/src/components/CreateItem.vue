@@ -52,19 +52,9 @@ export default {
         type: '',
 	  },
 
-	  loggedUser: {
-		userType: '',
-		userId: '',
-	  },
-
       serverResponse: null
 	}
   },
-
-  created () {
-	console.log('Params: ', this.$route.params)
-	this.loggedUser = this.$route.params
-	},
 
   watch: {
     newItem: {
@@ -96,9 +86,7 @@ export default {
 
 	// Navigate to Browse Item page with useful params
 	async navBrowse () {
-		await this.$router.push(
-			{name: 'Browse Item',
-			params: { userType: this.loggedUser.userType, userId: this.loggedUser.userId }})
+		await this.$router.push({ name: 'Browse Item' })
 	}
   },
 

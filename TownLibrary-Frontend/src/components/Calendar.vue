@@ -386,8 +386,7 @@ export default {
 <style scoped>
     #calendar{
         background-color:#bfbfc1;
-        font-family: 'Consolas', Helvetica, Arial, sans-serif;
-        
+        font-family: 'Fixedsys', Helvetica, Arial, sans-serif;
     }
 
     #empty{
@@ -401,11 +400,10 @@ export default {
         text-transform: capitalize; 
         color: black;
         background-color:#bfbfc1;
-        /* text-shadow: 0 0 3px black, 0 0 3px black; */
     }
 
     td {
-        border: 2px solid black;
+        border: 2px outset black;
         align-content: center;
         vertical-align: middle;
     }
@@ -416,10 +414,13 @@ export default {
     th {
         width: 150px;
         height: 40px;
-        border: 3px outset black;
+        border: 3px outset rgba(0, 0, 0, 0.856);
+        border-top: 3px outset white;
+        border-left: 3px outset white;
         text-align: center;
         user-select: none;
         color: black;
+        font-weight: 100;
     }
     input[type='checkbox']{
         -webkit-appearance: none;
