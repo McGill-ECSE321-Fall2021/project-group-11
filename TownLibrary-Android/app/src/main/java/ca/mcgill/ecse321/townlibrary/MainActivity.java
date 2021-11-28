@@ -20,6 +20,11 @@ import ca.mcgill.ecse321.townlibrary.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Code for the app itself.
+ *
+ * This sets the hamburger menus and the top level navigations.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;

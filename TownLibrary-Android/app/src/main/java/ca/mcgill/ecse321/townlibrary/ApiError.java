@@ -5,9 +5,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * A utility class that follows from the api_error.js file in the vuejs
+ * frontend. It provides methods to help extracting meaningful error messages
+ * from the server side.
+ */
 public final class ApiError {
 
     private ApiError() {
+
     }
 
     /**

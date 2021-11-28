@@ -13,6 +13,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentProfileBinding;
 
+/**
+ * Code for the profile fragment, corresponds to layout fragment_profile.xml
+ */
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;

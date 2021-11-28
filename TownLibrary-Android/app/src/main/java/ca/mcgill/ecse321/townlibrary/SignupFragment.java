@@ -21,6 +21,9 @@ import org.json.JSONObject;
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentSignupBinding;
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * Code for the signup fragment, corresponds to layout fragment_signup.xml
+ */
 public class SignupFragment extends Fragment {
 
     private FragmentSignupBinding binding;

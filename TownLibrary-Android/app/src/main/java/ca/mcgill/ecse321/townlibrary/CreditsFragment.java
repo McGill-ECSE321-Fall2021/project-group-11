@@ -13,6 +13,9 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentCreditsBinding;
 
+/**
+ * Code for the credits fragment, corresponds to layout fragment_credits.xml.
+ */
 public class CreditsFragment extends Fragment {
 
     private FragmentCreditsBinding binding;

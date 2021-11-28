@@ -7,6 +7,10 @@ import com.loopj.android.http.RequestParams;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/**
+ * A utility class that is supposed to give you better experience when it
+ * comes to making http requests to the server.
+ */
 public final class HttpUtils {
 
     private static AsyncHttpClient client = new AsyncHttpClient();

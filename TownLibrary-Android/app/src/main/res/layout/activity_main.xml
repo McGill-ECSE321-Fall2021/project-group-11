@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!-- The actual content body -->
+    <!-- The part of the screen that is being slided over by the drawer menu -->
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"

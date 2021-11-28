@@ -22,6 +22,9 @@ import java.util.Set;
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentLoginBinding;
 import cz.msebera.android.httpclient.Header;
 
+/**
+ * Code for the login fragment, corresponds to layout fragment_login.xml
+ */
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
