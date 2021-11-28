@@ -121,4 +121,37 @@ public class EventControllerTest {
                     .body("[1].id", equalTo(id))
                     .body("[1].libId", equalTo(10001));
         }
+
+        @Test
+        public void deleteEvent() {
+            final int id = given()
+                .param("lib", "10001")
+                .post("/events/event2")
+                .then().statusCode(200)
+                .body("libId", equalTo(10001))
+                .extract().response().body().path("id");
+
+                when().get("/events")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(2));
+
+                when().get("/events/" + id)
+                    .then()
+                    .statusCode(200)
+                    .body("id", equalTo(id))
+                    .body("libId", equalTo(10001));
+
+                when().post("/events/delete/" + id)
+                    .then()
+                    .statusCode(200)
+                    .body(equalTo("true"));
+
+                when().get("/events")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(1));
+
+
+        }
 }

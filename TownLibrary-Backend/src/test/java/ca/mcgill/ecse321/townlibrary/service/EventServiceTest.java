@@ -12,6 +12,7 @@ import ca.mcgill.ecse321.townlibrary.repository.EventRepository;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.lenient;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,22 +28,16 @@ public class EventServiceTest {
     public void testCreateEvent() {
         final Library lib = new Library();
         final String name = "my birthday";
-        final int id = 10001;
-        final Transaction transaction = new Transaction();
 
         final Event e = eventService.createEvent(lib, name);
-        e.setTransaction(transaction);
         Assertions.assertEquals(lib.getId(), e.getLibrary().getId());
         Assertions.assertEquals(name, e.getName());
-        Assertions.assertEquals(transaction, e.getTransaction());
     }
 
     @Test
     public void testCreateEventNullInputs() {
         final Library lib = null;
         final String name = null;
-        final int id = 10002;
-
 
         try {
             eventService.createEvent(lib, name);
@@ -52,36 +47,18 @@ public class EventServiceTest {
     }
 
     @Test
-    public void testEventSetNullTransaction() {
+    public void testDeleteEvent() {
         final Event e = new Event();
-        final Transaction transaction = null;
+
+        lenient().when(this.mockEventRepository.findById(0))
+                .thenReturn(Optional.of(e)).thenReturn(Optional.empty());
 
         try {
-            eventService.setEventTransaction(e, transaction);
-            Assertions.fail();
-        }   catch (IllegalArgumentException er) {
-            Assertions.assertEquals(er.getMessage(), "Invalid transaction");
+            final boolean deleted = this.eventService.deleteEvent(0);
+            assertTrue(deleted);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
-    }
-
-    @Test
-    public void testTransactionSetNullEvent() {
-        final Transaction t = new Transaction();
-        try {
-            eventService.setEventTransaction(null, t);
-            Assertions.fail();
-        } catch (IllegalArgumentException er) {
-            Assertions.assertEquals(er.getMessage(), "Invalid event");
-        }
-    }
-
-    @Test
-    public void testSetEventTransaction() {
-        final Event e = new Event();
-        final Transaction t = new Transaction();
-        eventService.setEventTransaction(e, t);
-
-        Assertions.assertEquals(t.getId(), e.getTransaction().getId());
     }
 
     @Test
