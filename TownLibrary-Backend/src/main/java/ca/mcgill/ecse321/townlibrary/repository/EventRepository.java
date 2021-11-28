@@ -17,13 +17,6 @@ public interface EventRepository extends CrudRepository<Event, Integer> {
 	Event findEventById(Integer id);
 
 	/**
-	 * Searches Event by its transaction.
-	 * @param name		The transaction of the event.
-	 * @return			The event matching the searched transaction.
-	 */
-	Event findByTransaction(Transaction transaction);
-
-	/**
 	 * Searches Event by a section of the name.
 	 * @param name		The section of the event name.
 	 * @return			A list of events matching the searched name section.

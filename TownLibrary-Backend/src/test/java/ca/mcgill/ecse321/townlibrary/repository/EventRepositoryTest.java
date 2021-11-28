@@ -67,7 +67,6 @@ public class EventRepositoryTest {
         event = new Event();
         event.setName("cat");
         eventRepository.save(event);
-        final int evt3 = event.getId();
 
         // Test queries
         List<Event> l;

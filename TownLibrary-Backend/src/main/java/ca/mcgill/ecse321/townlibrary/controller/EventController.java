@@ -67,7 +67,7 @@ public class EventController {
         }
     }
 
-    @PostMapping(value = {"/events/delete/{id}", "/events/delete/{id}/"})
+    @DeleteMapping(value = {"/events/delete/{id}", "/events/delete/{id}/"})
     public ResponseEntity<?> deleteEvent(
         @PathVariable("id") int eventId) {
         try {

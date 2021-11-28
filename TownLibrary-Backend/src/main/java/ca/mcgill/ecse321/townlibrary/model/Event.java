@@ -15,8 +15,6 @@ public class Event {
 
     private Library library;
 
-    private Transaction transaction;
-
     private Set<UserRole> users = new HashSet<>();
 
     @Id
@@ -32,11 +30,6 @@ public class Event {
     @ManyToOne
     public Library getLibrary() {
         return library;
-    }
-
-    @OneToOne
-    public Transaction getTransaction() {
-        return transaction;
     }
 
     @ManyToMany
@@ -58,9 +51,5 @@ public class Event {
 
     public void setLibrary(Library library) {
         this.library = library;
-    }
-
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
     }
 }

@@ -77,24 +77,6 @@ public class EventServiceTest {
     }
 
     @Test
-    public void testGetEventByTransaction() {
-        final Transaction KEY = new Transaction();
-        KEY.setId(1); // say
-        final Event VALUE = new Event();
-        VALUE.setTransaction(KEY);
-        lenient().when(this.mockEventRepository.findByTransaction(KEY))
-                .thenAnswer(invocation -> VALUE);
-
-        Event e;
-
-        e = this.eventService.getEventByTransaction(KEY);
-        Assertions.assertEquals(KEY.getId(), e.getTransaction().getId());
-
-        e = this.eventService.getEventByTransaction(new Transaction());
-        Assertions.assertNull(e);
-    }
-
-    @Test
     public void addAndRemoveUsersEvent() {
         final UserRole u1 = new OnlineMember();
         u1.setId(4000);

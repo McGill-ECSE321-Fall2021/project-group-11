@@ -143,7 +143,7 @@ export default {
 				let response = await AXIOS.post("/events/remove/" + eventid + "/" + userid, null)
 				this.loadedEvent = response.data
 			} catch(error) {
-				this.serverResponse = "hello"
+				this.serverResponse = null
 			}
 		},
 		async getEventUsers(eventid) {
@@ -157,13 +157,13 @@ export default {
 		async deleteEvent(eventid) {
 			await AXIOS.delete("/events/delete/" + eventid)
 			this.loadEvents()
+			}
 		},
-
 		successRedirect() {
 		// this.$router.push('events')
 		this.loadedEvent = null
 		this.state = 0
     }
-	}
+
 }
 </script>

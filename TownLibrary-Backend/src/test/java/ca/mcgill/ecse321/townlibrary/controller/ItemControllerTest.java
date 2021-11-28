@@ -15,8 +15,6 @@ import static io.restassured.module.mockmvc.RestAssuredMockMvc.*;
 
 import static org.hamcrest.Matchers.*;
 
-import java.sql.Timestamp;
-
 import ca.mcgill.ecse321.townlibrary.dto.TransactionDTO;
 import ca.mcgill.ecse321.townlibrary.model.*;
 

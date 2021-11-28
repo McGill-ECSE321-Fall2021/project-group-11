@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Assertions;
 import ca.mcgill.ecse321.townlibrary.model.Event;
 import ca.mcgill.ecse321.townlibrary.model.Library;
 import ca.mcgill.ecse321.townlibrary.model.OnlineMember;
-import ca.mcgill.ecse321.townlibrary.model.Transaction;
 import ca.mcgill.ecse321.townlibrary.model.UserRole;
 
 
