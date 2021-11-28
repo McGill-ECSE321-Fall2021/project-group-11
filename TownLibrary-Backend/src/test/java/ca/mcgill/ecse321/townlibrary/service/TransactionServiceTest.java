@@ -202,11 +202,13 @@ public class TransactionServiceTest {
 	@Test
 	public void testReturnOutOfBounds() {
 
-		lenient().when(this.transactionDao.findById(INVALID_TRANSACTION.getId())).
-            thenReturn(Optional.empty());
-		INVALID_TRANSACTION.setEndDate(new Timestamp (System.currentTimeMillis() - 1000 * 86400 * 1));
+		lenient().when(this.transactionDao.findById(VALID_TRANSACTION.getId())).
+                thenReturn(Optional.of(VALID_TRANSACTION)).thenReturn(Optional.empty());
+				
+		itemDao.findItemByTransaction(VALID_TRANSACTION);
+		VALID_TRANSACTION.setEndDate(new Timestamp (System.currentTimeMillis() - 1000 * 86400 * 1));
 		try {
-			service.returnTransaction(INVALID_TRANSACTION.getId());
+			service.returnTransaction(VALID_TRANSACTION.getId());
 			fail();
 		} catch (Exception e) {
 			Assertions.assertEquals("OUT-OF-TIMEFRAME", e.getMessage());
