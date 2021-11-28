@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import org.mockito.stubbing.ValidableAnswer;
 
 import ca.mcgill.ecse321.townlibrary.repository.*;
 import ca.mcgill.ecse321.townlibrary.model.*;
@@ -40,8 +41,8 @@ public class TransactionServiceTest {
 	private static final Transaction VALID_TRANSACTION = new Transaction();
 	private static final UserRole USER = new OfflineMember();
 	private static final TransactionType TYPE = TransactionType.books;
-	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis());
-	private static final Timestamp END_TIME = new Timestamp(START_TIME.getTime() + 1000 * 86400 * 14);
+	private static final Timestamp START_TIME = new Timestamp(System.currentTimeMillis() - 1000 * 86400 * 11);
+	private static final Timestamp END_TIME = new Timestamp(System.currentTimeMillis() + 1000 * 86400 * 3);
 	
 	@BeforeEach
 	public void setMockOutput() {
@@ -60,6 +61,7 @@ public class TransactionServiceTest {
 		});
 		lenient().when(itemDao.findItemByTransaction(any(Transaction.class))).thenAnswer((InvocationOnMock invocation) -> {
 			if (invocation.getArgument(0).equals(INVALID_TRANSACTION)){
+				INVALID_TRANSACTION.setEndDate(new Timestamp (System.currentTimeMillis() + 1000 * 86400 * 8));
 				Item item = new Book();
 				item.setStatus(Status.AVAILABLE);
 				item.setTransaction(INVALID_TRANSACTION);
@@ -148,21 +150,23 @@ public class TransactionServiceTest {
 
 	}
 	@Test 
-	public void testRenewTransactionInvalidItem(){
+	public void testRenewTransactionInvalidTime(){
 		try {
+			itemDao.findItemByTransaction(INVALID_TRANSACTION);
 			service.renewTransaction(INVALID_TRANSACTION);
 			fail();
 		} catch (Exception e) {
-			assertEquals("NOT-CHECKED-OUT", e.getMessage());
+			assertEquals("OUT-OF-TIMEFRAME", e.getMessage());
 		}
 	}
 
 	@Test 
 	public void testRenewTransactionValidItem(){
 		try {
+			itemDao.findItemByTransaction(VALID_TRANSACTION);
 			Transaction transaction = service.renewTransaction(VALID_TRANSACTION);
 			assertEquals(transaction.getStartDate().getTime(), VALID_TRANSACTION.getStartDate().getTime());
-			assertEquals(transaction.getStartDate(), END_TIME);
+			assertEquals(transaction.getEndDate().getTime() - 1000 * 86400 * 14, END_TIME.getTime());
 		} catch (Exception e) {
 			fail();
 		}
@@ -172,8 +176,10 @@ public class TransactionServiceTest {
 		
 		lenient().when(this.transactionDao.findById(VALID_TRANSACTION.getId())).
                 thenReturn(Optional.of(VALID_TRANSACTION)).thenReturn(Optional.empty());
+
+		itemDao.findItemByTransaction(VALID_TRANSACTION);
 		try {
-			Boolean deleted = service.returnTransaction(INVALID_TRANSACTION.getId());
+			Boolean deleted = service.returnTransaction(VALID_TRANSACTION.getId());
 			assertTrue(deleted);
 		} catch (Exception e) {
 			fail();
@@ -187,11 +193,27 @@ public class TransactionServiceTest {
             thenReturn(Optional.empty());
 
 		try {
-			Boolean deleted = service.returnTransaction(INVALID_TRANSACTION.getId());
+			service.returnTransaction(INVALID_TRANSACTION.getId());
 			fail();
 		} catch (Exception e) {
 			Assertions.assertEquals("TRANSACTION-NOT-FOUND", e.getMessage());
 		}
 	}
+	@Test
+	public void testReturnOutOfBounds() {
+
+		lenient().when(this.transactionDao.findById(VALID_TRANSACTION.getId())).
+                thenReturn(Optional.of(VALID_TRANSACTION)).thenReturn(Optional.empty());
+				
+		itemDao.findItemByTransaction(VALID_TRANSACTION);
+		VALID_TRANSACTION.setEndDate(new Timestamp (System.currentTimeMillis() - 1000 * 86400 * 1));
+		try {
+			service.returnTransaction(VALID_TRANSACTION.getId());
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals("OUT-OF-TIMEFRAME", e.getMessage());
+		}
+	}
+	
 
 }

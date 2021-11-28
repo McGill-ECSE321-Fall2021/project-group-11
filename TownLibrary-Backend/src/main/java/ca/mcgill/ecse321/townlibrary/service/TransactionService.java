@@ -73,15 +73,11 @@ public class TransactionService {
 	@Transactional
 	public Transaction renewTransaction(Transaction transaction){
 
-		Item item = itemRepository.findItemByTransaction(transaction);
-		if (!item.getStatus().equals(Status.CHECKED_OUT)) {
-			throw new IllegalArgumentException("NOT-CHECKED-OUT");
+		if (System.currentTimeMillis() <= transaction.getEndDate().getTime() - 1000 * 86400 * 7) {
+			throw new IllegalArgumentException("OUT-OF-TIMEFRAME");
 		}
-		Timestamp oldEndDate = transaction.getEndDate();
-		Timestamp newStartDate = oldEndDate;
-		Timestamp newEndDate = new Timestamp(oldEndDate.getTime() + 1000 * 86400 * 14);
 
-		transaction.setStartDate(newStartDate);
+		Timestamp newEndDate = new Timestamp(transaction.getEndDate().getTime() + 1000 * 86400 * 14);
 		transaction.setEndDate(newEndDate);
 		transactionRepository.save(transaction);
 
@@ -91,6 +87,11 @@ public class TransactionService {
 	public boolean returnTransaction(Integer transactionId){
 		final Transaction transaction = this.transactionRepository.findById(transactionId).orElseThrow(() ->
 		new IllegalArgumentException("TRANSACTION-NOT-FOUND"));
+
+
+		if (System.currentTimeMillis() > transaction.getEndDate().getTime() ){
+			throw new IllegalArgumentException("OUT-OF-TIMEFRAME");
+		}
 				final Item item = this.itemRepository.findItemByTransaction(transaction);
 				item.setTransaction(null);
 				item.setStatus(Status.AVAILABLE);

@@ -158,7 +158,7 @@ public class TransactionControllerTest {
             .statusCode(200)
             .extract().response().as(TransactionDTO.class);
 
-        assertThat(dto.endDate, equalTo(renewedDto.startDate));
+        assertThat(dto.endDate + 1000 * 86400 * 14, equalTo(renewedDto.endDate));
         assertThat(dto.type, equalTo(renewedDto.type));
         assertThat(dto.userId, equalTo(renewedDto.userId));
     }
@@ -167,7 +167,7 @@ public class TransactionControllerTest {
     public void testDeleteExistingTransaction(){
             TransactionDTO dto = given()
             .param("startDate", "2021-11-07T00:00:00")
-            .param("endDate", "2021-11-09T00:00:00")
+            .param("endDate", "2021-12-09T00:00:00")
 			.param("transactionType", TransactionType.books)
             .when().post("/transactions/" + this.idUser)
             .then()
@@ -208,6 +208,27 @@ public class TransactionControllerTest {
             given()
                 .when().delete("/transactions/" + this.idUser + "/" + idTransaction)
                 .then()
-                .statusCode(400);
+                .statusCode(400)
+                .body(equalTo("TRANSACTION-NOT-FOUND"));
+                
+                
+    }
+    @Test
+    public void testDeleteTransactionAfterEndDate(){
+        TransactionDTO dto = given()
+        .param("startDate", "2021-11-07T00:00:00")
+        .param("endDate", "2021-11-21T00:00:00")
+        .param("transactionType", TransactionType.books)
+        .when().post("/transactions/" + this.idUser)
+        .then()
+        .statusCode(200)
+        .extract().response().as(TransactionDTO.class);
+
+        int idTransaction = dto.id;
+        given().
+        when().delete("/transactions/" + this.idUser + "/" + idTransaction)
+                .then()
+                .statusCode(400)
+                .body(equalTo("OUT-OF-TIMEFRAME"));
     }
 }

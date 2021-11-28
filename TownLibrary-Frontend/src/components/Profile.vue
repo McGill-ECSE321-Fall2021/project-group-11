@@ -93,7 +93,6 @@
         </tr>
       </table>
     </div>
-
     <div id="create-block" style="width:15%;" v-else-if="isLibrarian">
       <table>
         <tr style="border-bottom: 2px outset black;">
@@ -113,13 +112,15 @@
       </table>
     </div>
 
-    <div v-if="isOnlineMember">
+    <div v-if="isOnlineMember" id="buttonblock">
+      <br>
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
                                       id: userId
-                                   }})">View transactions</button>
-      <button @click="$router.push({ name:'Personal Information' })">View personal information</button>
-      <button @click="$router.push('')">View event schedule</button>
+                                   }})" class="buttonofblocks">transactions</button>
+      <button @click="$router.push({ name:'Personal Information' })" class="buttonofblocks">personal information</button>
+      <br> <br>
+      <button @click="$router.push('')" class="buttonofblocks">event schedule</button>
     </div>
 
   </div>
@@ -358,6 +359,23 @@ export default {
   .button-header{
     width: auto;
   }
+
+  #buttonblock{
+  display: block;
+  padding-top: 10px;
+  margin: auto;
+  margin-bottom: 10px;
+  background-color: #bfbfc1;
+  width: 15%;
+  height: 27%;
+  border: 5px outset rgba(0, 0, 0, 0.8);
+  border-left: 2px outset white;
+  border-top: 2px outset white;
+}
+
+.buttonofblocks {
+  width : 90%;
+}
   .button-header-schedule{
     width: auto;
   }
@@ -367,6 +385,4 @@ export default {
   .first-col{
     padding-left: 15px;
   }
-
-
 </style>
