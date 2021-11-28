@@ -45,7 +45,7 @@
 			<div v-if="isLibrarian">
 				<h2>Name: {{loadedEvent.name}}</h2>
 				<h2>ID: {{loadedEvent.id}}</h2>
-				<h2>Registered Users: {{loadedEvent.users}}</h2>
+				<h2>Registered Users IDs: {{loadedEvent.users}}</h2>
 				<br>
 				<input type="text" v-model="userId" placeholder="Online Member ID">
 				<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
@@ -56,7 +56,7 @@
 			<div v-else>
 				<h2>Name: {{loadedEvent.name}}</h2>
 				<h2>ID: {{loadedEvent.id}}</h2>
-				<h2>Registered Users: {{loadedEvent.users}}</h2>
+				<h2>Registered Users IDs: {{loadedEvent.users}}</h2>
 				<br>
 				<input type="text" v-model="userId" placeholder="Online Member ID">
 				<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
@@ -132,15 +132,15 @@ export default {
 		},
 		async addUserToEvent(eventid, userid) {
 			try {
-				let response = await AXIOS.post("/events/" + eventid + "/" + userid, null)
+				let response = await AXIOS.post("/events/" + eventid + "/users/" + userid, null)
 				this.loadedEvent = response.data
 			} catch(error) {
-				this.serverResponse = "nol"
+				this.serverResponse = null
 			}
 		}, 
 		async removeUserFromEvent(eventid, userid) {
 			try {
-				let response = await AXIOS.post("/events/remove/" + eventid + "/" + userid, null)
+				let response = await AXIOS.delete("/events/" + eventid + "/users/" + userid, null)
 				this.loadedEvent = response.data
 			} catch(error) {
 				this.serverResponse = null
@@ -155,15 +155,13 @@ export default {
 			}
 		},
 		async deleteEvent(eventid) {
-			await AXIOS.delete("/events/delete/" + eventid)
+			await AXIOS.delete("/events/" + eventid)
 			this.loadEvents()
-			}
 		},
 		successRedirect() {
-		// this.$router.push('events')
 		this.loadedEvent = null
 		this.state = 0
-    }
-
+    	}
+	}
 }
 </script>

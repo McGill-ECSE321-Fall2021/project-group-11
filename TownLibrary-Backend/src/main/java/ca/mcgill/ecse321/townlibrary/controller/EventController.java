@@ -67,7 +67,7 @@ public class EventController {
         }
     }
 
-    @DeleteMapping(value = {"/events/delete/{id}", "/events/delete/{id}/"})
+    @DeleteMapping(value = {"/events/{id}", "/events/{id}/"})
     public ResponseEntity<?> deleteEvent(
         @PathVariable("id") int eventId) {
         try {
@@ -79,7 +79,7 @@ public class EventController {
     }
     
 
-    @PostMapping(value = {"/events/{eventid}/{userid}", "/events/{eventid}/{userid}/"})
+    @PostMapping(value = {"/events/{eventid}/users/{userid}", "/events/{eventid}/users/{userid}/"})
     public ResponseEntity<?> addUser(
         @PathVariable("eventid") int eventId,
         @PathVariable("userid") int userId) {
@@ -94,7 +94,7 @@ public class EventController {
         }
     }
 
-    @PostMapping(value = {"/events/remove/{eventid}/{userid}", "/events/remove/{eventid}/{userid}/"})
+    @DeleteMapping(value = {"/events/{eventid}/users/{userid}", "/events/{eventid}/users/{userid}/"})
     public ResponseEntity<?> removeUser(
         @PathVariable("eventid") int eventId,
         @PathVariable("userid") int userId) {
