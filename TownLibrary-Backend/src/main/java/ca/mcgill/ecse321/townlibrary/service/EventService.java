@@ -45,33 +45,30 @@ public class EventService {
     }
 
     /**
-     * Sets a transaction for an event
-     *
-     * @param e             The event
-     * @param transaction   The transaction
-     *
-     * @throws IllegalArgumentException if either event or transaction is null
-     */
-
-    @Transactional
-    public void setEventTransaction(Event e, Transaction transaction) {
-        if (transaction == null) {
-            throw new IllegalArgumentException("Invalid transaction");
-        }
-        if (e == null) {
-            throw new IllegalArgumentException("Invalid event");
-        }
-
-        e.setTransaction(transaction);
-        eventRepository.save(e);
-    }
-    /**
+     * Deletes an event from the repository
      * 
-     * @param id
-     * @return
+     * @param eventId       The event's id
+     * @return              True if deleted
+     * 
+     * @throws IllegalArgumentException if the event does not exist
      */
+    @Transactional
+    public boolean deleteEvent(int eventId) {
+        final Event e = this.eventRepository.findById(eventId).orElseThrow(() ->
+                new IllegalArgumentException("EVENT-NOT-FOUND"));
+        this.eventRepository.delete(e);
+        return !this.eventRepository.findById(eventId).isPresent();
+    }
 
-    /*@Transactional
+    /**
+     * Adds a user to an event
+     * 
+     * @param e             The event
+     * @param user          The user
+     * 
+     * @throws IllegalArgumentException if either event or user is null
+     */
+    @Transactional
     public void addUserToEvent(Event e, UserRole user) {
         if (user == null) {
             throw new IllegalArgumentException("Invalid user");
@@ -79,9 +76,17 @@ public class EventService {
         if (e == null) {
             throw new IllegalArgumentException("Invalid event");
         }
-        e.addUser(user);
+        e.getUsers().add(user);;
     }
 
+    /**
+     * Removes a user from an event
+     * 
+     * @param e             The event
+     * @param user          The user
+     * 
+     * @throws IllegalArgumentException if either event or user is null
+     */
     @Transactional
     public void removeUserFromEvent(Event e, UserRole user) {
         if (user == null) {
@@ -90,8 +95,8 @@ public class EventService {
         if (e == null) {
             throw new IllegalArgumentException("Invalid event");
         }
-        e.removeUser(user);
-    }*/
+        e.getUsers().remove(user);
+    }
 
     /**
      * Retrieves an event by its id
@@ -103,18 +108,6 @@ public class EventService {
     @Transactional
     public Event getEventById(int id) {
         return eventRepository.findById(id).orElse(null);
-    }
-
-    /**
-     * Retrieves an event by its transaction
-     *
-     * @param transaction   The event's transaction
-     *
-     * @return The event
-     */
-    @Transactional
-    public Event getEventByTransaction(Transaction transaction) {
-        return eventRepository.findByTransaction(transaction);
     }
 
     /**

@@ -25,11 +25,30 @@ public class EventControllerTest {
         @Autowired
         private WebApplicationContext webApplicationContext;
 
+        private int eventId;
+        private int userId;
+
         @BeforeEach
         public void setup() {
             RestAssuredMockMvc.webAppContextSetup(webApplicationContext);
 
             post("/libraries/10001?address=sad street");
+
+            this.userId = given()
+                .param("password", "toothpaste2")
+                .param("email", "mintyfresh@teeth.com")
+                .param("address", "246 Clean Avenue")
+                .param("name", "Chip Skylark")
+                .param("library", "10001")
+                .post("/online-members/chip_skylark")
+                .then()
+                .extract()
+                .response().body().path("id");
+
+            this.eventId = given()
+                .param("lib", "10001")
+                .post("/events/event1")
+                .then().extract().response().body().path("id");
         }
 
         @AfterEach
@@ -66,10 +85,37 @@ public class EventControllerTest {
         }
 
         @Test
+        public void testAddRemoveUsersAndGetEventUsers() {
+            when()
+            .post("/events/" + eventId + "/users/" + userId)
+            .then()
+            .statusCode(200)
+            .extract().response().body().path("id");
+
+            when()
+            .get("/events/" + eventId + "/users")
+            .then()
+            .statusCode(200)
+            .body("size()", equalTo(1));
+
+            when()
+            .delete("/events/" + eventId + "/users/" + userId)
+            .then()
+            .statusCode(200)
+            .extract().response().body().path("id");
+            
+            when()
+            .get("/events/" + eventId + "/users")
+            .then()
+            .statusCode(200)
+            .body("size()", equalTo(0));
+        }
+
+        @Test
         public void testCreateEventAndQuery() {
             final int id = given()
                 .param("lib", "10001")
-                .post("/events/event1")
+                .post("/events/event2")
                 .then().statusCode(200)
                 .body("libId", equalTo(10001))
                 .extract().response().body().path("id");
@@ -83,8 +129,41 @@ public class EventControllerTest {
                 when().get("/events")
                     .then()
                     .statusCode(200)
-                    .body("size()", equalTo(1))
-                    .body("[0].id", equalTo(id))
-                    .body("[0].libId", equalTo(10001));
+                    .body("size()", equalTo(2))
+                    .body("[1].id", equalTo(id))
+                    .body("[1].libId", equalTo(10001));
+        }
+
+        @Test
+        public void deleteEvent() {
+            final int id = given()
+                .param("lib", "10001")
+                .post("/events/event2")
+                .then().statusCode(200)
+                .body("libId", equalTo(10001))
+                .extract().response().body().path("id");
+
+                when().get("/events")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(2));
+
+                when().get("/events/" + id)
+                    .then()
+                    .statusCode(200)
+                    .body("id", equalTo(id))
+                    .body("libId", equalTo(10001));
+
+                when().delete("/events/" + id)
+                    .then()
+                    .statusCode(200)
+                    .body(equalTo("true"));
+
+                when().get("/events")
+                    .then()
+                    .statusCode(200)
+                    .body("size()", equalTo(1));
+
+
         }
 }
