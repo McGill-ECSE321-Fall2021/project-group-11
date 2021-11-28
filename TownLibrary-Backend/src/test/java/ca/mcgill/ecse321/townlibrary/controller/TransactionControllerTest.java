@@ -209,7 +209,8 @@ public class TransactionControllerTest {
             given()
                 .when().delete("/transactions/" + this.idUser + "/" + idTransaction)
                 .then()
-                .statusCode(400);
+                .statusCode(400)
+                .body(equalTo("TRANSACTION-NOT-FOUND"));
                 
                 
     }
@@ -228,6 +229,7 @@ public class TransactionControllerTest {
         given().
         when().delete("/transactions/" + this.idUser + "/" + idTransaction)
                 .then()
-                .statusCode(400);
+                .statusCode(400)
+                .body(equalTo("OUT-OF-TIMEFRAME"));
     }
 }
