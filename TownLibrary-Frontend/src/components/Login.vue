@@ -65,8 +65,8 @@ export default {
 
   methods: {
     successRedirect () {
-      let name = this.$route.query.redirect || 'User Profile'
-      let params = this.$route.params
+      let name = this.$route.params.redirect || 'User Profile'
+      let params = this.$route.params.with
       this.$router.replace({ name: name, params: params })
     },
 
