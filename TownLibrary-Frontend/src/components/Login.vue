@@ -25,7 +25,7 @@
 
     <div id="login-buttons">
     <div>
-      {{ onlineMemberMode ? 'Not an online member?' : 'Not a librarian?' }} 
+      {{ onlineMemberMode ? 'Not an online member?' : 'Not a librarian?' }}
       <button @click="toggleLoginMode()">Login as {{ onlineMemberMode ? 'librarian' : 'online member' }}</button>
       <br/>
     </div>
@@ -64,6 +64,12 @@ export default {
   },
 
   methods: {
+    successRedirect () {
+      let name = this.$route.query.redirect || 'User Profile'
+      let params = this.$route.params
+      this.$router.replace({ name: name, params: params })
+    },
+
     async authOnlineMember (username, password) {
       try {
         // AXIOS post is weird: the request params go on the 3rd slot...
@@ -81,7 +87,7 @@ export default {
           password: password
         })
         // and we're ready to jump
-        this.$router.push('/profile')
+        this.successRedirect()
       } catch (error) {
         this.serverResponse = error
       }
@@ -118,7 +124,7 @@ export default {
         }
 
         // and we're ready to jump
-        this.$router.push('/profile')
+        this.successRedirect()
       } catch (error) {
         this.serverResponse = error
       }
@@ -167,7 +173,7 @@ export default {
 
     /* border: 1px solid black; */
     float:left;
-    
+
   }
   .some-button{
     /* display:inline-block; */

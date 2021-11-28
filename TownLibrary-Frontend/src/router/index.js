@@ -130,7 +130,7 @@ router.beforeEach((to, from, next) => {
   if (!userCanAccessPage(to, store.state.loginStatus && store.state.loginStatus.userType))
     // if insufficient priviledges, just send them over to login page (and let
     // login handle the other redirections)
-    next({ name: 'Login' })
+    next({ name: 'Login', query: { redirect: to.name }, params: to.params })
   else if (to.name == 'Login' && store.state.loginStatus)
     next({ name: 'User Profile' })
   else
