@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/LoginFragment"
         android:name="ca.mcgill.ecse321.townlibrary.LoginFragment"
-        android:label="Login"
+        android:label="@string/LoginFragment"
         tools:layout="@layout/fragment_login">
 
         <action
@@ -20,13 +20,13 @@
     <fragment
         android:id="@+id/SignupFragment"
         android:name="ca.mcgill.ecse321.townlibrary.SignupFragment"
-        android:label="Sign Up"
+        android:label="@string/SignupFragment"
         tools:layout="@layout/fragment_signup"/>
 
     <fragment
         android:id="@+id/ProfileFragment"
         android:name="ca.mcgill.ecse321.townlibrary.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/ProfileFragment"
         tools:layout="@layout/fragment_profile">
 
         <action
@@ -38,7 +38,7 @@
     <fragment
         android:id="@+id/CreditsFragment"
         android:name="ca.mcgill.ecse321.townlibrary.CreditsFragment"
-        android:label="Credits"
+        android:label="@string/CreditsFragment"
         tools:layout="@layout/fragment_credits" />
 
 </navigation>

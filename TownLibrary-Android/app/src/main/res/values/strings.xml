@@ -1,12 +1,38 @@
 <resources>
+    <!-- Used for the names in the action bar
+         (see labels in nav_graph.xml) -->
     <string name="app_name">TownLibrary-Android</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="LoginFragment">Login</string>
+    <string name="SignupFragment">Sign Up</string>
+    <string name="ProfileFragment">Profile</string>
+    <string name="CreditsFragment">Credits</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- Used for navigation (see the xml files under menu) -->
+    <string name="action_settings">Settings</string>
+    <string name="action_credits">Credits</string>
+    <string name="action_profile">Profile</string>
+
+    <!-- Used in fragments for displaying purposes -->
+
+    <string name="action_signup">Sign Up</string>
+    <string name="action_login">Login</string>
+    <string name="action_logout">Logout</string>
+
+    <string name="action_back">Go back</string>
+
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_full_name">Full Name</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_address">Address</string>
+
+    <string name="profile_greeter">Welcome back, %1$s!</string> <!-- name is filled in -->
+
+    <string name="hint_account_support">
+        Note: Only online members are supported at the moment
+    </string>
+
+    <string name="note_credits">
+        Made by Group 11\nECSE 321 Fall 2021
+    </string>
 </resources>

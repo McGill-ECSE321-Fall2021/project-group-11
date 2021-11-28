@@ -38,7 +38,7 @@ public class ProfileFragment extends Fragment {
             return;
         }
 
-        binding.textViewHeader.setText("Welcome back " + LoginStatus.INSTANCE.getDisplayName() + "!");
+        binding.textViewHeader.setText(getString(R.string.profile_greeter, LoginStatus.INSTANCE.getDisplayName()));
 
         binding.buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override

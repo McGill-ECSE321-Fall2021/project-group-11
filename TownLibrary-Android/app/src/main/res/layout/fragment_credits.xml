@@ -13,7 +13,7 @@
         android:layout_marginStart="56dp"
         android:layout_marginTop="172dp"
         android:gravity="center"
-        android:text="Made by Group 11\nECSE 321 Fall 2021"
+        android:text="@string/note_credits"
         android:textSize="34sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

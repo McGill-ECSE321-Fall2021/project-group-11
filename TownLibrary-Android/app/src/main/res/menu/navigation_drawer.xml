@@ -2,9 +2,9 @@
     <item
         android:id="@id/ProfileFragment"
         android:icon="@android:drawable/ic_menu_info_details"
-        android:title="Profile" />
+        android:title="@string/action_profile" />
 
     <item
         android:id="@id/CreditsFragment"
-        android:title="Credits" />
+        android:title="@string/action_credits" />
 </menu>
