@@ -71,7 +71,7 @@ public class EventController {
     public ResponseEntity<?> deleteEvent(
         @PathVariable("id") int eventId) {
         try {
-            final boolean b = eventService.deleteEvent(eventId);
+            final boolean b = this.eventService.deleteEvent(eventId);
             return ResponseEntity.ok().body(b);
         } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());

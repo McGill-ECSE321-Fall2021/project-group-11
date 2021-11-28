@@ -154,7 +154,7 @@ public class EventControllerTest {
                     .body("id", equalTo(id))
                     .body("libId", equalTo(10001));
 
-                when().post("/events/delete/" + id)
+                when().delete("/events/delete/" + id)
                     .then()
                     .statusCode(200)
                     .body(equalTo("true"));
