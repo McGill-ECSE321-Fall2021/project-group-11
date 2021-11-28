@@ -211,9 +211,17 @@ export default {
     pointer-events: none;
   }
 
-  #search-input::placeholder{
-    font-family: 'Consolas', Arial, Helvetica, sans-serif;
-
+  #search-input{
+    padding-left: 10px;
+    font-family: 'Fixedsys', Arial, Helvetica, sans-serif;
+    font-weight: 100;
+    font-size: 18px;
+    border: 2px outset black;
+    border-bottom: 2px outset white;
+    border-right: 2px outset white;
+  }
+  #search-input:focus{
+    outline: none;
   }
 
   .search{

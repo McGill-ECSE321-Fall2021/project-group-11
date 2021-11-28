@@ -386,9 +386,7 @@ export default {
 <style scoped>
     #calendar{
         background-color:#bfbfc1;
-        font-family: 'Consolas', Helvetica, Arial, sans-serif;
-        z-index: 100000;
-        
+        font-family: 'Fixedsys', Helvetica, Arial, sans-serif;
     }
 
     #empty{
@@ -402,7 +400,6 @@ export default {
         text-transform: capitalize; 
         color: black;
         background-color:#bfbfc1;
-        /* text-shadow: 0 0 3px black, 0 0 3px black; */
     }
 
     td {
@@ -423,6 +420,7 @@ export default {
         text-align: center;
         user-select: none;
         color: black;
+        font-weight: 100;
     }
     input[type='checkbox']{
         -webkit-appearance: none;

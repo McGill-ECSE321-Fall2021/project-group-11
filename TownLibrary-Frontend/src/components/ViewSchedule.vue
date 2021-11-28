@@ -108,6 +108,7 @@ export default {
         left: 0%;
         right: 0%;
         font-size: 25px;
+        font-weight:300;
         user-select: none;
         color:black;
         /* border-bottom: 1px solid black; */

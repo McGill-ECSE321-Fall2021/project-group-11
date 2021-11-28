@@ -39,12 +39,12 @@ export default{
 </script>
 
 <style>
+@font-face {
+  font-family: Fixedsys;
+  src: url(./fonts/fixedsys-excelsior-301-cufonfonts-webfont/FSEX300.woff);
+}
 #app {
-  /* @font-face {
-    font-family: ;
-    src: url();
-  } */
-  font-family: 'Consolas', Helvetica, Arial, sans-serif;
+  font-family: 'Fixedsys', Helvetica, Arial, sans-serif;
   /* font-family: 'Consolas', Courier, monospace; */
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
@@ -108,7 +108,7 @@ table {
 }
 
 #library-name{
-  font-family: 'Consolas', Helvetica, Arial, sans-serif;
+  font-family: 'Fixedsys', Helvetica, Arial, sans-serif;
   position:absolute;
   left:45%; /* CHANGE THIS LATER */
   right:auto;
