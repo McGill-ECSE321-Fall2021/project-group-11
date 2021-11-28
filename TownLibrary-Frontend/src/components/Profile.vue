@@ -117,12 +117,9 @@
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
                                       id: userId
-                                   }})" class="buttonofblocks">transactions</button> 
+                                   }})" class="buttonofblocks">transactions</button>
       <br>
       <button @click="$router.push({ name:'Personal Information' })" class="buttonofblocks">personal information</button>
-      <br>
-      <button @click="$router.push('')" class="buttonofblocks">event schedule</button>
-      <br>
     </div>
 
   </div>

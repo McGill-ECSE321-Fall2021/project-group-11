@@ -22,4 +22,11 @@ public interface EventRepository extends CrudRepository<Event, Integer> {
 	 * @return			A list of events matching the searched name section.
 	 */
     List<Event> findByNameContaining(String name);
+
+	/**
+	 * Searches Event by the attendee.
+	 * @param user		The attendee
+	 * @return			A set of events with that attendee.
+	 */
+	Set<Event> findByUsers(UserRole user);
 }

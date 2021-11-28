@@ -1,7 +1,7 @@
 <template>
     <div id="personal">
         <h2> Account Information </h2>
-        <br> 
+        <br>
         <br>
         <div id="info">
             <label class="title"> User ID </label>
@@ -14,6 +14,21 @@
             <label class="textbox">  {{ $store.state.loginStatus.userInfo.address }}</label> <br>
             <label class="title"> In Town </label>
             <label class="textbox">  {{ $store.state.loginStatus.userInfo.inTown }} </label> <br>
+            <br>
+
+            <label class="title">Attending Events</label>
+            <p v-if="null === events" style="color: #DE482B;">Failed to load from server, try again later</p>
+            <table v-if="null !== events">
+              <tr>
+                <th>Name</th>
+                <th>Event ID</th>
+              </tr>
+              <tr v-for="event in (events || [])">
+                <td>{{ event.name }}</td>
+                <td>{{ event.id }}</td>
+              </tr>
+            </table>
+            <br>
         </div>
 
         <div>
@@ -26,8 +41,33 @@
 
 
 <script>
+import axios from 'axios'
+
+var frontendUrl =  process.env.FRONTEND_HOST + ':' + process.env.FRONTEND_PORT
+var backendUrl = process.env.API_HOST + ':' + process.env.API_PORT
+
+var AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+
 export default {
-    name: 'Personal'
+    name: 'Personal',
+
+    data () {
+        return {
+            events: []
+        }
+    },
+
+    async created () {
+        try {
+            let response = await AXIOS.get('/users/' + this.$store.state.loginStatus.userInfo.id + '/events')
+            this.events = response.data
+        } catch (error) {
+            this.events = null
+        }
+    }
 }
 </script>
 

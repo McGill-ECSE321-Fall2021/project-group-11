@@ -80,6 +80,7 @@ export default {
 	data () {
 		return {
 			state: 0,
+      userId: 0,
 
 			events: [],
 			eventId: '',
@@ -137,7 +138,7 @@ export default {
 			} catch(error) {
 				this.serverResponse = null
 			}
-		}, 
+		},
 		async removeUserFromEvent(eventid, userid) {
 			try {
 				let response = await AXIOS.delete("/events/" + eventid + "/users/" + userid, null)
