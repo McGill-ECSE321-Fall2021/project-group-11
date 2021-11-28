@@ -115,8 +115,11 @@ function userCanAccessPage(page, userType) {
   case 'User Profile':
   case 'Item':
   case 'Create Event':
-    // must be logged in (doesn't matter)
+    // must be logged in (doesn't matter who)
     return userType !== null
+  case 'Personal Information':
+    // must be a online-member
+    return userType === 'online-member'
   case 'Create Librarian':
     // must be a head-librarian
     return userType === 'head-librarian'

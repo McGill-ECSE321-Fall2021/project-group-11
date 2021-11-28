@@ -62,20 +62,13 @@ export default {
 	},
 
 	created () {
-
-		// euh idk how this works, but it makes it so it doesn't work with homepage search bar
-		// for some reasons, the params coming from homepage is {id:..., name:..., type:...}
-		// instead of {itemId:..., itemName:..., itemType:...}
 		console.log('Params: ', this.$route.params)
-		// this.itemId = this.$route.params.id
-		// this.itemName = this.$route.params.name
-		// this.itemType = this.$route.params.type
 		this.itemId = this.$route.params.itemId
 		this.itemName = this.$route.params.itemName
 		this.itemType = this.$route.params.itemType
 
 		this.userType = this.$store.state.loginStatus.userType
-		this.userId = this.$store.state.loginStatus.userId
+		this.userId = this.$store.state.loginStatus.userInfo.id
 
 		this.showStatus()
 	},
@@ -104,9 +97,7 @@ export default {
 	methods: {
 		// Navigate to Browse Item page with useful params
 		async navBrowse () {
-			await this.$router.push(
-				{name: 'Browse Item',
-				params: { userType: this.userType, userId: this.userId }})
+			await this.$router.push({ name: 'Browse Item' })
 		},
 
 		async showStatus () {

@@ -86,7 +86,7 @@ export default {
 			console.log(itemName)
 
 			this.$router.push({name: 'Item',
-				params: { id: itemId, name: itemName, type: itemType }});
+				params: { itemId: itemId, itemName: itemName, itemType: itemType }});
 
 		},
 

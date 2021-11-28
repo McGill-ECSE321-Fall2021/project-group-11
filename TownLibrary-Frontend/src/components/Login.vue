@@ -82,9 +82,9 @@ export default {
         // log the user in by storing the user's information
         this.$store.commit('login', {
           userType: 'online-member',
-          userId: response.data.id,
           username: username,
-          password: password
+          password: password,
+          userInfo: response.data
         })
         // and we're ready to jump
         this.successRedirect()
@@ -97,29 +97,29 @@ export default {
       try {
         // a trick to use is try logging in as generic librarian, and if that
         // works, check if the id refers to a head-librarian.
-        await AXIOS.post('/auth/librarians/' + username, null, {
+        let response = await AXIOS.post('/auth/librarians/' + username, null, {
           params: {
             password: password
           }
         })
 
         try {
-          await AXIOS.get('/head-librarians/' + username)
+          response = await AXIOS.get('/head-librarians/' + username)
 
           // it's a head-librarian
           this.$store.commit('login', {
             userType: 'head-librarian',
-            userId: username,
             username: username,
-            password: password
+            password: password,
+            userInfo: response.data,
           })
         } catch (error) {
           // we know person must be at least a generic librarian
           this.$store.commit('login', {
             userType: 'librarian',
-            userId: username,
             username: username,
-            password: password
+            password: password,
+            userInfo: response.data,
           })
         }
 
