@@ -8,6 +8,7 @@ import ca.mcgill.ecse321.townlibrary.model.*;
 import ca.mcgill.ecse321.townlibrary.repository.*;
 
 import java.util.*;
+import java.util.Optional;
 
 @Service
 public class EventService {
@@ -42,6 +43,14 @@ public class EventService {
             throw new IllegalArgumentException(err.toString());
         }
         return e;
+    }
+
+    @Transactional
+    public boolean deleteEvent(int eventId) {
+        final Event e = eventRepository.findEventById(eventId);
+        if (e == null) throw new IllegalArgumentException("EVENT-NOT-FOUND");
+        eventRepository.delete(e);
+        return (eventRepository.findById(eventId) == null);
     }
 
     /**

@@ -4,7 +4,7 @@ import ca.mcgill.ecse321.townlibrary.model.*;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.*;
 
 @Repository
 public interface EventRepository extends CrudRepository<Event, Integer> {

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse321.townlibrary.dto.*;
 import ca.mcgill.ecse321.townlibrary.model.*;
+import ca.mcgill.ecse321.townlibrary.repository.EventRepository;
 import ca.mcgill.ecse321.townlibrary.service.*;
 
 @CrossOrigin(origins="*")
@@ -67,6 +68,18 @@ public class EventController {
         }
     }
 
+    @PostMapping(value = {"/events/delete/{id}", "/events/delete/{id}/"})
+    public ResponseEntity<?> deleteEvent(
+        @PathVariable("id") int eventId) {
+        try {
+            final boolean b = eventService.deleteEvent(eventId);
+            return ResponseEntity.ok().body(b);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
+    }
+    
+
     @PostMapping(value = {"/events/{eventid}/{userid}", "/events/{eventid}/{userid}/"})
     public ResponseEntity<?> addUser(
         @PathVariable("eventid") int eventId,
@@ -80,6 +93,5 @@ public class EventController {
         catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().body(ex.getMessage());
         }
-
     }
 }
