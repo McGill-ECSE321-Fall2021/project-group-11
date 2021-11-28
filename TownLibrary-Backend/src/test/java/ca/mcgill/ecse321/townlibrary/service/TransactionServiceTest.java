@@ -162,7 +162,7 @@ public class TransactionServiceTest {
 		try {
 			Transaction transaction = service.renewTransaction(VALID_TRANSACTION);
 			assertEquals(transaction.getStartDate().getTime(), VALID_TRANSACTION.getStartDate().getTime());
-			assertEquals(transaction.getStartDate(), END_TIME);
+			assertEquals(transaction.getEndDate().getTime() + 1000 * 86400 * 14, END_TIME.getTime());
 		} catch (Exception e) {
 			fail();
 		}
