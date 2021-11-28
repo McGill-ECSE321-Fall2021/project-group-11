@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.stubbing.Answer;
+import org.mockito.stubbing.ValidableAnswer;
 
 import ca.mcgill.ecse321.townlibrary.repository.*;
 import ca.mcgill.ecse321.townlibrary.model.*;
@@ -175,8 +176,10 @@ public class TransactionServiceTest {
 		
 		lenient().when(this.transactionDao.findById(VALID_TRANSACTION.getId())).
                 thenReturn(Optional.of(VALID_TRANSACTION)).thenReturn(Optional.empty());
+
+		itemDao.findItemByTransaction(VALID_TRANSACTION);
 		try {
-			Boolean deleted = service.returnTransaction(INVALID_TRANSACTION.getId());
+			Boolean deleted = service.returnTransaction(VALID_TRANSACTION.getId());
 			assertTrue(deleted);
 		} catch (Exception e) {
 			fail();
@@ -190,11 +193,25 @@ public class TransactionServiceTest {
             thenReturn(Optional.empty());
 
 		try {
-			Boolean deleted = service.returnTransaction(INVALID_TRANSACTION.getId());
+			service.returnTransaction(INVALID_TRANSACTION.getId());
 			fail();
 		} catch (Exception e) {
 			Assertions.assertEquals("TRANSACTION-NOT-FOUND", e.getMessage());
 		}
 	}
+	@Test
+	public void testReturnOutOfBounds() {
+
+		lenient().when(this.transactionDao.findById(INVALID_TRANSACTION.getId())).
+            thenReturn(Optional.empty());
+		INVALID_TRANSACTION.setEndDate(new Timestamp (System.currentTimeMillis() - 1000 * 86400 * 1));
+		try {
+			service.returnTransaction(INVALID_TRANSACTION.getId());
+			fail();
+		} catch (Exception e) {
+			Assertions.assertEquals("OUT-OF-TIMEFRAME", e.getMessage());
+		}
+	}
+	
 
 }

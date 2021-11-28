@@ -87,6 +87,11 @@ public class TransactionService {
 	public boolean returnTransaction(Integer transactionId){
 		final Transaction transaction = this.transactionRepository.findById(transactionId).orElseThrow(() ->
 		new IllegalArgumentException("TRANSACTION-NOT-FOUND"));
+
+
+		if (System.currentTimeMillis() > transaction.getEndDate().getTime() ){
+			throw new IllegalArgumentException("OUT-OF-TIMEFRAME");
+		}
 				final Item item = this.itemRepository.findItemByTransaction(transaction);
 				item.setTransaction(null);
 				item.setStatus(Status.AVAILABLE);
