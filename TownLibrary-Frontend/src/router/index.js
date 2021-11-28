@@ -67,8 +67,9 @@ const router = new Router({
     {
       path: '/events',
       name: 'Events',
-      component: Events},
-      {
+      component: Events
+    },
+    {
       path: '/additem',
       name: 'Create Item',
       component: CreateItem
