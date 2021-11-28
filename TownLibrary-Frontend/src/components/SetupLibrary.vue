@@ -146,9 +146,9 @@ export default {
       // head-librarian.
       this.$store.commit('login', {
         userType: 'head-librarian',
-        userId: this.createdUser.id,
         username: this.createdUser.id,
-        password: this.newHeadLibrarian.password
+        password: this.newHeadLibrarian.password,
+        userInfo: this.createdUser
       })
       this.$router.push('/profile')
       this.state = 0

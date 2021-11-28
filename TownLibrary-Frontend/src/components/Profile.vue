@@ -1,6 +1,6 @@
 <template>
   <div id="profile">
-    <h2>Welcome back, {{ userInfo.name }}!</h2>
+    <h2>Welcome back, {{ displayName }}!</h2>
 
 
     <div id="create-block" v-if="isLibrarian">
@@ -54,7 +54,7 @@
               <td class="librarian-data first-col">{{librarian.id}}</td>
               <td class="librarian-data">{{librarian.name}}</td>
               <td class="librarian-data">{{librarian.address}}</td>
-              <td class="librarian-data" style="padding:5px;"><button class="delete-librarian-button" :disabled="librarian.id === userInfo.id"
+              <td class="librarian-data" style="padding:5px;"><button class="delete-librarian-button" :disabled="librarian.id === userId"
                     @click="deleteLibrarian(librarian.id)">Delete</button></td>
             </tr>
           </table>
@@ -107,7 +107,7 @@
         <tr>
           <td style="padding:10px;">
             <b>Your schedule</b>
-            <view-schedule :login-status="loginStatus" :entity-id="userInfo.id" :scheduleOwner="userInfo.name"></view-schedule>
+            <view-schedule :login-status="loginStatus" :entity-id="userId" :scheduleOwner="displayName"></view-schedule>
           </td>
         </tr>
       </table>
@@ -116,16 +116,9 @@
     <div v-if="isOnlineMember">
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
-                                      id: userInfo.id
+                                      id: userId
                                    }})">View transactions</button>
-      <button @click="$router.push({name:'Personal Information',
-                                    params:{
-                                      id:       userInfo.id,
-                                      fullName: userInfo.name,
-                                      email:    userInfo.email,
-                                      address:  userInfo.address,
-                                      inTown:   userInfo.inTown
-                                  }})">View personal information</button>
+      <button @click="$router.push({ name:'Personal Information' })">View personal information</button>
       <button @click="$router.push('')">View event schedule</button>
     </div>
 
@@ -155,7 +148,6 @@ export default {
   data () {
     return {
       loginStatus: {},
-      userInfo: {},
       librarians: [],
 
       affectedUserId: ''
@@ -168,8 +160,6 @@ export default {
     Object.assign(this.loginStatus, this.$store.state.loginStatus)
     this.reloadUserInfo()
     this.reloadLibrarians()
-
-
   },
 
   computed: {
@@ -199,13 +189,21 @@ export default {
       case 'head-librarian':
         return true
       }
+    },
+
+    userId () {
+      return this.loginStatus.userInfo.id
+    },
+
+    displayName () {
+      return this.loginStatus.userInfo.name
     }
   },
 
   methods: {
     doLogout () {
       this.$store.commit('logout')
-      this.$router.push('login')
+      this.$router.push('/login')
     },
 
     async reloadUserInfo () {
@@ -215,7 +213,10 @@ export default {
             password: this.loginStatus.password
           }
         })
-        this.userInfo = response.data
+
+        // In case old info is outdated, just reapply the new stuff
+        this.loginStatus.userInfo = response.data
+        this.$store.commit('updateUserInfo', response.data)
       } catch (error) {
         // this is awkward because we couldn't get the user's information...
         // assume the worst (maybe the password has changed or something) and

@@ -68,7 +68,7 @@ export default {
 		this.itemType = this.$route.params.itemType
 
 		this.userType = this.$store.state.loginStatus.userType
-		this.userId = this.$store.state.loginStatus.userId
+		this.userId = this.$store.state.loginStatus.userInfo.id
 
 		this.showStatus()
 	},

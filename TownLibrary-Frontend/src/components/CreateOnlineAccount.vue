@@ -78,9 +78,9 @@ export default {
         // favour by logging them in right now!
         this.$store.commit('login', {
           userType: 'online-member',
-          userId: response.data.id,
           username: userInfo.username,
-          password: userInfo.password
+          password: userInfo.password,
+          userInfo: response.data
         })
         this.$router.push('/profile')
       } catch (error) {
