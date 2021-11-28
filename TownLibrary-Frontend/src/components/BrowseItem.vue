@@ -174,14 +174,15 @@
 				</td>
 			</tr>
 		</table> -->
-
-		<div v-if="isLibrarian">
+		<!-- euh this does not show up unless you click "view" beforehand and are logged in as librarian -->
+		<!-- maybe just use from profile instead? -->
+		<!-- <div v-if="isLibrarian">
 			<button @click="$router.push({name: 'Create Item',
                                     params: {
                                       userType: loggedUser.userType,
                                       userId: loggedUser.userId
                                    }})">Add item</button>
-		</div>
+		</div> -->
 
 	</div>
 </template>
@@ -223,8 +224,10 @@ export default {
 		this.loadMovies()
 		this.loadMusicAlbums()
 
+		// this did not seem to work?
 		console.log('Params: ', this.$route.params)
 		this.loggedUser = this.$route.params
+
 	},
 
 	computed: {

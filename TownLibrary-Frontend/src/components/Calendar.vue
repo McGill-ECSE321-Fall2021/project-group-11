@@ -387,6 +387,7 @@ export default {
     #calendar{
         background-color:#bfbfc1;
         font-family: 'Consolas', Helvetica, Arial, sans-serif;
+        z-index: 100000;
         
     }
 
@@ -405,7 +406,7 @@ export default {
     }
 
     td {
-        border: 2px solid black;
+        border: 2px outset black;
         align-content: center;
         vertical-align: middle;
     }
@@ -416,7 +417,9 @@ export default {
     th {
         width: 150px;
         height: 40px;
-        border: 3px outset black;
+        border: 3px outset rgba(0, 0, 0, 0.856);
+        border-top: 3px outset white;
+        border-left: 3px outset white;
         text-align: center;
         user-select: none;
         color: black;

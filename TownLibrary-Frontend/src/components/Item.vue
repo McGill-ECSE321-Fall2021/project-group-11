@@ -2,11 +2,16 @@
 	<div id="item">
 		<h2>Item Details</h2>
 
-		<ul>
+		<table>
+			<tr>ID: {{ itemId }}</tr>
+			<tr>Title: {{ itemName }}</tr>
+			<tr>Status: {{ status }}</tr>
+		</table>
+		<!-- <ul>
 			<li>ID: {{ this.itemId }}</li>
 			<li>Title: {{ this.itemName }}</li>
 			<li>Status: {{ this.status }}</li>
-		</ul>
+		</ul> -->
 
 		<div v-if="!isViewOnly">
 			<div v-if="!isLibrarian">
@@ -57,13 +62,20 @@ export default {
 	},
 
 	created () {
+
+		// euh idk how this works, but it makes it so it doesn't work with homepage search bar
+		// for some reasons, the params coming from homepage is {id:..., name:..., type:...}
+		// instead of {itemId:..., itemName:..., itemType:...}
 		console.log('Params: ', this.$route.params)
+		// this.itemId = this.$route.params.id
+		// this.itemName = this.$route.params.name
+		// this.itemType = this.$route.params.type
 		this.itemId = this.$route.params.itemId
 		this.itemName = this.$route.params.itemName
 		this.itemType = this.$route.params.itemType
 
-    this.userType = this.$store.state.loginStatus.userType
-    this.userId = this.$store.state.loginStatus.userId
+		this.userType = this.$store.state.loginStatus.userType
+		this.userId = this.$store.state.loginStatus.userId
 
 		this.showStatus()
 	},

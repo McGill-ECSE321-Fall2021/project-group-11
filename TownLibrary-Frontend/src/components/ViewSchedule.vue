@@ -63,6 +63,10 @@ export default {
 
 <style scoped>
 
+    #view-schedule{
+        z-index: 100000;
+    }
+
     .modal-block{
         position: fixed;
         top: 0;
@@ -83,9 +87,9 @@ export default {
     }
     .modal-card{
         background-color: #bfbfc1;
-        border: 3px outset black;
-        border-left: 1px outset white;
-        border-top: 1px outset white;
+        border: 5px outset black;
+        border-left: 2px outset white;
+        border-top: 2px outset white;
         padding: 50px;
         position: fixed;
         top: 10%;

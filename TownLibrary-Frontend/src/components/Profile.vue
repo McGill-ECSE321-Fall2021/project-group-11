@@ -1,63 +1,122 @@
 <template>
   <div id="profile">
     <h2>Welcome back, {{ userInfo.name }}!</h2>
-    <button @click="doLogout">Logout</button>
-    <br><br>
-    <!-- <p>Just to show that stuff does work:</p>
-    <ul>
-      <li>User type: {{ loginStatus.userType }}</li>
-      <li>Username: {{ loginStatus.username }}</li>
-      <li>Password: {{ loginStatus.password }}</li>
-    </ul> -->
+  
 
-    <div v-if="isLibrarian">
-      <button @click="$router.push('/newacc/offline')">Create a new offline member</button>
-      <button @click="$router.push({name: 'Create Item',
+    <div id="create-block" v-if="isLibrarian">
+      <table id="create-block-table">
+        <tr style="border-bottom: 2px outset black;">
+          <th>Create entities</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px;">
+            <button @click="$router.push('/newacc/offline')" style="margin-bottom: 10px;">Create a new offline member</button> <br>
+            <button @click="$router.push({name: 'Create Item',
                                     params: {
                                       userType: loginStatus.userType,
                                       userId: userInfo.id
-                                   }})">Add item</button>
-      <br>
-      <input type="text" placeholder="Member ID" v-model="affectedUserId">
-      <button @click="getAddressOfAffectedUser">Get address</button>
-      <button @click="setInTownAffectedUser(true)">Set In Town</button>
-      <button @click="setInTownAffectedUser(false)">Set Out of Town</button>
-      <br><br>view library
-      <view-schedule :login-status="loginStatus" :entity-id="0"></view-schedule>
-      <br>
-      <label v-if="loginStatus.userType !== 'head-librarian'">view own schedule</label>
-      <view-schedule v-if="loginStatus.userType !== 'head-librarian'" :login-status="loginStatus" :entity-id="userInfo.id" :scheduleOwner="userInfo.name"></view-schedule>
-
-    </div>
-
-    <div v-if="isHeadLibrarian">
-      List of Librarians:
-      <button @click="reloadLibrarians()">Refresh</button>
-      <table>
-        <tr v-if="librarians !== null">
-          <th><!-- Empty cell just for aligning the table --></th>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Address</th>
-        </tr>
-        <tr v-if="librarians === null">
-          <td style="color: red">Failed to load from server, try again later by clicking on refresh</td>
-        </tr>
-        <tr v-for="librarian in (librarians || [])" :key="librarian.id" class="librarian-table-row">
-          <td class="librarian-table-button">
-            <view-schedule :disabled="true" class="librarian-schedule-button" :login-status="loginStatus" :entity-id="librarian.id" :schedule-owner="librarian.name"> </view-schedule>
-            <button class="delete-librarian-button" :disabled="librarian.id === userInfo.id"
-                    @click="deleteLibrarian(librarian.id)">Delete</button>
+                                    }})">Create item</button>
           </td>
-          <td>{{ librarian.id }}</td>
-          <td>{{ librarian.name }}</td>
-          <td>{{ librarian.address }}</td>
         </tr>
       </table>
-
-      <button @click="$router.push('/newacc/librarian')">Add a new librarian</button>
-
     </div>
+
+    <div id="create-block" style="width:25%;" v-if="isLibrarian">
+      <table id="town-status-block-table">
+        <tr style="border-bottom: 2px outset black;">
+          <th>Set location status</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px;">
+            <input type="text" placeholder="Member ID" v-model="affectedUserId" style="border: 2px outset black; border-right: 2px outset white; border-bottom: 2px outset white;">
+            <button @click="getAddressOfAffectedUser">Get address</button>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 10px;">
+            <button @click="setInTownAffectedUser(true)">Set In Town</button>
+            <button @click="setInTownAffectedUser(false)">Set Out of Town</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <div id="create-block" style="width:45%;" v-if="isHeadLibrarian">
+      <table id="librarian-block-table">
+        <tr style="border-bottom: 2px outset black;">
+          <th>List of librarians</th>
+        </tr>
+         <tr v-if="librarians !== null">
+          <table style="text-align:left;">
+            <tr>
+              <th class="id-header first-col">ID</th>
+              <th class="name-header">Name</th>
+              <th class="address-header">Address</th>
+              <th class="button-header"></th>
+            </tr>
+            <tr v-for="librarian in (librarians || [])" :key="librarian.id" class="librarian-table-row">
+              <td class="librarian-data first-col">{{librarian.id}}</td>
+              <td class="librarian-data">{{librarian.name}}</td>
+              <td class="librarian-data">{{librarian.address}}</td>
+              <td class="librarian-data" style="padding:5px;"><button class="delete-librarian-button" :disabled="librarian.id === userInfo.id"
+                    @click="deleteLibrarian(librarian.id)">Delete</button></td>
+            </tr>
+          </table>
+        </tr>
+      </table>
+      <button @click="reloadLibrarians()" style="margin-block:10px;">Refresh</button> <br>
+      <label v-if="librarians === null" style="color:#DE482B">Failed to load from server, try again later by clicking on refresh</label>
+    </div>
+
+    <div id="create-block" style="width:33%;" v-if="isHeadLibrarian">
+      <table id="schedule-block-table">
+        <tr style="border-bottom: 2px outset black;">
+          <th>Schedules</th>
+        </tr>
+         <tr v-if="librarians !== null">
+          <table style="text-align:left;">
+            <tr>
+              <th class="id-header-schedule first-col">ID</th>
+              <th class="name-header-schedule">Name</th>
+              <th class="button-header-schedule"></th>
+            </tr>
+            <tr class="librarian-table-row">
+              <td class="librarian-data first-col">0</td>
+              <td class="librarian-data">Library</td>
+              <td style="padding: 10px;"><view-schedule :login-status="loginStatus" :entity-id="0"></view-schedule></td>
+            </tr>
+            <tr v-for="librarian in (librarians || [])" :key="librarian.id" class="librarian-table-row">
+              <td class="librarian-data first-col">{{librarian.id}}</td>
+              <td class="librarian-data">{{librarian.name}}</td>
+              <!-- <td class="librarian-data">{{librarian.address}}</td> -->
+              <td style="padding: 10px;">
+                <view-schedule class="librarian-schedule-button" :login-status="loginStatus" :entity-id="librarian.id" :schedule-owner="librarian.name"> </view-schedule>
+              </td>
+            </tr>
+          </table>
+        </tr>
+      </table>
+    </div>
+
+    <div id="create-block" style="width:15%;" v-else-if="isLibrarian">
+      <table>
+        <tr style="border-bottom: 2px outset black;">
+          <th>Schedules</th>
+        </tr>
+        <tr>
+          <td style="padding: 10px;">
+            <b>Library</b><view-schedule :login-status="loginStatus" :entity-id="0"></view-schedule>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:10px;">
+            <b>Your schedule</b>
+            <view-schedule :login-status="loginStatus" :entity-id="userInfo.id" :scheduleOwner="userInfo.name"></view-schedule>
+          </td>
+        </tr>
+      </table>
+    </div>
+
     <div v-if="isOnlineMember">
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
@@ -248,6 +307,7 @@ export default {
 </script>
 
 <style>
+
   .librarian-table-row{
     width:100%;
     text-align:center
@@ -263,6 +323,53 @@ export default {
   }
   .delete-librarian-button:disabled{
     display: inline;
-
   }
+  #create-block{
+    color: black;
+    display:block;
+    padding-top: 5px;
+    margin: auto;
+    margin-bottom: 10px;
+    background-color:#bfbfc1;
+    border: 3px outset rgba(0,0,0,0.8);
+    border-left: 2px outset white;
+    border-top: 2px outset white;
+    width: 20%;
+  }
+  #create-block-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .id-header{
+		width: 20%;
+	}
+  .id-header-schedule{
+		width: 25%;
+	}
+	.name-header{
+		width: 30%;
+	}
+	.name-header-schedule{
+		width: 45%;
+	}
+	.address-header{
+		width: 40%;
+	}
+  .button-header{
+    width: auto;
+  }
+  .button-header-schedule{
+    width: auto;
+  }
+  .librarian-data{
+    text-align:left;
+  }
+  .first-col{
+    padding-left: 15px;
+  }
+
+
 </style>
