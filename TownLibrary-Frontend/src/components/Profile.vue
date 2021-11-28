@@ -1,7 +1,7 @@
 <template>
   <div id="profile">
     <h2>Welcome back, {{ userInfo.name }}!</h2>
-  
+
 
     <div id="create-block" v-if="isLibrarian">
       <table id="create-block-table">
@@ -11,11 +11,7 @@
         <tr>
           <td style="padding: 10px;">
             <button @click="$router.push('/newacc/offline')" style="margin-bottom: 10px;">Create a new offline member</button> <br>
-            <button @click="$router.push({name: 'Create Item',
-                                    params: {
-                                      userType: loginStatus.userType,
-                                      userId: userInfo.id
-                                    }})">Create item</button>
+            <button @click="$router.push({ name: 'Create Item' })">Create item</button>
           </td>
         </tr>
       </table>
@@ -314,7 +310,7 @@ export default {
   }
   .librarian-schedule-button{
     display: inline;
-  } 
+  }
   .librarian-schedule-button:disabled{
     display: inline;
   }

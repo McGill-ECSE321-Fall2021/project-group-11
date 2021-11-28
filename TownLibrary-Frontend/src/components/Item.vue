@@ -97,9 +97,7 @@ export default {
 	methods: {
 		// Navigate to Browse Item page with useful params
 		async navBrowse () {
-			await this.$router.push(
-				{name: 'Browse Item',
-				params: { userType: this.userType, userId: this.userId }})
+			await this.$router.push({ name: 'Browse Item' })
 		},
 
 		async showStatus () {
