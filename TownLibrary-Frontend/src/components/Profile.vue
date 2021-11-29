@@ -25,19 +25,28 @@
         </tr>
         <tr>
           <td style="padding: 10px;">
-            <input type="text" placeholder="Member ID" v-model="affectedUserId" style="border: 2px outset black; border-right: 2px outset white; border-bottom: 2px outset white;">
-            <button @click="getAddressOfAffectedUser">Get address</button>
+            <input type="text" placeholder="Member ID" v-model="affectedUserId" autocomplete="off" style="border: 2px outset black; border-right: 2px outset white; border-bottom: 2px outset white;">
+            <button @click="getAddressOfAffectedUser">Get Address</button>
           </td>
         </tr>
         <tr>
           <td style="padding-bottom: 10px;">
             <button @click="setInTownAffectedUser(true)">Set In Town</button>
-            <button @click="setInTownAffectedUser(false)">Set Out of Town</button>
+            <button @click="setInTownAffectedUser(false)">Set Out Of Town</button>
           </td>
         </tr>
+      </table>
+    </div>
+
+    <div id="create-block" style="width:28%;" v-if="isLibrarian">
+      <table id="town-status-block-table">
+        <tr style="border-bottom: 2px outset black;">
+          <th>Offline Member Transactions</th>
+        </tr>
         <tr>
-          <td style="padding-bottom: 10px;">
-            <button @click="checkUserTransactions" class="buttonofblocks">transactions</button>
+          <td style="padding: 10px;">
+            <input autocomplete="off" id="transaction-input" type="text" placeholder="Member ID" style="border: 2px outset black; border-right: 2px outset white; border-bottom: 2px outset white;">
+            <button @click="checkUserTransactions" class="buttonofblocks" style="width: auto; margin-bottom:10px;">Transactions</button>
           </td>
         </tr>
       </table>
@@ -123,9 +132,9 @@
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
                                       id: userId
-                                   }})" class="buttonofblocks">transactions</button>
+                                   }})" class="buttonofblocks">Transactions</button>
       <br>
-      <button @click="$router.push({ name:'Personal Information' })" class="buttonofblocks">personal information</button>
+      <button @click="$router.push({ name:'Personal Information' })" class="buttonofblocks">Personal Information</button>
     </div>
 
   </div>
@@ -207,14 +216,24 @@ export default {
   },
 
   methods: {
-    checkUserTransactions () {
+    async checkUserTransactions () {
+      
+      this.affectedUserId = document.getElementById('transaction-input').value;
       if ('' === this.affectedUserId)
         return
 
-      this.$router.push({name: 'User Transactions',
+      try{
+        // this fails if offline member does not exist
+        await AXIOS.get('/offline-members/'+ this.affectedUserId)
+        
+        this.$router.push({name: 'User Transactions',
         params: {
           id: this.affectedUserId
       }})
+      } catch (error){
+        alert("Offline member with that id does not exist.")
+      }
+    
     },
 
     doLogout () {
