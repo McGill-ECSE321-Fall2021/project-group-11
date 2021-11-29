@@ -85,37 +85,20 @@ export default {
 
         },
         async renewItem(transaction, id){
-
-            this.isAfterDate(transaction.endDate)
-            if (this.errorTransaction === "")
-            {
-                try {
-                    let response = await AXIOS.put('/transactions/' + id + '/' + transaction.id , null, {})
-                    this.reloadTransactions(id)
-                } catch (error) {
-                    this.errorTransaction = error
-                }
+            try {
+                let response = await AXIOS.put('/transactions/' + id + '/' + transaction.id , null, {})
+                this.reloadTransactions(id)
+            } catch (error) {
+                this.errorTransaction = error.response.status
             }
         },
 
         async returnItem(transaction, id){
-            var response = '';
-            this.isAfterDate(transaction.endDate)
-            if (this.errorTransaction === "")
-            {
-                try {
-                    let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
-                    this.reloadTransactions(id)
-                } catch (error) {
-                    this.errorTransaction = error.response.status
-                }
-            }
-        },
-        isAfterDate(date){
-            var today = new Date();
-            var transactionDate = new Date(date);
-            if (today > transactionDate) {
-                this.errorTransaction = 'Action not possible';
+            try {
+                let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
+                this.reloadTransactions(id)
+            } catch (error) {
+                this.errorTransaction = error.response.status
             }
         },
         fromUTCtoString(time){
@@ -123,7 +106,6 @@ export default {
             var displayDate = date[1] + ' ' + date[2] + ',' + date[3]
             return displayDate;
         }
-
     }
 }
 
