@@ -133,6 +133,7 @@ export default {
 				let response = await AXIOS.post("/events/" + eventid + "/users/" + userid, null)
 				this.loadedEvent = response.data
 			} catch(error) {
+				window.alert("This user does not exist.")
 				this.serverResponse = null
 			}
 		},
@@ -141,6 +142,7 @@ export default {
 				let response = await AXIOS.delete("/events/" + eventid + "/users/" + userid, null)
 				this.loadedEvent = response.data
 			} catch(error) {
+				window.alert("This user does not exist.")
 				this.serverResponse = null
 			}
 		},
