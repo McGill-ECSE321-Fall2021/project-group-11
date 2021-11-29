@@ -37,7 +37,7 @@
         </tr>
         <tr>
           <td style="padding-bottom: 10px;">
-            <button @click="$router.push({name: 'User Transactions',
+            <button @click="if ('' !== affectedUserId) $router.push({name: 'User Transactions',
                                       params: {
                                         id: affectedUserId
                                     }})" class="buttonofblocks">transactions</button>
