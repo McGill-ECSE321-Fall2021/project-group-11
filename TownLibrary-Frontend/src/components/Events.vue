@@ -57,7 +57,7 @@
 					<tr>
 						<label class="info-row">Name: {{loadedEvent.name}}</label> <br>
 						<label class="info-row">ID: {{loadedEvent.id}}</label> <br>
-						<label class="info-row">Registered Users: {{loadedEvent.users.length}}</label>						
+						<label class="info-row">Registered Users: {{loadedEvent.users.length}}</label>
 					</tr>
 				</table>
 			</div>
@@ -145,43 +145,57 @@ export default {
 		// changed params, because there was a weird behaviour with the text input boxes
 		async addUserToEvent(eventid) {
 			try {
-				var memberId = document.getElementById('online-member-id').value
-				// console.log(this.userId)
-				// ?? this suddenly stopped throwing an error when we try to add an online member twice???? 
-				// does not update the counter (which is good), but does not go through catch to display error alert
+				var memberId = document.getElementById('online-member-id').value.trim()
+
+        // Try checking if user already exists
+        for (let attendee of this.loadedEvent.users) {
+          if (attendee == memberId) {
+            window.alert("This user has already been registered for this event.\nTry reloading if the problem persists.")
+            return
+          }
+        }
+
+        // Actually perform the registration
 				let response = await AXIOS.post("/events/" + eventid + "/users/" + memberId, null)
 				this.loadedEvent = response.data
 				window.alert("Successfully registered!")
 			} catch(error) {
-				window.alert("This user does not exist.")
 				this.serverResponse = null
-				try{
-					if (memberId !== ""){
-						await AXIOS.get('/online-members/'+memberId)	
-						window.alert("This user has already been registered for this event.")
-					}else {
-						window.alert("Please enter an ID.")
-					}
-					
-				}catch(error){
-					window.alert("ID does not correspond to an online member.")
-				}
+        if (memberId === "")
+          window.alert("Please enter an ID.")
+        else
+          window.alert("ID does not correspond to an online member.")
 			}
 		},
 		// same as add
 		async removeUserFromEvent(eventid) {
 			try {
-				var memberId = document.getElementById('online-member-id').value
+				var memberId = document.getElementById('online-member-id').value.trim()
 
+        // Try checking if user doesn't exist exists
+        let found = false
+        for (let attendee of this.loadedEvent.users) {
+          if (attendee == memberId) {
+            found = true
+            break
+          }
+        }
+        if (!found) {
+          window.alert("This user wasn't registered for this event.\nTry reloaading if the problem persists.")
+          return
+        }
+
+        // Acually perform the unregistration
 				let response = await AXIOS.delete("/events/" + eventid + "/users/" + memberId, null)
 				this.loadedEvent = response.data
 				// same as above??? tested with timeout to make sure the response goes through
 				window.alert("Successfully removed!")
-
 			} catch(error) {
-				window.alert("This user does not exist.")
 				this.serverResponse = null
-				window.alert("ID does not belong to any online members registered to this event.")
+        if (memberId === "")
+				  window.alert("Please enter an ID.")
+        else
+				  window.alert("ID does not belong to any online members registered to this event.")
 			}
 		},
 		async getEventUsers(eventid) {
