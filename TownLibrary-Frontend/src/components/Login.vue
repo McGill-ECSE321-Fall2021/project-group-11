@@ -15,12 +15,10 @@
         <td style="color: #DE482B">{{ msg }}</td>
       </tr>
     </table>
-    <br/>
 
-    <button :disabled="0 !== errorMessages.length"
+    <button style="margin-block:10px;" :disabled="0 !== errorMessages.length"
             @click="onlineMemberMode ? authOnlineMember(username, password) : authLibrarian(username, password)">Login</button>
 
-    <br/>
     <br/>
 
     <div id="login-buttons">
@@ -162,32 +160,21 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #login-buttons{
     display:block;
     margin-left: auto;
     margin-right:auto;
     width:33%;
   }
-  .text{
-
-    /* border: 1px solid black; */
-    float:left;
-
+  input{
+    margin-block: 5px;
+    border: 2px outset black;
+    border-bottom: 2px outset white;
+    border-right: 2px outset white;
   }
-  .some-button{
-    /* display:inline-block; */
-    /* border: 1px solid black; */
-
-    float:right;
+  #login-buttons button{
+    margin-block: 5px;
   }
-  .on-top{
-    margin-top:0;
-    top:0;
-  }
-  .on-bottom{
-    margin-bottom:0;
-  }
-
 
 </style>

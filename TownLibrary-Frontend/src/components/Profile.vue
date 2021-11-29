@@ -11,13 +11,14 @@
         <tr>
           <td style="padding: 10px;">
             <button @click="$router.push('/newacc/offline')" style="margin-bottom: 10px;">Create a new offline member</button> <br>
+            <button v-if="isHeadLibrarian" @click="$router.push('/newacc/librarian')" style="margin-bottom: 10px;">Create a new librarian</button> <br v-if="isHeadLibrarian">
             <button @click="$router.push({ name: 'Create Item' })">Create item</button>
           </td>
         </tr>
       </table>
     </div>
 
-    <div id="create-block" style="width:25%;" v-if="isLibrarian">
+    <div id="create-block" style="width:30%;" v-if="isLibrarian">
       <table id="town-status-block-table">
         <tr style="border-bottom: 2px outset black;">
           <th>Set location status</th>

@@ -1,46 +1,54 @@
 <template>
 	<div id="events">
 		<h1>Events</h1>
-		<br> <br>
 		<div v-if="state === 0">
-			<h2>Create event:</h2>
-			<button @click="$router.push('/create-event')">Create Event</button>
-			<br><br>
-			<h2>Event listing:</h2>
-			<div v-if="isLibrarian">
+
+			<div id="create-block" style="width: 20%;">
 				<table>
 					<tr>
-						<th></th>
-						<th>Name</th>
-						<th>Event ID</th>
+						<th class="title-header">Create event</th>
 					</tr>
-					<tr v-for="event in (events || [])" :key="event.id">
-						<td><button @click="deleteEvent(event.id)">delete</button>
-						<td>{{event.name}}</td>
-						<td>{{event.id}}</td>
+					<tr>
+						<button @click="$router.push('/create-event')">Create Event</button>
 					</tr>
 				</table>
 			</div>
-			<div v-else>
+
+			<div id="create-block" style="width: 25%;">
 				<table>
 					<tr>
-						<th>Name</th>
-						<th>Event ID</th>
+						<th colspan="3" class="title-header">Event listing</th>
+					</tr>
+					<tr v-if="events.length === 0">
+						<label style="color:#DE482B"> There are currently no events in the system. </label>
+					</tr>
+					<tr v-else>
+						<th class="some-header" style="width:33%;">ID</th>
+						<th class="some-header" style="width:57%;">Name</th>
+						<th class="some-header" style="width:auto; padding-right:10px;"></th>
 					</tr>
 					<tr v-for="event in (events || [])" :key="event.id">
-						<td>{{event.name}}</td>
 						<td>{{event.id}}</td>
+						<td>{{event.name}}</td>
+						<td v-if="isLibrarian"><button @click="deleteEvent(event.id)">delete</button></td>
 					</tr>
 				</table>
 			</div>
-			<br><br>
-			<h2>View event details</h2>
-			<input type="text" v-model="eventId" placeholder="Event ID">
-			<br>
-			<button @click="eventDetails(eventId)">Event details</button>
-			<!-- <br>
-			<button @click="$router.push('/')">Home</button> -->
+
+			<div id="create-block" style="width: 20%;">
+				<table>
+					<tr>
+						<th class="title-header">View event details</th>
+					</tr>
+					<tr>
+						<input type="text" v-model="eventId" placeholder="Event ID">
+						<br>
+						<button @click="eventDetails(eventId)">Event details</button>
+					</tr>
+				</table>
+			</div>
 		</div>
+		
 		<div v-if="state === 1">
 			<div v-if="isLibrarian">
 				<h2>Name: {{loadedEvent.name}}</h2>
@@ -165,3 +173,41 @@ export default {
 	}
 }
 </script>
+<style scoped>
+	#create-block{
+		display: block;
+		background-color: #bfbfc1;
+		margin: 0 auto;
+		text-align: center;
+		color:black;
+		border: 3px outset black;
+		border-top: 2px outset white;
+		border-left: 2px outset white;
+		margin-block: 10px;
+	}
+	table{
+		border-collapse: collapse;
+		width: 100%;
+	}
+	.title-header{
+		border-bottom: 2px outset black;
+	}
+	.some-header{
+		text-align: left;
+		padding-left: 10px;
+	}
+	button{
+		margin-block: 10px;
+	}
+	td{
+		text-align: left;
+		padding-left:10px;
+		padding-right:10px;
+	}
+	input{
+		margin-block: 10px;
+		border: 2px outset black;
+		border-right: 2px outset white;
+		border-bottom: 2px outset white;
+	}
+</style>

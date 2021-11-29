@@ -106,13 +106,17 @@ button:disabled{
 table {
   width: 100%
 }
+input:focus{
+  outline:none;
+}
 
 #library-name{
   font-family: 'Fixedsys', Helvetica, Arial, sans-serif;
+  font-size: 30px;
   position:absolute;
-  left:45%; /* CHANGE THIS LATER */
-  right:auto;
-  margin-top: 10px;
+  left:43%; /* CHANGE THIS LATER */
+  right:auto; 
+  margin-top: 5px;
 }
 
 #header-bar{

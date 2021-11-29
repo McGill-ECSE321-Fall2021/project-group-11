@@ -110,70 +110,9 @@
 				</tr>
 			</tbody>
 		</table>
-
-
-		<!-- <table>
-			<tr>
-				<th>ID</th>
-				<th>Title</th>
-				<th>Details</th>
-			</tr>
-			<tr>
-				<td colspan="3"><h4>Archives</h4></td>
-			</tr>
-			<tr v-for="archive in (archives || [])" :key="archive.id">
-				<td>{{ archive.id }}</td>
-				<td>{{ archive.name }}</td>
-				<td>
-					<button @click="viewItem(archive.id, archive.name, 'archive')">
-						View</button>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3"><h4>Newspapers</h4></td>
-			</tr>
-			<tr v-for="newspaper in (newspapers || [])" :key="newspaper.id">
-				<td>{{ newspaper.id }}</td>
-				<td>{{ newspaper.name }}</td>
-				<td>
-					<button @click="viewItem(newspaper.id, newspaper.name, 'newspaper')">
-						View</button>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3"><h4>Books</h4></td>
-			</tr>
-			<tr v-for="book in (books || [])" :key="book.id">
-				<td>{{ book.id }}</td>
-				<td>{{ book.name }}</td>
-				<td>
-					<button @click="viewItem(book.id, book.name, 'book')">
-						View</button>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3"><h4>Movies</h4></td>
-			</tr>
-			<tr v-for="movie in (movies || [])" :key="movie.id">
-				<td>{{ movie.id }}</td>
-				<td>{{ movie.name }}</td>
-				<td>
-					<button @click="viewItem(movie.id, movie.name, 'movie')">
-						View</button>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="3"><h4>Music Albums</h4></td>
-			</tr>
-			<tr v-for="musicalbum in (musicalbums || [])" :key="musicalbum.id">
-				<td>{{ musicalbum.id }}</td>
-				<td>{{ musicalbum.name }}</td>
-				<td>
-					<button @click="viewItem(musicalbum.id, musicalbum.name, 'musicalbum')">
-						View</button>
-				</td>
-			</tr>
-		</table> -->
+		<label v-if="archives.length + newspapers.length + books.length + movies.length + musicalbums.length === 0" style="color:#DE482B"> 
+			There are currently no items in the system.
+		</label> <br>
     <button v-if="isLibrarian"
             @click="$router.push({ name: 'Create Item' })">Add item</button>
 	</div>
