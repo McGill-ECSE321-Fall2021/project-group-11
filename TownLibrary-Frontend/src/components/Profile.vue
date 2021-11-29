@@ -35,6 +35,14 @@
             <button @click="setInTownAffectedUser(false)">Set Out of Town</button>
           </td>
         </tr>
+        <tr>
+          <td style="padding-bottom: 10px;">
+            <button @click="$router.push({name: 'User Transactions',
+                                      params: {
+                                        id: affectedUserId
+                                    }})" class="buttonofblocks">transactions</button>
+          </td>
+        </tr>
       </table>
     </div>
 
@@ -118,12 +126,9 @@
       <button @click="$router.push({name: 'User Transactions',
                                     params: {
                                       id: userId
-                                   }})" class="buttonofblocks">transactions</button> 
+                                   }})" class="buttonofblocks">transactions</button>
       <br>
       <button @click="$router.push({ name:'Personal Information' })" class="buttonofblocks">personal information</button>
-      <br>
-      <button @click="$router.push('')" class="buttonofblocks">event schedule</button>
-      <br>
     </div>
 
   </div>

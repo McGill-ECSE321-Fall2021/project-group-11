@@ -52,6 +52,16 @@ public class EventController {
             return ResponseEntity.ok(users);
     }
     
+    @GetMapping(value={"/users/{id}/events"})
+    public ResponseEntity<?> getUserEvents(
+        @PathVariable("id") int id) {
+            final UserRole user = onlineMemberService.getOnlineMember(id);
+            if (user == null)
+                return ResponseEntity.badRequest().body("NOT-FOUND-USER");
+            final Set<EventDTO> el = eventService.getEventsByUser(user)
+                .stream().map(EventDTO::fromModel).collect(Collectors.toSet());
+            return ResponseEntity.ok().body(el);
+    }
     
     @PostMapping(value = { "/events/{name}", "/events/{name}/"})
     public ResponseEntity<?> createEvent(
