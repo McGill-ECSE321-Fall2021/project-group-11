@@ -30,7 +30,7 @@
 					<tr v-for="event in (events || [])" :key="event.id">
 						<td>{{event.id}}</td>
 						<td>{{event.name}}</td>
-						<td v-if="isLibrarian"><button @click="deleteEvent(event.id)">delete</button></td>
+						<td v-if="isLibrarian"><button @click="deleteEvent(event.id)">Delete</button></td>
 					</tr>
 				</table>
 			</div>
@@ -38,27 +38,41 @@
 			<div id="create-block" style="width: 18%;">
 				<table>
 					<tr>
-						<th class="title-header">View event details</th>
+						<th class="title-header">View Event Details</th>
 					</tr>
 					<tr>
 						<input type="text" v-model="eventId" placeholder="Event ID" size="10" style="margin-inline: 5px;">
-						<button @click="eventDetails(eventId)">view</button>
+						<button @click="eventDetails(eventId)">View</button>
 					</tr>
 				</table>
 			</div>
 		</div>
 
 		<div v-if="state === 1">
-			<div>
-				<h2>Name: {{loadedEvent.name}}</h2>
-				<h2>ID: {{loadedEvent.id}}</h2>
-				<h2>Registered Users IDs: {{loadedEvent.users}}</h2>
-				<br>
-				<input type="text" v-model="userId" placeholder="Online Member ID">
-				<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
-				<button v-if="isLibrarian" @click="removeUserFromEvent(loadedEvent.id, userId)">Remove user from event</button>
-				<br>{{serverResponse}}
-				<button @click="successRedirect()">Return to events</button>
+			<div id="create-block" style="width:25%; padding-block: 10px;">
+				<table>
+					<tr>
+						<th style="border-bottom: 2px outset black;">Event Details</th>
+					</tr>
+					<tr>
+						<label class="info-row">Name: {{loadedEvent.name}}</label> <br>
+						<label class="info-row">ID: {{loadedEvent.id}}</label> <br>
+						<label class="info-row">Registered Users: {{loadedEvent.users.length}}</label>						
+					</tr>
+				</table>
+			</div>
+			<div id="create-block" style="width:20%; padding-block: 10px;">
+				<table>
+					<tr>
+						<th style="border-bottom: 2px outset black;">Event Management</th>
+					</tr>
+					<tr>
+						<input type="text" id="online-member-id" placeholder="Online Member ID"> <br>
+						<button @click="addUserToEvent(loadedEvent.id)" style="margin-inline: 5px;">Add User</button>
+						<button v-if="isLibrarian" @click="removeUserFromEvent(loadedEvent.id)">Remove User</button>
+					</tr>
+					<label style="color:#DE482B">Note: Users must be online members.</label>
+				</table>
 			</div>
 		</div>
 	</div>
@@ -77,7 +91,7 @@ export default {
 	data () {
 		return {
 			state: 0,
-      userId: 0,
+     		userId: 0,
 
 			events: [],
 			eventId: '',
@@ -128,20 +142,42 @@ export default {
 				this.loadedEvent = null
 			}
 		},
-		async addUserToEvent(eventid, userid) {
+		async addUserToEvent(eventid) {
 			try {
-				let response = await AXIOS.post("/events/" + eventid + "/users/" + userid, null)
+				var memberId = document.getElementById('online-member-id').value
+				// console.log(this.userId)
+				// ?? this suddenly stopped throwing an error when we try to add an online member twice???? 
+				// does not update the counter (which is good), but does not go through catch to display error alert
+				let response = await AXIOS.post("/events/" + eventid + "/users/" + memberId, null)
 				this.loadedEvent = response.data
+				window.alert("Successfully registered!")
 			} catch(error) {
 				this.serverResponse = null
+				try{
+					if (memberId !== ""){
+						await AXIOS.get('/online-members/'+memberId)	
+						window.alert("This user has already been registered for this event.")
+					}else {
+						window.alert("Please enter an ID.")
+					}
+					
+				}catch(error){
+					window.alert("ID does not correspond to an online member.")
+				}
 			}
 		},
-		async removeUserFromEvent(eventid, userid) {
+		async removeUserFromEvent(eventid) {
 			try {
-				let response = await AXIOS.delete("/events/" + eventid + "/users/" + userid, null)
+				var memberId = document.getElementById('online-member-id').value
+
+				let response = await AXIOS.delete("/events/" + eventid + "/users/" + memberId, null)
 				this.loadedEvent = response.data
+				// same as above??? tested with timeout to make sure the response goes through
+				window.alert("Successfully removed!")
+
 			} catch(error) {
 				this.serverResponse = null
+				window.alert("ID does not belong to any online members registered to this event.")
 			}
 		},
 		async getEventUsers(eventid) {
@@ -173,7 +209,7 @@ export default {
 		border: 3px outset black;
 		border-top: 2px outset white;
 		border-left: 2px outset white;
-		margin-block: 10px;
+		margin-block: 30px;
 	}
 	table{
 		border-collapse: collapse;
@@ -185,6 +221,16 @@ export default {
 	.some-header{
 		text-align: left;
 		padding-left: 10px;
+	}
+	.info-row{
+		border: 2px outset black;
+		border-right: 2px outset white;
+		border-bottom: 2px outset white;
+		background: white;
+		width: 80%;
+		text-align: left;
+		padding-left: 5px;
+		margin-block: 10px;
 	}
 	button{
 		margin-block: 10px;

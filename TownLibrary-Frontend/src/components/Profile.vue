@@ -18,7 +18,7 @@
       </table>
     </div>
 
-    <div id="create-block" style="width:30%;" v-if="isLibrarian">
+    <div id="create-block" style="width:27%;" v-if="isLibrarian">
       <table id="town-status-block-table">
         <tr style="border-bottom: 2px outset black;">
           <th>Set location status</th>
@@ -38,14 +38,14 @@
       </table>
     </div>
 
-    <div id="create-block" style="width:28%;" v-if="isLibrarian">
+    <div id="create-block" style="width:20%;" v-if="isLibrarian">
       <table id="town-status-block-table">
         <tr style="border-bottom: 2px outset black;">
-          <th>Offline Member Transactions</th>
+          <th>Offline member transactions</th>
         </tr>
         <tr>
           <td style="padding: 10px;">
-            <input autocomplete="off" id="transaction-input" type="text" placeholder="Member ID" style="border: 2px outset black; border-right: 2px outset white; border-bottom: 2px outset white;">
+            <input autocomplete="off" id="transaction-input" type="text" placeholder="Member ID">
             <button @click="checkUserTransactions" class="buttonofblocks" style="width: auto; margin-bottom:10px;">Transactions</button>
           </td>
         </tr>
@@ -217,7 +217,7 @@ export default {
 
   methods: {
     async checkUserTransactions () {
-      
+
       this.affectedUserId = document.getElementById('transaction-input').value;
       if ('' === this.affectedUserId)
         return
@@ -419,5 +419,12 @@ export default {
   }
   .first-col{
     padding-left: 15px;
+  }
+
+  #transaction-input{
+    border: 2px outset black;
+    border-right: 2px outset white;
+    border-bottom: 2px outset white;
+    width: 45%;
   }
 </style>

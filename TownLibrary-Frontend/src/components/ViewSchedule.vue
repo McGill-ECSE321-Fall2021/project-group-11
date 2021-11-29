@@ -79,6 +79,7 @@ export default {
     }
     .overlay{
         background: rgba(0, 0, 0, 0.5);
+        z-index: 10000;
         position: fixed;
         top: 0;
         bottom: 0;
@@ -86,6 +87,7 @@ export default {
         right: 0;
     }
     .modal-card{
+        z-index: 99999999;
         background-color: #bfbfc1;
         border: 5px outset black;
         border-left: 2px outset white;
