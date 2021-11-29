@@ -111,6 +111,18 @@ public class EventService {
     }
 
     /**
+     * Retrieves events by the attendee
+     *
+     * @param attendee The attendee
+     *
+     * @return The set of events
+     */
+    @Transactional
+    public Set<Event> getEventsByUser(UserRole attendee) {
+        return eventRepository.findByUsers(attendee);
+    }
+
+    /**
      * Retrieves all the events in the system
      *
      * @return all the events
