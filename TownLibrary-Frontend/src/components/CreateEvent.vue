@@ -4,11 +4,11 @@
       <h1>Create Event</h1>
 
       <input type="text" v-model="newEvent.name" placeholder="Event Name">
-      <br/><br>
+      
 
       <button @click="createEvent(newEvent)">Create</button><br>
-      Note: events can only be created if you are signed in to an account.
-      <br/><br>
+      Note: Events can only be created if you are signed in to an account.
+      <br/>
       <button @click="$router.push('/events')">View Events</button>
     </div>
 
@@ -68,5 +68,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  button{
+    margin-block: 10px;
+  }
 </style>

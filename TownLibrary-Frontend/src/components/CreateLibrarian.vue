@@ -13,10 +13,9 @@
 
       <table>
         <tr v-for="msg in errorMessages" :key="msg">
-          <td style="color: red">{{ msg }}</td>
+          <td style="color: #DE482B">{{ msg }}</td>
         </tr>
       </table>
-      <br/>
 
       <button :disabled="0 !== errorMessages.length"
               @click="createLibrarian(newLibrarian)">Create New Librarian</button>
@@ -133,5 +132,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  input{
+    margin-block: 2px;
+    border: 2px outset black;
+    border-right: 2px outset white;
+    border-bottom: 2px outset white;
+  }
+  button{
+    margin-block: 5px;
+  }
 </style>

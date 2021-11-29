@@ -14,26 +14,40 @@
             <label class="textbox">  {{ $store.state.loginStatus.userInfo.address }}</label> <br>
             <label class="title"> In Town </label>
             <label class="textbox">  {{ $store.state.loginStatus.userInfo.inTown }} </label> <br>
-            <br>
-
-            <label class="title">Attending Events</label>
+            <br>    
+        </div>
+        <div id="event-block">
+            <table id="event-table">
+                <tr style="text-align:center;">
+                    <th colspan="2" style="border-bottom: 2px outset black;">Attending Events</th>
+                </tr>
+                <tr v-if="null === events">
+                    <td style="color: #DE482B;">Failed to load from server, try again later</td>
+                </tr>
+                <tr v-else>
+                    <th style="padding-left: 10px; width: 35%;">ID</th>
+                    <th style="width:auto;">Name</th>
+                </tr>
+                <tr v-for="event in (events || [])" :key="event.id">
+                    <td style="padding: 10px;">{{event.id}}</td>
+                    <td>{{event.name}}</td>
+                </tr>
+            </table>
+         <!-- <label class="title">Attending Events</label>
             <p v-if="null === events" style="color: #DE482B;">Failed to load from server, try again later</p>
             <table v-if="null !== events">
               <tr>
                 <th>Name</th>
                 <th>Event ID</th>
               </tr>
-              <tr v-for="event in (events || [])">
+              <tr v-for="event in (events || [])" :key="event.id">
                 <td>{{ event.name }}</td>
                 <td>{{ event.id }}</td>
               </tr>
-            </table>
-            <br>
-        </div>
+            </table>     -->
+        </div>    
 
-        <div>
-            <button @click="$router.push('/profile')">back</button>
-        </div>
+        <button @click="$router.push('/profile')">back</button>
 
     </div>
 
@@ -72,6 +86,23 @@ export default {
 </script>
 
 <style scoped>
+
+#event-block{
+    display: block;
+    background: #bfbfc1;
+    width: 25%;
+    border: 5px outset rgb(0,0,0,0.8);
+    border-left: 2px outset white;
+    border-top: 2px outset white;
+    margin: 0 auto;
+    margin-block: 10px;
+    color: black;
+}
+
+#event-table{
+    width:100%;
+    text-align: left;
+}
 
 .title {
     display: block;
