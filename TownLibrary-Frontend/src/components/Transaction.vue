@@ -11,7 +11,10 @@
                     <th>End Date</th>
                     <th colspan="2">Modify</th>
                 </tr>
-                <tr v-for="(transaction, index) in transactions" :key="transaction.id" class="infoheader">
+                <tr v-if="transactions.length === 0" class="type-header">
+                    <td colspan="6" style="color:#de482b;">Currently have no transactions</td>
+                </tr>
+                <tr v-else v-for="(transaction, index) in transactions" :key="transaction.id" class="infoheader">
                     <td >   </td>
                     <td class="info"> {{ transaction.type }} </td>
                     <td class="info"> {{ items[index].name }} </td>

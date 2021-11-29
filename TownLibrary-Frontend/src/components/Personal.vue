@@ -22,7 +22,10 @@
                     <th colspan="2" style="border-bottom: 2px outset black;">Attending Events</th>
                 </tr>
                 <tr v-if="null === events">
-                    <td style="color: #DE482B;">Failed to load from server, try again later</td>
+                    <td style="color: #DE482B;">Failed to load from server, try again later. </td>
+                </tr>
+                <tr v-else-if="events.length === 0">
+                    <td style="color: #DE482B; text-align:center; padding:10px;"> Currently not attending any events. </td>
                 </tr>
                 <tr v-else>
                     <th style="padding-left: 10px; width: 35%;">ID</th>
@@ -33,18 +36,7 @@
                     <td>{{event.name}}</td>
                 </tr>
             </table>
-         <!-- <label class="title">Attending Events</label>
-            <p v-if="null === events" style="color: #DE482B;">Failed to load from server, try again later</p>
-            <table v-if="null !== events">
-              <tr>
-                <th>Name</th>
-                <th>Event ID</th>
-              </tr>
-              <tr v-for="event in (events || [])" :key="event.id">
-                <td>{{ event.name }}</td>
-                <td>{{ event.id }}</td>
-              </tr>
-            </table>     -->
+
         </div>    
 
         <button @click="$router.push('/profile')">back</button>
