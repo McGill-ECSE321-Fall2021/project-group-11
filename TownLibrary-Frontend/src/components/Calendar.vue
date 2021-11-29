@@ -340,27 +340,27 @@ export default {
 
             // this is to sort schedule by day (by storing in object this.schedulesByDay)
             for (var i in this.schedules){
-                switch(this.schedules.at(i).dayOfWeek){
+                switch(this.schedules[i].dayOfWeek){
                     case 'MONDAY':
-                        this.schedulesByDay.MONDAY = this.schedules.at(i)
+                        this.schedulesByDay.MONDAY = this.schedules[i]
                         break
                     case 'TUESDAY':
-                        this.schedulesByDay.TUESDAY = this.schedules.at(i)
+                        this.schedulesByDay.TUESDAY = this.schedules[i]
                         break
                     case 'WEDNESDAY':
-                        this.schedulesByDay.WEDNESDAY = this.schedules.at(i)
+                        this.schedulesByDay.WEDNESDAY = this.schedules[i]
                         break
                     case 'THURSDAY':
-                        this.schedulesByDay.THURSDAY = this.schedules.at(i)
+                        this.schedulesByDay.THURSDAY = this.schedules[i]
                         break
                     case 'FRIDAY':
-                        this.schedulesByDay.FRIDAY = this.schedules.at(i)
+                        this.schedulesByDay.FRIDAY = this.schedules[i]
                         break
                     case 'SATURDAY':
-                        this.schedulesByDay.SATURDAY = this.schedules.at(i)
+                        this.schedulesByDay.SATURDAY = this.schedules[i]
                         break
                     case 'SUNDAY':
-                        this.schedulesByDay.SUNDAY = this.schedules.at(i)
+                        this.schedulesByDay.SUNDAY = this.schedules[i]
                         break
                     default:
                         console.log("uh")   
@@ -424,12 +424,20 @@ export default {
         font-weight: 100;
     }
     input[type='checkbox']{
-        -webkit-appearance: none;
         width:100%;
         height:100%;
         float:left;
         margin: 0 auto;
-
+    }
+    /* special handling for firefox which doesnt display appearance properly */
+    @supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
+      input[type='checkbox']{
+          -webkit-appearance: none;
+          width:100%;
+          height:100%;
+          float:left;
+          margin: 0 auto;
+      }
     }
     input[type='checkbox']:checked{
         background: rgba(255, 217, 4, 0.7);
