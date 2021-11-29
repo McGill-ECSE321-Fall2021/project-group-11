@@ -41,7 +41,7 @@
 						<th class="title-header">View Event Details</th>
 					</tr>
 					<tr>
-						<input type="text" v-model="eventId" placeholder="Event ID" size="10" style="margin-inline: 5px;">
+						<input type="text" v-model="eventId" placeholder="Event ID" size="10" autocomplete="off" style="margin-inline: 5px;">
 						<button @click="eventDetails(eventId)">View</button>
 					</tr>
 				</table>
@@ -67,7 +67,7 @@
 						<th style="border-bottom: 2px outset black;">Event Management</th>
 					</tr>
 					<tr>
-						<input type="text" id="online-member-id" placeholder="Online Member ID"> <br>
+						<input type="text" id="online-member-id" placeholder="Online Member ID" autocomplete="off"> <br>
 						<button @click="addUserToEvent(loadedEvent.id)" style="margin-inline: 5px;">Add User</button>
 						<button v-if="isLibrarian" @click="removeUserFromEvent(loadedEvent.id)">Remove User</button>
 					</tr>

@@ -377,6 +377,7 @@ export default {
         // jquery causes and error, something with import
         // see if this works? 
         //https://stackoverflow.com/questions/659508/how-can-i-shift-select-multiple-checkboxes-like-gmail
+        // lol nvm 
 
     }
 

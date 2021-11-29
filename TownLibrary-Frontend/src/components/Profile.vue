@@ -2,7 +2,8 @@
   <div id="profile">
     <h2>Welcome back, {{ displayName }}!</h2>
 
-
+    <!-- Visible only to head-librarian and librarians -->
+    <!-- To create item, offline members & hire librarians,  -->
     <div id="create-block" v-if="isLibrarian">
       <table id="create-block-table">
         <tr style="border-bottom: 2px outset black;">
@@ -18,6 +19,8 @@
       </table>
     </div>
 
+    <!-- Visible only to head-librarian and librarians -->
+    <!-- Set if member is in town or out of town -->
     <div id="create-block" style="width:27%;" v-if="isLibrarian">
       <table id="town-status-block-table">
         <tr style="border-bottom: 2px outset black;">
@@ -38,6 +41,8 @@
       </table>
     </div>
 
+    <!-- Visible only to head-librarian and librarians -->
+    <!-- Allows librarians to help offline members return/renew items -->
     <div id="create-block" style="width:20%;" v-if="isLibrarian">
       <table id="town-status-block-table">
         <tr style="border-bottom: 2px outset black;">
@@ -52,6 +57,8 @@
       </table>
     </div>
 
+    <!-- Visible only to head-librarian -->
+    <!-- List of librarians (able to fire from here) -->
     <div id="create-block" style="width:45%;" v-if="isHeadLibrarian">
       <table id="librarian-block-table">
         <tr style="border-bottom: 2px outset black;">
@@ -79,6 +86,8 @@
       <label v-if="librarians === null" style="color:#DE482B">Failed to load from server, try again later by clicking on refresh</label>
     </div>
 
+    <!-- Visible only to head-librarian -->
+    <!-- All schedules -->
     <div id="create-block" style="width:33%;" v-if="isHeadLibrarian">
       <table id="schedule-block-table">
         <tr style="border-bottom: 2px outset black;">
@@ -108,6 +117,9 @@
         </tr>
       </table>
     </div>
+
+    <!-- Visible to librarian (not head-librarian) -->
+    <!-- Librarian's own schedule + library's -->
     <div id="create-block" style="width:15%;" v-else-if="isLibrarian">
       <table>
         <tr style="border-bottom: 2px outset black;">
@@ -127,6 +139,7 @@
       </table>
     </div>
 
+    <!-- Online member profile -->
     <div v-if="isOnlineMember" id="buttonblock">
       <br>
       <button @click="$router.push({name: 'User Transactions',

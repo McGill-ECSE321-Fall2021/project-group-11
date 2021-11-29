@@ -1,4 +1,5 @@
 <template>
+    <!-- button to access schedule + modal -->
     <div id="view-schedule">
         <button @click="open=true">View schedule</button>
         <div class="modal-block" v-if="open">
@@ -46,17 +47,6 @@ export default {
             open: false,  
         }
     },
- 
-    // computed: {
-    //     isHeadLibrarian(){
-    //         switch (this.loginStatus.userType) {
-    //             default:
-    //                 return false
-    //             case 'head-librarian':
-    //                 return true
-    //         }
-    //     }, 
-    // }
 }
 
 </script>
@@ -113,9 +103,8 @@ export default {
         font-weight:300;
         user-select: none;
         color:black;
-        /* border-bottom: 1px solid black; */
+  
     }
-    /* table, th, td{border:1px solid black;} */
     
     
 </style>
