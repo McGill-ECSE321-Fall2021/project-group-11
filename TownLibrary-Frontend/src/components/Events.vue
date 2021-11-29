@@ -142,6 +142,7 @@ export default {
 				this.loadedEvent = null
 			}
 		},
+		// changed params, because there was a weird behaviour with the text input boxes
 		async addUserToEvent(eventid) {
 			try {
 				var memberId = document.getElementById('online-member-id').value
@@ -167,6 +168,7 @@ export default {
 				}
 			}
 		},
+		// same as add
 		async removeUserFromEvent(eventid) {
 			try {
 				var memberId = document.getElementById('online-member-id').value
