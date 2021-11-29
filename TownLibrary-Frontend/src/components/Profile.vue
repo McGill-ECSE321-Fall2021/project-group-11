@@ -42,11 +42,11 @@
     </div>
 
     <!-- Visible only to head-librarian and librarians -->
-    <!-- Allows librarians to help offline members return/renew items -->
+    <!-- Allows librarians to help members return/renew items -->
     <div id="create-block" style="width:20%;" v-if="isLibrarian">
       <table id="town-status-block-table">
         <tr style="border-bottom: 2px outset black;">
-          <th>Offline member transactions</th>
+          <th>Member transactions</th>
         </tr>
         <tr>
           <td style="padding: 10px;">
@@ -242,7 +242,7 @@ export default {
         try {
           await AXIOS.get('/offline-members/'+ this.affectedUserId)
         } catch (error) {
-          alert('Member with that id does not exist')
+          alert('Member with that ID does not exist')
           return
         }
       }
