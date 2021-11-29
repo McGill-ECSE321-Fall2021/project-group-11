@@ -235,18 +235,25 @@ export default {
       if ('' === this.affectedUserId)
         return
 
-      try{
-        // this fails if offline member does not exist
-        await AXIOS.get('/offline-members/'+ this.affectedUserId)
-        
-        this.$router.push({name: 'User Transactions',
+      // check if it's an online or offline member
+      try {
+        await AXIOS.get('/online-members/'+ this.affectedUserId)
+      } catch (error) {
+        try {
+          await AXIOS.get('/offline-members/'+ this.affectedUserId)
+        } catch (error) {
+          alert('Member with that id does not exist')
+          return
+        }
+      }
+
+      // reaching this point means it's a valid member id
+      this.$router.push({
+        name: 'User Transactions',
         params: {
           id: this.affectedUserId
-      }})
-      } catch (error){
-        alert("Offline member with that id does not exist.")
-      }
-    
+        }
+      })
     },
 
     doLogout () {
