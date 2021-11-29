@@ -37,10 +37,7 @@
         </tr>
         <tr>
           <td style="padding-bottom: 10px;">
-            <button @click="if ('' !== affectedUserId) $router.push({name: 'User Transactions',
-                                      params: {
-                                        id: affectedUserId
-                                    }})" class="buttonofblocks">transactions</button>
+            <button @click="checkUserTransactions" class="buttonofblocks">transactions</button>
           </td>
         </tr>
       </table>
@@ -210,6 +207,16 @@ export default {
   },
 
   methods: {
+    checkUserTransactions () {
+      if ('' === this.affectedUserId)
+        return
+
+      this.$router.push({name: 'User Transactions',
+        params: {
+          id: this.affectedUserId
+      }})
+    },
+
     doLogout () {
       this.$store.commit('logout')
       this.$router.push('/login')
