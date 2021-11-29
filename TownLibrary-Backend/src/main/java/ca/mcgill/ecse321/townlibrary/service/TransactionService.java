@@ -19,6 +19,16 @@ public class TransactionService {
 	@Autowired 
 	ItemRepository itemRepository;
 
+	/**
+	 * Creates a new transaction from the specified arguments
+	 * @param start Start Date
+	 * @param end	End Date
+	 * @param user	User
+	 * @param type	Transaction Type
+	 * @return The newly created Transaction
+	 * 
+	 * @throws IllegalArgumentException Parameter Checks fail
+	 */
 	@Transactional
 	public Transaction createTransaction(Timestamp start, Timestamp end, UserRole user, TransactionType type) {
 
@@ -53,7 +63,13 @@ public class TransactionService {
 		return transaction;
 	}
 
-	
+	/**
+	 * Returns the transaction with the given id
+	 * @param id
+	 * @return The transaction with the specified id
+	 * 
+	 * @throws IllegalArgumentException Id is not valid or the transaction does not exist
+	 */
 	@Transactional
    public Transaction getTransaction(int id) {
 		if (id < 0) {
@@ -69,6 +85,13 @@ public class TransactionService {
 	    }
 		return transactionRepository.findByUserRole(user);
 	}
+	/**
+	 *  Renews the given transaction for an additional 2 weeks.
+	 * @param transaction
+	 * @return The updated transaction
+	 * 
+	 * @throws IllegalArgumentException Request is made outside of the alloted timeframe
+	 */
 
 	@Transactional
 	public Transaction renewTransaction(Transaction transaction){
@@ -83,6 +106,14 @@ public class TransactionService {
 
 		return transaction;
 	}
+	/**
+	 * Deletes a transaction with the specified id
+	 * @param transactionId
+	 * @return True if the transaction was deleted
+	 * 
+	 * @throws IllegalArgumentException	Transaction does not exist or the request is made outside of 
+	 * the alotted timeframe.
+	 */
 	@Transactional
 	public boolean returnTransaction(Integer transactionId){
 		final Transaction transaction = this.transactionRepository.findById(transactionId).orElseThrow(() ->
