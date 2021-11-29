@@ -89,7 +89,7 @@ export default {
                 let response = await AXIOS.put('/transactions/' + id + '/' + transaction.id , null, {})
                 this.reloadTransactions(id)
             } catch (error) {
-                this.errorTransaction = error.response.status
+                this.errorTransaction = 'Renewals are to be requested within 7 days of the end'
             }
         },
 
@@ -98,7 +98,7 @@ export default {
                 let response = await AXIOS.delete('/transactions/' + id + '/' + transaction.id , null)
                 this.reloadTransactions(id)
             } catch (error) {
-                this.errorTransaction = error.response.status
+                this.errorTransaction = 'Cannot Return'
             }
         },
         fromUTCtoString(time){
