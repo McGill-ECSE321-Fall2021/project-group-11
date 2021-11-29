@@ -13,11 +13,11 @@ Members: James Chau, Paul Teng, Jericho Adalin, Loc Tran, Shu Tian \
 Overview:
 | Names :shipit:  | Role :trollface:        | D1 | D2 | D3 | D4 |
 |-----------------|-------------------------|----|----|----|----|
-| James Chau      | Meeting lead            |17h |22h |    |    |    
-| Paul Teng       | Build system manager    |16h |20h |    |    |
-| Jericho Adalin  | Facilitator             |14h |14h |    |    |    
-| Loc Tran        | Time-keeper             |14h |13h |    |    |
-| Shu Tian        | Documentation manager   |15h |25h |    |    |
+| James Chau      | Meeting lead            |17h |22h |45h |    |    
+| Paul Teng       | Build system manager    |16h |20h |30h |    |
+| Jericho Adalin  | Facilitator             |14h |14h |32h |    |    
+| Loc Tran        | Time-keeper             |14h |13h |32h |    |
+| Shu Tian        | Documentation manager   |15h |25h |33h |    |
 
 D1-4 Represents individual efforts (in hours) for each deliverable, including team meetings.
 
