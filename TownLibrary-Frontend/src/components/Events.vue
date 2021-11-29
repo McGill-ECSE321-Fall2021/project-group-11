@@ -152,6 +152,7 @@ export default {
 				this.loadedEvent = response.data
 				window.alert("Successfully registered!")
 			} catch(error) {
+				window.alert("This user does not exist.")
 				this.serverResponse = null
 				try{
 					if (memberId !== ""){
@@ -176,6 +177,7 @@ export default {
 				window.alert("Successfully removed!")
 
 			} catch(error) {
+				window.alert("This user does not exist.")
 				this.serverResponse = null
 				window.alert("ID does not belong to any online members registered to this event.")
 			}
