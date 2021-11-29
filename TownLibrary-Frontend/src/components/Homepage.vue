@@ -5,7 +5,6 @@
     <form autocomplete="off">
     <img src="../assets/test.png" id="logo">
     <div class="search">
-      <!-- <input type="text" class="search-bar" placeholder="Search an item by name..." size="50"> -->
       <input id="search-input" list="items" placeholder="Search an item by name..." size="46">
       <datalist id="items">
         <option v-for="archive in this.archives" :key="archive.id" :value="'ARCHIVE'+': '+archive.name"></option>
@@ -19,21 +18,6 @@
       <view-schedule :login-status="$store.state.loginStatus" :entityId="0"></view-schedule>
 
     </div>
-    <!-- <h1>Welcome</h1> <br>
-
-    <h3>Item catalogue</h3>
-    <button @click="$router.push({name:'Browse Item',
-                                  params: {userId: userId}})">Items</button>
-    <br><br>
-
-    <h3>Events</h3>
-    <button @click="$router.push('/events')">Events</button>
-    <br><br>
-
-    <h3>Log in</h3>
-    <p>To book items or events, you need to sign in to your account</p>
-    <button @click="$router.push('/profile')">Profile</button>
-    <button @click="$router.push('/profile')">Sign In</button> -->
     </form>
   </div>
   </div>
@@ -201,7 +185,6 @@ export default {
     height:100vh;
     width:100%;
     background-image: url("../assets/test-background.jpg");
-      /* background-color: red; */
   }
 
   #logo{
