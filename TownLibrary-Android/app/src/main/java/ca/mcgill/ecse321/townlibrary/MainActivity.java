@@ -2,8 +2,10 @@ package ca.mcgill.ecse321.townlibrary;
 
 import android.os.Bundle;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -18,6 +20,11 @@ import ca.mcgill.ecse321.townlibrary.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/**
+ * Code for the app itself.
+ *
+ * This sets the hamburger menus and the top level navigations.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
@@ -33,16 +40,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        appBarConfiguration = new AppBarConfiguration
+                .Builder(R.id.ProfileFragment, R.id.CreditsFragment)
+                .setOpenableLayout(binding.drawerLayout)
+                .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
     @Override
@@ -61,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Snackbar.make(binding.getRoot(), "Currently nothing to set", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            return true;
+        }
+        if (id == R.id.action_credits) {
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.CreditsFragment);
             return true;
         }
 
