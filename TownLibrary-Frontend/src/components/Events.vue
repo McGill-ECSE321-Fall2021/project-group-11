@@ -3,13 +3,13 @@
 		<h1>Events</h1>
 		<div v-if="state === 0">
 
-			<div id="create-block" style="width: 20%;">
+			<div id="create-block" style="width: 10%;">
 				<table>
 					<tr>
 						<th class="title-header">Create event</th>
 					</tr>
 					<tr>
-						<button @click="$router.push('/create-event')">Create Event</button>
+						<button @click="$router.push('/create-event')">Create</button>
 					</tr>
 				</table>
 			</div>
@@ -35,40 +35,29 @@
 				</table>
 			</div>
 
-			<div id="create-block" style="width: 20%;">
+			<div id="create-block" style="width: 18%;">
 				<table>
 					<tr>
 						<th class="title-header">View event details</th>
 					</tr>
 					<tr>
-						<input type="text" v-model="eventId" placeholder="Event ID">
-						<br>
-						<button @click="eventDetails(eventId)">Event details</button>
+						<input type="text" v-model="eventId" placeholder="Event ID" size="10" style="margin-inline: 5px;">
+						<button @click="eventDetails(eventId)">view</button>
 					</tr>
 				</table>
 			</div>
 		</div>
-		
+
 		<div v-if="state === 1">
-			<div v-if="isLibrarian">
+			<div>
 				<h2>Name: {{loadedEvent.name}}</h2>
 				<h2>ID: {{loadedEvent.id}}</h2>
 				<h2>Registered Users IDs: {{loadedEvent.users}}</h2>
 				<br>
 				<input type="text" v-model="userId" placeholder="Online Member ID">
 				<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
-				<button @click="removeUserFromEvent(loadedEvent.id, userId)">Remove user from event</button>
+				<button v-if="isLibrarian" @click="removeUserFromEvent(loadedEvent.id, userId)">Remove user from event</button>
 				<br>{{serverResponse}}
-				<button @click="successRedirect()">Return to events</button>
-			</div>
-			<div v-else>
-				<h2>Name: {{loadedEvent.name}}</h2>
-				<h2>ID: {{loadedEvent.id}}</h2>
-				<h2>Registered Users IDs: {{loadedEvent.users}}</h2>
-				<br>
-				<input type="text" v-model="userId" placeholder="Online Member ID">
-				<button @click="addUserToEvent(loadedEvent.id, userId)">Add user to event</button>
-				<br>
 				<button @click="successRedirect()">Return to events</button>
 			</div>
 		</div>
