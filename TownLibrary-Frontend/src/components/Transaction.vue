@@ -11,7 +11,7 @@
                     <th>End Date</th>
                     <th colspan="2">Modify</th>
                 </tr>
-                <tr v-if="transactions.length === 0" class="type-header">
+                <tr v-if="!hasTransactions" class="type-header">
                     <td colspan="6" style="color:#de482b;">Currently have no transactions</td>
                 </tr>
                 <tr v-else v-for="(transaction, index) in transactions" :key="transaction.id" class="infoheader">
@@ -60,7 +60,18 @@ export default {
     created: function() {
         this.reloadTransactions(this.$route.params.id)
     },
+    computed: {
+      hasTransactions () {
+        if (!this.transactions || this.transactions.length === 0)
+          return false
 
+        for (let index in this.transactions)
+          if (this.items[index])
+            return true
+
+        return false
+      }
+    },
     methods: {
         async reloadTransactions(id) {
             try {
