@@ -15,12 +15,12 @@
                     <td colspan="6" style="color:#de482b;">Currently have no transactions</td>
                 </tr>
                 <tr v-else v-for="(transaction, index) in transactions" :key="transaction.id" class="infoheader">
-                    <td >   </td>
-                    <td class="info"> {{ transaction.type }} </td>
-                    <td class="info"> {{ items[index].name }} </td>
-                    <td class="info"> {{ fromUTCtoString(transaction.startDate)}} </td>
-                    <td class="info"> {{ fromUTCtoString(transaction.endDate) }} </td>
-                    <td class="info">
+                    <td v-if="items[index]" >   </td>
+                    <td v-if="items[index]" class="info"> {{ transaction.type }} </td>
+                    <td v-if="items[index]" class="info"> {{ items[index].name }} </td>
+                    <td v-if="items[index]" class="info"> {{ fromUTCtoString(transaction.startDate)}} </td>
+                    <td v-if="items[index]" class="info"> {{ fromUTCtoString(transaction.endDate) }} </td>
+                    <td v-if="items[index]" class="info">
                         <button class='modify'
                         @click="renewItem(transaction,$route.params.id)">Renew</button>
                         <button class='modify'
@@ -83,6 +83,9 @@ export default {
                 let response = await  AXIOS.get('/' + transaction.type + '/transactions/' + transaction.id)
                 this.items[index] = response.data
             } catch (error) {
+                if (error.response && error.response.data === '')
+                  // happens because item doesn't have an item associated to it
+                  return
                 this.errorTransaction = error
             }
 
