@@ -6,27 +6,125 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
-    <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="340dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="244dp"
-        android:text="@string/action_logout"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.492"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
-        android:id="@+id/textViewHeader"
+        android:id="@+id/textViewPersonalHeader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="104dp"
-        android:text="@string/profile_greeter"
-        android:textSize="34sp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
+        android:text="@string/header_personal"
+        android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewUserIdTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="116dp"
+        android:text="@string/user_id"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewNameTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_full_name"
+        app:layout_constraintStart_toStartOf="@+id/textViewUserId"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserId" />
+
+    <EditText
+        android:editable="false"
+        android:id="@+id/textViewUserId"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="none"
+        app:layout_constraintStart_toStartOf="@+id/textViewUserIdTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewUserIdTitle"
+        tools:ignore="Deprecated" />
+
+    <EditText
+        android:editable="false"
+        android:id="@+id/textViewName"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:ems="10"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="@+id/textViewUserId"
+        app:layout_constraintStart_toStartOf="@+id/textViewNameTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNameTitle"
+        tools:ignore="Deprecated" />
+
+    <TextView
+        android:id="@+id/textViewEmailTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_email"
+        app:layout_constraintStart_toStartOf="@+id/textViewName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewName" />
+
+    <EditText
+        android:editable="false"
+        android:id="@+id/textViewEmail"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:ems="10"
+        android:inputType="none"
+        app:layout_constraintStart_toStartOf="@+id/textViewEmailTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmailTitle"
+        tools:ignore="Deprecated" />
+
+    <TextView
+        android:id="@+id/textViewAddressTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/hint_address"
+        app:layout_constraintStart_toStartOf="@+id/textViewEmail"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmail" />
+
+    <EditText
+        android:editable="false"
+        android:id="@+id/textViewAddress"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:ems="10"
+        android:inputType="none"
+        app:layout_constraintStart_toStartOf="@+id/textViewAddressTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddressTitle"
+        tools:ignore="Deprecated" />
+    <EditText
+        android:editable="false"
+        android:id="@+id/textViewTownStatus"
+        android:layout_width="340dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="none"
+        app:layout_constraintEnd_toEndOf="@+id/textViewAddress"
+        app:layout_constraintStart_toStartOf="@+id/textViewTownStatusTitle"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTownStatusTitle"
+        tools:ignore="Deprecated" />
+
+    <TextView
+        android:id="@+id/textViewTownStatusTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/town_status"
+        app:layout_constraintStart_toStartOf="@+id/textViewAddress"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAddress" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="textViewUserId,textViewAddress,textViewNameTitle,textViewName,textViewTownStatusTitle,textViewUserIdTitle,textViewTownStatus,textViewEmail,textViewAddressTitle,textViewEmailTitle" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

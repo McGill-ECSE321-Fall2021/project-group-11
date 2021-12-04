@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.townlibrary;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,11 @@ public class PersonalFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO:
+        binding.textViewUserId.setText(LoginStatus.INSTANCE.getUserId().toString());
+        binding.textViewName.setText(LoginStatus.INSTANCE.getUsername());
+        binding.textViewAddress.setText(LoginStatus.INSTANCE.getAddress());
+        binding.textViewEmail.setText(LoginStatus.INSTANCE.getEmailAddress());
+        binding.textViewTownStatus.setText(LoginStatus.INSTANCE.getInTown().toString());
     }
 
     @Override

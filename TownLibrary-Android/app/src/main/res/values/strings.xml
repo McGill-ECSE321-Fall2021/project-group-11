@@ -20,7 +20,9 @@
     <string name="action_transaction">Transactions</string>
     <string name="action_personal">Personal Information</string>
     <string name="action_back">Go back</string>
-
+    <string name="header_personal">Account Information</string>
+    <string name="user_id">User ID</string>
+    <string name="town_status">In Town</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="hint_full_name">Full Name</string>
