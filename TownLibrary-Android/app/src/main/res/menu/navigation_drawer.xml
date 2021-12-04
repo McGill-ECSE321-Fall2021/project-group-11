@@ -7,4 +7,10 @@
     <item
         android:id="@id/CreditsFragment"
         android:title="@string/action_credits" />
+
+    <item
+        android:id="@id/ScheduleFragment"
+        android:title="Schedule" />
+
+
 </menu>

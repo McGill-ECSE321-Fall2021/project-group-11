@@ -26,6 +26,18 @@
     <string name="hint_email">Email</string>
     <string name="hint_address">Address</string>
 
+    <!-- Used for schedule fragment -->
+    <string-array name="day_header">
+        <item></item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
+
     <string name="profile_greeter">Welcome back, %1$s!</string> <!-- name is filled in -->
 
     <string name="hint_account_support">
