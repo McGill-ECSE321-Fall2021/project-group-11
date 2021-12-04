@@ -42,9 +42,17 @@
         tools:layout="@layout/fragment_credits" />
 
     <fragment
+
         android:id="@+id/ScheduleFragment"
         android:name="ca.mcgill.ecse321.townlibrary.ScheduleFragment"
         android:label="Schedule"
         tools:layout="@layout/fragment_schedule" />
+
+    <fragment
+        android:id="@+id/EventsFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.EventsFragment"
+        android:label="Events"
+        tools:layout="@layout/fragment_events" />
+
 
 </navigation>
