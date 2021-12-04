@@ -5,7 +5,7 @@
         android:title="@string/action_profile" />
 
     <item
-        android:id="@id/ArchiveFragment"
+        android:id="@id/ItemBrowseFragment"
         android:title="@string/action_browse" />
 
     <item

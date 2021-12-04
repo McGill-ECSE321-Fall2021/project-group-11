@@ -1,37 +1,24 @@
 package ca.mcgill.ecse321.townlibrary;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import androidx.fragment.app.ListFragment;
-
-
-import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.util.ArrayList;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.fragment.NavHostFragment;
 
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentBrowseBinding;
-import cz.msebera.android.httpclient.Header;
 
 /**
- * Code for the browse item fragment, corresponds to layout fragment_browse.xml.
+ * Code for the browse item fragment - item type picker view, corresponds to layout fragment_browse.xml.
  */
-public class ItemBrowseFragment extends ListFragment {
+public class ItemBrowseFragment extends Fragment {
 
     private FragmentBrowseBinding binding;
-    private String error;
 
     @Nullable
     @Override
@@ -44,32 +31,13 @@ public class ItemBrowseFragment extends ListFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<String> items = new ArrayList<String>();
-
-        HttpUtils.get("/archives", new RequestParams(), new JsonHttpResponseHandler() {
+        binding.buttonArchives.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(int statusCode, Header[] Header, JSONArray response) {
-                Log.d("response", response.toString());
-
-                try {
-                    for (int i=0; i<response.length(); i++) {
-                        int itemId = response.getJSONObject(i).getInt("id");
-                        String itemName = response.getJSONObject(i).getString("name");
-                        //Log.d("id", String.valueOf(itemId));
-                        //Log.d("name", itemName);
-                        items.add(String.valueOf(itemId) + " - " + itemName);
-
-                        Log.d("items array", items.toString());
-                        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
-                        ListView listView = (ListView) binding.list;
-                        listView.setAdapter(itemsAdapter);
-                    }
-                } catch (JSONException e) {
-                    error += e.getMessage();
-                }
+            public void onClick(View v) {
+                NavHostFragment.findNavController(ItemBrowseFragment.this)
+                        .navigate(R.id.action_ItemBrowseFragment_to_ArchiveFragment);
             }
         });
-
     }
 
     @Override

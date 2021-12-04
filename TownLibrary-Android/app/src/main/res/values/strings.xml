@@ -5,7 +5,8 @@
     <string name="LoginFragment">Login</string>
     <string name="SignupFragment">Sign Up</string>
     <string name="ProfileFragment">Profile</string>
-    <string name="ArchiveFragment">Browse Items</string>
+    <string name="ItemBrowseFragment">Browse Items</string>
+    <string name="ArchiveFragment">Archives</string>
     <string name="CreditsFragment">Credits</string>
 
     <!-- Used for navigation (see the xml files under menu) -->
@@ -20,6 +21,12 @@
     <string name="action_signup">Sign Up</string>
     <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
+
+    <string name="action_archives">Archives</string>
+    <string name="action_newspapers">Newspapers</string>
+    <string name="action_books">Books</string>
+    <string name="action_movies">Movies</string>
+    <string name="action_music_albums">Music Albums</string>
 
     <string name="action_back">Go back</string>
 

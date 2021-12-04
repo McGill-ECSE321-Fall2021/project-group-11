@@ -22,7 +22,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import ca.mcgill.ecse321.townlibrary.databinding.FragmentBrowseBinding;
+import ca.mcgill.ecse321.townlibrary.databinding.FragmentArchiveBinding;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -30,13 +30,13 @@ import cz.msebera.android.httpclient.Header;
  */
 public class ArchiveFragment extends ListFragment {
 
-    private FragmentBrowseBinding binding;
+    private FragmentArchiveBinding binding;
     private String error;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentBrowseBinding.inflate(inflater, container, false);
+        binding = FragmentArchiveBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
