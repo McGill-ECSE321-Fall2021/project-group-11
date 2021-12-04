@@ -41,23 +41,39 @@ public class TransactionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         final ListView list = binding.list;
         ArrayList<ArrayList<String>> arrayList = new ArrayList<>();
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, arrayList){
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, arrayList){
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
-                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                ArrayList<String> transaction = ((ArrayList<String>) list.getItemAtPosition(position));
+                TextView text1 = view.findViewById(android.R.id.text1);
+                TextView text2 = view.findViewById(android.R.id.text2);
+                ArrayList<String> transaction = (ArrayList<String>) list.getItemAtPosition(position);
                 String id = transaction.get(0);
                 String type = transaction.get(1);
 
-                
-
+                final String[] item = new String[1];
+                HttpUtils.get("/" + type + "/transactions/" + id, new RequestParams(), new JsonHttpResponseHandler(){
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                        try {
+                            item[0] = response.getString("name");
+                        } catch (JSONException e) {
+                            Snackbar.make(binding.getRoot(), "Something went wrong and it's not your fault!\nFile a bug report!", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
+                        String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
+                        Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                });
 
                 type = type.substring(0, type.length()-1).toUpperCase();
-                String startDate = new Date(Long.valueOf(transaction.get(2))).toString();
+                String startDate = new Date(Long.parseLong(transaction.get(2))).toString();
                 String formattedDate = startDate.substring(8,10) + " " + startDate.substring(4,7) + "," + startDate.substring(startDate.length()-5) ;
-                String description = type + "\t" + formattedDate;
+                String description = type + ":" + item[0] +"\t" + formattedDate;
                 text1.setText(id);
                 text2.setText(description);
                 return view;
