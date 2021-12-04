@@ -5,6 +5,10 @@
         android:title="@string/action_profile" />
 
     <item
+        android:id="@id/ArchiveFragment"
+        android:title="@string/action_browse" />
+
+    <item
         android:id="@id/CreditsFragment"
         android:title="@string/action_credits" />
 </menu>

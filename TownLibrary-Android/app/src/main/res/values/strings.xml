@@ -5,12 +5,15 @@
     <string name="LoginFragment">Login</string>
     <string name="SignupFragment">Sign Up</string>
     <string name="ProfileFragment">Profile</string>
+    <string name="ArchiveFragment">Browse Items</string>
     <string name="CreditsFragment">Credits</string>
 
     <!-- Used for navigation (see the xml files under menu) -->
     <string name="action_settings">Settings</string>
     <string name="action_credits">Credits</string>
     <string name="action_profile">Profile</string>
+    <string name="action_browse">Browse Items</string>
+
 
     <!-- Used in fragments for displaying purposes -->
 
