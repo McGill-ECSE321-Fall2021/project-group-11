@@ -1,20 +1,15 @@
 package ca.mcgill.ecse321.townlibrary;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -27,11 +22,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentTransactionBinding;
 import cz.msebera.android.httpclient.Header;
 
-@SuppressWarnings("unchecked")
 public class TransactionFragment extends Fragment {
 
     private FragmentTransactionBinding binding;
@@ -40,57 +35,41 @@ public class TransactionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final ListView list = binding.list;
-        ArrayList<ArrayList<String>> arrayList = new ArrayList<>();
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, arrayList){
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View view = super.getView(position, convertView, parent);
-                TextView text1 = view.findViewById(android.R.id.text1);
-                TextView text2 = view.findViewById(android.R.id.text2);
-                ArrayList<String> transaction = (ArrayList<String>) list.getItemAtPosition(position);
-                String id = transaction.get(0);
-                String type = transaction.get(1);
+        ArrayList<List<String>> transactions = new ArrayList<>();
+        ArrayAdapter<List<String>> arrayAdapter = new TransactionListAdapter(this.getActivity(), R.layout.fragment_transaction_list , transactions);
 
-                final String[] item = new String[1];
-                HttpUtils.get("/" + type + "/transactions/" + id, new RequestParams(), new JsonHttpResponseHandler(){
-                    @Override
-                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                        try {
-                            item[0] = response.getString("name");
-                        } catch (JSONException e) {
-                            Snackbar.make(binding.getRoot(), "Something went wrong and it's not your fault!\nFile a bug report!", Snackbar.LENGTH_LONG)
-                                    .setAction("Action", null).show();
-                        }
-                    }
-                    @Override
-                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
-                        String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
-                        Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
-                    }
-                });
-
-                type = type.substring(0, type.length()-1).toUpperCase();
-                String startDate = new Date(Long.parseLong(transaction.get(2))).toString();
-                String formattedDate = startDate.substring(8,10) + " " + startDate.substring(4,7) + "," + startDate.substring(startDate.length()-5) ;
-                String description = type + ":" + item[0] +"\t" + formattedDate;
-                text1.setText(id);
-                text2.setText(description);
-                return view;
-            }
-        };
         HttpUtils.get("/transactions/" + LoginStatus.INSTANCE.getUserId(), new RequestParams(), new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response){
                 for (int i = 0; i < response.length(); i++){
                     try {
-                        ArrayList<String> temp = new ArrayList<>();
                         JSONObject entry = response.getJSONObject(i);
-                        temp.add(entry.getString("id"));
-                        temp.add(entry.getString("type"));
-                        temp.add(entry.getString("startDate"));
 
-                        arrayList.add(i, temp);
+                        // Build sudo DTO from JSONObject
+                        final String id = entry.getString("id");
+                        final String type = entry.getString("type");
+                        final String startDate = entry.getString("startDate");
+
+                        HttpUtils.get("/" + type + "/transactions/" + id, new RequestParams(), new JsonHttpResponseHandler(){
+                            @Override
+                            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                try {
+                                    final String itemName = response.getString("name");
+
+                                    transactions.add(Arrays.asList(id, type, startDate, itemName));
+                                    arrayAdapter.notifyDataSetChanged();
+                                } catch (JSONException e) {
+                                    Snackbar.make(binding.getRoot(), "Something went wrong and it's not your fault!\nFile a bug report!", Snackbar.LENGTH_LONG)
+                                            .setAction("Action", null).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
+                                // this happens for "ghost transactions", (which returns empty
+                                // response string)
+                            }
+                        });
                     } catch (JSONException e) {
                         Snackbar.make(binding.getRoot(), "Something went wrong and it's not your fault!\nFile a bug report!", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
@@ -107,13 +86,6 @@ public class TransactionFragment extends Fragment {
             }
         });
         list.setAdapter(arrayAdapter);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String clickedItem=list.getItemAtPosition(position).toString();
-                Toast.makeText(TransactionFragment.this.getActivity(),clickedItem,Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     @Override
@@ -128,4 +100,5 @@ public class TransactionFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
 }
