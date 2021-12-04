@@ -31,7 +31,7 @@ import java.util.Date;
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentTransactionBinding;
 import cz.msebera.android.httpclient.Header;
 
-
+@SuppressWarnings("unchecked")
 public class TransactionFragment extends Fragment {
 
     private FragmentTransactionBinding binding;
