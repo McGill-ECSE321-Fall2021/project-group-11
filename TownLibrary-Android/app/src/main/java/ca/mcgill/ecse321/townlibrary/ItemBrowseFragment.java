@@ -38,6 +38,38 @@ public class ItemBrowseFragment extends Fragment {
                         .navigate(R.id.action_ItemBrowseFragment_to_ArchiveFragment);
             }
         });
+
+        binding.buttonNewspapers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(ItemBrowseFragment.this)
+                        .navigate(R.id.action_ItemBrowseFragment_to_NewspaperFragment);
+            }
+        });
+
+        binding.buttonBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(ItemBrowseFragment.this)
+                        .navigate(R.id.action_ItemBrowseFragment_to_BookFragment);
+            }
+        });
+
+        binding.buttonMovies.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(ItemBrowseFragment.this)
+                        .navigate(R.id.action_ItemBrowseFragment_to_MovieFragment);
+            }
+        });
+
+        binding.buttonMusicAlbums.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(ItemBrowseFragment.this)
+                        .navigate(R.id.action_ItemBrowseFragment_to_MusicAlbumFragment);
+            }
+        });
     }
 
     @Override

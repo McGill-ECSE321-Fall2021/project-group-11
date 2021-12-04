@@ -26,9 +26,9 @@ import ca.mcgill.ecse321.townlibrary.databinding.FragmentArchiveBinding;
 import cz.msebera.android.httpclient.Header;
 
 /**
- * Code for the archive fragment, corresponds to layout fragment_archive.xml.
+ * Code for the book fragment, corresponds to layout fragment_book.xml.
  */
-public class ArchiveFragment extends ListFragment {
+public class BookFragment extends ListFragment {
 
     private FragmentArchiveBinding binding;
     private String error;
@@ -46,7 +46,7 @@ public class ArchiveFragment extends ListFragment {
 
         ArrayList<String> items = new ArrayList<String>();
 
-        HttpUtils.get("/archives", new RequestParams(), new JsonHttpResponseHandler() {
+        HttpUtils.get("/books", new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] Header, JSONArray response) {
                 Log.d("response", response.toString());

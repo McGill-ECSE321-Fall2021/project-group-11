@@ -7,6 +7,10 @@
     <string name="ProfileFragment">Profile</string>
     <string name="ItemBrowseFragment">Browse Items</string>
     <string name="ArchiveFragment">Archives</string>
+    <string name="NewspaperFragment">Newspapers</string>
+    <string name="BookFragment">Books</string>
+    <string name="MovieFragment">Movies</string>
+    <string name="MusicAlbumFragment">Music Albums</string>
     <string name="CreditsFragment">Credits</string>
 
     <!-- Used for navigation (see the xml files under menu) -->

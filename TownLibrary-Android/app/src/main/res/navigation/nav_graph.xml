@@ -42,6 +42,30 @@
         tools:layout="@layout/fragment_archive" />
 
     <fragment
+        android:id="@+id/NewspaperFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.NewspaperFragment"
+        android:label="@string/NewspaperFragment"
+        tools:layout="@layout/fragment_newspaper" />
+
+    <fragment
+        android:id="@+id/BookFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.BookFragment"
+        android:label="@string/BookFragment"
+        tools:layout="@layout/fragment_book" />
+
+    <fragment
+        android:id="@+id/MovieFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.MovieFragment"
+        android:label="@string/MovieFragment"
+        tools:layout="@layout/fragment_movie" />
+
+    <fragment
+        android:id="@+id/MusicAlbumFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.MusicAlbumFragment"
+        android:label="@string/MusicAlbumFragment"
+        tools:layout="@layout/fragment_music_album" />
+
+    <fragment
         android:id="@+id/ItemBrowseFragment"
         android:name="ca.mcgill.ecse321.townlibrary.ItemBrowseFragment"
         android:label="@string/ItemBrowseFragment"
@@ -50,6 +74,22 @@
         <action
             android:id="@+id/action_ItemBrowseFragment_to_ArchiveFragment"
             app:destination="@id/ArchiveFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_NewspaperFragment"
+            app:destination="@id/NewspaperFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_MovieFragment"
+            app:destination="@id/MovieFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_MusicAlbumFragment"
+            app:destination="@id/MusicAlbumFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_BookFragment"
+            app:destination="@id/BookFragment"/>
 
     </fragment>
 
