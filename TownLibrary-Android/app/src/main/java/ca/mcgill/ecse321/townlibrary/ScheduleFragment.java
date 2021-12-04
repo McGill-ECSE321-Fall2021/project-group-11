@@ -32,7 +32,6 @@ import ca.mcgill.ecse321.townlibrary.databinding.FragmentScheduleBinding;
 public class ScheduleFragment extends Fragment {
 
     private FragmentScheduleBinding binding;
-//    private TimetableView timetableView = new TimetableView(this.getContext());
     private ArrayList<Schedule> schedules = new ArrayList<Schedule>();
     private String error;
 
@@ -51,11 +50,9 @@ public class ScheduleFragment extends Fragment {
         HttpUtils.get("/schedules/library/0", new RequestParams(), new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] Header, JSONArray response){
-                Log.d("HELLO", response.toString());
                 for (int i = 0; i < response.length(); i++){
                     Schedule schedule = new Schedule();
                     try {
-                        Log.d("hi", String.valueOf(response.getJSONObject(i).getString("startTime")));
                         String startTime = String.valueOf(response.getJSONObject(i).getString("startTime"));
                         String endTime = String.valueOf(response.getJSONObject(i).getString("endTime"));
                         String dayOfWeek = String.valueOf(response.getJSONObject(i).getString("dayOfWeek"));
@@ -97,14 +94,6 @@ public class ScheduleFragment extends Fragment {
                     }
                 }
                 binding.timetable.add(schedules);
-//                timetableView.add(schedules);
-//                Log.d("timetable", timetableView.toString());
-//                timetableView.setOnStickerSelectEventListener(new TimetableView.OnStickerSelectedListener(){
-//                    @Override
-//                    public void OnStickerSelected(int idx, ArrayList<Schedule> schedules){
-//
-//                    }
-//                });
 
             }
             @Override
@@ -112,7 +101,6 @@ public class ScheduleFragment extends Fragment {
                 error += responseString;
             }
         });
-
 
 
     }
