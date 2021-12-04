@@ -17,7 +17,8 @@
     <string name="action_signup">Sign Up</string>
     <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
-
+    <string name="action_transaction">Transactions</string>
+    <string name="action_personal">Personal Information</string>
     <string name="action_back">Go back</string>
 
     <string name="hint_username">Username</string>
@@ -35,4 +36,6 @@
     <string name="note_credits">
         Made by Group 11\nECSE 321 Fall 2021
     </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
