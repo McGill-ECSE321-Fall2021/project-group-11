@@ -74,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
                     .navigate(R.id.CreditsFragment);
             return true;
         }
+        if (id == R.id.action_account) {
+            LoginStatus.INSTANCE.logout();
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.LoginFragment);
+        }
 
         return super.onOptionsItemSelected(item);
     }
