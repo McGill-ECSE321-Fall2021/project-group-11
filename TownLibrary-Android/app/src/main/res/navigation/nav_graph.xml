@@ -67,12 +67,12 @@
     <fragment
         android:id="@+id/TransactionFragment"
         android:name="ca.mcgill.ecse321.townlibrary.TransactionFragment"
-        android:label="fragment_transaction"
+        android:label="Transactions"
         tools:layout="@layout/fragment_transaction" />
     <fragment
         android:id="@+id/PersonalFragment"
         android:name="ca.mcgill.ecse321.townlibrary.PersonalFragment"
-        android:label="fragment_personal"
+        android:label="Personal"
         tools:layout="@layout/fragment_personal" />
 
 </navigation>
