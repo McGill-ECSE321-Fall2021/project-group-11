@@ -41,6 +41,7 @@
     <string name="hint_address">Address</string>
 
     <string name="profile_greeter">Welcome back, %1$s!</string> <!-- name is filled in -->
+    <string name="popup_text">Item %1$s</string>
 
     <string name="hint_account_support">
         Note: Only online members are supported at the moment
