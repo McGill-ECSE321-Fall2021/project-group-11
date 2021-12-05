@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.json.JSONObject;
 
@@ -146,9 +147,9 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
             });
         }
         else {
-            HttpUtils.delete("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new JsonHttpResponseHandler(){
+            HttpUtils.delete("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new TextHttpResponseHandler(){
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                public void onSuccess(int statusCode, Header[] headers, String response) {
                     Log.d("Inside onSuccess", response.toString());
                     int index = -1;
                     for (int i = 0; i < transactions.size(); i++) {
@@ -160,6 +161,7 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
                     if (index != -1){
                         transactions.remove(index);
                         notifyDataSetChanged();
+                        Toast.makeText(context, "Item returned successfully", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -170,7 +172,6 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
                     // excessive popups), we only report the first error.
                     String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
