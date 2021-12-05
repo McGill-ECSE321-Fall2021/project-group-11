@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration
                 .Builder(
                         // a bunch of top-level fragments (shows drawer menu instead of back arrow)
-                        R.id.ProfileFragment, R.id.CreditsFragment, R.id.EventsFragment, R.id.ItemsFragment, R.id.ScheduleFragment)
+                        R.id.ProfileFragment, R.id.CreditsFragment, R.id.EventsFragment, R.id.ItemBrowseFragment, R.id.ScheduleFragment)
                 .setOpenableLayout(binding.drawerLayout)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
