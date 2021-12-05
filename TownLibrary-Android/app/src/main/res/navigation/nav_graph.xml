@@ -32,6 +32,70 @@
         <action
             android:id="@+id/action_ProfileFragment_to_LoginFragment"
             app:destination="@id/LoginFragment"/>
+        <action
+            android:id="@+id/action_ProfileFragment_to_TransactionFragment"
+            app:destination="@id/TransactionFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_PersonalFragment"
+            app:destination="@id/PersonalFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/ArchiveFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.ArchiveFragment"
+        android:label="@string/ArchiveFragment"
+        tools:layout="@layout/fragment_archive" />
+
+    <fragment
+        android:id="@+id/NewspaperFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.NewspaperFragment"
+        android:label="@string/NewspaperFragment"
+        tools:layout="@layout/fragment_newspaper" />
+
+    <fragment
+        android:id="@+id/BookFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.BookFragment"
+        android:label="@string/BookFragment"
+        tools:layout="@layout/fragment_book" />
+
+    <fragment
+        android:id="@+id/MovieFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.MovieFragment"
+        android:label="@string/MovieFragment"
+        tools:layout="@layout/fragment_movie" />
+
+    <fragment
+        android:id="@+id/MusicAlbumFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.MusicAlbumFragment"
+        android:label="@string/MusicAlbumFragment"
+        tools:layout="@layout/fragment_music_album" />
+
+    <fragment
+        android:id="@+id/ItemBrowseFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.ItemBrowseFragment"
+        android:label="@string/ItemBrowseFragment"
+        tools:layout="@layout/fragment_browse">
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_ArchiveFragment"
+            app:destination="@id/ArchiveFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_NewspaperFragment"
+            app:destination="@id/NewspaperFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_MovieFragment"
+            app:destination="@id/MovieFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_MusicAlbumFragment"
+            app:destination="@id/MusicAlbumFragment"/>
+
+        <action
+            android:id="@+id/action_ItemBrowseFragment_to_BookFragment"
+            app:destination="@id/BookFragment"/>
 
     </fragment>
 
@@ -42,11 +106,20 @@
         tools:layout="@layout/fragment_credits" />
 
     <fragment
-
         android:id="@+id/ScheduleFragment"
         android:name="ca.mcgill.ecse321.townlibrary.ScheduleFragment"
-        android:label="Schedule"
+        android:label="Opening Hours"
         tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/TransactionFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.TransactionFragment"
+        android:label="Transactions"
+        tools:layout="@layout/fragment_transaction" />
+    <fragment
+        android:id="@+id/PersonalFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.PersonalFragment"
+        android:label="Personal"
+        tools:layout="@layout/fragment_personal" />
 
     <fragment
         android:id="@+id/EventsFragment"

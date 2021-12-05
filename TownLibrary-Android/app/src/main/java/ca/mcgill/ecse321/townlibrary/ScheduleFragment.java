@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.townlibrary;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,19 +8,22 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
-
 import com.github.tlaabs.timetableview.Schedule;
 import com.github.tlaabs.timetableview.Time;
-import com.github.tlaabs.timetableview.TimetableView;
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Set;
+
+import ca.mcgill.ecse321.townlibrary.databinding.FragmentScheduleBinding;
+import cz.msebera.android.httpclient.Header;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -32,7 +34,7 @@ import ca.mcgill.ecse321.townlibrary.databinding.FragmentScheduleBinding;
 public class ScheduleFragment extends Fragment {
 
     private FragmentScheduleBinding binding;
-    private ArrayList<Schedule> schedules = new ArrayList<Schedule>();
+    private ArrayList<Schedule> schedules = new ArrayList<>();
     private String error;
 
     @Nullable
@@ -46,16 +48,16 @@ public class ScheduleFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // LOGIC
+        // Get library's schedule through Get Request
         HttpUtils.get("/schedules/library/0", new RequestParams(), new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] Header, JSONArray response){
                 for (int i = 0; i < response.length(); i++){
                     Schedule schedule = new Schedule();
                     try {
-                        String startTime = String.valueOf(response.getJSONObject(i).getString("startTime"));
-                        String endTime = String.valueOf(response.getJSONObject(i).getString("endTime"));
-                        String dayOfWeek = String.valueOf(response.getJSONObject(i).getString("dayOfWeek"));
+                        String startTime = response.getJSONObject(i).getString("startTime");
+                        String endTime = response.getJSONObject(i).getString("endTime");
+                        String dayOfWeek = response.getJSONObject(i).getString("dayOfWeek");
                         int dayOfWeekInt;
 
                         switch (dayOfWeek){
@@ -90,6 +92,7 @@ public class ScheduleFragment extends Fragment {
                         schedules.add(schedule);
 
                     } catch (JSONException e) {
+                        // should never catch since, on success, there should never be an exception
                         error += e.getMessage();
                     }
                 }
@@ -99,10 +102,10 @@ public class ScheduleFragment extends Fragment {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable){
                 error += responseString;
+                String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), error);
+                Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-
-
     }
 
     @Override
@@ -110,5 +113,4 @@ public class ScheduleFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

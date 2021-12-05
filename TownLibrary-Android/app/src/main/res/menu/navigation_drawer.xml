@@ -5,12 +5,23 @@
         android:title="@string/action_profile" />
 
     <item
-        android:id="@id/CreditsFragment"
-        android:title="@string/action_credits" />
+        android:id="@id/EventsFragment"
+        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:title="Browse Events" />
+
+    <item
+        android:id="@id/ItemBrowseFragment"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:title="Browse Items" />
 
     <item
         android:id="@id/ScheduleFragment"
-        android:title="Schedule" />
+        android:icon="@android:drawable/ic_lock_idle_alarm"
+        android:title="View Schedule" />
+  
+    <item
+        android:id="@id/CreditsFragment"
+        android:title="@string/action_credits" />
 
 
 </menu>

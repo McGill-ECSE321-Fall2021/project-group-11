@@ -84,6 +84,9 @@ public class SignupFragment extends Fragment {
 
                             LoginStatus.INSTANCE.login(userId, username, password);
                             LoginStatus.INSTANCE.setPreferredDisplayName(name);
+                            LoginStatus.INSTANCE.setAddress(response.getString("address"));
+                            LoginStatus.INSTANCE.setInTown(response.getBoolean("inTown"));
+                            LoginStatus.INSTANCE.setEmailAddress(response.getString("email"));
 
                             // Return to the fragment that requested a login.
                             // But we only enter here via login, meaning we need to pop twice!

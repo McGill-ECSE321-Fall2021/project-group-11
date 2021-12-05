@@ -11,8 +11,34 @@ public final class LoginStatus {
     private Integer userId;
     private String username;
     private String password;
-
     private String displayName;
+    private String emailAddress;
+    private Boolean inTown;
+    private String address;
+
+    public String getEmailAddress() {
+        return emailAddress;
+    }
+
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
+
+    public Boolean getInTown() {
+        return inTown;
+    }
+
+    public void setInTown(Boolean inTown) {
+        this.inTown = inTown;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     private LoginStatus() {
 

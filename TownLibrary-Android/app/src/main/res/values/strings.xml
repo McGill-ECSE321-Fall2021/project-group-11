@@ -5,12 +5,20 @@
     <string name="LoginFragment">Login</string>
     <string name="SignupFragment">Sign Up</string>
     <string name="ProfileFragment">Profile</string>
+    <string name="ItemBrowseFragment">Browse Items</string>
+    <string name="ArchiveFragment">Archives</string>
+    <string name="NewspaperFragment">Newspapers</string>
+    <string name="BookFragment">Books</string>
+    <string name="MovieFragment">Movies</string>
+    <string name="MusicAlbumFragment">Music Albums</string>
     <string name="CreditsFragment">Credits</string>
 
     <!-- Used for navigation (see the xml files under menu) -->
     <string name="action_settings">Settings</string>
     <string name="action_credits">Credits</string>
     <string name="action_profile">Profile</string>
+    <string name="action_browse">Browse Items</string>
+
 
     <!-- Used in fragments for displaying purposes -->
 
@@ -18,8 +26,21 @@
     <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
 
-    <string name="action_back">Go back</string>
 
+    <string name="action_archives">Archives</string>
+    <string name="action_newspapers">Newspapers</string>
+    <string name="action_books">Books</string>
+    <string name="action_movies">Movies</string>
+    <string name="action_music_albums">Music Albums</string>
+
+
+    <string name="action_transaction">Transactions</string>
+    <string name="action_personal">Personal Information</string>
+
+    <string name="action_back">Go back</string>
+    <string name="header_personal">Account Information</string>
+    <string name="user_id">User ID</string>
+    <string name="town_status">In Town</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="hint_full_name">Full Name</string>
@@ -47,4 +68,6 @@
     <string name="note_credits">
         Made by Group 11\nECSE 321 Fall 2021
     </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
