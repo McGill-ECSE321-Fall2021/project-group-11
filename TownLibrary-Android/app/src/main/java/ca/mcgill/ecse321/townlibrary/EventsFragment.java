@@ -60,7 +60,6 @@ public class EventsFragment extends Fragment {
                 String name = events.get(0);
                 String id = events.get(1);
 
-                name = name.substring(0, name.length() - 1).toUpperCase();
                 text1.setText(name);
                 text2.setText(id);
                 return view;
