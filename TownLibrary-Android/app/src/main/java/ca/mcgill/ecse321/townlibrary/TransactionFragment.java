@@ -35,10 +35,12 @@ public class TransactionFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // Set list to list of layout
         list = binding.list;
         ArrayList<List<String>> transactions = new ArrayList<>();
-        ArrayAdapter<List<String>> arrayAdapter = new TransactionListAdapter(this.getActivity(), R.layout.fragment_transaction_list , transactions, list);
+        ArrayAdapter<List<String>> arrayAdapter = new TransactionListAdapter(this.getActivity(), R.layout.fragment_transaction_list, transactions);
 
+        // Get a User's transactions
         HttpUtils.get("/transactions/" + LoginStatus.INSTANCE.getUserId(), new RequestParams(), new JsonHttpResponseHandler(){
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response){
@@ -51,6 +53,7 @@ public class TransactionFragment extends Fragment{
                         final String type = entry.getString("type");
                         final String startDate = entry.getString("startDate");
 
+                        // Get the item associated to each transaction
                         HttpUtils.get("/" + type + "/transactions/" + id, new RequestParams(), new JsonHttpResponseHandler(){
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
@@ -86,6 +89,7 @@ public class TransactionFragment extends Fragment{
                         .setAction("Action", null).show();
             }
         });
+        // Set listView to display information from transactions ArrayList
         list.setAdapter(arrayAdapter);
     }
 

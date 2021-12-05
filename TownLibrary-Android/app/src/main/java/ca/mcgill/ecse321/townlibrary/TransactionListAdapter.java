@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,19 +28,17 @@ import cz.msebera.android.httpclient.Header;
 
 public class TransactionListAdapter extends ArrayAdapter<List<String>> {
 
-    private ArrayList<List<String>> transactions;
+    private final ArrayList<List<String>> transactions;
     private final int layoutResourceId;
     private final Context context;
     private final int RENEW = 1;
     private final int RETURN = 2;
-    private final ListView list;
 
-    public TransactionListAdapter(Context context, int layoutResourceId, ArrayList<List<String>> transactions, ListView list){
+    public TransactionListAdapter(Context context, int layoutResourceId, ArrayList<List<String>> transactions){
         super(context, layoutResourceId, transactions);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.transactions = transactions;
-        this.list = list;
     }
 
     @SuppressLint("ViewHolder")
@@ -63,11 +60,15 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
         //Set buttons
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
 
+        //Renew button
         holder.renew = row.findViewById(R.id.imageButtonRenewTransaction);
+        //Associate row information with the button
         holder.renew.setTag(holder.json);
         setOnClickListener(holder.renew, builder, RENEW);
 
+        //Delete button
         holder.delete = row.findViewById(R.id.imageButtonDeleteTransaction);
+        //Associate row information with the button
         holder.delete.setTag(holder.json);
         setOnClickListener(holder.delete, builder, RETURN);
 
@@ -75,6 +76,13 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
         setupTransaction(holder);
         return row;
     }
+
+    /**
+     * Sets the onClickListener of a button to open a confirmation dialog for the corresponding action
+     * @param button Button to be set
+     * @param builder Builder to construct the dialog
+     * @param id Action id, either REMOVE or RETURN
+     */
     private void setOnClickListener(ImageButton button,AlertDialog.Builder builder, int id){
 
         String action = id == RETURN ? "remove" : "renew";
@@ -101,7 +109,10 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
         });
     }
 
-
+    /**
+     * Displays the information of a row onto the ListView
+     * @param holder Contains information of a specific row
+     */
     private void setupTransaction(TransactionHolder holder){
         // Extract fields from transaction
         String name = holder.json.get(3);
@@ -125,6 +136,14 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
         ImageButton renew;
         ImageButton delete;
     }
+
+    /**
+     * Performs HttpUtils request mapped to the "YES" of a button's confirmation dialog.
+     * i.e "YES" on delete would perform delete.
+     * @param button Button that has been pressed
+     * @param buttonId Action requested, either RENEW or RETURN
+     */
+    @SuppressWarnings("unchecked")
     private void onClickAction(ImageButton button, int buttonId){
         String id = ((List<String>) button.getTag()).get(0);
 
@@ -150,14 +169,15 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
             HttpUtils.delete("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new TextHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, String response) {
-                    Log.d("Inside onSuccess", response.toString());
                     int index = -1;
+                    // Find the transaction to be removed
                     for (int i = 0; i < transactions.size(); i++) {
-                        if (transactions.get(i).get(0) == id) {
+                        if ((transactions.get(i).get(0)).equals(id)) {
                             index = i;
                             break;
                         }
                     }
+                    // Dynamically update the list view
                     if (index != -1){
                         transactions.remove(index);
                         notifyDataSetChanged();
