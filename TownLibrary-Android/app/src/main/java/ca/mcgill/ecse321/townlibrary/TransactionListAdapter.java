@@ -12,16 +12,28 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 public class TransactionListAdapter extends ArrayAdapter<List<String>> {
 
     private final ArrayList<List<String>> transactions;
     private final int layoutResourceId;
     private final Context context;
+    private final int REMOVE = 1;
+    private final int RETURN = 2;
 
     public TransactionListAdapter(Context context, int layoutResourceId, ArrayList<List<String>> transactions){
         super(context, layoutResourceId, transactions);
@@ -41,16 +53,53 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
 
         holder = new TransactionHolder();
         holder.json = transactions.get(position);
+
+        //Set textViews
         holder.itemName = row.findViewById(R.id.textViewTransactionItemName);
         holder.description = row.findViewById(R.id.textViewTransactionDescription);
+
+        //Set buttons
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
         holder.renew = row.findViewById(R.id.imageButtonRenewTransaction);
-        holder.delete = row.findViewById(R.id.imageButtonDeleteTransaction);
         holder.renew.setTag(holder.json);
+        setOnClickListener(holder.renew, builder, RETURN);
+
+        holder.delete = row.findViewById(R.id.imageButtonDeleteTransaction);
         holder.delete.setTag(holder.json);
+        setOnClickListener(holder.delete, builder, REMOVE);
+
         row.setTag(holder);
         setupTransaction(holder);
         return row;
     }
+    private void setOnClickListener(ImageButton button,AlertDialog.Builder builder, int id){
+
+        String action = id == 2 ? "remove" : "renew";
+        String alert = "Do you want to " + action + " this transaction?";
+        String title = id == 2 ? "Return" : "Renewal";
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                builder.setMessage(alert)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                onClickAction(button, id);
+                            }
+                        })
+                        .setNegativeButton("No", null);
+
+                AlertDialog alert = builder.create();
+                alert.setTitle(title);
+                alert.show();
+
+            }
+        });
+    }
+
+
     private void setupTransaction(TransactionHolder holder){
         // Extract fields from transaction
         String name = holder.json.get(3);
@@ -74,18 +123,41 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
         ImageButton renew;
         ImageButton delete;
     }
+    private void onClickAction(ImageButton button, int buttonId){
+        String id = ((List<String>) button.getTag()).get(0);
 
-//    public Dialog createDialog(final int dialog){
-//        return new AlertDialog.Builder(context.getApplicationContext())
-//                .setTitle("Please confirm removal")
-//                .setPositiveButton(R.string., new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                });
-//    }
-//    protected void handleRemoveConfirm(int dialog){
-//
-//    }
+        if (buttonId == 2){
+            HttpUtils.put("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                    notifyDataSetChanged();
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    // To avoid flooding the Snackbars (cuz we all hate
+                    // excessive popups), we only report the first error.
+                    String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+        else {
+            HttpUtils.delete("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new JsonHttpResponseHandler(){
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response){
+                    transactions.remove(id);
+                    notifyDataSetChanged();
+                }
+                @Override
+                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    // To avoid flooding the Snackbars (cuz we all hate
+                    // excessive popups), we only report the first error.
+                    String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
+                    Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
+
+                }
+            });
+        }
+    }
 }
