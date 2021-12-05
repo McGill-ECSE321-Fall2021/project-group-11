@@ -7,6 +7,8 @@ A website and app providing multiple functionalities for a small town's library.
 Time Span: October 9th - December 6th \
 Project goal: Produce a well-documented and user-friendly system on time while following proper software development processes.
 
+Note that the Android app is in the branch [android](https://github.com/McGill-ECSE321-Fall2021/project-group-11/tree/android)!
+
 ## Team
 Group: 11 \
 Members: James Chau, Paul Teng, Jericho Adalin, Loc Tran, Shu Tian \
