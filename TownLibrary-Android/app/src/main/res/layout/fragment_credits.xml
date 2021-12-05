@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="60dp"
-        android:text="Time Table from github.com/tlaabs/TimetableView"
+        android:text="Time Table from github.com/tlaabs/TimetableView\nConfirmation Dialog from https://www.javatpoint.com/android-alert-dialog-example\nList from https://looksok.wordpress.com/2012/11/03/android-custom-listview-tutorial/"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
