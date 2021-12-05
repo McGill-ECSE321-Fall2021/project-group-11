@@ -76,6 +76,18 @@ public class MainActivity extends AppCompatActivity {
                     .navigate(R.id.CreditsFragment);
             return true;
         }
+        if (id == R.id.action_logout) {
+            if (!LoginStatus.INSTANCE.isLoggedIn()) {
+                Snackbar.make(binding.getRoot(), "Currently not logged in", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return true;
+            }
+
+            LoginStatus.INSTANCE.logout();
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.LoginFragment);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

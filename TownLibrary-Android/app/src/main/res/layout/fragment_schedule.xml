@@ -6,8 +6,18 @@
     android:layout_height="match_parent"
     tools:context=".ScheduleFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <com.github.tlaabs.timetableview.TimetableView
+        android:id="@+id/timetable"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Schedule Placeholder"/>
+        app:column_count="8"
+        app:row_count="15"
+        app:start_time="6"
+        app:header_title="@array/day_header"
+        app:sticker_colors="@array/column_colors"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.481"
+        tools:layout_editor_absoluteX="0dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
