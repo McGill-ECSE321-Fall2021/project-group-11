@@ -26,6 +26,7 @@
     <string name="action_login">Login</string>
     <string name="action_logout">Logout</string>
 
+
     <string name="action_archives">Archives</string>
     <string name="action_newspapers">Newspapers</string>
     <string name="action_books">Books</string>
@@ -34,13 +35,30 @@
 
     <string name="action_reserve">Reserve</string>
 
-    <string name="action_back">Go back</string>
+    <string name="action_transaction">Transactions</string>
+    <string name="action_personal">Personal Information</string>
 
+    <string name="action_back">Go back</string>
+    <string name="header_personal">Account Information</string>
+    <string name="user_id">User ID</string>
+    <string name="town_status">In Town</string>
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="hint_full_name">Full Name</string>
     <string name="hint_email">Email</string>
     <string name="hint_address">Address</string>
+
+    <!-- Used for schedule fragment -->
+    <string-array name="day_header">
+        <item></item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+        <item>Sun</item>
+    </string-array>
 
     <string name="profile_greeter">Welcome back, %1$s!</string> <!-- name is filled in -->
     <string name="popup_text">Item %1$s is %2$s</string>
@@ -52,4 +70,6 @@
     <string name="note_credits">
         Made by Group 11\nECSE 321 Fall 2021
     </string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

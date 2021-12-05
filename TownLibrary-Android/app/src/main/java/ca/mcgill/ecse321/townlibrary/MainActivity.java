@@ -41,7 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         appBarConfiguration = new AppBarConfiguration
-                .Builder(R.id.ProfileFragment, R.id.CreditsFragment)
+                .Builder(
+                        // a bunch of top-level fragments (shows drawer menu instead of back arrow)
+                        R.id.ProfileFragment, R.id.CreditsFragment, R.id.EventsFragment, R.id.ItemsFragment, R.id.ScheduleFragment)
                 .setOpenableLayout(binding.drawerLayout)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -72,6 +74,18 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_credits) {
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
                     .navigate(R.id.CreditsFragment);
+            return true;
+        }
+        if (id == R.id.action_logout) {
+            if (!LoginStatus.INSTANCE.isLoggedIn()) {
+                Snackbar.make(binding.getRoot(), "Currently not logged in", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                return true;
+            }
+
+            LoginStatus.INSTANCE.logout();
+            Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.LoginFragment);
             return true;
         }
 
