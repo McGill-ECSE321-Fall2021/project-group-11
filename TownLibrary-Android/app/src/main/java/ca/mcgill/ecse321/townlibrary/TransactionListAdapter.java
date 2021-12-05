@@ -75,17 +75,17 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
         ImageButton delete;
     }
 
-    public Dialog createDialog(final int dialog){
-        return new AlertDialog.Builder(context.getApplicationContext())
-                .setTitle("Please confirm removal")
-                .setPositiveButton(R.string., new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-    }
-    protected void handleRemoveConfirm(int dialog){
-
-    }
+//    public Dialog createDialog(final int dialog){
+//        return new AlertDialog.Builder(context.getApplicationContext())
+//                .setTitle("Please confirm removal")
+//                .setPositiveButton(R.string., new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                });
+//    }
+//    protected void handleRemoveConfirm(int dialog){
+//
+//    }
 }
