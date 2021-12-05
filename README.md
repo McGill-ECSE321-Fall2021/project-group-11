@@ -18,7 +18,7 @@ Overview:
 | James Chau      | Meeting lead, Front-end style manager            |17h |22h |45h | 8h |    
 | Paul Teng       | Build system manager                             |16h |20h |30h |10h |
 | Jericho Adalin  | Facilitator                                      |14h |14h |35h |10h |    
-| Loc Tran        | Time-keeper                                      |14h |13h |32h |    |
+| Loc Tran        | Time-keeper                                      |14h |13h |32h |10h |
 | Shu Tian        | Documentation manager                            |15h |25h |33h |11h |
 
 D1-4 Represents individual efforts (in hours) for each deliverable, including team meetings.
