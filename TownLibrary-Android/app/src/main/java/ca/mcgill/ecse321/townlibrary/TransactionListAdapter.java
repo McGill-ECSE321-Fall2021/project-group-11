@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,6 +136,7 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("Inside onFailure", ((Integer) statusCode).toString());
                     // To avoid flooding the Snackbars (cuz we all hate
                     // excessive popups), we only report the first error.
                     String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
@@ -147,6 +149,7 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
             HttpUtils.delete("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    Log.d("Inside onSuccess", response.toString());
                     int index = -1;
                     for (int i = 0; i < transactions.size(); i++) {
                         if (transactions.get(i).get(0) == id) {
@@ -162,6 +165,7 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                    Log.d("Inside onFailure", ((Integer) statusCode).toString());
                     // To avoid flooding the Snackbars (cuz we all hate
                     // excessive popups), we only report the first error.
                     String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
