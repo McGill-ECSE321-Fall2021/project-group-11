@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/transaction_list"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <EditText
+        android:id="@+id/textViewTransactionItemName"
+        android:layout_width="0sp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:editable="false"
+        android:gravity="center_vertical"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:ignore="Deprecated" />
+
+    <EditText
+        android:editable="false"
+        android:id="@+id/textViewTransactionDescription"
+        android:layout_width="0sp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:inputType="none"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:ignore="Deprecated" />
+
+    <ImageButton
+        android:id="@+id/imageButtonRenewTransaction"
+        android:layout_width="46sp"
+        android:layout_height="fill_parent"
+        android:contentDescription=" "
+        android:src="@android:drawable/ic_popup_sync" />
+
+    <ImageButton
+        android:id="@+id/imageButtonDeleteTransaction"
+        android:layout_width="46sp"
+        android:layout_height="fill_parent"
+        android:contentDescription=" "
+        android:src="@android:drawable/ic_menu_delete" />
+</LinearLayout>

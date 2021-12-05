@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.townlibrary;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import cz.msebera.android.httpclient.Header;
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
+
 
     @Nullable
     @Override
@@ -76,6 +78,9 @@ public class LoginFragment extends Fragment {
 
                             LoginStatus.INSTANCE.login(userId, username, password);
                             LoginStatus.INSTANCE.setPreferredDisplayName(name);
+                            LoginStatus.INSTANCE.setAddress(response.getString("address"));
+                            LoginStatus.INSTANCE.setInTown(response.getBoolean("inTown"));
+                            LoginStatus.INSTANCE.setEmailAddress(response.getString("email"));
 
                             // Return to the fragment that requested a login
                             NavHostFragment.findNavController(LoginFragment.this)

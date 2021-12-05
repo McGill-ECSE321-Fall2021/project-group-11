@@ -8,12 +8,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
+import androidx.navigation.fragment.NavHostFragment;
 import com.github.tlaabs.timetableview.Schedule;
 import com.github.tlaabs.timetableview.Time;
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Set;
+
+import ca.mcgill.ecse321.townlibrary.databinding.FragmentScheduleBinding;
+import cz.msebera.android.httpclient.Header;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -99,8 +106,6 @@ public class ScheduleFragment extends Fragment {
                 Snackbar.make(binding.getRoot(), errorMessage, Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
-
-
     }
 
     @Override
@@ -108,5 +113,4 @@ public class ScheduleFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
-
 }

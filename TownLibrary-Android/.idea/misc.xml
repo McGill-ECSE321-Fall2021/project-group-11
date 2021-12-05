@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Fam/Documents/GitHub/project-group-11/TownLibrary-Android/app/src/main/res/layout/fragment_transaction.xml" value="0.3875" />
+        <entry key="..\:/Users/Fam/Documents/GitHub/project-group-11/TownLibrary-Android/app/src/main/res/layout/fragment_transaction_button.xml" value="0.303125" />
+        <entry key="..\:/Users/Fam/Documents/GitHub/project-group-11/TownLibrary-Android/app/src/main/res/layout/fragment_transaction_list.xml" value="0.3875" />
+        <entry key="..\:/Users/Fam/Documents/GitHub/project-group-11/TownLibrary-Android/app/src/main/res/layout/fragment_transaction_test.xml" value="0.3875" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.16983695652173914" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.16983695652173914" />
         <entry key="app/src/main/res/layout/fragment_credits.xml" value="0.33" />

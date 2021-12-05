@@ -48,6 +48,22 @@ public class ProfileFragment extends Fragment {
                         .navigate(R.id.action_ProfileFragment_to_LoginFragment);
             }
         });
+
+        binding.buttonTransaction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(ProfileFragment.this)
+                        .navigate(R.id.action_ProfileFragment_to_TransactionFragment);
+            }
+        });
+
+        binding.buttonPersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NavHostFragment.findNavController(ProfileFragment.this)
+                        .navigate(R.id.action_ProfileFragment_to_PersonalFragment);
+            }
+        });
     }
 
     @Override
