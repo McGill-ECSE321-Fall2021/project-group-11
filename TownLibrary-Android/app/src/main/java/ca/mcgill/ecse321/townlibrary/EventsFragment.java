@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.fragment.NavHostFragment;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -23,12 +21,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Locale;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Set;
 
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentEventsBinding;
 import cz.msebera.android.httpclient.Header;
@@ -50,13 +42,13 @@ public class EventsFragment extends Fragment {
 
         final ListView list = binding.list;
         ArrayList<ArrayList<String>> arrayList = new ArrayList<>();
-        ArrayAdapter<Integer> arrayAdapter = new ArrayAdapter(this.getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, arrayList) {
+        ArrayAdapter<ArrayList<String>> arrayAdapter = new ArrayAdapter<ArrayList<String>>(this.getActivity(), android.R.layout.simple_list_item_2, android.R.id.text1, arrayList) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                ArrayList<String> events = ((ArrayList<String>) list.getItemAtPosition(position));
+                ArrayList<String> events = this.getItem(position);
                 String name = events.get(0);
                 String id = events.get(1);
 
