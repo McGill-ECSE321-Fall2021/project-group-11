@@ -32,6 +32,12 @@
         <action
             android:id="@+id/action_ProfileFragment_to_LoginFragment"
             app:destination="@id/LoginFragment"/>
+        <action
+            android:id="@+id/action_ProfileFragment_to_TransactionFragment"
+            app:destination="@id/TransactionFragment" />
+        <action
+            android:id="@+id/action_ProfileFragment_to_PersonalFragment"
+            app:destination="@id/PersonalFragment" />
 
     </fragment>
 
@@ -98,5 +104,33 @@
         android:name="ca.mcgill.ecse321.townlibrary.CreditsFragment"
         android:label="@string/CreditsFragment"
         tools:layout="@layout/fragment_credits" />
+
+    <fragment
+        android:id="@+id/EventsFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.EventsFragment"
+        android:label="Events"
+        tools:layout="@layout/fragment_events" />
+
+    <fragment
+        android:id="@+id/ItemsFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.ItemsFragment"
+        android:label="Items"
+        tools:layout="@layout/fragment_items" />
+
+    <fragment
+        android:id="@+id/ScheduleFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.ScheduleFragment"
+        android:label="Opening Hours"
+        tools:layout="@layout/fragment_schedule" />
+    <fragment
+        android:id="@+id/TransactionFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.TransactionFragment"
+        android:label="Transactions"
+        tools:layout="@layout/fragment_transaction" />
+    <fragment
+        android:id="@+id/PersonalFragment"
+        android:name="ca.mcgill.ecse321.townlibrary.PersonalFragment"
+        android:label="Personal"
+        tools:layout="@layout/fragment_personal" />
 
 </navigation>
