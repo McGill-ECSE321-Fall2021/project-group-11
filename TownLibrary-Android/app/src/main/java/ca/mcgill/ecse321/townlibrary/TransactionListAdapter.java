@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.townlibrary;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -11,14 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -29,17 +27,19 @@ import cz.msebera.android.httpclient.Header;
 
 public class TransactionListAdapter extends ArrayAdapter<List<String>> {
 
-    private final ArrayList<List<String>> transactions;
+    private ArrayList<List<String>> transactions;
     private final int layoutResourceId;
     private final Context context;
-    private final int REMOVE = 1;
+    private final int RENEW = 1;
     private final int RETURN = 2;
+    private final ListView list;
 
-    public TransactionListAdapter(Context context, int layoutResourceId, ArrayList<List<String>> transactions){
+    public TransactionListAdapter(Context context, int layoutResourceId, ArrayList<List<String>> transactions, ListView list){
         super(context, layoutResourceId, transactions);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.transactions = transactions;
+        this.list = list;
     }
 
     @SuppressLint("ViewHolder")
@@ -63,11 +63,11 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
 
         holder.renew = row.findViewById(R.id.imageButtonRenewTransaction);
         holder.renew.setTag(holder.json);
-        setOnClickListener(holder.renew, builder, RETURN);
+        setOnClickListener(holder.renew, builder, RENEW);
 
         holder.delete = row.findViewById(R.id.imageButtonDeleteTransaction);
         holder.delete.setTag(holder.json);
-        setOnClickListener(holder.delete, builder, REMOVE);
+        setOnClickListener(holder.delete, builder, RETURN);
 
         row.setTag(holder);
         setupTransaction(holder);
@@ -75,9 +75,9 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
     }
     private void setOnClickListener(ImageButton button,AlertDialog.Builder builder, int id){
 
-        String action = id == 2 ? "remove" : "renew";
+        String action = id == RETURN ? "remove" : "renew";
         String alert = "Do you want to " + action + " this transaction?";
-        String title = id == 2 ? "Return" : "Renewal";
+        String title = id == RETURN ? "Return" : "Renewal";
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,12 +126,13 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
     private void onClickAction(ImageButton button, int buttonId){
         String id = ((List<String>) button.getTag()).get(0);
 
-        if (buttonId == 2){
+        if (buttonId == RENEW){
             HttpUtils.put("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new JsonHttpResponseHandler(){
                 @Override
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response){
                     notifyDataSetChanged();
                 }
+
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     // To avoid flooding the Snackbars (cuz we all hate
@@ -145,9 +146,19 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
         else {
             HttpUtils.delete("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new JsonHttpResponseHandler(){
                 @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response){
-                    transactions.remove(id);
-                    notifyDataSetChanged();
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    int index = -1;
+                    for (int i = 0; i < transactions.size(); i++) {
+                        if (transactions.get(i).get(0) == id) {
+                            index = i;
+                            break;
+                        }
+                    }
+                    if (index != -1){
+                        transactions.remove(index);
+                        notifyDataSetChanged();
+                    }
+
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
@@ -159,5 +170,6 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
                 }
             });
         }
+        notifyDataSetChanged();
     }
 }

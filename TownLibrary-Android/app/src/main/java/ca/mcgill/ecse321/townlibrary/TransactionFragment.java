@@ -27,16 +27,17 @@ import java.util.List;
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentTransactionBinding;
 import cz.msebera.android.httpclient.Header;
 
-public class TransactionFragment extends Fragment {
+public class TransactionFragment extends Fragment{
 
     private FragmentTransactionBinding binding;
+    private ListView list;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final ListView list = binding.list;
+        list = binding.list;
         ArrayList<List<String>> transactions = new ArrayList<>();
-        ArrayAdapter<List<String>> arrayAdapter = new TransactionListAdapter(this.getActivity(), R.layout.fragment_transaction_list , transactions);
+        ArrayAdapter<List<String>> arrayAdapter = new TransactionListAdapter(this.getActivity(), R.layout.fragment_transaction_list , transactions, list);
 
         HttpUtils.get("/transactions/" + LoginStatus.INSTANCE.getUserId(), new RequestParams(), new JsonHttpResponseHandler(){
             @Override
@@ -100,5 +101,7 @@ public class TransactionFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+
 
 }
