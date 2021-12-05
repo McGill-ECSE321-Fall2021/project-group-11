@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration
                 .Builder(
                         // a bunch of top-level fragments (shows drawer menu instead of back arrow)
-                        R.id.ProfileFragment, R.id.CreditsFragment, R.id.EventsFragment, R.id.ItemsFragment, R.id.ScheduleFragment)
+                        R.id.ProfileFragment, R.id.CreditsFragment, R.id.EventsFragment, R.id.ItemBrowseFragment, R.id.ScheduleFragment)
                 .setOpenableLayout(binding.drawerLayout)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
@@ -65,12 +65,6 @@ public class MainActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Snackbar.make(binding.getRoot(), "Currently nothing to set", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-            return true;
-        }
         if (id == R.id.action_credits) {
             Navigation.findNavController(this, R.id.nav_host_fragment_content_main)
                     .navigate(R.id.CreditsFragment);

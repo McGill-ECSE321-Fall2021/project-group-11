@@ -3,7 +3,6 @@ package ca.mcgill.ecse321.townlibrary;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,7 +62,7 @@ public class BookFragment extends ListFragment {
         HttpUtils.get("/books", new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] Header, JSONArray response) {
-
+              
                 try {
                     for (int i=0; i<response.length(); i++) {
                         int itemId = response.getJSONObject(i).getInt("id");
@@ -78,6 +77,7 @@ public class BookFragment extends ListFragment {
                         idArray.add(String.valueOf(itemId));
 
                         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
+
                         ListView listView = (ListView) binding.list;
                         listView.setAdapter(itemsAdapter);
 

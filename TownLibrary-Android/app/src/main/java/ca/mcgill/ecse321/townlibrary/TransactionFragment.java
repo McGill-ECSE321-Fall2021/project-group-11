@@ -21,7 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import ca.mcgill.ecse321.townlibrary.databinding.FragmentTransactionBinding;
@@ -30,13 +29,12 @@ import cz.msebera.android.httpclient.Header;
 public class TransactionFragment extends Fragment{
 
     private FragmentTransactionBinding binding;
-    private ListView list;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Set list to list of layout
-        list = binding.list;
+        ListView list = binding.list;
         ArrayList<List<String>> transactions = new ArrayList<>();
         ArrayAdapter<List<String>> arrayAdapter = new TransactionListAdapter(this.getActivity(), R.layout.fragment_transaction_list, transactions);
 
@@ -94,7 +92,7 @@ public class TransactionFragment extends Fragment{
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTransactionBinding.inflate(inflater,container, false);
         return binding.getRoot();
@@ -105,7 +103,4 @@ public class TransactionFragment extends Fragment{
         super.onDestroyView();
         binding = null;
     }
-
-
-
 }
