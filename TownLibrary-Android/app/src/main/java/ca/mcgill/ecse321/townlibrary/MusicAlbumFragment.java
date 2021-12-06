@@ -123,10 +123,12 @@ public class MusicAlbumFragment extends ListFragment {
                                             public void onSuccess(int statusCode, Header[] Header, JSONObject response) {
                                                 popupWindow.dismiss();
 
-                                                // How do I refresh???
                                                 String successMessage = "Reserved! Please visit the library to checkout.";
                                                 Snackbar.make(binding.getRoot(), successMessage, Snackbar.LENGTH_LONG)
                                                         .setAction("Action", null).show();
+
+                                                statusArray.set(position, "RESERVED");
+                                                itemsAdapter.notifyDataSetChanged();
 
                                             }
                                             @Override
