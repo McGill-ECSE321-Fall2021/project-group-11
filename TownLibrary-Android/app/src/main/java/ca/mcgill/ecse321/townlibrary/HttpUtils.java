@@ -13,7 +13,7 @@ import java.net.URISyntaxException;
  */
 public final class HttpUtils {
 
-    private static AsyncHttpClient client = new AsyncHttpClient();
+    private static final AsyncHttpClient client = new AsyncHttpClient();
 
     private HttpUtils() {
 

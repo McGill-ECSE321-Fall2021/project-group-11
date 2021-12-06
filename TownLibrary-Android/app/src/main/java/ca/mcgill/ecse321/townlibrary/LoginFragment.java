@@ -46,7 +46,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 NavHostFragment.findNavController(LoginFragment.this)
-                        .navigate(R.id.action_ItemBrowseFragment_to_ArchiveFragment);
+                        .navigate(R.id.action_LoginFragment_to_SignupFragment);
             }
         });
 

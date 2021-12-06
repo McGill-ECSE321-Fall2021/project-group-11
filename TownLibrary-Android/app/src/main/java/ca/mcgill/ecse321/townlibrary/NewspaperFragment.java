@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.townlibrary;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,6 @@ import cz.msebera.android.httpclient.Header;
 public class NewspaperFragment extends ListFragment {
 
     private FragmentArchiveBinding binding;
-    private String error;
 
     @Nullable
     @Override
@@ -44,28 +42,23 @@ public class NewspaperFragment extends ListFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ArrayList<String> items = new ArrayList<String>();
+        ArrayList<String> items = new ArrayList<>();
 
         HttpUtils.get("/newspapers", new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] Header, JSONArray response) {
-                Log.d("response", response.toString());
-
                 try {
                     for (int i=0; i<response.length(); i++) {
                         int itemId = response.getJSONObject(i).getInt("id");
                         String itemName = response.getJSONObject(i).getString("name");
-                        //Log.d("id", String.valueOf(itemId));
-                        //Log.d("name", itemName);
-                        items.add(String.valueOf(itemId) + " - " + itemName);
+                        items.add(itemId + " - " + itemName);
 
-                        Log.d("items array", items.toString());
-                        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
+                        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, items);
                         ListView listView = (ListView) binding.list;
                         listView.setAdapter(itemsAdapter);
                     }
                 } catch (JSONException e) {
-                    error += e.getMessage();
+                    // ignored
                 }
             }
         });

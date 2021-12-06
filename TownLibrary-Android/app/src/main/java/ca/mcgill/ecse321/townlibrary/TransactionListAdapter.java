@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,8 +82,7 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
      * @param builder Builder to construct the dialog
      * @param id Action id, either REMOVE or RETURN
      */
-    private void setOnClickListener(ImageButton button,AlertDialog.Builder builder, int id){
-
+    private void setOnClickListener(ImageButton button,AlertDialog.Builder builder, int id) {
         String action = id == RETURN ? "remove" : "renew";
         String alert = "Do you want to " + action + " this transaction?";
         String title = id == RETURN ? "Return" : "Renewal";
@@ -104,7 +102,6 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
                 AlertDialog alert = builder.create();
                 alert.setTitle(title);
                 alert.show();
-
             }
         });
     }
@@ -143,9 +140,8 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
      * @param button Button that has been pressed
      * @param buttonId Action requested, either RENEW or RETURN
      */
-    @SuppressWarnings("unchecked")
     private void onClickAction(ImageButton button, int buttonId){
-        String id = ((List<String>) button.getTag()).get(0);
+        String id = (String) ((List<?>) button.getTag()).get(0);
 
         if (buttonId == RENEW){
             HttpUtils.put("/transactions/" + LoginStatus.INSTANCE.getUserId() + "/" + id, new RequestParams(), new JsonHttpResponseHandler(){
@@ -156,12 +152,10 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("Inside onFailure", ((Integer) statusCode).toString());
                     // To avoid flooding the Snackbars (cuz we all hate
                     // excessive popups), we only report the first error.
                     String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");
                     Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show();
-
                 }
             });
         }
@@ -187,7 +181,6 @@ public class TransactionListAdapter extends ArrayAdapter<List<String>> {
                 }
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    Log.d("Inside onFailure", ((Integer) statusCode).toString());
                     // To avoid flooding the Snackbars (cuz we all hate
                     // excessive popups), we only report the first error.
                     String errorMessage = ApiError.firstOr(ApiError.decodeError(responseString), "Unknown error, try again later");

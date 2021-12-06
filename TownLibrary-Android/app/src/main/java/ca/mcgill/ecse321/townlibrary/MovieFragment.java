@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.townlibrary;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +40,6 @@ import cz.msebera.android.httpclient.Header;
 public class MovieFragment extends ListFragment {
 
     private FragmentArchiveBinding binding;
-    private String error;
 
     @Nullable
     @Override
@@ -62,8 +60,6 @@ public class MovieFragment extends ListFragment {
         HttpUtils.get("/movies", new RequestParams(), new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] Header, JSONArray response) {
-                Log.d("response", response.toString());
-
                 try {
                     for (int i=0; i<response.length(); i++) {
                         int itemId = response.getJSONObject(i).getInt("id");
@@ -77,8 +73,7 @@ public class MovieFragment extends ListFragment {
                         statusArray.add(itemStatus);
                         idArray.add(String.valueOf(itemId));
 
-                        Log.d("items array", items.toString());
-                        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items);
+                        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, items);
                         ListView listView = (ListView) binding.list;
                         listView.setAdapter(itemsAdapter);
 
@@ -147,7 +142,7 @@ public class MovieFragment extends ListFragment {
                         });
                     }
                 } catch (JSONException e) {
-                    error += e.getMessage();
+                    // ignored
                 }
             }
         });
